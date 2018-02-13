@@ -1,0 +1,3036 @@
+{
+  "edmx:Edmx": {
+    "$": {
+      "Version": "1.0",
+      "xmlns:edmx": "http://schemas.microsoft.com/ado/2007/06/edmx"
+    },
+    "edmx:DataServices": [
+      {
+        "$": {
+          "m:DataServiceVersion": "1.0",
+          "xmlns:m": "http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+        },
+        "Schema": [
+          {
+            "$": {
+              "Namespace": "cust",
+              "xmlns": "http://schemas.microsoft.com/ado/2008/09/edm",
+              "xmlns:sap": "http://www.sap.com/Protocols/SAPData",
+              "xmlns:c4c": "http://www.sap.com/Protocols/C4CData"
+            },
+            "EntityType": [
+              {
+                "$": {
+                  "Name": "AttachmentFolder"
+                },
+                "Key": [
+                  {
+                    "PropertyRef": [
+                      {
+                        "$": {
+                          "Name": "ObjectID"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "Property": [
+                  {
+                    "$": {
+                      "Name": "ObjectID",
+                      "Type": "Edm.String",
+                      "Nullable": "false",
+                      "MaxLength": "70",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "ObjectID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ParentObjectID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "70",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "ParentObjectID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "UUID",
+                      "Type": "Edm.Guid",
+                      "Nullable": "false",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "UUID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "TypeCode",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "5",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "ServiceRequestAttachmentFolderTypeCodeCollection",
+                      "sap:label": "Type Code"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "MimeType",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "FixedLength": "false",
+                      "sap:creatable": "true",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "Mime Type"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "Binary",
+                      "Type": "Edm.Binary",
+                      "MaxLength": "Max",
+                      "Nullable": "true",
+                      "FixedLength": "false",
+                      "sap:creatable": "true",
+                      "sap:updatable": "false",
+                      "sap:filterable": "false",
+                      "sap:label": "Binary"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "DocumentLink",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "FixedLength": "false",
+                      "sap:creatable": "true",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "Document Link"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "Name",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "FixedLength": "false",
+                      "sap:creatable": "true",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "Name"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "CategoryCode",
+                      "Type": "Edm.String",
+                      "Nullable": "false",
+                      "MaxLength": "1",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "ServiceRequestAttachmentFolderCategoryCodeCollection",
+                      "sap:label": "Category Code"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "LinkWebURI",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "FixedLength": "false",
+                      "sap:creatable": "true",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "Link Web URI"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "CreatedOn",
+                      "Type": "Edm.DateTime",
+                      "Nullable": "true",
+                      "Precision": "7",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "Created On"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "LastUpdatedOn",
+                      "Type": "Edm.DateTime",
+                      "Nullable": "true",
+                      "Precision": "7",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "Last Updated On"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "CreatedBy",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "80",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "Created By"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "LastUpdatedBy",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "80",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "Last Updated By"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "SizeInkB",
+                      "Type": "Edm.Decimal",
+                      "Nullable": "true",
+                      "Precision": "31",
+                      "Scale": "14",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "Size In KiloBytes"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ETag",
+                      "Type": "Edm.DateTimeOffset",
+                      "Nullable": "true",
+                      "Precision": "7",
+                      "ConcurrencyMode": "Fixed",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "false",
+                      "sap:label": "ETag"
+                    }
+                  }
+                ]
+              },
+              {
+                "$": {
+                  "Name": "BusinessTransactionDocumentReference"
+                },
+                "Key": [
+                  {
+                    "PropertyRef": [
+                      {
+                        "$": {
+                          "Name": "ObjectID"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "Property": [
+                  {
+                    "$": {
+                      "Name": "ETag",
+                      "Type": "Edm.DateTimeOffset",
+                      "Nullable": "true",
+                      "Precision": "7",
+                      "ConcurrencyMode": "Fixed",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "false",
+                      "sap:label": "ETag"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ObjectID",
+                      "Type": "Edm.String",
+                      "Nullable": "false",
+                      "MaxLength": "70",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "ObjectID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ParentObjectID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "70",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "ParentObjectID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "BusinessSystemID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "32",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "BusinessSystemID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "BusinessTransactionDocumentRelationshipRoleCode",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "3",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "BusinessTransactionDocumentReferenceBusinessTransactionDocumentRelationshipRoleCodeCollection",
+                      "sap:label": "BusinessTransactionDocumentRelationshipRoleCode"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "35",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "ID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ItemID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "10",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "ItemID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ItemTypeCode",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "5",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "BusinessTransactionDocumentReferenceItemTypeCodeCollection",
+                      "sap:label": "ItemTypeCode"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "TypeCode",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "15",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "BusinessTransactionDocumentReferenceTypeCodeCollection",
+                      "sap:label": "Activity Type"
+                    }
+                  }
+                ],
+                "NavigationProperty": [
+                  {
+                    "$": {
+                      "Name": "ServiceRequest",
+                      "Relationship": "cust.ServiceRequest_BusinessTransactionDocumentReference",
+                      "FromRole": "BusinessTransactionDocumentReference",
+                      "ToRole": "ServiceRequest"
+                    }
+                  }
+                ]
+              },
+              {
+                "$": {
+                  "Name": "CodeList"
+                },
+                "Key": [
+                  {
+                    "PropertyRef": [
+                      {
+                        "$": {
+                          "Name": "Code"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "Property": [
+                  {
+                    "$": {
+                      "Name": "Code",
+                      "Type": "Edm.String",
+                      "Nullable": "false",
+                      "FixedLength": "false",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "Code"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "Description",
+                      "Type": "Edm.String",
+                      "Nullable": "false",
+                      "FixedLength": "false",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "Description"
+                    }
+                  }
+                ]
+              },
+              {
+                "$": {
+                  "Name": "CreationIdentity"
+                },
+                "Key": [
+                  {
+                    "PropertyRef": [
+                      {
+                        "$": {
+                          "Name": "ObjectID"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "Property": [
+                  {
+                    "$": {
+                      "Name": "ObjectID",
+                      "Type": "Edm.String",
+                      "Nullable": "false",
+                      "MaxLength": "70",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "ObjectID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "BusinessPartnerUUID",
+                      "Type": "Edm.Guid",
+                      "Nullable": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "BusinessPartnerUUID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "40",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "ID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "InternalID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "10",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "ID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "CategoryCode",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "1",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "CreationIdentityCategoryCodeCollection",
+                      "sap:label": "Category"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "BusinessPartnerFormattedName",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "480",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "Name"
+                    }
+                  }
+                ]
+              },
+              {
+                "$": {
+                  "Name": "Party"
+                },
+                "Key": [
+                  {
+                    "PropertyRef": [
+                      {
+                        "$": {
+                          "Name": "ObjectID"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "Property": [
+                  {
+                    "$": {
+                      "Name": "ETag",
+                      "Type": "Edm.DateTimeOffset",
+                      "Nullable": "true",
+                      "Precision": "7",
+                      "ConcurrencyMode": "Fixed",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "false",
+                      "sap:label": "ETag"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ObjectID",
+                      "Type": "Edm.String",
+                      "Nullable": "false",
+                      "MaxLength": "70",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "ObjectID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ParentObjectID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "70",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "ParentObjectID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "PartyID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "60",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "PartyID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "PartyTypeCode",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "15",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "PartyPartyTypeCodeCollection",
+                      "sap:label": "PartyTypeCode"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "PartyUUID",
+                      "Type": "Edm.Guid",
+                      "Nullable": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "PartyUUID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "RoleCategoryCode",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "3",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "PartyRoleCategoryCodeCollection",
+                      "sap:label": "Role Category Code"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "RoleCode",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "10",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "PartyRoleCodeCollection",
+                      "sap:label": "Role"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "MainIndicator",
+                      "Type": "Edm.Boolean",
+                      "Nullable": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "Main"
+                    }
+                  }
+                ],
+                "NavigationProperty": [
+                  {
+                    "$": {
+                      "Name": "ServiceRequest",
+                      "Relationship": "cust.ServiceRequest_Party",
+                      "FromRole": "Party",
+                      "ToRole": "ServiceRequest"
+                    }
+                  }
+                ]
+              },
+              {
+                "$": {
+                  "Name": "Products"
+                },
+                "Key": [
+                  {
+                    "PropertyRef": [
+                      {
+                        "$": {
+                          "Name": "ObjectID"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "Property": [
+                  {
+                    "$": {
+                      "Name": "ETag",
+                      "Type": "Edm.DateTimeOffset",
+                      "Nullable": "true",
+                      "Precision": "7",
+                      "ConcurrencyMode": "Fixed",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "false",
+                      "sap:label": "ETag"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ObjectID",
+                      "Type": "Edm.String",
+                      "Nullable": "false",
+                      "MaxLength": "70",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "ObjectID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ParentObjectID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "70",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "ParentObjectID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ProductInternalID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "40",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "ProductInternalID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ProductID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "60",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "ProductID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ProductCategoryInternalID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "20",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "ProductCategoryInternalID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "Description",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "40",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "Description"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "languageCode",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "2",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "ProductslanguageCodeCollection",
+                      "sap:label": "languageCode"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "10",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "Line"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "UUID",
+                      "Type": "Edm.Guid",
+                      "Nullable": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "UUID"
+                    }
+                  }
+                ],
+                "NavigationProperty": [
+                  {
+                    "$": {
+                      "Name": "ServiceRequest",
+                      "Relationship": "cust.ServiceRequest_Products",
+                      "FromRole": "Products",
+                      "ToRole": "ServiceRequest"
+                    }
+                  }
+                ]
+              },
+              {
+                "$": {
+                  "Name": "ServiceIssueCategory"
+                },
+                "Key": [
+                  {
+                    "PropertyRef": [
+                      {
+                        "$": {
+                          "Name": "ObjectID"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "Property": [
+                  {
+                    "$": {
+                      "Name": "ETag",
+                      "Type": "Edm.DateTimeOffset",
+                      "Nullable": "true",
+                      "Precision": "7",
+                      "ConcurrencyMode": "Fixed",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "false",
+                      "sap:label": "ETag"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ObjectID",
+                      "Type": "Edm.String",
+                      "Nullable": "false",
+                      "MaxLength": "70",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "ObjectID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ParentObjectID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "70",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "ParentObjectID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceIssueCategoryID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "25",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "ServiceIssueCategoryID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceIssueCategoryUUID",
+                      "Type": "Edm.Guid",
+                      "Nullable": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "ServiceIssueCategoryUUID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "25",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "Category ID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ParentCategoryUUID",
+                      "Type": "Edm.Guid",
+                      "Nullable": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "ParentCategoryUUID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "TypeCode",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "2",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "ServiceIssueCategoryTypeCodeCollection",
+                      "sap:label": "TypeCode"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "UUID",
+                      "Type": "Edm.Guid",
+                      "Nullable": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "UUID"
+                    }
+                  }
+                ],
+                "NavigationProperty": [
+                  {
+                    "$": {
+                      "Name": "ServiceRequest",
+                      "Relationship": "cust.ServiceRequest_ServiceIssueCategory",
+                      "FromRole": "ServiceIssueCategory",
+                      "ToRole": "ServiceRequest"
+                    }
+                  }
+                ]
+              },
+              {
+                "$": {
+                  "Name": "ServiceReferenceProducts"
+                },
+                "Key": [
+                  {
+                    "PropertyRef": [
+                      {
+                        "$": {
+                          "Name": "ObjectID"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "Property": [
+                  {
+                    "$": {
+                      "Name": "ETag",
+                      "Type": "Edm.DateTimeOffset",
+                      "Nullable": "true",
+                      "Precision": "7",
+                      "ConcurrencyMode": "Fixed",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "false",
+                      "sap:label": "ETag"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ObjectID",
+                      "Type": "Edm.String",
+                      "Nullable": "false",
+                      "MaxLength": "70",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "ObjectID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ParentObjectID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "70",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "ParentObjectID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "70",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "ID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ProductInternalID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "40",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "ProductInternalID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "Description",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "40",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "Individual Product Description"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ProductID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "60",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "ProductID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "MaterialUUID",
+                      "Type": "Edm.Guid",
+                      "Nullable": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "MaterialUUID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "Description1",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "40",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "Product Description"
+                    }
+                  }
+                ],
+                "NavigationProperty": [
+                  {
+                    "$": {
+                      "Name": "ServiceRequest",
+                      "Relationship": "cust.ServiceRequest_ServiceReferenceProducts",
+                      "FromRole": "ServiceReferenceProducts",
+                      "ToRole": "ServiceRequest"
+                    }
+                  }
+                ]
+              },
+              {
+                "$": {
+                  "Name": "ServiceRequest"
+                },
+                "Key": [
+                  {
+                    "PropertyRef": [
+                      {
+                        "$": {
+                          "Name": "ObjectID"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "Property": [
+                  {
+                    "$": {
+                      "Name": "ETag",
+                      "Type": "Edm.DateTimeOffset",
+                      "Nullable": "true",
+                      "Precision": "7",
+                      "ConcurrencyMode": "Fixed",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "false",
+                      "sap:label": "ETag"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ObjectID",
+                      "Type": "Edm.String",
+                      "Nullable": "false",
+                      "MaxLength": "70",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "ObjectID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "CharRecordIDcontent",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "35",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "聊天记录ID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "NeedRescue",
+                      "Type": "Edm.Boolean",
+                      "Nullable": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "是否需要救援"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "SupportStatus",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "27",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "ServiceRequestSupportStatusCollection",
+                      "sap:label": "业务支持状态"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "Rescuer_Longtitude",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "FixedLength": "false",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "救援人员经度"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "RescueCondition",
+                      "Type": "Edm.Boolean",
+                      "Nullable": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "是否符合救援"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "DeclinedReason",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "FixedLength": "false",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "拒绝原因"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "IsNotifyDQ",
+                      "Type": "Edm.Boolean",
+                      "Nullable": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "是否通知大区"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "VOCId",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "60",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "VOC-Id"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "LicensePlateID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "30",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "车牌号"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "DeclinedTime",
+                      "Type": "Edm.DateTimeOffset",
+                      "Nullable": "true",
+                      "Precision": "7",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "拒绝时间"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "OdometerReading",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "40",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "里程数"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "AutoOutCall",
+                      "Type": "Edm.Boolean",
+                      "Nullable": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "AutoOutCall"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "OutCallID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "60",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "外呼工单批次ID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "CancelledTime",
+                      "Type": "Edm.DateTimeOffset",
+                      "Nullable": "true",
+                      "Precision": "7",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "取消时间"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "SpecialMark",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "27",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "ServiceRequestSpecialMarkCollection",
+                      "sap:label": "特殊标记"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "IsNotifyAssignedTeam",
+                      "Type": "Edm.Boolean",
+                      "Nullable": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "是否通知派发部门"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "Car_Latitute",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "FixedLength": "false",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "车辆纬度"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "AppointConfirmedTime",
+                      "Type": "Edm.DateTimeOffset",
+                      "Nullable": "true",
+                      "Precision": "7",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "确认预约的时间"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "CurrentProcessor",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "FixedLength": "false",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "当前处理人姓名"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "VINID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "60",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "VIN码"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "AppointStatus",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "27",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "ServiceRequestAppointStatusCollection",
+                      "sap:label": "确认预约状态"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "Car_Desc",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "40",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "车型描述"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "CurProcessorIDcontent",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "20",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "当前处理人工号"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "Cancelled",
+                      "Type": "Edm.Boolean",
+                      "Nullable": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "已取消"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "NeedRepair",
+                      "Type": "Edm.Boolean",
+                      "Nullable": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "需要下派维修"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "RequestCompletedTime",
+                      "Type": "Edm.DateTimeOffset",
+                      "Nullable": "true",
+                      "Precision": "7",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "申请闭环时间"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "AppointTime",
+                      "Type": "Edm.DateTimeOffset",
+                      "Nullable": "true",
+                      "Precision": "7",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "预约进站时间"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "RescuedPhaseType",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "27",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "ServiceRequestRescuedPhaseTypeCollection",
+                      "sap:label": "救援阶段类型"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "Rescuer_Latitude",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "FixedLength": "false",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "救援人员纬度"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "PhoneNo",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "30",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "手机号"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "VOCName",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "FixedLength": "false",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "VOC"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "AppointChangedTime",
+                      "Type": "Edm.DateTimeOffset",
+                      "Nullable": "true",
+                      "Precision": "7",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "预约改派时间"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "Car_Longtitude",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "FixedLength": "false",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "车辆经度"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "CancelledReason",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "FixedLength": "false",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "取消原因"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "AcceptedTime",
+                      "Type": "Edm.DateTimeOffset",
+                      "Nullable": "true",
+                      "Precision": "7",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "接收时间"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "AuditStatus",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "27",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "ServiceRequestAuditStatusCollection",
+                      "sap:label": "审核状态"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "RequesTime",
+                      "Type": "Edm.DateTimeOffset",
+                      "Nullable": "true",
+                      "Precision": "7",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "申请业务支持时间"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "IsNotifyCustomer",
+                      "Type": "Edm.Boolean",
+                      "Nullable": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "是否通知客户"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "CurDept",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "FixedLength": "false",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "当前处理部门"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "CompletedTime",
+                      "Type": "Edm.DateTimeOffset",
+                      "Nullable": "true",
+                      "Precision": "7",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "闭环时间"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "AssigningTime",
+                      "Type": "Edm.DateTimeOffset",
+                      "Nullable": "true",
+                      "Precision": "7",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "派发时间"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "CurDeptID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "20",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "当前处理部门ID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "PartyID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "60",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "PartyID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "PartyTypeCode",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "15",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "ServiceRequestPartyTypeCodeCollection",
+                      "sap:label": "PartyTypeCode"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "PartyUUID",
+                      "Type": "Edm.Guid",
+                      "Nullable": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "PartyUUID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "RoleCategoryCode",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "3",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "ServiceRequestRoleCategoryCodeCollection",
+                      "sap:label": "Role Category Code"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "RoleCode",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "10",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "ServiceRequestRoleCodeCollection",
+                      "sap:label": "Role"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "PartyID1",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "60",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "PartyID1"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "PartyTypeCode1",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "15",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "ServiceRequestPartyTypeCode1Collection",
+                      "sap:label": "PartyTypeCode1"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "PartyUUID1",
+                      "Type": "Edm.Guid",
+                      "Nullable": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "PartyUUID1"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "RoleCategoryCode1",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "3",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "ServiceRequestRoleCategoryCode1Collection",
+                      "sap:label": "Role Category Code"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "RoleCode1",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "10",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "ServiceRequestRoleCode1Collection",
+                      "sap:label": "Role"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "PartyID2",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "60",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "PartyID2"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "PartyUUID2",
+                      "Type": "Edm.Guid",
+                      "Nullable": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "PartyUUID2"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "PartyTypeCode2",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "15",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "ServiceRequestPartyTypeCode2Collection",
+                      "sap:label": "PartyTypeCode2"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "RoleCategoryCode2",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "3",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "ServiceRequestRoleCategoryCode2Collection",
+                      "sap:label": "Role Category Code"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "RoleCode2",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "10",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "ServiceRequestRoleCode2Collection",
+                      "sap:label": "Role"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ApprovalStatusCode",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "2",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "ServiceRequestApprovalStatusCodeCollection",
+                      "sap:label": "ApprovalStatusCode"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ConfirmationIssuingStatusCode",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "2",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "ServiceRequestConfirmationIssuingStatusCodeCollection",
+                      "sap:label": "ConfirmationIssuingStatusCode"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestLifeCycleStatusCode",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "2",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "ServiceRequestServiceRequestLifeCycleStatusCodeCollection",
+                      "sap:label": "ServiceRequestLifeCycleStatusCode"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "Name",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "255",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "Description"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ProcessingTypeCode",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "4",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "ServiceRequestProcessingTypeCodeCollection",
+                      "sap:label": "Ticket Type"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "35",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "ID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "DataOriginTypeCode",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "3",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "ServiceRequestDataOriginTypeCodeCollection",
+                      "sap:label": "Origin"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ContractUsageRestrictionCode",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "4",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "c4c:value-help": "ServiceRequestContractUsageRestrictionCodeCollection",
+                      "sap:label": "Contract Restriction"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "BuyerID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "35",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "BuyerID"
+                    }
+                  }
+                ],
+                "NavigationProperty": [
+                  {
+                    "$": {
+                      "Name": "AttachmentFolder",
+                      "Relationship": "cust.ServiceRequest_AttachmentFolder",
+                      "FromRole": "ServiceRequest",
+                      "ToRole": "AttachmentFolder"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "BusinessTransactionDocumentReference",
+                      "Relationship": "cust.ServiceRequest_BusinessTransactionDocumentReference",
+                      "FromRole": "ServiceRequest",
+                      "ToRole": "BusinessTransactionDocumentReference"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "CreationIdentity",
+                      "Relationship": "cust.ServiceRequest_CreationIdentity",
+                      "FromRole": "ServiceRequest",
+                      "ToRole": "CreationIdentity"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "Party",
+                      "Relationship": "cust.ServiceRequest_Party",
+                      "FromRole": "ServiceRequest",
+                      "ToRole": "Party"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "Products",
+                      "Relationship": "cust.ServiceRequest_Products",
+                      "FromRole": "ServiceRequest",
+                      "ToRole": "Products"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceIssueCategory",
+                      "Relationship": "cust.ServiceRequest_ServiceIssueCategory",
+                      "FromRole": "ServiceRequest",
+                      "ToRole": "ServiceIssueCategory"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceReferenceProducts",
+                      "Relationship": "cust.ServiceRequest_ServiceReferenceProducts",
+                      "FromRole": "ServiceRequest",
+                      "ToRole": "ServiceReferenceProducts"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestItem",
+                      "Relationship": "cust.ServiceRequest_ServiceRequestItem",
+                      "FromRole": "ServiceRequest",
+                      "ToRole": "ServiceRequestItem"
+                    }
+                  }
+                ]
+              },
+              {
+                "$": {
+                  "Name": "ServiceRequestItem"
+                },
+                "Key": [
+                  {
+                    "PropertyRef": [
+                      {
+                        "$": {
+                          "Name": "ObjectID"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "Property": [
+                  {
+                    "$": {
+                      "Name": "ETag",
+                      "Type": "Edm.DateTimeOffset",
+                      "Nullable": "true",
+                      "Precision": "7",
+                      "ConcurrencyMode": "Fixed",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "false",
+                      "sap:label": "ETag"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ObjectID",
+                      "Type": "Edm.String",
+                      "Nullable": "false",
+                      "MaxLength": "70",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "ObjectID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ParentObjectID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "70",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "ParentObjectID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "10",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "Line"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "Description",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "40",
+                      "FixedLength": "true",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:filterable": "true",
+                      "sap:label": "Description"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ProductInternalID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "40",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "ProductInternalID"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ProductCategoryInternalID",
+                      "Type": "Edm.String",
+                      "Nullable": "true",
+                      "MaxLength": "20",
+                      "FixedLength": "true",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:filterable": "true",
+                      "sap:label": "ProductCategoryInternalID"
+                    }
+                  }
+                ],
+                "NavigationProperty": [
+                  {
+                    "$": {
+                      "Name": "ServiceRequest",
+                      "Relationship": "cust.ServiceRequest_ServiceRequestItem",
+                      "FromRole": "ServiceRequestItem",
+                      "ToRole": "ServiceRequest"
+                    }
+                  }
+                ]
+              }
+            ],
+            "Association": [
+              {
+                "$": {
+                  "Name": "ServiceRequest_AttachmentFolder"
+                },
+                "End": [
+                  {
+                    "$": {
+                      "Type": "cust.ServiceRequest",
+                      "Multiplicity": "1",
+                      "Role": "ServiceRequest"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Type": "cust.AttachmentFolder",
+                      "Multiplicity": "*",
+                      "Role": "AttachmentFolder"
+                    }
+                  }
+                ]
+              },
+              {
+                "$": {
+                  "Name": "ServiceRequest_BusinessTransactionDocumentReference"
+                },
+                "End": [
+                  {
+                    "$": {
+                      "Type": "cust.ServiceRequest",
+                      "Multiplicity": "1",
+                      "Role": "ServiceRequest"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Type": "cust.BusinessTransactionDocumentReference",
+                      "Multiplicity": "*",
+                      "Role": "BusinessTransactionDocumentReference"
+                    }
+                  }
+                ]
+              },
+              {
+                "$": {
+                  "Name": "ServiceRequest_CreationIdentity"
+                },
+                "End": [
+                  {
+                    "$": {
+                      "Type": "cust.ServiceRequest",
+                      "Multiplicity": "1",
+                      "Role": "ServiceRequest"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Type": "cust.CreationIdentity",
+                      "Multiplicity": "1",
+                      "Role": "CreationIdentity"
+                    }
+                  }
+                ]
+              },
+              {
+                "$": {
+                  "Name": "ServiceRequest_Party"
+                },
+                "End": [
+                  {
+                    "$": {
+                      "Type": "cust.ServiceRequest",
+                      "Multiplicity": "1",
+                      "Role": "ServiceRequest"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Type": "cust.Party",
+                      "Multiplicity": "*",
+                      "Role": "Party"
+                    }
+                  }
+                ]
+              },
+              {
+                "$": {
+                  "Name": "ServiceRequest_Products"
+                },
+                "End": [
+                  {
+                    "$": {
+                      "Type": "cust.ServiceRequest",
+                      "Multiplicity": "1",
+                      "Role": "ServiceRequest"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Type": "cust.Products",
+                      "Multiplicity": "*",
+                      "Role": "Products"
+                    }
+                  }
+                ]
+              },
+              {
+                "$": {
+                  "Name": "ServiceRequest_ServiceIssueCategory"
+                },
+                "End": [
+                  {
+                    "$": {
+                      "Type": "cust.ServiceRequest",
+                      "Multiplicity": "1",
+                      "Role": "ServiceRequest"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Type": "cust.ServiceIssueCategory",
+                      "Multiplicity": "*",
+                      "Role": "ServiceIssueCategory"
+                    }
+                  }
+                ]
+              },
+              {
+                "$": {
+                  "Name": "ServiceRequest_ServiceReferenceProducts"
+                },
+                "End": [
+                  {
+                    "$": {
+                      "Type": "cust.ServiceRequest",
+                      "Multiplicity": "1",
+                      "Role": "ServiceRequest"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Type": "cust.ServiceReferenceProducts",
+                      "Multiplicity": "*",
+                      "Role": "ServiceReferenceProducts"
+                    }
+                  }
+                ]
+              },
+              {
+                "$": {
+                  "Name": "ServiceRequest_ServiceRequestItem"
+                },
+                "End": [
+                  {
+                    "$": {
+                      "Type": "cust.ServiceRequest",
+                      "Multiplicity": "1",
+                      "Role": "ServiceRequest"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Type": "cust.ServiceRequestItem",
+                      "Multiplicity": "*",
+                      "Role": "ServiceRequestItem"
+                    }
+                  }
+                ]
+              }
+            ],
+            "EntityContainer": [
+              {
+                "$": {
+                  "Name": "ticket",
+                  "m:IsDefaultEntityContainer": "true"
+                },
+                "EntitySet": [
+                  {
+                    "$": {
+                      "Name": "AttachmentFolderCollection",
+                      "EntityType": "cust.AttachmentFolder",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:deletable": "true",
+                      "sap:label": "Attachments"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "BusinessTransactionDocumentReferenceBusinessTransactionDocumentRelationshipRoleCodeCollection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "BusinessTransactionDocumentReferenceCollection",
+                      "EntityType": "cust.BusinessTransactionDocumentReference",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:deletable": "true",
+                      "sap:label": "BusinessTransactionDocumentReferenceCollection"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "BusinessTransactionDocumentReferenceItemTypeCodeCollection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "BusinessTransactionDocumentReferenceTypeCodeCollection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "CreationIdentityCategoryCodeCollection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "CreationIdentityCollection",
+                      "EntityType": "cust.CreationIdentity",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:label": "Identity"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "PartyCollection",
+                      "EntityType": "cust.Party",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:deletable": "true",
+                      "sap:label": "PartyCollection"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "PartyPartyTypeCodeCollection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "PartyRoleCategoryCodeCollection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "PartyRoleCodeCollection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ProductsCollection",
+                      "EntityType": "cust.Products",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:deletable": "true",
+                      "sap:label": "Item"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ProductslanguageCodeCollection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceIssueCategoryCollection",
+                      "EntityType": "cust.ServiceIssueCategory",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:deletable": "true",
+                      "sap:label": "ServiceIssueCategoryCollection"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceIssueCategoryTypeCodeCollection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceReferenceProductsCollection",
+                      "EntityType": "cust.ServiceReferenceProducts",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:deletable": "true",
+                      "sap:label": "Affected Product"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestAppointStatusCollection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestApprovalStatusCodeCollection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestAttachmentFolderCategoryCodeCollection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestAttachmentFolderTypeCodeCollection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestAuditStatusCollection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestCollection",
+                      "EntityType": "cust.ServiceRequest",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:deletable": "true",
+                      "sap:label": "Ticket"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestConfirmationIssuingStatusCodeCollection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestContractUsageRestrictionCodeCollection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestDataOriginTypeCodeCollection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestItemCollection",
+                      "EntityType": "cust.ServiceRequestItem",
+                      "sap:creatable": "true",
+                      "sap:updatable": "true",
+                      "sap:deletable": "true",
+                      "sap:label": "Item"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestPartyTypeCode1Collection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestPartyTypeCode2Collection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestPartyTypeCodeCollection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestProcessingTypeCodeCollection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestRescuedPhaseTypeCollection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestRoleCategoryCode1Collection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestRoleCategoryCode2Collection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestRoleCategoryCodeCollection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestRoleCode1Collection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestRoleCode2Collection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestRoleCodeCollection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestServiceRequestLifeCycleStatusCodeCollection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestSpecialMarkCollection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestSupportStatusCollection",
+                      "EntityType": "cust.CodeList",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false",
+                      "sap:semantics": "fixed-values"
+                    }
+                  }
+                ],
+                "AssociationSet": [
+                  {
+                    "$": {
+                      "Name": "ServiceRequestCollection_AttachmentFolderCollection",
+                      "Association": "cust.ServiceRequest_AttachmentFolder",
+                      "sap:creatable": "true",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false"
+                    },
+                    "End": [
+                      {
+                        "$": {
+                          "EntitySet": "ServiceRequestCollection",
+                          "Role": "ServiceRequest"
+                        }
+                      },
+                      {
+                        "$": {
+                          "EntitySet": "AttachmentFolderCollection",
+                          "Role": "AttachmentFolder"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestCollection_BusinessTransactionDocumentReferenceCollection",
+                      "Association": "cust.ServiceRequest_BusinessTransactionDocumentReference",
+                      "sap:creatable": "true",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false"
+                    },
+                    "End": [
+                      {
+                        "$": {
+                          "EntitySet": "ServiceRequestCollection",
+                          "Role": "ServiceRequest"
+                        }
+                      },
+                      {
+                        "$": {
+                          "EntitySet": "BusinessTransactionDocumentReferenceCollection",
+                          "Role": "BusinessTransactionDocumentReference"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestCollection_CreationIdentityCollection",
+                      "Association": "cust.ServiceRequest_CreationIdentity",
+                      "sap:creatable": "false",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false"
+                    },
+                    "End": [
+                      {
+                        "$": {
+                          "EntitySet": "ServiceRequestCollection",
+                          "Role": "ServiceRequest"
+                        }
+                      },
+                      {
+                        "$": {
+                          "EntitySet": "CreationIdentityCollection",
+                          "Role": "CreationIdentity"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestCollection_PartyCollection",
+                      "Association": "cust.ServiceRequest_Party",
+                      "sap:creatable": "true",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false"
+                    },
+                    "End": [
+                      {
+                        "$": {
+                          "EntitySet": "ServiceRequestCollection",
+                          "Role": "ServiceRequest"
+                        }
+                      },
+                      {
+                        "$": {
+                          "EntitySet": "PartyCollection",
+                          "Role": "Party"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestCollection_ProductsCollection",
+                      "Association": "cust.ServiceRequest_Products",
+                      "sap:creatable": "true",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false"
+                    },
+                    "End": [
+                      {
+                        "$": {
+                          "EntitySet": "ServiceRequestCollection",
+                          "Role": "ServiceRequest"
+                        }
+                      },
+                      {
+                        "$": {
+                          "EntitySet": "ProductsCollection",
+                          "Role": "Products"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestCollection_ServiceIssueCategoryCollection",
+                      "Association": "cust.ServiceRequest_ServiceIssueCategory",
+                      "sap:creatable": "true",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false"
+                    },
+                    "End": [
+                      {
+                        "$": {
+                          "EntitySet": "ServiceRequestCollection",
+                          "Role": "ServiceRequest"
+                        }
+                      },
+                      {
+                        "$": {
+                          "EntitySet": "ServiceIssueCategoryCollection",
+                          "Role": "ServiceIssueCategory"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestCollection_ServiceReferenceProductsCollection",
+                      "Association": "cust.ServiceRequest_ServiceReferenceProducts",
+                      "sap:creatable": "true",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false"
+                    },
+                    "End": [
+                      {
+                        "$": {
+                          "EntitySet": "ServiceRequestCollection",
+                          "Role": "ServiceRequest"
+                        }
+                      },
+                      {
+                        "$": {
+                          "EntitySet": "ServiceReferenceProductsCollection",
+                          "Role": "ServiceReferenceProducts"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "$": {
+                      "Name": "ServiceRequestCollection_ServiceRequestItemCollection",
+                      "Association": "cust.ServiceRequest_ServiceRequestItem",
+                      "sap:creatable": "true",
+                      "sap:updatable": "false",
+                      "sap:deletable": "false"
+                    },
+                    "End": [
+                      {
+                        "$": {
+                          "EntitySet": "ServiceRequestCollection",
+                          "Role": "ServiceRequest"
+                        }
+                      },
+                      {
+                        "$": {
+                          "EntitySet": "ServiceRequestItemCollection",
+                          "Role": "ServiceRequestItem"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "FunctionImport": [
+                  {
+                    "$": {
+                      "Name": "AssginAgent",
+                      "ReturnType": "cust.ServiceRequest",
+                      "EntitySet": "ServiceRequestCollection",
+                      "m:HttpMethod": "POST"
+                    },
+                    "Parameter": [
+                      {
+                        "$": {
+                          "Name": "ObjectID",
+                          "Type": "Edm.String",
+                          "Mode": "In"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "$": {
+                      "Name": "AssignTeam",
+                      "ReturnType": "cust.ServiceRequest",
+                      "EntitySet": "ServiceRequestCollection",
+                      "m:HttpMethod": "POST"
+                    },
+                    "Parameter": [
+                      {
+                        "$": {
+                          "Name": "ObjectID",
+                          "Type": "Edm.String",
+                          "Mode": "In"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "$": {
+                      "Name": "Close",
+                      "ReturnType": "cust.ServiceRequest",
+                      "EntitySet": "ServiceRequestCollection",
+                      "m:HttpMethod": "POST"
+                    },
+                    "Parameter": [
+                      {
+                        "$": {
+                          "Name": "ObjectID",
+                          "Type": "Edm.String",
+                          "Mode": "In"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "$": {
+                      "Name": "Compelete",
+                      "ReturnType": "cust.ServiceRequest",
+                      "EntitySet": "ServiceRequestCollection",
+                      "m:HttpMethod": "POST"
+                    },
+                    "Parameter": [
+                      {
+                        "$": {
+                          "Name": "ObjectID",
+                          "Type": "Edm.String",
+                          "Mode": "In"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "$": {
+                      "Name": "Copy",
+                      "ReturnType": "Edm.Boolean",
+                      "EntitySet": "ServiceRequestCollection",
+                      "m:HttpMethod": "POST"
+                    },
+                    "Parameter": [
+                      {
+                        "$": {
+                          "Name": "IsSuccessful",
+                          "Type": "Edm.Boolean",
+                          "Mode": "Out"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

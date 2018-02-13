@@ -1,0 +1,78 @@
+{
+  "name": "c4codata",
+  "version": "1.0.0",
+  "bin": "lib/cli",
+  "devDependencies": {
+    "@types/jest": "^20.0.7",
+    "@types/node": "^8.0.25",
+    "browserify": "^14.4.0",
+    "jest": "^20.0.4",
+    "jest-cli": "^20.0.0",
+    "nsp": "^2.6.3",
+    "rimraf": "^2.6.1",
+    "standard-version": "^4.2.0",
+    "ts-jest": "^20.0.10",
+    "ts-loader": "^2.3.3",
+    "tslint": "^5.6.0",
+    "tslint-loader": "^3.5.3",
+    "typescript": "2.4.2",
+    "webpack": "^3.5.5",
+    "webpack-node-externals": "^1.6.0"
+  },
+  "typings": "lib/index.d.ts",
+  "scripts": {
+    "clean": "rimraf lib",
+    "browserify": "browserify -e lib/index.js --standalone c4Codata --outfile lib/c4codata.browser.js",
+    "build": "npm run clean && tsc && npm run browserify",
+    "test": "jest",
+    "test:watch": "npm test -- --watch",
+    "coverage": "npm test -- --coverage --no-cache",
+    "coverage:watch": "npm run coverage -- --watch",
+    "release": "standard-version && npm pack",
+    "prepare": "npm run build && npm test",
+    "prepublish": "nsp check",
+    "pretest": "tslint ."
+  },
+  "dependencies": {
+    "@types/lodash": "^4.14.102",
+    "buffer": "^5.0.8",
+    "cli": "^1.0.1",
+    "isomorphic-fetch": "^2.2.1",
+    "lodash": "^4.17.5",
+    "url-search-params": "^0.10.0",
+    "xml2js": "^0.4.19"
+  },
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "mapCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.ts"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/tests/",
+      "/node_modules/"
+    ],
+    "testEnvironment": "node",
+    "testRegex": "tests/.*\\.spec\\.ts$",
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json"
+    ]
+  },
+  "description": "",
+  "homepage": "",
+  "author": {
+    "name": "Theo Sun",
+    "email": "theo.sun@sap.com",
+    "url": ""
+  },
+  "main": "lib/index.js",
+  "keywords": [
+    ""
+  ],
+  "repository": "Soontao/c4codata",
+  "license": "MIT"
+}

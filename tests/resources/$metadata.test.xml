@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" 
+  xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <edmx:DataServices m:DataServiceVersion="1.0" 
+    xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata">
+    <Schema Namespace="cust" 
+      xmlns="http://schemas.microsoft.com/ado/2008/09/edm" 
+      xmlns:sap="http://www.sap.com/Protocols/SAPData" 
+      xmlns:c4c="http://www.sap.com/Protocols/C4CData">
+      <EntityType Name="AttachmentFolder">
+        <Key>
+          <PropertyRef Name="ObjectID"/>
+        </Key>
+        <Property Name="ObjectID" Type="Edm.String" Nullable="false" MaxLength="70" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="ObjectID"/>
+        <Property Name="ParentObjectID" Type="Edm.String" Nullable="true" MaxLength="70" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="ParentObjectID"/>
+        <Property Name="UUID" Type="Edm.Guid" Nullable="false" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="UUID"/>
+        <Property Name="TypeCode" Type="Edm.String" Nullable="true" MaxLength="5" FixedLength="true" sap:creatable="true" sap:updatable="false" sap:filterable="true" c4c:value-help="ServiceRequestAttachmentFolderTypeCodeCollection" sap:label="Type Code"/>
+        <Property Name="MimeType" Type="Edm.String" Nullable="true" FixedLength="false" sap:creatable="true" sap:updatable="false" sap:filterable="true" sap:label="Mime Type"/>
+        <Property Name="Binary" Type="Edm.Binary" MaxLength="Max" Nullable="true" FixedLength="false" sap:creatable="true" sap:updatable="false" sap:filterable="false" sap:label="Binary"/>
+        <Property Name="DocumentLink" Type="Edm.String" Nullable="true" FixedLength="false" sap:creatable="true" sap:updatable="false" sap:filterable="true" sap:label="Document Link"/>
+        <Property Name="Name" Type="Edm.String" Nullable="true" FixedLength="false" sap:creatable="true" sap:updatable="false" sap:filterable="true" sap:label="Name"/>
+        <Property Name="CategoryCode" Type="Edm.String" Nullable="false" MaxLength="1" FixedLength="true" sap:creatable="true" sap:updatable="false" sap:filterable="true" c4c:value-help="ServiceRequestAttachmentFolderCategoryCodeCollection" sap:label="Category Code"/>
+        <Property Name="LinkWebURI" Type="Edm.String" Nullable="true" FixedLength="false" sap:creatable="true" sap:updatable="false" sap:filterable="true" sap:label="Link Web URI"/>
+        <Property Name="CreatedOn" Type="Edm.DateTime" Nullable="true" Precision="7" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="Created On"/>
+        <Property Name="LastUpdatedOn" Type="Edm.DateTime" Nullable="true" Precision="7" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="Last Updated On"/>
+        <Property Name="CreatedBy" Type="Edm.String" Nullable="true" MaxLength="80" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="Created By"/>
+        <Property Name="LastUpdatedBy" Type="Edm.String" Nullable="true" MaxLength="80" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="Last Updated By"/>
+        <Property Name="SizeInkB" Type="Edm.Decimal" Nullable="true" Precision="31" Scale="14" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="Size In KiloBytes"/>
+        <Property Name="ETag" Type="Edm.DateTimeOffset" Nullable="true" Precision="7" ConcurrencyMode="Fixed" sap:creatable="false" sap:updatable="false" sap:filterable="false" sap:label="ETag"/>
+      </EntityType>
+      <EntityType Name="BusinessTransactionDocumentReference">
+        <Key>
+          <PropertyRef Name="ObjectID"/>
+        </Key>
+        <Property Name="ETag" Type="Edm.DateTimeOffset" Nullable="true" Precision="7" ConcurrencyMode="Fixed" sap:creatable="false" sap:updatable="false" sap:filterable="false" sap:label="ETag"/>
+        <Property Name="ObjectID" Type="Edm.String" Nullable="false" MaxLength="70" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="ObjectID"/>
+        <Property Name="ParentObjectID" Type="Edm.String" Nullable="true" MaxLength="70" FixedLength="true" sap:creatable="true" sap:updatable="false" sap:filterable="true" sap:label="ParentObjectID"/>
+        <Property Name="BusinessSystemID" Type="Edm.String" Nullable="true" MaxLength="32" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="BusinessSystemID"/>
+        <Property Name="BusinessTransactionDocumentRelationshipRoleCode" Type="Edm.String" Nullable="true" MaxLength="3" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" c4c:value-help="BusinessTransactionDocumentReferenceBusinessTransactionDocumentRelationshipRoleCodeCollection" sap:label="BusinessTransactionDocumentRelationshipRoleCode"/>
+        <Property Name="ID" Type="Edm.String" Nullable="true" MaxLength="35" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="ID"/>
+        <Property Name="ItemID" Type="Edm.String" Nullable="true" MaxLength="10" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="ItemID"/>
+        <Property Name="ItemTypeCode" Type="Edm.String" Nullable="true" MaxLength="5" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" c4c:value-help="BusinessTransactionDocumentReferenceItemTypeCodeCollection" sap:label="ItemTypeCode"/>
+        <Property Name="TypeCode" Type="Edm.String" Nullable="true" MaxLength="15" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" c4c:value-help="BusinessTransactionDocumentReferenceTypeCodeCollection" sap:label="Activity Type"/>
+        <NavigationProperty Name="ServiceRequest" Relationship="cust.ServiceRequest_BusinessTransactionDocumentReference" FromRole="BusinessTransactionDocumentReference" ToRole="ServiceRequest"/>
+      </EntityType>
+      <EntityType Name="CodeList">
+        <Key>
+          <PropertyRef Name="Code"/>
+        </Key>
+        <Property Name="Code" Type="Edm.String" Nullable="false" FixedLength="false" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="Code"/>
+        <Property Name="Description" Type="Edm.String" Nullable="false" FixedLength="false" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="Description"/>
+      </EntityType>
+      <EntityType Name="CreationIdentity">
+        <Key>
+          <PropertyRef Name="ObjectID"/>
+        </Key>
+        <Property Name="ObjectID" Type="Edm.String" Nullable="false" MaxLength="70" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="ObjectID"/>
+        <Property Name="BusinessPartnerUUID" Type="Edm.Guid" Nullable="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="BusinessPartnerUUID"/>
+        <Property Name="ID" Type="Edm.String" Nullable="true" MaxLength="40" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="ID"/>
+        <Property Name="InternalID" Type="Edm.String" Nullable="true" MaxLength="10" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="ID"/>
+        <Property Name="CategoryCode" Type="Edm.String" Nullable="true" MaxLength="1" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" c4c:value-help="CreationIdentityCategoryCodeCollection" sap:label="Category"/>
+        <Property Name="BusinessPartnerFormattedName" Type="Edm.String" Nullable="true" MaxLength="480" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="Name"/>
+      </EntityType>
+      <EntityType Name="Party">
+        <Key>
+          <PropertyRef Name="ObjectID"/>
+        </Key>
+        <Property Name="ETag" Type="Edm.DateTimeOffset" Nullable="true" Precision="7" ConcurrencyMode="Fixed" sap:creatable="false" sap:updatable="false" sap:filterable="false" sap:label="ETag"/>
+        <Property Name="ObjectID" Type="Edm.String" Nullable="false" MaxLength="70" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="ObjectID"/>
+        <Property Name="ParentObjectID" Type="Edm.String" Nullable="true" MaxLength="70" FixedLength="true" sap:creatable="true" sap:updatable="false" sap:filterable="true" sap:label="ParentObjectID"/>
+        <Property Name="PartyID" Type="Edm.String" Nullable="true" MaxLength="60" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="PartyID"/>
+        <Property Name="PartyTypeCode" Type="Edm.String" Nullable="true" MaxLength="15" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" c4c:value-help="PartyPartyTypeCodeCollection" sap:label="PartyTypeCode"/>
+        <Property Name="PartyUUID" Type="Edm.Guid" Nullable="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="PartyUUID"/>
+        <Property Name="RoleCategoryCode" Type="Edm.String" Nullable="true" MaxLength="3" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" c4c:value-help="PartyRoleCategoryCodeCollection" sap:label="Role Category Code"/>
+        <Property Name="RoleCode" Type="Edm.String" Nullable="true" MaxLength="10" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" c4c:value-help="PartyRoleCodeCollection" sap:label="Role"/>
+        <Property Name="MainIndicator" Type="Edm.Boolean" Nullable="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="Main"/>
+        <NavigationProperty Name="ServiceRequest" Relationship="cust.ServiceRequest_Party" FromRole="Party" ToRole="ServiceRequest"/>
+      </EntityType>
+      <EntityType Name="Products">
+        <Key>
+          <PropertyRef Name="ObjectID"/>
+        </Key>
+        <Property Name="ETag" Type="Edm.DateTimeOffset" Nullable="true" Precision="7" ConcurrencyMode="Fixed" sap:creatable="false" sap:updatable="false" sap:filterable="false" sap:label="ETag"/>
+        <Property Name="ObjectID" Type="Edm.String" Nullable="false" MaxLength="70" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="ObjectID"/>
+        <Property Name="ParentObjectID" Type="Edm.String" Nullable="true" MaxLength="70" FixedLength="true" sap:creatable="true" sap:updatable="false" sap:filterable="true" sap:label="ParentObjectID"/>
+        <Property Name="ProductInternalID" Type="Edm.String" Nullable="true" MaxLength="40" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="ProductInternalID"/>
+        <Property Name="ProductID" Type="Edm.String" Nullable="true" MaxLength="60" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="ProductID"/>
+        <Property Name="ProductCategoryInternalID" Type="Edm.String" Nullable="true" MaxLength="20" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="ProductCategoryInternalID"/>
+        <Property Name="Description" Type="Edm.String" Nullable="true" MaxLength="40" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="Description"/>
+        <Property Name="languageCode" Type="Edm.String" Nullable="true" MaxLength="2" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" c4c:value-help="ProductslanguageCodeCollection" sap:label="languageCode"/>
+        <Property Name="ID" Type="Edm.String" Nullable="true" MaxLength="10" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="Line"/>
+        <Property Name="UUID" Type="Edm.Guid" Nullable="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="UUID"/>
+        <NavigationProperty Name="ServiceRequest" Relationship="cust.ServiceRequest_Products" FromRole="Products" ToRole="ServiceRequest"/>
+      </EntityType>
+      <EntityType Name="ServiceIssueCategory">
+        <Key>
+          <PropertyRef Name="ObjectID"/>
+        </Key>
+        <Property Name="ETag" Type="Edm.DateTimeOffset" Nullable="true" Precision="7" ConcurrencyMode="Fixed" sap:creatable="false" sap:updatable="false" sap:filterable="false" sap:label="ETag"/>
+        <Property Name="ObjectID" Type="Edm.String" Nullable="false" MaxLength="70" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="ObjectID"/>
+        <Property Name="ParentObjectID" Type="Edm.String" Nullable="true" MaxLength="70" FixedLength="true" sap:creatable="true" sap:updatable="false" sap:filterable="true" sap:label="ParentObjectID"/>
+        <Property Name="ServiceIssueCategoryID" Type="Edm.String" Nullable="true" MaxLength="25" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="ServiceIssueCategoryID"/>
+        <Property Name="ServiceIssueCategoryUUID" Type="Edm.Guid" Nullable="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="ServiceIssueCategoryUUID"/>
+        <Property Name="ID" Type="Edm.String" Nullable="true" MaxLength="25" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="Category ID"/>
+        <Property Name="ParentCategoryUUID" Type="Edm.Guid" Nullable="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="ParentCategoryUUID"/>
+        <Property Name="TypeCode" Type="Edm.String" Nullable="true" MaxLength="2" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" c4c:value-help="ServiceIssueCategoryTypeCodeCollection" sap:label="TypeCode"/>
+        <Property Name="UUID" Type="Edm.Guid" Nullable="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="UUID"/>
+        <NavigationProperty Name="ServiceRequest" Relationship="cust.ServiceRequest_ServiceIssueCategory" FromRole="ServiceIssueCategory" ToRole="ServiceRequest"/>
+      </EntityType>
+      <EntityType Name="ServiceReferenceProducts">
+        <Key>
+          <PropertyRef Name="ObjectID"/>
+        </Key>
+        <Property Name="ETag" Type="Edm.DateTimeOffset" Nullable="true" Precision="7" ConcurrencyMode="Fixed" sap:creatable="false" sap:updatable="false" sap:filterable="false" sap:label="ETag"/>
+        <Property Name="ObjectID" Type="Edm.String" Nullable="false" MaxLength="70" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="ObjectID"/>
+        <Property Name="ParentObjectID" Type="Edm.String" Nullable="true" MaxLength="70" FixedLength="true" sap:creatable="true" sap:updatable="false" sap:filterable="true" sap:label="ParentObjectID"/>
+        <Property Name="ID" Type="Edm.String" Nullable="true" MaxLength="70" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="ID"/>
+        <Property Name="ProductInternalID" Type="Edm.String" Nullable="true" MaxLength="40" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="ProductInternalID"/>
+        <Property Name="Description" Type="Edm.String" Nullable="true" MaxLength="40" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="Individual Product Description"/>
+        <Property Name="ProductID" Type="Edm.String" Nullable="true" MaxLength="60" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="ProductID"/>
+        <Property Name="MaterialUUID" Type="Edm.Guid" Nullable="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="MaterialUUID"/>
+        <Property Name="Description1" Type="Edm.String" Nullable="true" MaxLength="40" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="Product Description"/>
+        <NavigationProperty Name="ServiceRequest" Relationship="cust.ServiceRequest_ServiceReferenceProducts" FromRole="ServiceReferenceProducts" ToRole="ServiceRequest"/>
+      </EntityType>
+      <EntityType Name="ServiceRequest">
+        <Key>
+          <PropertyRef Name="ObjectID"/>
+        </Key>
+        <Property Name="ETag" Type="Edm.DateTimeOffset" Nullable="true" Precision="7" ConcurrencyMode="Fixed" sap:creatable="false" sap:updatable="false" sap:filterable="false" sap:label="ETag"/>
+        <Property Name="ObjectID" Type="Edm.String" Nullable="false" MaxLength="70" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="ObjectID"/>
+        <Property Name="CharRecordIDcontent" Type="Edm.String" Nullable="true" MaxLength="35" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="聊天记录ID"/>
+        <Property Name="NeedRescue" Type="Edm.Boolean" Nullable="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="是否需要救援"/>
+        <Property Name="SupportStatus" Type="Edm.String" Nullable="true" MaxLength="27" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" c4c:value-help="ServiceRequestSupportStatusCollection" sap:label="业务支持状态"/>
+        <Property Name="Rescuer_Longtitude" Type="Edm.String" Nullable="true" FixedLength="false" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="救援人员经度"/>
+        <Property Name="RescueCondition" Type="Edm.Boolean" Nullable="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="是否符合救援"/>
+        <Property Name="DeclinedReason" Type="Edm.String" Nullable="true" FixedLength="false" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="拒绝原因"/>
+        <Property Name="IsNotifyDQ" Type="Edm.Boolean" Nullable="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="是否通知大区"/>
+        <Property Name="VOCId" Type="Edm.String" Nullable="true" MaxLength="60" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="VOC-Id"/>
+        <Property Name="LicensePlateID" Type="Edm.String" Nullable="true" MaxLength="30" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="车牌号"/>
+        <Property Name="DeclinedTime" Type="Edm.DateTimeOffset" Nullable="true" Precision="7" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="拒绝时间"/>
+        <Property Name="OdometerReading" Type="Edm.String" Nullable="true" MaxLength="40" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="里程数"/>
+        <Property Name="AutoOutCall" Type="Edm.Boolean" Nullable="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="AutoOutCall"/>
+        <Property Name="OutCallID" Type="Edm.String" Nullable="true" MaxLength="60" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="外呼工单批次ID"/>
+        <Property Name="CancelledTime" Type="Edm.DateTimeOffset" Nullable="true" Precision="7" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="取消时间"/>
+        <Property Name="SpecialMark" Type="Edm.String" Nullable="true" MaxLength="27" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" c4c:value-help="ServiceRequestSpecialMarkCollection" sap:label="特殊标记"/>
+        <Property Name="IsNotifyAssignedTeam" Type="Edm.Boolean" Nullable="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="是否通知派发部门"/>
+        <Property Name="Car_Latitute" Type="Edm.String" Nullable="true" FixedLength="false" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="车辆纬度"/>
+        <Property Name="AppointConfirmedTime" Type="Edm.DateTimeOffset" Nullable="true" Precision="7" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="确认预约的时间"/>
+        <Property Name="CurrentProcessor" Type="Edm.String" Nullable="true" FixedLength="false" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="当前处理人姓名"/>
+        <Property Name="VINID" Type="Edm.String" Nullable="true" MaxLength="60" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="VIN码"/>
+        <Property Name="AppointStatus" Type="Edm.String" Nullable="true" MaxLength="27" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" c4c:value-help="ServiceRequestAppointStatusCollection" sap:label="确认预约状态"/>
+        <Property Name="Car_Desc" Type="Edm.String" Nullable="true" MaxLength="40" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="车型描述"/>
+        <Property Name="CurProcessorIDcontent" Type="Edm.String" Nullable="true" MaxLength="20" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="当前处理人工号"/>
+        <Property Name="Cancelled" Type="Edm.Boolean" Nullable="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="已取消"/>
+        <Property Name="NeedRepair" Type="Edm.Boolean" Nullable="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="需要下派维修"/>
+        <Property Name="RequestCompletedTime" Type="Edm.DateTimeOffset" Nullable="true" Precision="7" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="申请闭环时间"/>
+        <Property Name="AppointTime" Type="Edm.DateTimeOffset" Nullable="true" Precision="7" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="预约进站时间"/>
+        <Property Name="RescuedPhaseType" Type="Edm.String" Nullable="true" MaxLength="27" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" c4c:value-help="ServiceRequestRescuedPhaseTypeCollection" sap:label="救援阶段类型"/>
+        <Property Name="Rescuer_Latitude" Type="Edm.String" Nullable="true" FixedLength="false" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="救援人员纬度"/>
+        <Property Name="PhoneNo" Type="Edm.String" Nullable="true" MaxLength="30" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="手机号"/>
+        <Property Name="VOCName" Type="Edm.String" Nullable="true" FixedLength="false" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="VOC"/>
+        <Property Name="AppointChangedTime" Type="Edm.DateTimeOffset" Nullable="true" Precision="7" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="预约改派时间"/>
+        <Property Name="Car_Longtitude" Type="Edm.String" Nullable="true" FixedLength="false" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="车辆经度"/>
+        <Property Name="CancelledReason" Type="Edm.String" Nullable="true" FixedLength="false" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="取消原因"/>
+        <Property Name="AcceptedTime" Type="Edm.DateTimeOffset" Nullable="true" Precision="7" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="接收时间"/>
+        <Property Name="AuditStatus" Type="Edm.String" Nullable="true" MaxLength="27" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" c4c:value-help="ServiceRequestAuditStatusCollection" sap:label="审核状态"/>
+        <Property Name="RequesTime" Type="Edm.DateTimeOffset" Nullable="true" Precision="7" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="申请业务支持时间"/>
+        <Property Name="IsNotifyCustomer" Type="Edm.Boolean" Nullable="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="是否通知客户"/>
+        <Property Name="CurDept" Type="Edm.String" Nullable="true" FixedLength="false" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="当前处理部门"/>
+        <Property Name="CompletedTime" Type="Edm.DateTimeOffset" Nullable="true" Precision="7" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="闭环时间"/>
+        <Property Name="AssigningTime" Type="Edm.DateTimeOffset" Nullable="true" Precision="7" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="派发时间"/>
+        <Property Name="CurDeptID" Type="Edm.String" Nullable="true" MaxLength="20" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="当前处理部门ID"/>
+        <Property Name="PartyID" Type="Edm.String" Nullable="true" MaxLength="60" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="PartyID"/>
+        <Property Name="PartyTypeCode" Type="Edm.String" Nullable="true" MaxLength="15" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" c4c:value-help="ServiceRequestPartyTypeCodeCollection" sap:label="PartyTypeCode"/>
+        <Property Name="PartyUUID" Type="Edm.Guid" Nullable="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="PartyUUID"/>
+        <Property Name="RoleCategoryCode" Type="Edm.String" Nullable="true" MaxLength="3" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" c4c:value-help="ServiceRequestRoleCategoryCodeCollection" sap:label="Role Category Code"/>
+        <Property Name="RoleCode" Type="Edm.String" Nullable="true" MaxLength="10" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" c4c:value-help="ServiceRequestRoleCodeCollection" sap:label="Role"/>
+        <Property Name="PartyID1" Type="Edm.String" Nullable="true" MaxLength="60" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="PartyID1"/>
+        <Property Name="PartyTypeCode1" Type="Edm.String" Nullable="true" MaxLength="15" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" c4c:value-help="ServiceRequestPartyTypeCode1Collection" sap:label="PartyTypeCode1"/>
+        <Property Name="PartyUUID1" Type="Edm.Guid" Nullable="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="PartyUUID1"/>
+        <Property Name="RoleCategoryCode1" Type="Edm.String" Nullable="true" MaxLength="3" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" c4c:value-help="ServiceRequestRoleCategoryCode1Collection" sap:label="Role Category Code"/>
+        <Property Name="RoleCode1" Type="Edm.String" Nullable="true" MaxLength="10" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" c4c:value-help="ServiceRequestRoleCode1Collection" sap:label="Role"/>
+        <Property Name="PartyID2" Type="Edm.String" Nullable="true" MaxLength="60" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="PartyID2"/>
+        <Property Name="PartyUUID2" Type="Edm.Guid" Nullable="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="PartyUUID2"/>
+        <Property Name="PartyTypeCode2" Type="Edm.String" Nullable="true" MaxLength="15" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" c4c:value-help="ServiceRequestPartyTypeCode2Collection" sap:label="PartyTypeCode2"/>
+        <Property Name="RoleCategoryCode2" Type="Edm.String" Nullable="true" MaxLength="3" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" c4c:value-help="ServiceRequestRoleCategoryCode2Collection" sap:label="Role Category Code"/>
+        <Property Name="RoleCode2" Type="Edm.String" Nullable="true" MaxLength="10" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" c4c:value-help="ServiceRequestRoleCode2Collection" sap:label="Role"/>
+        <Property Name="ApprovalStatusCode" Type="Edm.String" Nullable="true" MaxLength="2" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" c4c:value-help="ServiceRequestApprovalStatusCodeCollection" sap:label="ApprovalStatusCode"/>
+        <Property Name="ConfirmationIssuingStatusCode" Type="Edm.String" Nullable="true" MaxLength="2" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" c4c:value-help="ServiceRequestConfirmationIssuingStatusCodeCollection" sap:label="ConfirmationIssuingStatusCode"/>
+        <Property Name="ServiceRequestLifeCycleStatusCode" Type="Edm.String" Nullable="true" MaxLength="2" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" c4c:value-help="ServiceRequestServiceRequestLifeCycleStatusCodeCollection" sap:label="ServiceRequestLifeCycleStatusCode"/>
+        <Property Name="Name" Type="Edm.String" Nullable="true" MaxLength="255" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="Description"/>
+        <Property Name="ProcessingTypeCode" Type="Edm.String" Nullable="true" MaxLength="4" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" c4c:value-help="ServiceRequestProcessingTypeCodeCollection" sap:label="Ticket Type"/>
+        <Property Name="ID" Type="Edm.String" Nullable="true" MaxLength="35" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="ID"/>
+        <Property Name="DataOriginTypeCode" Type="Edm.String" Nullable="true" MaxLength="3" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" c4c:value-help="ServiceRequestDataOriginTypeCodeCollection" sap:label="Origin"/>
+        <Property Name="ContractUsageRestrictionCode" Type="Edm.String" Nullable="true" MaxLength="4" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" c4c:value-help="ServiceRequestContractUsageRestrictionCodeCollection" sap:label="Contract Restriction"/>
+        <Property Name="BuyerID" Type="Edm.String" Nullable="true" MaxLength="35" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="BuyerID"/>
+        <NavigationProperty Name="AttachmentFolder" Relationship="cust.ServiceRequest_AttachmentFolder" FromRole="ServiceRequest" ToRole="AttachmentFolder"/>
+        <NavigationProperty Name="BusinessTransactionDocumentReference" Relationship="cust.ServiceRequest_BusinessTransactionDocumentReference" FromRole="ServiceRequest" ToRole="BusinessTransactionDocumentReference"/>
+        <NavigationProperty Name="CreationIdentity" Relationship="cust.ServiceRequest_CreationIdentity" FromRole="ServiceRequest" ToRole="CreationIdentity"/>
+        <NavigationProperty Name="Party" Relationship="cust.ServiceRequest_Party" FromRole="ServiceRequest" ToRole="Party"/>
+        <NavigationProperty Name="Products" Relationship="cust.ServiceRequest_Products" FromRole="ServiceRequest" ToRole="Products"/>
+        <NavigationProperty Name="ServiceIssueCategory" Relationship="cust.ServiceRequest_ServiceIssueCategory" FromRole="ServiceRequest" ToRole="ServiceIssueCategory"/>
+        <NavigationProperty Name="ServiceReferenceProducts" Relationship="cust.ServiceRequest_ServiceReferenceProducts" FromRole="ServiceRequest" ToRole="ServiceReferenceProducts"/>
+        <NavigationProperty Name="ServiceRequestItem" Relationship="cust.ServiceRequest_ServiceRequestItem" FromRole="ServiceRequest" ToRole="ServiceRequestItem"/>
+      </EntityType>
+      <EntityType Name="ServiceRequestItem">
+        <Key>
+          <PropertyRef Name="ObjectID"/>
+        </Key>
+        <Property Name="ETag" Type="Edm.DateTimeOffset" Nullable="true" Precision="7" ConcurrencyMode="Fixed" sap:creatable="false" sap:updatable="false" sap:filterable="false" sap:label="ETag"/>
+        <Property Name="ObjectID" Type="Edm.String" Nullable="false" MaxLength="70" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="ObjectID"/>
+        <Property Name="ParentObjectID" Type="Edm.String" Nullable="true" MaxLength="70" FixedLength="true" sap:creatable="true" sap:updatable="false" sap:filterable="true" sap:label="ParentObjectID"/>
+        <Property Name="ID" Type="Edm.String" Nullable="true" MaxLength="10" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="Line"/>
+        <Property Name="Description" Type="Edm.String" Nullable="true" MaxLength="40" FixedLength="true" sap:creatable="true" sap:updatable="true" sap:filterable="true" sap:label="Description"/>
+        <Property Name="ProductInternalID" Type="Edm.String" Nullable="true" MaxLength="40" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="ProductInternalID"/>
+        <Property Name="ProductCategoryInternalID" Type="Edm.String" Nullable="true" MaxLength="20" FixedLength="true" sap:creatable="false" sap:updatable="false" sap:filterable="true" sap:label="ProductCategoryInternalID"/>
+        <NavigationProperty Name="ServiceRequest" Relationship="cust.ServiceRequest_ServiceRequestItem" FromRole="ServiceRequestItem" ToRole="ServiceRequest"/>
+      </EntityType>
+      <Association Name="ServiceRequest_AttachmentFolder">
+        <End Type="cust.ServiceRequest" Multiplicity="1" Role="ServiceRequest"/>
+        <End Type="cust.AttachmentFolder" Multiplicity="*" Role="AttachmentFolder"/>
+      </Association>
+      <Association Name="ServiceRequest_BusinessTransactionDocumentReference">
+        <End Type="cust.ServiceRequest" Multiplicity="1" Role="ServiceRequest"/>
+        <End Type="cust.BusinessTransactionDocumentReference" Multiplicity="*" Role="BusinessTransactionDocumentReference"/>
+      </Association>
+      <Association Name="ServiceRequest_CreationIdentity">
+        <End Type="cust.ServiceRequest" Multiplicity="1" Role="ServiceRequest"/>
+        <End Type="cust.CreationIdentity" Multiplicity="1" Role="CreationIdentity"/>
+      </Association>
+      <Association Name="ServiceRequest_Party">
+        <End Type="cust.ServiceRequest" Multiplicity="1" Role="ServiceRequest"/>
+        <End Type="cust.Party" Multiplicity="*" Role="Party"/>
+      </Association>
+      <Association Name="ServiceRequest_Products">
+        <End Type="cust.ServiceRequest" Multiplicity="1" Role="ServiceRequest"/>
+        <End Type="cust.Products" Multiplicity="*" Role="Products"/>
+      </Association>
+      <Association Name="ServiceRequest_ServiceIssueCategory">
+        <End Type="cust.ServiceRequest" Multiplicity="1" Role="ServiceRequest"/>
+        <End Type="cust.ServiceIssueCategory" Multiplicity="*" Role="ServiceIssueCategory"/>
+      </Association>
+      <Association Name="ServiceRequest_ServiceReferenceProducts">
+        <End Type="cust.ServiceRequest" Multiplicity="1" Role="ServiceRequest"/>
+        <End Type="cust.ServiceReferenceProducts" Multiplicity="*" Role="ServiceReferenceProducts"/>
+      </Association>
+      <Association Name="ServiceRequest_ServiceRequestItem">
+        <End Type="cust.ServiceRequest" Multiplicity="1" Role="ServiceRequest"/>
+        <End Type="cust.ServiceRequestItem" Multiplicity="*" Role="ServiceRequestItem"/>
+      </Association>
+      <EntityContainer Name="ticket" m:IsDefaultEntityContainer="true">
+        <EntitySet Name="AttachmentFolderCollection" EntityType="cust.AttachmentFolder" sap:creatable="true" sap:updatable="true" sap:deletable="true" sap:label="Attachments"/>
+        <EntitySet Name="BusinessTransactionDocumentReferenceBusinessTransactionDocumentRelationshipRoleCodeCollection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="BusinessTransactionDocumentReferenceCollection" EntityType="cust.BusinessTransactionDocumentReference" sap:creatable="true" sap:updatable="true" sap:deletable="true" sap:label="BusinessTransactionDocumentReferenceCollection"/>
+        <EntitySet Name="BusinessTransactionDocumentReferenceItemTypeCodeCollection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="BusinessTransactionDocumentReferenceTypeCodeCollection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="CreationIdentityCategoryCodeCollection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="CreationIdentityCollection" EntityType="cust.CreationIdentity" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:label="Identity"/>
+        <EntitySet Name="PartyCollection" EntityType="cust.Party" sap:creatable="true" sap:updatable="true" sap:deletable="true" sap:label="PartyCollection"/>
+        <EntitySet Name="PartyPartyTypeCodeCollection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="PartyRoleCategoryCodeCollection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="PartyRoleCodeCollection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="ProductsCollection" EntityType="cust.Products" sap:creatable="true" sap:updatable="true" sap:deletable="true" sap:label="Item"/>
+        <EntitySet Name="ProductslanguageCodeCollection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="ServiceIssueCategoryCollection" EntityType="cust.ServiceIssueCategory" sap:creatable="true" sap:updatable="true" sap:deletable="true" sap:label="ServiceIssueCategoryCollection"/>
+        <EntitySet Name="ServiceIssueCategoryTypeCodeCollection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="ServiceReferenceProductsCollection" EntityType="cust.ServiceReferenceProducts" sap:creatable="true" sap:updatable="true" sap:deletable="true" sap:label="Affected Product"/>
+        <EntitySet Name="ServiceRequestAppointStatusCollection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="ServiceRequestApprovalStatusCodeCollection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="ServiceRequestAttachmentFolderCategoryCodeCollection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="ServiceRequestAttachmentFolderTypeCodeCollection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="ServiceRequestAuditStatusCollection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="ServiceRequestCollection" EntityType="cust.ServiceRequest" sap:creatable="true" sap:updatable="true" sap:deletable="true" sap:label="Ticket"/>
+        <EntitySet Name="ServiceRequestConfirmationIssuingStatusCodeCollection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="ServiceRequestContractUsageRestrictionCodeCollection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="ServiceRequestDataOriginTypeCodeCollection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="ServiceRequestItemCollection" EntityType="cust.ServiceRequestItem" sap:creatable="true" sap:updatable="true" sap:deletable="true" sap:label="Item"/>
+        <EntitySet Name="ServiceRequestPartyTypeCode1Collection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="ServiceRequestPartyTypeCode2Collection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="ServiceRequestPartyTypeCodeCollection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="ServiceRequestProcessingTypeCodeCollection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="ServiceRequestRescuedPhaseTypeCollection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="ServiceRequestRoleCategoryCode1Collection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="ServiceRequestRoleCategoryCode2Collection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="ServiceRequestRoleCategoryCodeCollection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="ServiceRequestRoleCode1Collection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="ServiceRequestRoleCode2Collection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="ServiceRequestRoleCodeCollection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="ServiceRequestServiceRequestLifeCycleStatusCodeCollection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="ServiceRequestSpecialMarkCollection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <EntitySet Name="ServiceRequestSupportStatusCollection" EntityType="cust.CodeList" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:semantics="fixed-values"/>
+        <AssociationSet Name="ServiceRequestCollection_AttachmentFolderCollection" Association="cust.ServiceRequest_AttachmentFolder" sap:creatable="true" sap:updatable="false" sap:deletable="false">
+          <End EntitySet="ServiceRequestCollection" Role="ServiceRequest"/>
+          <End EntitySet="AttachmentFolderCollection" Role="AttachmentFolder"/>
+        </AssociationSet>
+        <AssociationSet Name="ServiceRequestCollection_BusinessTransactionDocumentReferenceCollection" Association="cust.ServiceRequest_BusinessTransactionDocumentReference" sap:creatable="true" sap:updatable="false" sap:deletable="false">
+          <End EntitySet="ServiceRequestCollection" Role="ServiceRequest"/>
+          <End EntitySet="BusinessTransactionDocumentReferenceCollection" Role="BusinessTransactionDocumentReference"/>
+        </AssociationSet>
+        <AssociationSet Name="ServiceRequestCollection_CreationIdentityCollection" Association="cust.ServiceRequest_CreationIdentity" sap:creatable="false" sap:updatable="false" sap:deletable="false">
+          <End EntitySet="ServiceRequestCollection" Role="ServiceRequest"/>
+          <End EntitySet="CreationIdentityCollection" Role="CreationIdentity"/>
+        </AssociationSet>
+        <AssociationSet Name="ServiceRequestCollection_PartyCollection" Association="cust.ServiceRequest_Party" sap:creatable="true" sap:updatable="false" sap:deletable="false">
+          <End EntitySet="ServiceRequestCollection" Role="ServiceRequest"/>
+          <End EntitySet="PartyCollection" Role="Party"/>
+        </AssociationSet>
+        <AssociationSet Name="ServiceRequestCollection_ProductsCollection" Association="cust.ServiceRequest_Products" sap:creatable="true" sap:updatable="false" sap:deletable="false">
+          <End EntitySet="ServiceRequestCollection" Role="ServiceRequest"/>
+          <End EntitySet="ProductsCollection" Role="Products"/>
+        </AssociationSet>
+        <AssociationSet Name="ServiceRequestCollection_ServiceIssueCategoryCollection" Association="cust.ServiceRequest_ServiceIssueCategory" sap:creatable="true" sap:updatable="false" sap:deletable="false">
+          <End EntitySet="ServiceRequestCollection" Role="ServiceRequest"/>
+          <End EntitySet="ServiceIssueCategoryCollection" Role="ServiceIssueCategory"/>
+        </AssociationSet>
+        <AssociationSet Name="ServiceRequestCollection_ServiceReferenceProductsCollection" Association="cust.ServiceRequest_ServiceReferenceProducts" sap:creatable="true" sap:updatable="false" sap:deletable="false">
+          <End EntitySet="ServiceRequestCollection" Role="ServiceRequest"/>
+          <End EntitySet="ServiceReferenceProductsCollection" Role="ServiceReferenceProducts"/>
+        </AssociationSet>
+        <AssociationSet Name="ServiceRequestCollection_ServiceRequestItemCollection" Association="cust.ServiceRequest_ServiceRequestItem" sap:creatable="true" sap:updatable="false" sap:deletable="false">
+          <End EntitySet="ServiceRequestCollection" Role="ServiceRequest"/>
+          <End EntitySet="ServiceRequestItemCollection" Role="ServiceRequestItem"/>
+        </AssociationSet>
+        <FunctionImport Name="AssginAgent" ReturnType="cust.ServiceRequest" EntitySet="ServiceRequestCollection" m:HttpMethod="POST">
+          <Parameter Name="ObjectID" Type="Edm.String" Mode="In"/>
+        </FunctionImport>
+        <FunctionImport Name="AssignTeam" ReturnType="cust.ServiceRequest" EntitySet="ServiceRequestCollection" m:HttpMethod="POST">
+          <Parameter Name="ObjectID" Type="Edm.String" Mode="In"/>
+        </FunctionImport>
+        <FunctionImport Name="Close" ReturnType="cust.ServiceRequest" EntitySet="ServiceRequestCollection" m:HttpMethod="POST">
+          <Parameter Name="ObjectID" Type="Edm.String" Mode="In"/>
+        </FunctionImport>
+        <FunctionImport Name="Compelete" ReturnType="cust.ServiceRequest" EntitySet="ServiceRequestCollection" m:HttpMethod="POST">
+          <Parameter Name="ObjectID" Type="Edm.String" Mode="In"/>
+        </FunctionImport>
+        <FunctionImport Name="Copy" ReturnType="Edm.Boolean" EntitySet="ServiceRequestCollection" m:HttpMethod="POST">
+          <Parameter Name="IsSuccessful" Type="Edm.Boolean" Mode="Out"/>
+        </FunctionImport>
+      </EntityContainer>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>
