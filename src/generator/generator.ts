@@ -1,9 +1,8 @@
 import { forEach } from "lodash";
 import { MetaClass, MetaFunction } from "./meta_js";
-import { ODataEntityType, ODataEntityContainer, ODataCollection, OData } from "..";
 
 export function generateCommonImportString(uri: string, user: string, pass: string) {
-  return `import { OData, ODataQueryParam, ODataFilter, C4CODataResult } from "../src";
+  return `import { OData, ODataQueryParam, ODataFilter, C4CODataResult, C4CEntity, DeferredNavigationProperty } from "./src";
 
 const odata = new OData("${uri}", { username: "${user}", password: "${pass}" });
 `

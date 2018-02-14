@@ -1,24 +1,20 @@
 export declare type HTTPMethod = "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "PATCH";
 export declare class FilterBase {
-    private filter;
+    protected filter: ODataFilter;
     toString(): string;
-}
-export declare class FilterField {
-    constructor(filter: ODataFilter);
-    private filter;
-    field(name: any): FilterExpr;
     build(): string;
 }
-export declare class FilterAndOr {
+export declare class FilterField extends FilterBase {
     constructor(filter: ODataFilter);
-    private filter;
+    field(name: any): FilterExpr;
+}
+export declare class FilterAndOr extends FilterBase {
+    constructor(filter: ODataFilter);
     and(filter?: string): FilterField;
     or(filter?: string): FilterField;
-    build(): string;
 }
-export declare class FilterExpr {
+export declare class FilterExpr extends FilterBase {
     constructor(filter: ODataFilter);
-    private filter;
     eq(value: string): FilterAndOr;
     ge(value: string): void;
     le(value: string): void;
@@ -41,41 +37,92 @@ export declare class ODataFilter {
     toString(): string;
 }
 export declare class ODataQueryParam {
-    $filter: string | ODataFilter;
+    static newParam(): ODataQueryParam;
+    private $skip;
+    private $filter;
+    private $top;
+    private $select;
+    private $orderby;
+    private $format;
+    private $search;
     /**
-     * Skips the first entries and then returns the rest
-    */
-    $skip: number;
+     * filter
+     * @param filter
+     */
+    filter(filter: string | FilterBase): void;
     /**
-     * Top entries
+     * skip first records
+     * @param skip
+     */
+    skip(skip: number): void;
+    /**
+     * limit result max records
      *
+     * @param top
      */
-    $top: number;
+    top(top: number): void;
     /**
-     * select attributes
-     */
-    $select: string[];
-    /**
-     * First performs an orderby on the Field
-     */
-    $orderby: string;
-    /**
-     * entries in JSON format with server side paging
+     * select viewed fields
      *
+     * @param selects
      */
-    $format: "json" | "xml";
+    select(selects: string | string[]): void;
     /**
-     * @type {string}
+     * set order sequence
+     * @param field
+     * @param order
      */
-    $search: string;
+    orderby(field: string, order?: "asc" | "desc"): void;
+    /**
+     * result format, please keep it as json
+     * @param format
+     */
+    format(format: "json" | "xml"): void;
+    /**
+     * full text search
+     * @param value
+     */
+    search(value: string, fuzzy?: boolean): void;
+    /**
+     * expand navigation props
+     * @param fields
+     */
+    expand(fields: string | string[]): void;
     /**
      * @type {string[]}
      */
-    $expand: string[];
-    toString(): any;
+    private $expand;
+    toString(): string;
 }
 export declare class C4CODataResult<T> {
     d: {
         results: T[];
     };
 }
+export declare class C4CEntity {
+    __metadata: {
+        uri: string;
+        type: string;
+        etag?: string;
+    };
+}
+export declare class DeferredNavigationProperty {
+    __deferred: {
+        uri: string;
+    };
+}
+declare global  {
+    module Edm {
+        type String = string;
+        type Guid = string;
+        type DateTime = string;
+        type DateTimeOffset = string;
+        type Boolean = boolean;
+        type Decimal = number;
+        /**
+         * base64 string
+         */
+        type Binary = string;
+    }
+}
+export {};

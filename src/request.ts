@@ -56,7 +56,7 @@ export class OData {
       }
     };
     if (id) {
-      url = `${url}('${id}')`
+      url += `('${id}')`
     }
     if (method !== "GET" && entity) {
       config.body = entity;

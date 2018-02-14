@@ -1,3 +1,4 @@
 export * from "./generator"
 export * from "./meta_js"
-export * from "./odata_parser"
+export * from "./parser"
+export * from "./meta_odata"

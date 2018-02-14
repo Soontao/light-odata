@@ -1,41 +1,43 @@
 import UrlSearchParam from "url-search-params"
+import { concat } from "lodash";
 
 export type HTTPMethod = "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "PATCH";
 
 
 export class FilterBase {
-  private filter: ODataFilter
+
+  protected filter: ODataFilter
 
   toString() {
     return this.filter.toString()
   }
+
+  build() {
+    return this.filter.build();
+  }
 }
 
-export class FilterField {
+export class FilterField extends FilterBase {
 
   constructor(filter: ODataFilter) {
+    super()
     this.filter = filter;
   }
-
-  private filter: ODataFilter;
 
   field(name) {
     this.filter.field(name)
     return this.filter.FilterExpr
   }
 
-  build() {
-    return this.filter.build();
-  }
 
 }
 
-export class FilterAndOr {
+export class FilterAndOr extends FilterBase {
+
   constructor(filter: ODataFilter) {
+    super()
     this.filter = filter;
   }
-
-  private filter: ODataFilter
 
 
   and(filter?: string) {
@@ -48,19 +50,14 @@ export class FilterAndOr {
     return this.filter.FilterField
   }
 
-  build() {
-    return this.filter.build();
-  }
-
 }
 
-export class FilterExpr {
+export class FilterExpr extends FilterBase {
 
   constructor(filter: ODataFilter) {
+    super()
     this.filter = filter;
   }
-
-  private filter: ODataFilter
 
   eq(value: string) {
     this.filter.eq(value)
@@ -150,46 +147,93 @@ export class ODataFilter {
 
 export class ODataQueryParam {
 
-  $filter: string | ODataFilter
+  static newParam() {
+    return new ODataQueryParam()
+  }
+
+  private $skip = 0
+  private $filter: string | FilterBase
+  private $top = 30
+  private $select: string[] = []
+  private $orderby: string
+  private $format: "json" | "xml" = "json"
+  private $search: string
 
   /**
-   * Skips the first entries and then returns the rest
-  */
-  $skip = 0
-
-  /**
-   * Top entries
-   *
+   * filter
+   * @param filter 
    */
-  $top = 30
+  filter(filter: string | FilterBase) {
+    this.$filter = filter
+  }
 
   /**
-   * select attributes
+   * skip first records
+   * @param skip 
    */
-  $select: string[]
+  skip(skip: number) {
+    this.$skip = skip
+  }
+
 
   /**
-   * First performs an orderby on the Field
+   * limit result max records
+   * 
+   * @param top 
    */
-  $orderby: string
+  top(top: number) {
+    this.$top = top
+  }
+
 
   /**
-   * entries in JSON format with server side paging
-   *
+   * select viewed fields
+   * 
+   * @param selects 
    */
-  $format: "json" | "xml" = "json"
+  select(selects: string | string[]) {
+    this.$select = concat(this.$select, selects)
+  }
 
   /**
-   * @type {string}
+   * set order sequence
+   * @param field 
+   * @param order 
    */
-  $search: string
+  orderby(field: string, order: "asc" | "desc" = "desc") {
+    this.$orderby = `${field} ${order}`
+  }
+
+  /**
+   * result format, please keep it as json
+   * @param format 
+   */
+  format(format: "json" | "xml") {
+    this.$format = format
+  }
+
+  /**
+   * full text search
+   * @param value 
+   */
+  search(value: string, fuzzy: boolean = true) {
+    this.$search = fuzzy ? `%${value}%` : value
+  }
+
+  /**
+   * expand navigation props
+   * @param fields 
+   */
+  expand(fields: string | string[]) {
+    this.$expand = concat(this.$expand, fields)
+  }
 
   /**
    * @type {string[]}
    */
-  $expand: string[]
+  private $expand: string[] = []
 
-  toString() {
+  toString(): string {
     let rt = new UrlSearchParam();
     if (this.$filter) { rt.append("$filter", this.$filter.toString()); }
     if (this.$format) { rt.append("$format", this.$format); }
@@ -205,4 +249,33 @@ export class ODataQueryParam {
 
 export class C4CODataResult<T> {
   d: { results: T[] }
+}
+
+export class C4CEntity {
+  __metadata: {
+    uri: string,
+    type: string,
+    etag?: string
+  }
+}
+
+export class DeferredNavigationProperty {
+  __deferred: {
+    uri: string
+  }
+}
+
+declare global {
+  module Edm {
+    type String = string
+    type Guid = string
+    type DateTime = string
+    type DateTimeOffset = string
+    type Boolean = boolean
+    type Decimal = number
+    /**
+     * base64 string
+     */
+    type Binary = string
+  }
 }

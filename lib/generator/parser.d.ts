@@ -1,4 +1,4 @@
-import { ODataMetadata, ODataEntityType, ODataCollection } from "../metadata";
+import { ODataMetadata, ODataEntityType, ODataCollection } from "./meta_odata";
 import { MetaClass, MetaFunction } from "./meta_js";
 export declare function parseODataMetadata(file_str: string, cb: (err: Error, metadata: ODataMetadata) => void): void;
 export declare function parseMetaClassFromDefault(metadata: ODataMetadata): MetaClass[];

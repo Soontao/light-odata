@@ -50,6 +50,22 @@ export interface ODataEntityType {
         "sap:label"?: string
       }
     }
+  ],
+  "NavigationProperty"?: [
+    {
+      "$": {
+        /**
+         * Name 
+         */
+        "Name": string,
+        "Relationship": string,
+        "FromRole": string,
+        /**
+         * Type
+         */
+        "ToRole": string
+      }
+    }
   ]
 }
 

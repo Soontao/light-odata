@@ -30,8 +30,7 @@
     "coverage:watch": "npm run coverage -- --watch",
     "release": "standard-version && npm pack",
     "prepare": "npm run build && npm test",
-    "prepublish": "nsp check",
-    "pretest": "tslint ."
+    "prepublish": "nsp check"
   },
   "dependencies": {
     "@types/lodash": "^4.14.102",
@@ -62,16 +61,18 @@
       "json"
     ]
   },
-  "description": "",
-  "homepage": "",
+  "description": "c4c odata javascirpt library",
+  "homepage": "https://github.com/Soontao/c4codata",
   "author": {
     "name": "Theo Sun",
     "email": "theo.sun@sap.com",
-    "url": ""
+    "url": "https://github.com/Soontao"
   },
   "main": "lib/index.js",
   "keywords": [
-    ""
+    "C4C",
+    "SAP",
+    "OData"
   ],
   "repository": "Soontao/c4codata",
   "license": "MIT"
