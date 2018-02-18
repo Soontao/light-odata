@@ -12,10 +12,12 @@ export interface ClassField {
   name: string
   type: string
   description?: string
+  value?: string
 }
 
 export interface ClassMethod {
   name: string
+  static?: boolean
   description?: string
   parameters?: FunctionParameter[]
   return?: string

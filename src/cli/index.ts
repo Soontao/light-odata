@@ -12,7 +12,8 @@ import {
   parseMetaCRUDFunctionFromDefault,
   generateClassString,
   generateCommonImportString,
-  generateFunctionString
+  generateFunctionString,
+  generateOperationObject
 } from "../generator";
 
 const options: { uri: string, user?: string, pass?: string, out: string } = parse({
@@ -34,6 +35,7 @@ if (options.uri && options.user && options.pass) {
       out += generateCommonImportString(options.uri, options.user, options.pass)
       out += parseMetaClassFromDefault(meta).map(c => generateClassString(c)).join("\n")
       out += parseMetaCRUDFunctionFromDefault(meta).map(f => generateFunctionString(f)).join("\n")
+      out += generateOperationObject(meta)
       writeFileSync(join(cwd(), options.out), out)
     })
   }).catch(err => error)

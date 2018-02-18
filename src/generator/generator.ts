@@ -1,8 +1,14 @@
-import { forEach } from "lodash";
+/**
+ * unreadable string generator
+ */
+
+import { forEach, groupBy, map, reduce } from "lodash";
 import { MetaClass, MetaFunction } from "./meta_js";
+import { parseEntityCRUDFunctionsMap, ODataMetadata } from ".";
 
 export function generateCommonImportString(uri: string, user: string, pass: string) {
-  return `import { OData, ODataQueryParam, ODataFilter, C4CODataResult, C4CEntity, DeferredNavigationProperty } from "./src";
+  return `
+import { OData, ODataQueryParam, ODataFilter, C4CODataResult, C4CEntity, DeferredNavigationProperty, C4CODataSingleResult } from "./src";
 
 const odata = new OData("${uri}", { username: "${user}", password: "${pass}" });
 `
@@ -28,14 +34,14 @@ ${clazz.field ? clazz.field.map(f => `
    * ${f.description ? f.description : ""}
    * @type {${f.type}} 
    */
-  ${f.name}`).join("\n") : ""}
+  ${f.name}${f.value ? ` = ${f.value}` : ""}`).join("\n") : ""}
 ${clazz.method ? clazz.method.map(m => `
   /**
    * ${m.description ? m.description : ""}
 ${m.parameters ? m.parameters.map(p => `   * @param {${p.type ? p.type : "any"}} ${p.name} `).join("\n") : ""}
-   * @returns {${m.return ? m.return : "any"}}
+${m.return ? `   * @returns {m.return}` : ""}
    */
-  ${m.name}(${m.parameters ? m.parameters.map(p => p.name).join(", ") : ""}) {
+  ${m.static?"static ":""}${m.name}(${m.parameters ? m.parameters.map(p => p.name).join(", ") : ""}) {
     ${m.body ? m.body : ""}
   }
 `).join("\n") : ""}
@@ -48,7 +54,7 @@ export function generateFunctionString(func: MetaFunction) {
  * ${func.name}
  * ${func.description ? func.description : ""}
 ${func.parameters ? func.parameters.map(p => ` * @param {${p.type ? p.type : "any"}} ${p.name} `).join("\n") : ""}
- * @returns {${func.return ? func.return : "any"}}
+${func.return ? ` * @returns {${func.return}}` : ""}
  */
 ${func.exported ? "export " : ""}function ${func.name}(${func.parameters ? func.parameters.map(p => p.name).join(", ") : ""}) {
   ${func.body ? func.body : ""}
@@ -58,4 +64,14 @@ ${func.exported ? "export " : ""}function ${func.name}(${func.parameters ? func.
 
 export function generateCRUDFunctionDefault(metaFunctions: MetaFunction[]) {
   return metaFunctions.map(f => generateFunctionString(f)).join()
+}
+
+export function generateOperationObject(meta: ODataMetadata): string {
+  return `
+export const CollectionOperation = {
+${map(parseEntityCRUDFunctionsMap(meta), (m, k) => `  ${k}: {
+${map(m, item => `    ${item}`).join(",\n")}
+  }`).join(",\n")}
+}  
+`
 }

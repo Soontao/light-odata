@@ -1,7 +1,22 @@
-import UrlSearchParam from "url-search-params"
-import { concat } from "lodash";
+import * as UrlSearchParam from "url-search-params"
+import { concat, assign, isArray, isObject } from "lodash";
+import { OData } from ".";
 
 export type HTTPMethod = "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "PATCH";
+
+export interface PlainODataResponse {
+  d?: {
+    _count?: string,
+    results: any[] | any
+  }
+  error?: {
+    code: string,
+    message: {
+      lang: string,
+      value: string
+    }
+  }
+}
 
 
 export class FilterBase {
@@ -165,6 +180,7 @@ export class ODataQueryParam {
    */
   filter(filter: string | FilterBase) {
     this.$filter = filter
+    return this
   }
 
   /**
@@ -173,6 +189,7 @@ export class ODataQueryParam {
    */
   skip(skip: number) {
     this.$skip = skip
+    return this
   }
 
 
@@ -183,6 +200,7 @@ export class ODataQueryParam {
    */
   top(top: number) {
     this.$top = top
+    return this
   }
 
 
@@ -193,6 +211,7 @@ export class ODataQueryParam {
    */
   select(selects: string | string[]) {
     this.$select = concat(this.$select, selects)
+    return this
   }
 
   /**
@@ -202,6 +221,7 @@ export class ODataQueryParam {
    */
   orderby(field: string, order: "asc" | "desc" = "desc") {
     this.$orderby = `${field} ${order}`
+    return this
   }
 
   /**
@@ -210,6 +230,7 @@ export class ODataQueryParam {
    */
   format(format: "json" | "xml") {
     this.$format = format
+    return this
   }
 
   /**
@@ -218,6 +239,7 @@ export class ODataQueryParam {
    */
   search(value: string, fuzzy: boolean = true) {
     this.$search = fuzzy ? `%${value}%` : value
+    return this
   }
 
   /**
@@ -226,6 +248,7 @@ export class ODataQueryParam {
    */
   expand(fields: string | string[]) {
     this.$expand = concat(this.$expand, fields)
+    return this
   }
 
   /**
@@ -247,16 +270,82 @@ export class ODataQueryParam {
   }
 }
 
+export class C4CODataSingleResult<T> {
+
+  d: { results: T } = { results: undefined }
+
+  static fromPlainObject = function <E>(object: PlainODataResponse, type: { new(): E }) {
+    const rt = new C4CODataSingleResult<E>()
+    if (object.error) {
+      throw new Error(object.error.message.value)
+    }
+    rt.d.results = C4CEntity.fromPlainObject(object.d.results, type)
+    return rt;
+  }
+
+
+  static fromRequestResult = async function <T>(p: Promise<PlainODataResponse>, t: { new(): T }) {
+    return C4CODataSingleResult.fromPlainObject(await p, t)
+  }
+
+}
+
 export class C4CODataResult<T> {
-  d: { results: T[] }
+
+  d: { results: T[] } = { results: [] }
+
+  static fromPlainObject = function <E>(object: PlainODataResponse, type: { new(): E }) {
+    const rt = new C4CODataResult<E>()
+    if (object.error) {
+      throw new Error(object.error.message.value)
+    }
+    rt.d.results = object.d.results.map(e => C4CEntity.fromPlainObject(e, type))
+    return rt;
+  }
+
+
+  static fromRequestResult = async function <T>(p: Promise<PlainODataResponse>, t: { new(): T }): Promise<C4CODataResult<T>> {
+    return C4CODataResult.fromPlainObject(await p, t)
+  }
+
 }
 
 export class C4CEntity {
+
   __metadata: {
     uri: string,
     type: string,
     etag?: string
   }
+
+  _odata: OData
+
+  _type: C4CEntity
+
+  ObjectID: string
+
+  ParentObjectID?: string
+
+  /**
+   * parse instance from plain object
+   * @param o 
+   */
+  static fromPlainObject = function <T>(o: any, t: { new(): T; }): T {
+    return assign(new t(), o);
+  }
+
+  static fromRequestResult = async function <T>(o: Promise<any>, t: { new(): T; }): Promise<T> {
+    return C4CEntity.fromPlainObject(await o, t)
+  }
+
+  update() {
+    return this._odata.requestUri(this.__metadata.uri, undefined, "PATCH", this)
+  }
+
+  delete() {
+    return this._odata.requestUri(this.__metadata.uri, undefined, "DELETE", this)
+  }
+
 }
 
 export class DeferredNavigationProperty {
