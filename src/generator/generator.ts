@@ -17,12 +17,13 @@ export function generateAllDefault(meta: ODataMetadata, options?: CliOption) {
 }
 
 export function generateCommonImportString(uri: string, user: string = "", pass: string = "") {
-  return `
+  return `// eslint-disable-next-line
 import { OData, ODataQueryParam, ODataFilter, C4CODataResult, C4CEntity, DeferredNavigationProperty, C4CODataSingleResult } from "c4codata";
 
 const metadataUri = "${uri}"
+// set object value to change odata credential
 const initCredential = { username: "${user}", password: "${pass}" }
-export const odata = new OData(metadataUri, credential);
+export const odata = new OData(metadataUri, initCredential);
 `
 }
 
