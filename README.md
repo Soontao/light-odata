@@ -23,6 +23,11 @@ Options:
 
 ```bash
 # use following command to generate declaration
-c4codata -m https://<your c4c host>/sap/c4c/odata/v1/c4codata/$metadata?sap-label=true -u <your c4c user> -p <your c4c password>
+odata-js-generator -m https://<your c4c host>/sap/c4c/odata/v1/c4codata/$metadata?sap-label=true -u <your c4c user> -p <your c4c password>
 # then, you could use the c4codata.js to operation OData
 ```
+
+## TO-DO
+
+* Codelist generator
+* test
