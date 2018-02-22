@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import "isomorphic-fetch"
 import { parse } from "cli";
 import { cwd, exit } from "process";
 import { error } from "console";
