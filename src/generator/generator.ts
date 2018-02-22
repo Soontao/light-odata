@@ -4,13 +4,25 @@
 
 import { forEach, groupBy, map, reduce } from "lodash";
 import { MetaClass, MetaFunction } from "./meta_js";
-import { parseEntityCRUDFunctionsMap, ODataMetadata } from ".";
+import { parseEntityCRUDFunctionsMap, ODataMetadata, parseMetaClassFromDefault, parseMetaCRUDFunctionFromDefault } from ".";
+import { CliOption } from "../cli/type";
 
-export function generateCommonImportString(uri: string, user: string, pass: string) {
+export function generateAllDefault(meta: ODataMetadata, options?: CliOption) {
+  let out = ""
+  out += generateCommonImportString(options.uri, options.user, options.pass)
+  out += parseMetaClassFromDefault(meta).map(c => generateClassString(c)).join("\n")
+  out += parseMetaCRUDFunctionFromDefault(meta).map(f => generateFunctionString(f)).join("\n")
+  out += generateOperationObject(meta)
+  return out
+}
+
+export function generateCommonImportString(uri: string, user: string = "", pass: string = "") {
   return `
-import { OData, ODataQueryParam, ODataFilter, C4CODataResult, C4CEntity, DeferredNavigationProperty, C4CODataSingleResult } from "./src";
+import { OData, ODataQueryParam, ODataFilter, C4CODataResult, C4CEntity, DeferredNavigationProperty, C4CODataSingleResult } from "c4codata";
 
-const odata = new OData("${uri}", { username: "${user}", password: "${pass}" });
+const metadataUri = "${uri}"
+const initCredential = { username: "${user}", password: "${pass}" }
+export const odata = new OData(metadataUri, credential);
 `
 }
 
@@ -41,7 +53,7 @@ ${clazz.method ? clazz.method.map(m => `
 ${m.parameters ? m.parameters.map(p => `   * @param {${p.type ? p.type : "any"}} ${p.name} `).join("\n") : ""}
 ${m.return ? `   * @returns {m.return}` : ""}
    */
-  ${m.static?"static ":""}${m.name}(${m.parameters ? m.parameters.map(p => p.name).join(", ") : ""}) {
+  ${m.static ? "static " : ""}${m.name}(${m.parameters ? m.parameters.map(p => p.name).join(", ") : ""}) {
     ${m.body ? m.body : ""}
   }
 `).join("\n") : ""}

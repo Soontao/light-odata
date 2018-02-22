@@ -18,6 +18,10 @@ export interface PlainODataResponse {
   }
 }
 
+export interface Credential {
+  username: string,
+  password: string
+}
 
 export class FilterBase {
 
@@ -320,7 +324,7 @@ export class C4CEntity {
 
   _odata: OData
 
-  _type: C4CEntity
+  _type: any
 
   ObjectID: string
 

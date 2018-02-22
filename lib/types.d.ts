@@ -13,6 +13,10 @@ export interface PlainODataResponse {
         };
     };
 }
+export interface Credential {
+    username: string;
+    password: string;
+}
 export declare class FilterBase {
     protected filter: ODataFilter;
     toString(): string;
@@ -129,7 +133,7 @@ export declare class C4CEntity {
         etag?: string;
     };
     _odata: OData;
-    _type: C4CEntity;
+    _type: any;
     ObjectID: string;
     ParentObjectID?: string;
     /**
@@ -138,8 +142,8 @@ export declare class C4CEntity {
      */
     static fromPlainObject: <T>(o: any, t: new () => T) => T;
     static fromRequestResult: <T>(o: Promise<any>, t: new () => T) => Promise<T>;
-    update(): Promise<any>;
-    delete(): Promise<any>;
+    update(): Promise<PlainODataResponse>;
+    delete(): Promise<PlainODataResponse>;
 }
 export declare class DeferredNavigationProperty {
     __deferred: {

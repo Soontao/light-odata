@@ -1,6 +1,8 @@
 import { MetaClass, MetaFunction } from "./meta_js";
 import { ODataMetadata } from ".";
-export declare function generateCommonImportString(uri: string, user: string, pass: string): string;
+import { CliOption } from "../cli/type";
+export declare function generateAllDefault(meta: ODataMetadata, options?: CliOption): string;
+export declare function generateCommonImportString(uri: string, user?: string, pass?: string): string;
 /**
  * Generate Class string from meta class
  *

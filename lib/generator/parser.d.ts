@@ -4,7 +4,7 @@ export declare function getEntityTypesDefault(meta: ODataMetadata): ODataEntityT
 export declare function getEntityCollectionDefault(meta: ODataMetadata): ODataCollection[];
 export declare function getEntityCollectionByEntityType(meta: ODataMetadata, entityType: ODataEntityType): ODataCollection[];
 export declare function getEntityTypeByEntityCollection(meta: ODataMetadata, collection: ODataCollection): ODataEntityType[];
-export declare function parseODataMetadata(file_str: string, cb: (err: Error, metadata: ODataMetadata) => void): void;
+export declare function parseODataMetadata(file_str: string): Promise<ODataMetadata>;
 export declare function parseMetaClassFromDefault(metadata: ODataMetadata): MetaClass[];
 export declare function parseMetaClassFrom(meta: ODataMetadata, entityTypes: ODataEntityType[]): MetaClass[];
 export declare function parseEntityCRUDFunctionsMap(metadata: ODataMetadata): {

@@ -22,9 +22,15 @@ export function getEntityTypeByEntityCollection(meta: ODataMetadata, collection:
 }
 
 
-export function parseODataMetadata(file_str: string, cb: (err: Error, metadata: ODataMetadata) => void) {
-  parseString(file_str, function (err, result) {
-    cb(err, result)
+export function parseODataMetadata(file_str: string) {
+  return new Promise<ODataMetadata>((resolve, reject) => {
+    parseString(file_str, function (err, result) {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(result)
+      }
+    })
   })
 }
 
