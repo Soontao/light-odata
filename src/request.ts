@@ -64,7 +64,7 @@ export class OData {
     const token = await this.getCsrfToken();
     let final_uri = uri
     if (queryParams) {
-      final_uri += queryParams.toString()
+      final_uri = `${final_uri}?${queryParams.toString()}`
     }
     let config: RequestInit = {
       method,

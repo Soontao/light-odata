@@ -266,10 +266,10 @@ export class ODataQueryParam {
     if (this.$format) { rt.append("$format", this.$format); }
     if (this.$orderby) { rt.append("$orderby", this.$orderby); }
     if (this.$search) { rt.append("$search", this.$search); }
-    if (this.$select) { rt.append("$select", this.$select); }
+    if (this.$select && this.$select.length > 0) { rt.append("$select", this.$select); }
     if (this.$skip) { rt.append("$skip", this.$skip); }
     if (this.$top) { rt.append("$top", this.$top); }
-    if (this.$expand) { rt.append("$expand", this.$expand.join(",")); }
+    if (this.$expand && this.$expand.length > 0) { rt.append("$expand", this.$expand.join(",")); }
     return rt.toString();
   }
 }
