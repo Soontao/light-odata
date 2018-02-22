@@ -172,7 +172,7 @@ export class ODataQueryParam {
 
   private $skip = 0
   private $filter: string | FilterBase
-  private $top = 30
+  private $top = 0
   private $select: string[] = []
   private $orderby: string
   private $format: "json" | "xml" = "json"
@@ -268,7 +268,7 @@ export class ODataQueryParam {
     if (this.$search) { rt.append("$search", this.$search); }
     if (this.$select && this.$select.length > 0) { rt.append("$select", this.$select); }
     if (this.$skip) { rt.append("$skip", this.$skip); }
-    if (this.$top) { rt.append("$top", this.$top); }
+    if (this.$top && this.$top > 0) { rt.append("$top", this.$top); }
     if (this.$expand && this.$expand.length > 0) { rt.append("$expand", this.$expand.join(",")); }
     return rt.toString();
   }
