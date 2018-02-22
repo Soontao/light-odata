@@ -1,4 +1,3 @@
-import "isomorphic-fetch"
 import { ODataQueryParam, HTTPMethod, C4CODataResult, Credential, PlainODataResponse } from "./types";
 import { split, slice, join } from "lodash";
 import { GetAuthorizationPair } from "./util";
