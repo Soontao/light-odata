@@ -1,5 +1,7 @@
 # C4C OData Javascript Library
 
+Simplify Code at JS Client for SAP C4C OData Service
+
 ## install
 
 ```bash
@@ -30,4 +32,9 @@ odata-js-generator -m https://<your c4c host>/sap/c4c/odata/v1/c4codata/$metadat
 ## TO-DO
 
 * Codelist generator
+* OAuth Support
 * test
+
+## LICENSE
+
+MIT
