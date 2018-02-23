@@ -21,7 +21,8 @@ export class OData {
       throw new Error("metadataUrl losted")
     } else {
       this.metadataUri = metadataUri;
-      this.odataEnd = join(slice(split(this.metadataUri, "/"), 0, -1), "/");
+      // e.g https://c4c-system/sap/c4c/odata/v1/c4codata/
+      this.odataEnd = join(slice(split(this.metadataUri, "/"), 0, -1), "/") + "/";
       this.commonHeader = { ...this.commonHeader, ...headers }
       if (credential) {
         this.credential = credential;
@@ -88,7 +89,7 @@ export class OData {
   }
 
   async request(collection: string, id?: string, queryParams?: ODataQueryParam, method: HTTPMethod = "GET", entity?: any) {
-    let url = `${this.odataEnd}/${collection}`
+    let url = `${this.odataEnd}${collection}`
     let token = await this.getCsrfToken();
     if (id) { url += `('${id}')` }
     return this.requestUri(url, queryParams, method, entity)
