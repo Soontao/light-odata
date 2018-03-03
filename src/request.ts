@@ -2,6 +2,9 @@ import { ODataQueryParam, HTTPMethod, Credential, PlainODataResponse } from "./t
 import { split, slice, join } from "lodash";
 import { GetAuthorizationPair } from "./util";
 
+/**
+ * OData Client
+ */
 export class OData {
 
   private metadataUri: string;
@@ -36,6 +39,11 @@ export class OData {
     }
   }
 
+  /**
+   * Set OData Client Http Basic credential
+   * 
+   * @param credential 
+   */
   public setCredential(credential: Credential) {
     this.credential = credential;
   }
