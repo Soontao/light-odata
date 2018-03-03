@@ -1,5 +1,5 @@
 import * as UrlSearchParam from "url-search-params"
-import { concat, assign, isArray, isObject } from "lodash";
+import { concat, assign } from "lodash";
 import { OData } from ".";
 
 export type HTTPMethod = "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "PATCH";
