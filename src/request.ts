@@ -39,6 +39,13 @@ export class OData {
     }
   }
 
+  private headers() {
+    return {
+      ...this.commonHeader,
+      ...GetAuthorizationPair(this.credential.username, this.credential.password)
+    }
+  }
+
   /**
    * Set OData Client Http Basic credential
    * 
@@ -56,7 +63,7 @@ export class OData {
       method: "HEAD",
       headers: {
         "x-csrf-token": "fetch",
-        ...this.commonHeader
+        ...this.headers()
       },
     });
     this.csrfToken = res.headers.get("x-csrf-token");
@@ -77,7 +84,7 @@ export class OData {
       method,
       headers: {
         "x-csrf-token": token,
-        ...this.commonHeader,
+        ...this.headers(),
       },
     };
     if (method !== "GET" && body) {
