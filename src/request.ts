@@ -8,8 +8,17 @@ import { GetAuthorizationPair } from "./util";
 export class OData {
 
   private metadataUri: string;
+  /**
+   * odata service path, like /sap/c4c/odata/v1/c4codata/
+   */
   private odataEnd: string;
+  /**
+   * http basic credential
+   */
   private credential: Credential;
+  /**
+   * internal csrf token
+   */
   private csrfToken: string = "";
   private commonHeader: { [headerName: string]: string } = {
     "Accept": "application/json",
@@ -55,6 +64,15 @@ export class OData {
     this.credential = credential;
   }
 
+  /**
+   * setODataEndPath
+   */
+  public setODataEndPath(odataEnd: string) {
+    if (odataEnd) {
+      this.odataEnd = odataEnd
+    }
+  }
+
   public async getCsrfToken() {
     if (this.csrfToken) {
       return await this.csrfToken;
@@ -74,6 +92,14 @@ export class OData {
     if (this.csrfToken) { delete this.csrfToken; }
   }
 
+  /**
+   * odata request uri
+   * 
+   * @param uri HTTP URI
+   * @param queryParams odata query params
+   * @param method HTTP method
+   * @param body request content
+   */
   public async requestUri(uri: string, queryParams?: ODataQueryParam, method: HTTPMethod = "GET", body?: any): Promise<PlainODataResponse> {
     const token = await this.getCsrfToken();
     let final_uri = uri;
@@ -88,23 +114,40 @@ export class OData {
       },
     };
     if (method !== "GET" && body) {
-      config.body = body;
+      config.body = JSON.stringify(body);
     }
     const res = await fetch(this.requestUrlRewrite(final_uri), config);
     if (res.status === 401) {
       throw new Error("401, Unauthorized, check your creadential !");
     }
-    if (res.json) {
+    if (res.status === 403) {
+      throw new Error("403, Forbidden, check your csrf token !");
+    }
+    if (res.headers.get("content-type").indexOf("application/json") >= 0) {
       return res.json();
     } else {
-      throw new Error("C4C client not receied json respose !");
+      throw new Error("C4C client not receied accept json respose !");
     }
   }
 
+  /**
+   * odata request
+   * 
+   * @param collection CollectionName
+   * @param id entity uuid
+   * @param queryParams query param, not work for single entity uri
+   * @param method request method
+   * @param entity C4C Entity instance
+   */
   public async request(collection: string, id?: string, queryParams?: ODataQueryParam, method: HTTPMethod = "GET", entity?: any) {
     let url = `${this.odataEnd}${collection}`;
+    /**
+     * System query options '$orderby,$skip,$top,$skiptoken,$inlinecount,' 
+     * are not allowed in the requested URI
+     */
+    let qp = id ? undefined : queryParams;
     if (id) { url += `('${id}')`; }
-    return this.requestUri(url, queryParams, method, entity);
+    return this.requestUri(url, qp, method, entity);
   }
 
 }

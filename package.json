@@ -1,6 +1,6 @@
 {
   "name": "c4codata",
-  "version": "1.0.11",
+  "version": "1.0.13",
   "bin": {
     "odata-js-generator": "lib/cli/index.js"
   },
@@ -34,7 +34,6 @@
     "coverage:watch": "npm run coverage -- --watch",
     "release": "standard-version && npm pack",
     "prepare": "npm run build && npm test",
-    "prepublish": "nsp check",
     "gendoc": "typedoc --out docs --hideGenerator --readme README.md --ignoreCompilerErrors src"
   },
   "dependencies": {

@@ -1,12 +1,12 @@
 import * as UrlSearchParam from "url-search-params"
-import { concat, assign } from "lodash";
+import { concat, assign, map, join } from "lodash";
 import { OData } from ".";
 
 export type HTTPMethod = "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "PATCH";
 
 export interface PlainODataResponse {
   d?: {
-    _count?: string,
+    __count?: string,
     results: any[] | any
   }
   error?: {
@@ -115,6 +115,16 @@ export class ODataFilter {
     return this.filterStr;
   }
 
+  search(fields: string[] = [], search: string = "") {
+    const v = join(map(fields, (f => `${f} eq '*${search}*'`)), " or ");
+    if (this.filterStr) {
+      this.and(v)
+    } else {
+      this.filterStr = v
+    }
+    return this;
+  }
+
   field(name: string) {
     this.filterStr += name;
     return this;
@@ -164,6 +174,11 @@ export class ODataFilter {
 
 }
 
+/**
+ * OData Param Object
+ * 
+ * ref https://github.com/SAP/C4CODATAAPIDEVGUIDE
+ */
 export class ODataQueryParam {
 
   static newParam() {
@@ -177,6 +192,18 @@ export class ODataQueryParam {
   private $orderby: string
   private $format: "json" | "xml" = "json"
   private $search: string
+  private $inlinecount = "allpages"
+
+  /**
+   * with $inlinecount value
+   */
+  private inlinecount(inlinecount: boolean = false) {
+    if (inlinecount) {
+      this.$inlinecount = "allpages"
+    } else {
+      delete this.$inlinecount
+    }
+  }
 
   /**
    * filter
@@ -270,6 +297,7 @@ export class ODataQueryParam {
     if (this.$skip) { rt.append("$skip", this.$skip); }
     if (this.$top && this.$top > 0) { rt.append("$top", this.$top); }
     if (this.$expand && this.$expand.length > 0) { rt.append("$expand", this.$expand.join(",")); }
+    if (this.$inlinecount) { rt.append("$inlinecount", this.$inlinecount) }
     return rt.toString();
   }
 }
@@ -296,12 +324,17 @@ export class C4CODataSingleResult<T> {
 
 export class C4CODataResult<T> {
 
-  d: { results: T[] } = { results: [] }
+  d: { __count?: string; results: T[]; } = {
+    results: []
+  }
 
   static fromPlainObject = function <E>(object: PlainODataResponse, type: { new(): E }) {
     const rt = new C4CODataResult<E>()
     if (object.error) {
       throw new Error(object.error.message.value)
+    }
+    if (object.d.__count) {
+      rt.d.__count = object.d.__count
     }
     rt.d.results = object.d.results.map(e => C4CEntity.fromPlainObject(e, type))
     return rt;
@@ -322,10 +355,6 @@ export class C4CEntity {
     etag?: string
   }
 
-  _odata: OData
-
-  _type: any
-
   ObjectID: string
 
   ParentObjectID?: string
@@ -340,14 +369,6 @@ export class C4CEntity {
 
   static fromRequestResult = async function <T>(o: Promise<any>, t: { new(): T; }): Promise<T> {
     return C4CEntity.fromPlainObject(await o, t)
-  }
-
-  update() {
-    return this._odata.requestUri(this.__metadata.uri, undefined, "PATCH", this)
-  }
-
-  delete() {
-    return this._odata.requestUri(this.__metadata.uri, undefined, "DELETE", this)
   }
 
 }

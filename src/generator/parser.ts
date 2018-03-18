@@ -44,16 +44,6 @@ export function parseMetaClassFrom(meta: ODataMetadata, entityTypes: ODataEntity
     return {
       name: entity.$.Name,
       field: concat<ClassField>(
-        {
-          name: "_type",
-          value: entity.$.Name,
-          type: entity.$.Name
-        },
-        {
-          name: "_odata",
-          type: "OData",
-          value: "odata"
-        },
         entity.Property.map(p => ({ name: p.$.Name, type: p.$.Type, description: p.$["sap:label"] })),
         entity.NavigationProperty ? entity.NavigationProperty.map(n =>
           ({ name: n.$.Name, type: `DeferredNavigationProperty|${n.$.ToRole}|${n.$.ToRole}[]` })
@@ -93,8 +83,7 @@ export function parseMetaCRUDFunctionFrom(collection: ODataCollection): MetaFunc
   rt.push({
     name: `readSingle${name}`,
     parameters: [
-      { name: "id", type: "string" },
-      { name: "params", type: "ODataQueryParam" }
+      { name: "uuid", type: "string", description: "entity uuid" },
     ],
     return: `Promise<C4CODataSingleResult<${entityName}>>`,
     body: `return C4CODataSingleResult.fromRequestResult(odata.request("${collection.$.Name}", id, params), ${entityName})`,
@@ -118,27 +107,27 @@ export function parseMetaCRUDFunctionFrom(collection: ODataCollection): MetaFunc
         { name: "id", type: "string" },
         { name: "entity", type: entityName, description: "part of entity for updating" }
       ],
-      return: `Promise<C4CODataSingleResult<${entityName}>>`,
+      return: `Promise<void>`,
       body: `return C4CODataSingleResult.fromRequestResult(odata.request("${collection.$.Name}", id, undefined, "PATCH", entity), ${entityName})`,
       exported: true
     })
-    rt.push({
-      name: `replace${name}`,
-      description: "replace a entity",
-      parameters: [
-        { name: "id", type: "string" },
-        { name: "entity", type: entityName, description: "part of entity for updating" }
-      ],
-      return: `Promise<C4CODataSingleResult<${entityName}>>`,
-      body: `return C4CODataSingleResult.fromRequestResult(odata.request("${collection.$.Name}", id, undefined, "PUT", entity), ${entityName})`,
-      exported: true
-    })
+    // rt.push({
+    //   name: `replace${name}`,
+    //   description: "replace a entity",
+    //   parameters: [
+    //     { name: "id", type: "string" },
+    //     { name: "entity", type: entityName, description: "part of entity for updating" }
+    //   ],
+    //   return: `Promise<C4CODataSingleResult<${entityName}>>`,
+    //   body: `return C4CODataSingleResult.fromRequestResult(odata.request("${collection.$.Name}", id, undefined, "PUT", entity), ${entityName})`,
+    //   exported: true
+    // })
   }
   if (collection.$["sap:deletable"] == "true") {
     rt.push({
       name: `deleteSingle${name}`,
       parameters: [{ name: "id", type: "string" }],
-      return: `Promise<string>`,
+      return: `Promise<void>`,
       body: `return odata.request("${collection.$.Name}", id, undefined ,"DELETE")`,
       exported: true
     })
