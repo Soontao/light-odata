@@ -203,6 +203,7 @@ export class ODataQueryParam {
     } else {
       delete this.$inlinecount
     }
+    return this;
   }
 
   /**

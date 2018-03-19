@@ -145,9 +145,8 @@ export class OData {
      * System query options '$orderby,$skip,$top,$skiptoken,$inlinecount,' 
      * are not allowed in the requested URI
      */
-    let qp = id ? undefined : queryParams;
     if (id) { url += `('${id}')`; }
-    return this.requestUri(url, qp, method, entity);
+    return this.requestUri(url, queryParams, method, entity);
   }
 
 }

@@ -83,7 +83,8 @@ export function parseMetaCRUDFunctionFrom(collection: ODataCollection): MetaFunc
   rt.push({
     name: `readSingle${name}`,
     parameters: [
-      { name: "uuid", type: "string", description: "entity uuid" },
+      { name: "id", type: "string", description: "entity uuid" },
+      { name: "params", type: "ODataQueryParam", description: "OData param" }
     ],
     return: `Promise<C4CODataSingleResult<${entityName}>>`,
     body: `return C4CODataSingleResult.fromRequestResult(odata.request("${collection.$.Name}", id, params), ${entityName})`,
