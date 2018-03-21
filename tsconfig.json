@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "newLine": "LF",
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "experimentalDecorators": true,
