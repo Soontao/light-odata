@@ -66,6 +66,8 @@ export class OData {
 
   /**
    * setODataEndPath
+   * 
+   * e.g. https://tenant.c4c.saphybriscloud.cn/sap/c4c/odata/v1/c4codata/
    */
   public setODataEndPath(odataEnd: string) {
     if (odataEnd) {
@@ -116,7 +118,13 @@ export class OData {
     if (method !== "GET" && body) {
       config.body = JSON.stringify(body);
     }
-    const res = await fetch(this.requestUrlRewrite(final_uri), config);
+    var res = await fetch(this.requestUrlRewrite(final_uri), config);
+    if (res.headers.get("x-csrf-token") == "required") {
+      // one time retry if csrf token time expired
+      this.cleanCsrfToken();
+      config.headers["x-csrf-token"] = await this.getCsrfToken();
+      res = await fetch(this.requestUrlRewrite(final_uri), config);
+    }
     if (res.status === 401) {
       throw new Error("401, Unauthorized, check your creadential !");
     }

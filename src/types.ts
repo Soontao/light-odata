@@ -1,5 +1,5 @@
 import * as UrlSearchParam from "url-search-params"
-import { concat, assign, map, join } from "lodash";
+import { concat, assign, map, join, isArray, isString } from "lodash";
 import { OData } from ".";
 
 export type HTTPMethod = "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "PATCH";
@@ -97,6 +97,9 @@ export class FilterExpr extends FilterBase {
 
 }
 
+/**
+ * OData filter builder
+ */
 export class ODataFilter {
 
   static newBuilder() {
@@ -111,10 +114,6 @@ export class ODataFilter {
 
   private filterStr = "";
 
-  build() {
-    return this.filterStr;
-  }
-
   search(fields: string[] = [], search: string = "") {
     const v = join(map(fields, (f => `${f} eq '*${search}*'`)), " or ");
     if (this.filterStr) {
@@ -125,6 +124,9 @@ export class ODataFilter {
     return this;
   }
 
+  /**
+   * @param name filed name
+   */
   field(name: string) {
     this.filterStr += name;
     return this;
@@ -150,9 +152,18 @@ export class ODataFilter {
     return this;
   }
 
+  /**
+   * AND expr
+   * 
+   * filter.field("A").eq("'a'").and().field("B").eq("'b").build() == "A eq 'a' and B eq 'b'"
+   * 
+   * filter.field("A").eq("'a'").and("B eq 'b'").build() == "A eq 'a' and (B eq 'b')"
+   * 
+   * @param filter 
+   */
   and(filter?: string) {
     if (filter) {
-      this.filterStr = `(${this.filterStr}) and (${filter})`;
+      this.filterStr = `(${this.filterStr}) and (${filter.toString()})`;
     } else {
       this.filterStr += " and ";
     }
@@ -161,7 +172,7 @@ export class ODataFilter {
 
   or(filter?: string) {
     if (filter) {
-      this.filterStr = `(${this.filterStr}) or (${filter})`;
+      this.filterStr = `(${this.filterStr}) or (${filter.toString()})`;
     } else {
       this.filterStr += " or ";
     }
@@ -170,6 +181,10 @@ export class ODataFilter {
 
   toString() {
     return this.build();
+  }
+
+  build() {
+    return this.filterStr;
   }
 
 }
@@ -192,7 +207,8 @@ export class ODataQueryParam {
   private $orderby: string
   private $format: "json" | "xml" = "json"
   private $search: string
-  private $inlinecount = "allpages"
+  private $inlinecount: string
+  private $expand: string[] = []
 
   /**
    * with $inlinecount value
@@ -217,6 +233,7 @@ export class ODataQueryParam {
 
   /**
    * skip first records
+   * 
    * @param skip 
    */
   skip(skip: number) {
@@ -248,8 +265,9 @@ export class ODataQueryParam {
 
   /**
    * set order sequence
+   * 
    * @param field 
-   * @param order 
+   * @param order default desc
    */
   orderby(field: string, order: "asc" | "desc" = "desc") {
     this.$orderby = `${field} ${order}`
@@ -258,7 +276,8 @@ export class ODataQueryParam {
 
   /**
    * result format, please keep it as json
-   * @param format 
+   * 
+   * @param format deafult json
    */
   format(format: "json" | "xml") {
     this.$format = format
@@ -267,6 +286,9 @@ export class ODataQueryParam {
 
   /**
    * full text search
+   * 
+   * default with fuzzy search
+   * 
    * @param value 
    */
   search(value: string, fuzzy: boolean = true) {
@@ -276,17 +298,24 @@ export class ODataQueryParam {
 
   /**
    * expand navigation props
+   * 
    * @param fields 
+   * @param replace
    */
-  expand(fields: string | string[]) {
-    this.$expand = concat(this.$expand, fields)
+  expand(fields: string | string[], replace = false) {
+    if (replace) {
+      if (isString(fields)) {
+        this.$expand = [fields]
+      }
+      if (isArray(fields)) {
+        this.$expand = fields;
+      }
+    } else {
+      this.$expand = concat(this.$expand, fields)
+    }
     return this
   }
 
-  /**
-   * @type {string[]}
-   */
-  private $expand: string[] = []
 
   toString(): string {
     let rt = new UrlSearchParam();

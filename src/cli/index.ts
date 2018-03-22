@@ -25,10 +25,15 @@ const options: CliOption = parse({
 
 if (options.uri && options.user && options.pass) {
   fetch(options.uri, { headers: { ...GetAuthorizationPair(options.user, options.pass) } })
-    .then(res => res.text())
+    .then(res => {
+      if (res.status != 200) {
+        throw new Error(`Response not correct, check your network & credential\nStatus:${res.status}\nHeaders:${JSON.stringify(res.headers)}`)
+      }
+      return res.text()
+    })
     .then(body => parseODataMetadata(body))
-    .then((meta) => writeFileSync(join(cwd(), options.out), generateAllDefault(meta, options)))
-    .catch(err => error)
+    .then(meta => writeFileSync(join(cwd(), options.out), generateAllDefault(meta, options)))
+    .catch(error)
 } else {
   error("You must give out metadata url & credential for generate static file")
 }
