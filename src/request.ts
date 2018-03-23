@@ -119,7 +119,7 @@ export class OData {
       config.body = JSON.stringify(body);
     }
     var res = await fetch(this.requestUrlRewrite(final_uri), config);
-    if (res.headers.get("x-csrf-token") == "required") {
+    if (res.headers.get("x-csrf-token") == "Required") {
       // one time retry if csrf token time expired
       this.cleanCsrfToken();
       config.headers["x-csrf-token"] = await this.getCsrfToken();
