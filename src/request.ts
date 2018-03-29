@@ -134,7 +134,7 @@ export class OData {
     if (res.headers.get("content-type").indexOf("application/json") >= 0) {
       return res.json();
     } else {
-      return "";
+      return res.text();
     }
   }
 
