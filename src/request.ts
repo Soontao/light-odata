@@ -102,7 +102,7 @@ export class OData {
    * @param method HTTP method
    * @param body request content
    */
-  public async requestUri(uri: string, queryParams?: ODataQueryParam, method: HTTPMethod = "GET", body?: any): Promise<PlainODataResponse> {
+  public async requestUri(uri: string, queryParams?: ODataQueryParam, method: HTTPMethod = "GET", body?: any): Promise<PlainODataResponse | string> {
     const token = await this.getCsrfToken();
     let final_uri = uri;
     if (queryParams) {
@@ -134,7 +134,7 @@ export class OData {
     if (res.headers.get("content-type").indexOf("application/json") >= 0) {
       return res.json();
     } else {
-      throw new Error("C4C client not receied accept json respose !");
+      return "";
     }
   }
 
