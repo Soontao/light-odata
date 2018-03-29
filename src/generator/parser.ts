@@ -105,11 +105,11 @@ export function parseMetaCRUDFunctionFrom(collection: ODataCollection): MetaFunc
     rt.push({
       name: `update${name}`,
       parameters: [
-        { name: "id", type: "string" },
+        { name: "id", type: "string", description: `${entityName} UUID` },
         { name: "entity", type: entityName, description: "part of entity for updating" }
       ],
       return: `Promise<void>`,
-      body: `return C4CODataSingleResult.fromRequestResult(odata.request("${collection.$.Name}", id, undefined, "PATCH", entity), ${entityName})`,
+      body: `return odata.request("${collection.$.Name}", id, undefined, "PATCH", entity)`,
       exported: true
     })
     // rt.push({
