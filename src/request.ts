@@ -80,7 +80,7 @@ export class OData {
       return await this.csrfToken;
     }
     const res = await fetch(this.requestUrlRewrite(this.odataEnd), {
-      method: "HEAD",
+      method: "GET",
       headers: {
         "x-csrf-token": "fetch",
         ...this.headers()
