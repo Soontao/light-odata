@@ -119,6 +119,15 @@ export class OData {
       config.body = JSON.stringify(body);
     }
     var res = await fetch(this.requestUrlRewrite(final_uri), config);
+    var content: any = "";
+    if (res.headers.get("content-type").indexOf("application/json") >= 0) {
+      content = await res.json();
+      if (content.error) {
+        throw new Error(content.error.message.value)
+      }
+    } else {
+      content = await res.text();
+    }
     if (res.headers.get("x-csrf-token") == "Required") {
       // one time retry if csrf token time expired
       this.cleanCsrfToken();
@@ -131,11 +140,10 @@ export class OData {
     if (res.status === 403) {
       throw new Error("403, Forbidden, check your csrf token !");
     }
-    if (res.headers.get("content-type").indexOf("application/json") >= 0) {
-      return res.json();
-    } else {
-      return res.text();
+    if (res.status === 500) {
+      throw new Error("500, internal error")
     }
+    return content;
   }
 
   /**
