@@ -26,10 +26,29 @@ export class OData {
     "Content-Type": "application/json",
   };
   private requestUrlRewrite: (url: string) => string = (s) => s;
+  private fetchProxy = (url: string, init: RequestInit) => fetch(url, init);
 
-  constructor(metadataUri: string, credential?: Credential, headers?: any, urlRewrite?: (string) => string) {
+  /**
+   * OData
+   * 
+   * @param metadataUri OData metadata uri
+   * @param credential Basic认证
+   * @param headers 头部信息
+   * @param urlRewrite url重写
+   * @param fetchProxy fetch代理
+   */
+  constructor(
+    metadataUri: string,
+    credential?: Credential,
+    headers: any = {},
+    urlRewrite?: (string) => string,
+    fetchProxy = (url: string, init: RequestInit) => fetch(url, init)
+  ) {
+    if (fetchProxy) {
+      this.fetchProxy = fetchProxy
+    }
     if (!metadataUri) {
-      throw new Error("metadataUrl losted")
+      throw new Error("metadata url required !")
     } else {
       this.metadataUri = metadataUri;
       // e.g https://c4c-system/sap/c4c/odata/v1/c4codata/
@@ -37,10 +56,6 @@ export class OData {
       this.commonHeader = { ...this.commonHeader, ...headers }
       if (credential) {
         this.credential = credential;
-        this.commonHeader = {
-          ...this.commonHeader,
-          ...GetAuthorizationPair(this.credential.username, this.credential.password)
-        }
       }
       if (urlRewrite) {
         this.requestUrlRewrite = urlRewrite;
@@ -48,10 +63,17 @@ export class OData {
     }
   }
 
+  /**
+   * generate authorization header
+   */
   private headers() {
-    return {
-      ...this.commonHeader,
-      ...GetAuthorizationPair(this.credential.username, this.credential.password)
+    if (this.credential) {
+      return {
+        ...this.commonHeader,
+        ...GetAuthorizationPair(this.credential.username, this.credential.password)
+      }
+    } else {
+      return this.commonHeader
     }
   }
 
@@ -75,11 +97,14 @@ export class OData {
     }
   }
 
+  /**
+   * 获取CSRF Token
+   */
   public async getCsrfToken() {
     if (this.csrfToken) {
       return await this.csrfToken;
     }
-    const res = await fetch(this.requestUrlRewrite(this.odataEnd), {
+    const res = await this.fetchProxy(this.requestUrlRewrite(this.odataEnd), {
       method: "GET",
       headers: {
         "x-csrf-token": "fetch",
@@ -118,7 +143,7 @@ export class OData {
     if (method !== "GET" && body) {
       config.body = JSON.stringify(body);
     }
-    var res = await fetch(this.requestUrlRewrite(final_uri), config);
+    var res = await this.fetchProxy(this.requestUrlRewrite(final_uri), config);
     var content: any = "";
     if (res.headers.get("content-type").indexOf("application/json") >= 0) {
       content = await res.json();
