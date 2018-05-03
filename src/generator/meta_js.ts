@@ -9,10 +9,11 @@ export interface MetaClass {
 }
 
 export interface ClassField {
-  name: string
-  type: string
-  description?: string
-  value?: string
+  name: string;
+  type: string;
+  static?: boolean;
+  description?: string;
+  value?: string;
 }
 
 export interface ClassMethod {

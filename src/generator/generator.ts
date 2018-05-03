@@ -47,7 +47,7 @@ ${clazz.field ? clazz.field.map(f => `
    * ${f.description ? f.description : ""}
    * @type {${f.type}} 
    */
-  ${f.name}${f.value ? ` = ${f.value}` : ""}`).join("\n") : ""}
+  ${f.static ? "static " : ""}${f.name}${f.value ? ` = ${f.value}` : ""}`).join("\n") : ""}
 ${clazz.method ? clazz.method.map(m => `
   /**
    * ${m.description ? m.description : ""}

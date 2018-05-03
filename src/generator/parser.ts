@@ -39,20 +39,44 @@ export function parseMetaClassFromDefault(metadata: ODataMetadata): MetaClass[] 
 }
 
 export function parseMetaClassFrom(meta: ODataMetadata, entityTypes: ODataEntityType[]): MetaClass[] {
-  return map(entityTypes, entity => {
-    const entityTypeCollections = getEntityCollectionByEntityType(meta, entity)
-    return {
-      name: entity.$.Name,
-      field: concat<ClassField>(
-        entity.Property.map(p => ({ name: p.$.Name, type: p.$.Type, description: p.$["sap:label"] })),
-        entity.NavigationProperty ? entity.NavigationProperty.map(n =>
-          ({ name: n.$.Name, type: `DeferredNavigationProperty|${n.$.ToRole}|${n.$.ToRole}[]` })
-        ) : []
-      ),
-      exported: true,
-      extends: "C4CEntity"
-    }
-  })
+  return concat(
+    map(entityTypes, entity => {
+      return {
+        name: entity.$.Name,
+        field: concat<ClassField>(
+          entity.Property.map(p => ({ name: p.$.Name, type: p.$.Type, description: p.$["sap:label"] })),
+          entity.NavigationProperty ? entity.NavigationProperty.map(n =>
+            ({ name: n.$.Name, type: `DeferredNavigationProperty|${n.$.ToRole}|${n.$.ToRole}[]` })
+          ) : []
+        ),
+        exported: true,
+        extends: "C4CEntity"
+      }
+    }),
+    map(entityTypes, entity => {
+      return {
+        name: `${entity.$.Name}Type`,
+        field: concat<ClassField>(
+          entity.Property.map(p => ({
+            name: p.$.Name,
+            type: "string",
+            value: `"${p.$.Name}"`,
+            description: p.$["sap:label"],
+            static: true
+          })),
+          entity.NavigationProperty ? entity.NavigationProperty.map(n =>
+            ({
+              name: n.$.Name,
+              type: "string",
+              value: `${n.$.Name}`,
+              static: true
+            })
+          ) : []
+        ),
+        exported: true
+      }
+    })
+  )
 }
 
 export function parseEntityCRUDFunctionsMap(metadata: ODataMetadata): {
