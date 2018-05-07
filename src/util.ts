@@ -1,4 +1,5 @@
 import { Buffer } from "buffer";
+import { attempt, isError } from "lodash";
 
 
 /**
@@ -21,4 +22,8 @@ export function FormatODataDateTimedate(date: Date = new Date()) {
 
 export function GetAuthorizationPair(user: string, password: string) {
   return { Authorization: "Basic " + Buffer.from(`${user}:${password}`).toString("base64") };
+}
+
+export function isJSONString(str: string = "") {
+  return !isError(attempt(JSON.parse, str));
 }

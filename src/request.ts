@@ -1,6 +1,7 @@
 import { ODataQueryParam, HTTPMethod, Credential, PlainODataResponse } from "./types";
 import { split, slice, join } from "lodash";
-import { GetAuthorizationPair } from "./util";
+import { GetAuthorizationPair, isJSONString } from "./util";
+import { attempt } from "lodash";
 
 /**
  * OData Client
@@ -27,6 +28,7 @@ export class OData {
   };
   private requestUrlRewrite: (url: string) => string = (s) => s;
   private fetchProxy = (url: string, init: RequestInit) => fetch(url, init);
+  private processCsrfToken = true;
 
   /**
    * OData
@@ -36,13 +38,15 @@ export class OData {
    * @param headers 头部信息
    * @param urlRewrite url重写
    * @param fetchProxy fetch代理
+   * @param processCsrfToken 是否处理CSRF Token
    */
   constructor(
     metadataUri: string,
     credential?: Credential,
     headers: any = {},
     urlRewrite?: (string) => string,
-    fetchProxy = (url: string, init: RequestInit) => fetch(url, init)
+    fetchProxy = (url: string, init: RequestInit) => fetch(url, init),
+    processCsrfToken: boolean = true
   ) {
     if (fetchProxy) {
       this.fetchProxy = fetchProxy
@@ -61,6 +65,7 @@ export class OData {
         this.requestUrlRewrite = urlRewrite;
       }
     }
+    this.processCsrfToken = processCsrfToken;
   }
 
   /**
@@ -128,36 +133,48 @@ export class OData {
    * @param body request content
    */
   public async requestUri(uri: string, queryParams?: ODataQueryParam, method: HTTPMethod = "GET", body?: any): Promise<PlainODataResponse | string> {
-    const token = await this.getCsrfToken();
     let final_uri = uri;
     if (queryParams) {
       final_uri = `${final_uri}?${queryParams.toString()}`;
     }
-    const config: RequestInit = {
+    let config: RequestInit = {
       method,
-      headers: {
-        "x-csrf-token": token,
-        ...this.headers(),
-      },
+      headers: this.headers(),
     };
+    if (this.processCsrfToken) {
+      const token = await this.getCsrfToken();
+      config = {
+        method,
+        headers: {
+          "x-csrf-token": token,
+          ...this.headers(),
+        },
+      };
+    }
     if (method !== "GET" && body) {
       config.body = JSON.stringify(body);
     }
+    // request & response
     var res = await this.fetchProxy(this.requestUrlRewrite(final_uri), config);
-    var content: any = "";
-    if (res.headers.get("content-type").indexOf("application/json") >= 0) {
-      content = await res.json();
+
+    // result process
+    var content: any = await res.text();
+    var jsonResult = attempt(JSON.parse, content);
+    if (!(jsonResult instanceof Error)) {
+      content = jsonResult;
       if (content.error) {
         throw new Error(content.error.message.value)
       }
-    } else {
-      content = await res.text();
     }
-    if (res.headers.get("x-csrf-token") == "Required") {
-      // one time retry if csrf token time expired
-      this.cleanCsrfToken();
-      config.headers["x-csrf-token"] = await this.getCsrfToken();
-      res = await fetch(this.requestUrlRewrite(final_uri), config);
+
+    // error process
+    if (this.processCsrfToken) {
+      if (res.headers.get("x-csrf-token") == "Required") {
+        // one time retry if csrf token time expired
+        this.cleanCsrfToken();
+        config.headers["x-csrf-token"] = await this.getCsrfToken();
+        res = await fetch(this.requestUrlRewrite(final_uri), config);
+      }
     }
     if (res.status === 401) {
       throw new Error("401, Unauthorized, check your creadential !");
