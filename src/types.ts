@@ -1,16 +1,16 @@
 import * as UrlSearchParam from "url-search-params"
-import { concat, assign, map, join, isArray, isString } from "lodash";
+import { concat, assign, map, join, isArray, isString, forEach } from "lodash";
 import { OData } from ".";
 
 export type HTTPMethod = "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "PATCH";
 
 export interface PlainODataResponse {
   d?: {
-    __count?: string,
-    results: any[] | any
-  }
+    __count?: string;
+    results: any[] | any;
+  };
   error?: {
-    code: string,
+    code: string;
     message: {
       lang: string,
       value: string
@@ -23,94 +23,18 @@ export interface Credential {
   password: string
 }
 
-export class FilterBase {
-
-  protected filter: ODataFilter
-
-  toString() {
-    return this.filter.toString()
-  }
-
-  build() {
-    return this.filter.build();
-  }
-}
-
-export class FilterField extends FilterBase {
-
-  constructor(filter: ODataFilter) {
-    super()
-    this.filter = filter;
-  }
-
-  field(name) {
-    this.filter.field(name)
-    return this.filter.FilterExpr
-  }
-
-
-}
-
-export class FilterAndOr extends FilterBase {
-
-  constructor(filter: ODataFilter) {
-    super()
-    this.filter = filter;
-  }
-
-
-  and(filter?: string) {
-    this.filter.and(filter)
-    return this.filter.FilterField
-  }
-
-  or(filter?: string) {
-    this.filter.or(filter)
-    return this.filter.FilterField
-  }
-
-}
-
-export class FilterExpr extends FilterBase {
-
-  constructor(filter: ODataFilter) {
-    super()
-    this.filter = filter;
-  }
-
-  eq(value: string) {
-    this.filter.eq(value)
-    return this.filter.FilterAndOr
-  }
-
-  ge(value: string) {
-    this.filter.ge(value)
-  }
-
-  le(value: string) {
-    this.filter.le(value)
-  }
-
-  lt(value: string) {
-    this.filter.lt(value)
-  }
-
-}
-
 /**
  * OData filter builder
  */
 export class ODataFilter {
 
   static newBuilder() {
-    return new ODataFilter().FilterField
+    return new ODataFilter()
   }
 
-  FilterField: FilterField = new FilterField(this)
-
-  FilterAndOr: FilterAndOr = new FilterAndOr(this)
-
-  FilterExpr: FilterExpr = new FilterExpr(this)
+  static newFilter() {
+    return new ODataFilter()
+  }
 
   private filterStr = "";
 
@@ -132,8 +56,25 @@ export class ODataFilter {
     return this;
   }
 
+  fieldIn(name: string, values: string[]) {
+    if (values) {
+      forEach(values, (value, index, arr) => {
+        this.field(name).eqString(value)
+        if (index < (arr.length - 1)) {
+          this.or()
+        }
+      });
+    }
+    return this;
+  }
+
   eq(value) {
     this.filterStr += ` eq ${value}`;
+    return this;
+  }
+
+  eqString(value: string) {
+    this.filterStr += ` eq '${value}'`;
     return this;
   }
 
@@ -161,7 +102,7 @@ export class ODataFilter {
    * 
    * @param filter 
    */
-  and(filter?: string) {
+  and(filter?: string | ODataFilter) {
     if (filter) {
       this.filterStr = `(${this.filterStr}) and (${filter.toString()})`;
     } else {
@@ -170,12 +111,17 @@ export class ODataFilter {
     return this;
   }
 
-  or(filter?: string) {
+  or(filter?: string | ODataFilter) {
     if (filter) {
       this.filterStr = `(${this.filterStr}) or (${filter.toString()})`;
     } else {
       this.filterStr += " or ";
     }
+    return this;
+  }
+
+  group(filter: string | ODataFilter) {
+    this.filterStr += `(${filter.toString()})`;
     return this;
   }
 
@@ -189,6 +135,7 @@ export class ODataFilter {
 
 }
 
+
 /**
  * OData Param Object
  * 
@@ -201,7 +148,7 @@ export class ODataQueryParam {
   }
 
   private $skip = 0
-  private $filter: string | FilterBase
+  private $filter: string | ODataFilter
   private $top = 0
   private $select: string[] = []
   private $orderby: string
@@ -213,7 +160,7 @@ export class ODataQueryParam {
   /**
    * with $inlinecount value
    */
-  private inlinecount(inlinecount: boolean = false) {
+  inlinecount(inlinecount: boolean = false) {
     if (inlinecount) {
       this.$inlinecount = "allpages"
     } else {
@@ -226,9 +173,17 @@ export class ODataQueryParam {
    * filter
    * @param filter 
    */
-  filter(filter: string | FilterBase) {
-    this.$filter = filter
-    return this
+  filter(filter: string | ODataFilter) {
+    if (filter instanceof ODataFilter) {
+      this.$filter = filter.build()
+      return this
+    } else if (typeof filter === "string") {
+      this.$filter = filter
+      return this
+    } else {
+      throw Error("ODataQueryParam.filter only accept string or ODataFilter type parameter")
+    }
+
   }
 
   /**
@@ -331,6 +286,8 @@ export class ODataQueryParam {
     return rt.toString();
   }
 }
+
+export const ODataParam = ODataQueryParam;
 
 export class C4CODataSingleResult<T> {
 

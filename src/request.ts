@@ -33,7 +33,7 @@ export class OData {
   /**
    * OData
    * 
-   * @param metadataUri OData metadata uri
+   * @param config OData metadata uri
    * @param credential Basic认证
    * @param headers 头部信息
    * @param urlRewrite url重写
@@ -132,7 +132,7 @@ export class OData {
    * @param method HTTP method
    * @param body request content
    */
-  public async requestUri(uri: string, queryParams?: ODataQueryParam, method: HTTPMethod = "GET", body?: any): Promise<PlainODataResponse | string> {
+  public async requestUri(uri: string, queryParams?: ODataQueryParam, method: HTTPMethod = "GET", body?: any): Promise<PlainODataResponse> {
     let final_uri = uri;
     if (queryParams) {
       final_uri = `${final_uri}?${queryParams.toString()}`;
