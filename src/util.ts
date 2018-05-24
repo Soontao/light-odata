@@ -17,7 +17,7 @@ export function ConvertDateFromODataTime(dateString: string = "0") {
  * format date to /Date(1512691200000)/ format
  */
 export function FormatODataDateTimedate(date: Date = new Date()) {
-  return `/Date(${date.getTime()}/`
+  return `/Date(${date.getTime()})/`
 }
 
 export function GetAuthorizationPair(user: string, password: string) {

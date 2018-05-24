@@ -38,16 +38,6 @@ export class ODataFilter {
 
   private filterStr = "";
 
-  search(fields: string[] = [], search: string = "") {
-    const v = join(map(fields, (f => `${f} eq '*${search}*'`)), " or ");
-    if (this.filterStr) {
-      this.and(v)
-    } else {
-      this.filterStr = v
-    }
-    return this;
-  }
-
   /**
    * @param name filed name
    */
@@ -83,6 +73,11 @@ export class ODataFilter {
     return this;
   }
 
+  gt(value) {
+    this.filterStr += ` gt ${value}`;
+    return this;
+  }
+
   le(value) {
     this.filterStr += ` le ${value}`;
     return this;
@@ -91,6 +86,26 @@ export class ODataFilter {
   lt(value) {
     this.filterStr += ` lt ${value}`;
     return this;
+  }
+
+  inPeriod(name: string, start: Date, end: Date) {
+    this.group(
+      ODataFilter.newFilter()
+        .gtDateTime(name, start)
+        .and()
+        .ltDateTime(name, end)
+    )
+    return this;
+  }
+
+  gtDateTime(name: string, date: Date) {
+    this.field(name).gt(`datetime'${date.toISOString()}'`)
+    return this
+  }
+
+  ltDateTime(name: string, date: Date) {
+    this.field(name).lt(`datetime'${date.toISOString()}'`)
+    return this
   }
 
   /**
