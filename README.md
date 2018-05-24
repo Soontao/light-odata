@@ -1,5 +1,7 @@
 # C4C OData Javascript Library
 
+[![CircleCI](https://circleci.com/gh/Soontao/c4codata.svg?style=shield)](https://circleci.com/gh/Soontao/c4codata) [![codecov](https://codecov.io/gh/Soontao/c4codata/branch/master/graph/badge.svg)](https://codecov.io/gh/Soontao/c4codata)
+
 Simplify Code at JS Client for SAP C4C OData Service
 
 ## install
@@ -29,11 +31,18 @@ odata-js-generator -m https://<your c4c host>/sap/c4c/odata/v1/c4codata/$metadat
 # then, you could use the c4codata.js to operation OData
 ```
 
+## programming api
+
+```javascript
+
+// to be done
+
+```
+
 ## TO-DO
 
 * Codelist generator
 * OAuth Support
-* test
 
 ## LICENSE
 
