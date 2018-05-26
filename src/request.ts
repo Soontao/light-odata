@@ -3,6 +3,14 @@ import { split, slice, join } from "lodash";
 import { GetAuthorizationPair, isJSONString } from "./util";
 import { attempt } from "lodash";
 
+export interface ODataNewParam {
+  metadataUri: string;
+  credential?: Credential;
+  headers: any;
+  fetchProxy?: (url: string, init: RequestInit) => Promise<Response>,
+  processCsrfToken?: boolean;
+}
+
 /**
  * OData Client
  */
@@ -29,6 +37,21 @@ export class OData {
   private requestUrlRewrite: (url: string) => string = (s) => s;
   private fetchProxy = (url: string, init: RequestInit) => fetch(url, init);
   private processCsrfToken = true;
+
+  /**
+   * alternative constructor
+   * 
+   * @param options config options
+   */
+  static New(options: ODataNewParam) {
+    return new OData(
+      options.metadataUri,
+      options.credential,
+      options.headers,
+      undefined,
+      options.fetchProxy,
+      options.processCsrfToken)
+  }
 
   /**
    * OData

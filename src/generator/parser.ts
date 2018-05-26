@@ -33,49 +33,73 @@ export function parseODataMetadata(file_str: string) {
     })
   })
 }
+export function parseMetaClassFromOnlyClassDefault(metadata: ODataMetadata): MetaClass[] {
+  return parseMetaClassFromOnlyClass(metadata, getEntityTypesDefault(metadata))
+}
 
 export function parseMetaClassFromDefault(metadata: ODataMetadata): MetaClass[] {
   return parseMetaClassFrom(metadata, getEntityTypesDefault(metadata))
 }
 
+export function parseSingleMetaClassFromOnlyClass(entity: ODataEntityType): MetaClass {
+  return {
+    name: entity.$.Name,
+    field: concat<ClassField>(
+      entity.Property.map(p => ({
+        name: p.$.Name,
+        type: p.$.Type,
+        description: p.$["sap:label"],
+        originProperty: p
+      })),
+      entity.NavigationProperty ? entity.NavigationProperty.map(n =>
+        ({
+          name: n.$.Name,
+          type: `DeferredNavigationProperty|${n.$.ToRole}|${n.$.ToRole}[]`,
+          originProperty: n
+        })
+      ) : []
+    ),
+    exported: true,
+    extends: "C4CEntity",
+    originEntity: entity
+  }
+}
+
+export function parseSingleMetaClassFromOnlyType(entity: ODataEntityType): MetaClass {
+  return {
+    name: `${entity.$.Name}Type`,
+    field: concat<ClassField>(
+      entity.Property.map(p => ({
+        name: p.$.Name,
+        type: "string",
+        value: `"${p.$.Name}"`,
+        description: p.$["sap:label"],
+        static: true,
+        originProperty: p
+      })),
+      entity.NavigationProperty ? entity.NavigationProperty.map(n =>
+        ({
+          name: n.$.Name,
+          type: n.$.ToRole,
+          value: `${n.$.Name}`,
+          static: true,
+          originProperty: n
+        })
+      ) : []
+    ),
+    originEntity: entity,
+    exported: true
+  }
+}
+
+export function parseMetaClassFromOnlyClass(meta: ODataMetadata, entityTypes: ODataEntityType[]): MetaClass[] {
+  return map(entityTypes, entity => parseSingleMetaClassFromOnlyClass(entity))
+}
+
 export function parseMetaClassFrom(meta: ODataMetadata, entityTypes: ODataEntityType[]): MetaClass[] {
   return concat(
-    map(entityTypes, entity => {
-      return {
-        name: entity.$.Name,
-        field: concat<ClassField>(
-          entity.Property.map(p => ({ name: p.$.Name, type: p.$.Type, description: p.$["sap:label"] })),
-          entity.NavigationProperty ? entity.NavigationProperty.map(n =>
-            ({ name: n.$.Name, type: `DeferredNavigationProperty|${n.$.ToRole}|${n.$.ToRole}[]` })
-          ) : []
-        ),
-        exported: true,
-        extends: "C4CEntity"
-      }
-    }),
-    map(entityTypes, entity => {
-      return {
-        name: `${entity.$.Name}Type`,
-        field: concat<ClassField>(
-          entity.Property.map(p => ({
-            name: p.$.Name,
-            type: "string",
-            value: `"${p.$.Name}"`,
-            description: p.$["sap:label"],
-            static: true
-          })),
-          entity.NavigationProperty ? entity.NavigationProperty.map(n =>
-            ({
-              name: n.$.Name,
-              type: "string",
-              value: `${n.$.Name}`,
-              static: true
-            })
-          ) : []
-        ),
-        exported: true
-      }
-    })
+    map(entityTypes, entity => parseSingleMetaClassFromOnlyClass(entity)),
+    map(entityTypes, entity => parseSingleMetaClassFromOnlyType(entity))
   )
 }
 
@@ -91,6 +115,16 @@ export function parseEntityCRUDFunctionsMap(metadata: ODataMetadata): {
 export function parseMetaCRUDFunctionFromDefault(metadata: ODataMetadata): MetaFunction[] {
   const collections = getEntityCollectionDefault(metadata)
   return reduce(collections, (pre, c) => concat(pre, parseMetaCRUDFunctionFrom(c)), [])
+}
+
+export function parseMetaCRUDFunctionByEntityName(metadata: ODataMetadata, entityName: string): MetaFunction[] {
+  const collections = getEntityCollectionDefault(metadata)
+  const collection = filter(collections, c => c.$.EntityType.split(".").pop() === entityName)
+  if (collection.length > 0) {
+    return parseMetaCRUDFunctionFrom(collection[0])
+  } else {
+    return [];
+  }
 }
 
 export function parseMetaCRUDFunctionFrom(collection: ODataCollection): MetaFunction[] {

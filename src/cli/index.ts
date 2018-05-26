@@ -3,6 +3,7 @@ import "isomorphic-fetch"
 import { parse } from "cli";
 import { cwd, exit } from "process";
 import { error } from "console";
+import { map } from "lodash";
 import { GetAuthorizationPair } from "../util";
 import { writeFileSync } from "fs";
 import { join } from "path";
@@ -13,27 +14,69 @@ import {
   generateCommonImportString,
   generateFunctionString,
   generateOperationObject,
+  parseMetaClassFromDefault,
+  generateSeprateClassString,
+  parseMetaCRUDFunctionByEntityName,
+  generateFunctionsString,
+  parseMetaClassFromOnlyClassDefault,
+  parseSingleMetaClassFromOnlyType,
+  generateSeprateODataFile,
+  ODataMetadata,
+  generateSeprateIndexFile,
   generateAllDefault
 } from "../generator";
+
+const mkdirp = require("mkdirp")
 
 const options: CliOption = parse({
   uri: ['m', 'metadata uri', "string"],
   user: ['u', 'c4c username', "string"],
   pass: ['p', 'c4c password', "string"],
-  out: ['o', 'out file', 'string', "c4codata.js"]
-}, [])
+  out: ['o', 'out file', 'string', "c4codata.js"],
+  separate: ['s', 'out with separate files in directory', "string"]
+}, []);
 
-if (options.uri && options.user && options.pass) {
-  fetch(options.uri, { headers: { ...GetAuthorizationPair(options.user, options.pass) } })
-    .then(res => {
+const generateAndWriteSeprate = (meta: ODataMetadata, options: CliOption) => {
+  const basePath = join(cwd(), options.separate)
+  const odataInitPath = join(basePath, "odata.js")
+  const indexPath = join(basePath, "index.js")
+  const classes = parseMetaClassFromOnlyClassDefault(meta);
+  writeFileSync(odataInitPath, generateSeprateODataFile(options.uri, options.user, options.pass))
+  writeFileSync(indexPath, generateSeprateIndexFile(classes))
+  map(classes, c => {
+    const classFuncs = parseMetaCRUDFunctionByEntityName(meta, c.name)
+    const classFuncsStr = generateFunctionsString(classFuncs)
+    const classType = parseSingleMetaClassFromOnlyType(c.originEntity);
+    const classTypeStr = generateClassString(classType)
+    const classString = generateSeprateClassString(c, classFuncsStr, classTypeStr)
+    writeFileSync(join(basePath, `${c.name}.js`), classString)
+  })
+}
+
+const generateAndWriteSingle = (meta: ODataMetadata, options: CliOption) => {
+  const outPath = join(cwd(), options.out)
+  const singleFileString = generateAllDefault(meta, options);
+  writeFileSync(outPath, singleFileString)
+}
+
+(async () => {
+  if (options.uri && options.user && options.pass) {
+    try {
+      const res = await fetch(options.uri, { headers: { ...GetAuthorizationPair(options.user, options.pass) } })
       if (res.status != 200) {
         throw new Error(`Response not correct, check your network & credential\nStatus:${res.status}\nHeaders:${JSON.stringify(res.headers)}`)
       }
-      return res.text()
-    })
-    .then(body => parseODataMetadata(body))
-    .then(meta => writeFileSync(join(cwd(), options.out), generateAllDefault(meta, options)))
-    .catch(error)
-} else {
-  error("You must give out metadata url & credential for generate static file")
-}
+      const body = await res.text()
+      const meta = await parseODataMetadata(body)
+      if (options.separate) {
+        mkdirp.sync(join(cwd(), options.separate))
+        generateAndWriteSeprate(meta, options)
+      } else {
+        generateAndWriteSingle(meta, options)
+      }
+    } catch (error) {
+      error("You must give out metadata url & credential for generate static file")
+    }
+  }
+})()
+

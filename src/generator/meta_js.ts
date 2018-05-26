@@ -1,3 +1,4 @@
+import { ODataEntityProperty, ODataEntityNavigationProperty, ODataEntityType } from ".";
 
 export interface MetaClass {
   name: string
@@ -6,6 +7,7 @@ export interface MetaClass {
   field?: ClassField[]
   extends?: string
   exported?: boolean
+  originEntity: ODataEntityType;
 }
 
 export interface ClassField {
@@ -14,6 +16,7 @@ export interface ClassField {
   static?: boolean;
   description?: string;
   value?: string;
+  originProperty: ODataEntityProperty | ODataEntityNavigationProperty;
 }
 
 export interface ClassMethod {

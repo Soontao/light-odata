@@ -2,9 +2,9 @@
  * unreadable string generator
  */
 
-import { map } from "lodash";
+import { map, filter, startsWith, join } from "lodash";
 import { MetaClass, MetaFunction } from "./meta_js";
-import { parseEntityCRUDFunctionsMap, ODataMetadata, parseMetaClassFromDefault, parseMetaCRUDFunctionFromDefault } from ".";
+import { parseEntityCRUDFunctionsMap, ODataMetadata, parseMetaClassFromDefault, parseMetaCRUDFunctionFromDefault, ODataEntityNavigationProperty } from ".";
 import { CliOption } from "../cli/type";
 
 export function generateAllDefault(meta: ODataMetadata, options?: CliOption) {
@@ -27,13 +27,47 @@ export const odata = new OData(metadataUri, initCredential);
 `
 }
 
-/**
- * Generate Class string from meta class
- * 
- * @export
- * @param {MetaClass} clazz 
- * @returns 
- */
+export function generateSeprateIndexFile(classes: MetaClass[]) {
+  return join(
+    map(classes, c => `export * from "./${c.name}"`),
+    "\n"
+  )
+}
+
+export function generateSeprateODataFile(uri: string, user: string = "", pass: string = "") {
+  return join(
+    [
+      'import { OData } from "c4codata"',
+      `const initCredential = { username: "${user}", password: "${pass}" }`,
+      `const metadataUri = "${uri}"`,
+      'export const odata = new OData(metadataUri, initCredential);',
+    ],
+    "\n"
+  )
+}
+
+export function generateSeprateClassString(clazz: MetaClass, functionsString = "", typeString = "") {
+  return join(
+    [
+      'import { C4CODataResult, C4CEntity, DeferredNavigationProperty, C4CODataSingleResult } from "c4codata"',
+      'import { odata } from "./odata"',
+      join(
+        map(
+          filter(clazz.field, f => startsWith(f.type, "DeferredNavigationProperty")),
+          ifield => {
+            const { $: { ToRole } } = (<ODataEntityNavigationProperty>ifield.originProperty);
+            return `import { ${ ToRole } } from "./${ToRole}"`
+          }),
+        "\n"
+      ),
+      generateClassString(clazz),
+      typeString,
+      functionsString,
+    ],
+    "\n"
+  )
+}
+
 export function generateClassString(clazz: MetaClass) {
   return `
 /**
@@ -59,6 +93,13 @@ ${m.return ? `   * @returns {m.return}` : ""}
   }
 `).join("\n") : ""}
 }`
+}
+
+export function generateFunctionsString(funcs: MetaFunction[]) {
+  return join(
+    map(funcs, f => generateFunctionString(f)),
+    "\n"
+  )
 }
 
 export function generateFunctionString(func: MetaFunction) {

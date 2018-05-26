@@ -36,37 +36,37 @@ export interface ODataEntityType {
       ]
     }
   ],
-  "Property": [
-    {
-      "$": {
-        "Name": string,
-        "Type": string,
-        "Nullable": string | boolean,
-        "MaxLength": string | number,
-        "FixedLength": string | number,
-        "sap:creatable": string | boolean,
-        "sap:updatable": string | boolean,
-        "sap:filterable": string | boolean,
-        "sap:label"?: string
-      }
-    }
-  ],
-  "NavigationProperty"?: [
-    {
-      "$": {
-        /**
-         * Name 
-         */
-        "Name": string,
-        "Relationship": string,
-        "FromRole": string,
-        /**
-         * Type
-         */
-        "ToRole": string
-      }
-    }
-  ]
+  "Property": ODataEntityProperty[],
+  "NavigationProperty"?: ODataEntityNavigationProperty[]
+}
+
+export interface ODataEntityProperty {
+  $: {
+    "Name": string,
+    "Type": string,
+    "Nullable": string | boolean,
+    "MaxLength": string | number,
+    "FixedLength": string | number,
+    "sap:creatable": string | boolean,
+    "sap:updatable": string | boolean,
+    "sap:filterable": string | boolean,
+    "sap:label"?: string
+  }
+}
+
+export interface ODataEntityNavigationProperty {
+  $: {
+    /**
+     * Name 
+     */
+    Name: string,
+    "Relationship": string,
+    "FromRole": string,
+    /**
+     * Type
+     */
+    ToRole: string
+  }
 }
 
 export interface ODataAssociation {

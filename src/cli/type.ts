@@ -4,4 +4,5 @@ export interface CliOption {
   user?: string
   pass?: string
   out: string
+  separate: string
 }
