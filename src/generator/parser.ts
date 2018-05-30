@@ -1,7 +1,7 @@
 import { parseString } from "xml2js";
 import { ODataMetadata, ODataEntityType, ODataCollection } from "./meta_odata";
 import { MetaClass, MetaFunction, ClassField, ClassMethod } from "./meta_js";
-import { reduce, concat, map, filter, endsWith, assign } from "lodash";
+import { reduce, concat, map, filter, endsWith, assign, flatten } from "lodash";
 
 export function getEntityTypesDefault(meta: ODataMetadata) {
   return meta["edmx:Edmx"]["edmx:DataServices"][0].Schema[0].EntityType
@@ -121,7 +121,7 @@ export function parseMetaCRUDFunctionByEntityName(metadata: ODataMetadata, entit
   const collections = getEntityCollectionDefault(metadata)
   const collection = filter(collections, c => c.$.EntityType.split(".").pop() === entityName)
   if (collection.length > 0) {
-    return parseMetaCRUDFunctionFrom(collection[0])
+    return concat(flatten(map(collection, c => parseMetaCRUDFunctionFrom(c))))
   } else {
     return [];
   }
