@@ -3,13 +3,58 @@ import { split, slice, join } from "lodash";
 import { GetAuthorizationPair, isJSONString } from "./util";
 import { attempt } from "lodash";
 
+export type AdvancedODataClientProxy = (url: string, init: RequestInit) => Promise<{
+  /**
+   * The Body Content
+   */
+  content: any,
+  response: {
+    headers?: Headers,
+    status: number,
+  }
+}>
+
 export interface ODataNewParam {
   metadataUri: string;
   credential?: Credential;
   headers: any;
-  fetchProxy?: (url: string, init: RequestInit) => Promise<Response>,
+  fetchProxy?: AdvancedODataClientProxy,
   processCsrfToken?: boolean;
 }
+
+
+const odataDefaultFetchProxy: AdvancedODataClientProxy = async (url: string, init: RequestInit) => {
+  const res = await fetch(url, init)
+  var content: any;
+  if (res.status === 401) {
+    throw new Error("401, Unauthorized, check your creadential !");
+  }
+  if (res.status === 403) {
+    throw new Error("403, Forbidden, check your csrf token !");
+  }
+  if (res.status === 500) {
+    throw new Error("500, internal error")
+  }
+
+  content = await res.text();
+  // result process
+  var jsonResult = attempt(JSON.parse, content);
+  if (!(jsonResult instanceof Error)) {
+    content = jsonResult;
+    if (content.error) {
+      throw new Error(content.error.message.value)
+    }
+  }
+
+  return {
+    content,
+    response: {
+      headers: res.headers,
+      status: res.status
+    }
+  }
+
+};
 
 /**
  * OData Client
@@ -35,7 +80,7 @@ export class OData {
     "Content-Type": "application/json",
   };
   private requestUrlRewrite: (url: string) => string = (s) => s;
-  private fetchProxy = (url: string, init: RequestInit) => fetch(url, init);
+  private fetchProxy = odataDefaultFetchProxy;
   private processCsrfToken = true;
 
   /**
@@ -55,20 +100,13 @@ export class OData {
 
   /**
    * OData
-   * 
-   * @param config OData metadata uri
-   * @param credential Basic认证
-   * @param headers 头部信息
-   * @param urlRewrite url重写
-   * @param fetchProxy fetch代理
-   * @param processCsrfToken 是否处理CSRF Token
    */
   constructor(
     metadataUri: string,
     credential?: Credential,
     headers: any = {},
     urlRewrite?: (string) => string,
-    fetchProxy = (url: string, init: RequestInit) => fetch(url, init),
+    fetchProxy?: AdvancedODataClientProxy,
     processCsrfToken: boolean = true
   ) {
     if (fetchProxy) {
@@ -132,14 +170,18 @@ export class OData {
     if (this.csrfToken) {
       return await this.csrfToken;
     }
-    const res = await this.fetchProxy(this.requestUrlRewrite(this.odataEnd), {
+    const { response: { headers } } = await this.fetchProxy(this.requestUrlRewrite(this.odataEnd), {
       method: "GET",
       headers: {
         "x-csrf-token": "fetch",
         ...this.headers()
       },
     });
-    this.csrfToken = res.headers.get("x-csrf-token");
+    if (headers) {
+      this.csrfToken = headers.get("x-csrf-token");
+    } else {
+      throw new Error("csrf token need the odata proxy give out headers!")
+    }
     return this.csrfToken;
   }
 
@@ -178,37 +220,20 @@ export class OData {
       config.body = JSON.stringify(body);
     }
     // request & response
-    var res = await this.fetchProxy(this.requestUrlRewrite(final_uri), config);
+    var res = await this.fetchProxy(final_uri, config);
 
-    // result process
-    var content: any = await res.text();
-    var jsonResult = attempt(JSON.parse, content);
-    if (!(jsonResult instanceof Error)) {
-      content = jsonResult;
-      if (content.error) {
-        throw new Error(content.error.message.value)
-      }
-    }
-
-    // error process
     if (this.processCsrfToken) {
-      if (res.headers.get("x-csrf-token") == "Required") {
-        // one time retry if csrf token time expired
-        this.cleanCsrfToken();
-        config.headers["x-csrf-token"] = await this.getCsrfToken();
-        res = await fetch(this.requestUrlRewrite(final_uri), config);
+      if (res.response.headers) {
+        if (res.response.headers.get("x-csrf-token") == "Required") {
+          // one time retry if csrf token time expired
+          this.cleanCsrfToken();
+          config.headers["x-csrf-token"] = await this.getCsrfToken();
+          res = await this.fetchProxy(final_uri, config);
+        }
       }
     }
-    if (res.status === 401) {
-      throw new Error("401, Unauthorized, check your creadential !");
-    }
-    if (res.status === 403) {
-      throw new Error("403, Forbidden, check your csrf token !");
-    }
-    if (res.status === 500) {
-      throw new Error("500, internal error")
-    }
-    return content;
+
+    return res.content;
   }
 
   /**
