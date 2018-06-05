@@ -2,7 +2,6 @@
 import "isomorphic-fetch"
 import { parse } from "cli";
 import { cwd, exit } from "process";
-import { error } from "console";
 import { map } from "lodash";
 import { GetAuthorizationPair } from "../util";
 import { writeFileSync } from "fs";
@@ -33,6 +32,7 @@ const options: CliOption = parse({
   user: ['u', 'c4c username', "string"],
   pass: ['p', 'c4c password', "string"],
   out: ['o', 'out file', 'string', "c4codata.js"],
+  debug: ['d', 'debug mode', 'boolean', false],
   separate: ['s', 'out with separate files in directory', "string"]
 }, []);
 
@@ -59,24 +59,39 @@ const generateAndWriteSingle = (meta: ODataMetadata, options: CliOption) => {
   writeFileSync(outPath, singleFileString)
 }
 
+const d = (string) => {
+  if (options.debug) {
+    console.log(string)
+  }
+}
+
 (async () => {
-  if (options.uri && options.user && options.pass) {
+  if (options.uri) {
     try {
+
+      d(`fetch metadata: ${options.uri}`)
+
       const res = await fetch(options.uri, { headers: { ...GetAuthorizationPair(options.user, options.pass) } })
       if (res.status != 200) {
         throw new Error(`Response not correct, check your network & credential\nStatus:${res.status}\nHeaders:${JSON.stringify(res.headers)}`)
       }
       const body = await res.text()
+
+      d(body ? "have content" : "no content")
+
       // need process exception
       const meta = await parseODataMetadata(body)
+
       if (options.separate) {
         mkdirp.sync(join(cwd(), options.separate))
         generateAndWriteSeprate(meta, options)
       } else {
         generateAndWriteSingle(meta, options)
       }
+
     } catch (error) {
-      error("You must give out metadata url & credential for generate static file")
+      console.error(error.message)
+      d(error)
     }
   }
 })()

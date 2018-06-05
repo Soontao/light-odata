@@ -5,4 +5,5 @@ export interface CliOption {
   pass?: string
   out: string
   separate: string
+  debug?: boolean
 }

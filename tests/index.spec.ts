@@ -7,6 +7,11 @@ const TestServiceURL = "http://services.odata.org/V2/Northwind/Northwind.svc/$me
 const odata = new OData(TestServiceURL)
 
 describe('Read Test', () => {
+  
+  beforeEach(function () {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 25000;
+  });
+
 
   // these tests only work for demo odata
   // C4C OData response is different these

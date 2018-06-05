@@ -1,11 +1,15 @@
 import { parseString } from "xml2js";
 import { ODataMetadata, ODataEntityType, ODataCollection } from "./meta_odata";
 import { MetaClass, MetaFunction, ClassField, ClassMethod } from "./meta_js";
-import { reduce, concat, map, filter, endsWith, assign, flatten, isEmpty } from "lodash";
+import { reduce, concat, map, filter, endsWith, assign, flatten, isEmpty, get } from "lodash";
+
+// need refactor data services collection
 
 export function getEntityTypesDefault(meta: ODataMetadata) {
   return meta["edmx:Edmx"]["edmx:DataServices"][0].Schema[0].EntityType
 }
+
+// need refactor data services collection
 
 export function getEntityCollectionDefault(meta: ODataMetadata) {
   return meta["edmx:Edmx"]["edmx:DataServices"][0].Schema[0].EntityContainer[0].EntitySet
