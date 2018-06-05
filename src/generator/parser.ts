@@ -1,7 +1,7 @@
 import { parseString } from "xml2js";
 import { ODataMetadata, ODataEntityType, ODataCollection } from "./meta_odata";
 import { MetaClass, MetaFunction, ClassField, ClassMethod } from "./meta_js";
-import { reduce, concat, map, filter, endsWith, assign, flatten } from "lodash";
+import { reduce, concat, map, filter, endsWith, assign, flatten, isEmpty } from "lodash";
 
 export function getEntityTypesDefault(meta: ODataMetadata) {
   return meta["edmx:Edmx"]["edmx:DataServices"][0].Schema[0].EntityType
@@ -22,17 +22,27 @@ export function getEntityTypeByEntityCollection(meta: ODataMetadata, collection:
 }
 
 
+/**
+ * parse odata metadata xml
+ * 
+ * @param file_str odata metadata xml string
+ */
 export function parseODataMetadata(file_str: string) {
   return new Promise<ODataMetadata>((resolve, reject) => {
-    parseString(file_str, function (err, result) {
-      if (err) {
-        reject(err)
-      } else {
-        resolve(result)
-      }
-    })
+    if (isEmpty(file_str)) {
+      reject("not get acceptable odata metadata xml")
+    } else {
+      parseString(file_str, function (err, result) {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(result)
+        }
+      })
+    }
   })
 }
+
 export function parseMetaClassFromOnlyClassDefault(metadata: ODataMetadata): MetaClass[] {
   return parseMetaClassFromOnlyClass(metadata, getEntityTypesDefault(metadata))
 }
