@@ -67,6 +67,7 @@ const generateAndWriteSingle = (meta: ODataMetadata, options: CliOption) => {
         throw new Error(`Response not correct, check your network & credential\nStatus:${res.status}\nHeaders:${JSON.stringify(res.headers)}`)
       }
       const body = await res.text()
+      // need process exception
       const meta = await parseODataMetadata(body)
       if (options.separate) {
         mkdirp.sync(join(cwd(), options.separate))

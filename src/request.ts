@@ -14,11 +14,22 @@ export type AdvancedODataClientProxy = (url: string, init: RequestInit) => Promi
   }
 }>
 
-export interface ODataNewParam {
+export interface ODataNewOptions {
+  /**
+   * metadata url
+   */
   metadataUri: string;
+  /**
+   * basic credential pair
+   */
   credential?: Credential;
-  headers: any;
+  /**
+   * fetch proxy of all request
+   */
   fetchProxy?: AdvancedODataClientProxy,
+  /**
+   * auto process csrf token of c4c
+   */
   processCsrfToken?: boolean;
 }
 
@@ -88,11 +99,11 @@ export class OData {
    * 
    * @param options config options
    */
-  static New(options: ODataNewParam) {
+  static New(options: ODataNewOptions) {
     return new OData(
       options.metadataUri,
       options.credential,
-      options.headers,
+      undefined,
       undefined,
       options.fetchProxy,
       options.processCsrfToken)
