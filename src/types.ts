@@ -245,6 +245,16 @@ export class ODataQueryParam {
   }
 
   /**
+   * set order by multi field
+   * 
+   * @param fields 
+   */
+  orderbyMulti(fields: ODataParamOrderField[]) {
+    this.$orderby = join(map(fields, f => `${f.field} ${f.order || "desc"}`), ",")
+    return this;
+  }
+
+  /**
    * result format, please keep it as json
    * 
    * @param format deafult json
@@ -379,6 +389,18 @@ export class DeferredNavigationProperty {
   __deferred: {
     uri: string
   }
+}
+
+export interface ODataParamOrderField {
+  /**
+   * field name
+   */
+  field: string;
+
+  /**
+   * order asc or desc
+   */
+  order?: "asc" | "desc";
 }
 
 declare global {

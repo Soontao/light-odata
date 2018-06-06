@@ -23,5 +23,10 @@ describe('ODataParams Test', () => {
     expect(decodeURIComponent(param.toString())).toEqual("$format=json&$inlinecount=allpages")
   })
 
+  test('ODataParam orderby multi', () => {
+    const param = ODataParam.newParam().orderbyMulti([{ field: "A" }, { field: "B", order: "asc" }]);
+    expect(decodeURIComponent(param.toString())).toEqual("$format=json&$orderby=A+desc,B+asc")
+  })
+
 
 })
