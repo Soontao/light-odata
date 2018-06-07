@@ -1,6 +1,7 @@
 # C4C OData Javascript Library
 
-[![CircleCI](https://circleci.com/gh/Soontao/c4codata.svg?style=shield)](https://circleci.com/gh/Soontao/c4codata) [![codecov](https://codecov.io/gh/Soontao/c4codata/branch/master/graph/badge.svg)](https://codecov.io/gh/Soontao/c4codata)
+[![npm version](https://badge.fury.io/js/c4codata.svg)](https://badge.fury.io/js/c4codata) [![CircleCI](https://circleci.com/gh/Soontao/c4codata.svg?style=shield)](https://circleci.com/gh/Soontao/c4codata) [![codecov](https://codecov.io/gh/Soontao/c4codata/branch/master/graph/badge.svg)](https://codecov.io/gh/Soontao/c4codata) [![npm](https://img.shields.io/npm/dy/c4codata.svg)](https://www.npmjs.com/package/c4codata)
+
 
 Simplify Code at JS Client for SAP C4C OData (v2) Service
 
