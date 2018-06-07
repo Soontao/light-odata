@@ -69,8 +69,39 @@ expect(result.d.results[0]["CustomerID"]).toEqual("ALFKI")
 
 ```
 
+## ODataParam
+
+### page
+
+```javascript 
+// equal to $format=json&$skip=30&$top=10
+ODataParam.newParam().skip(30).top(10)
+```
+
+### inline count 
+
+```javascript 
+// equal to $format=json&$inlinecount=allpages
+ODataParam.newParam().inlinecount(true)
+```
+
+### orderby
+
+```javascript
+// equal to $format=json&$orderby=CreationDateTime desc
+ODataParam.newParam().orderby("CreationDateTime")
+```
+
+### multi filed orderby
+
+```javascript
+// equal to $format=json&$orderby=A desc,B asc
+ODataParam.newParam().orderbyMulti([{ field: "A" }, { field: "B", order: "asc" }])
+```
+
 ## TO-DO
 
+* Documents
 * Codelist generator
 * OAuth Support
 
