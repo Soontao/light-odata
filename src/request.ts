@@ -1,4 +1,4 @@
-import { ODataQueryParam, HTTPMethod, Credential, PlainODataResponse } from "./types";
+import { ODataQueryParam, HTTPMethod, Credential, PlainODataResponse, ODataParam, ODataFilter } from "./types";
 import { split, slice, join } from "lodash";
 import { GetAuthorizationPair, isJSONString } from "./util";
 import { attempt } from "lodash";
@@ -106,7 +106,22 @@ export class OData {
       undefined,
       undefined,
       options.fetchProxy,
-      options.processCsrfToken)
+      options.processCsrfToken
+    )
+  }
+
+  /**
+   * new odata query param
+   */
+  static newParam() {
+    return ODataParam.newParam();
+  }
+
+  /**
+   * new filter
+   */
+  static newFilter() {
+    return ODataFilter.newFilter();
   }
 
   /**

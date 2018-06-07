@@ -10,10 +10,6 @@ import { CliOption } from './type';
 import {
   parseODataMetadata,
   generateClassString,
-  generateCommonImportString,
-  generateFunctionString,
-  generateOperationObject,
-  parseMetaClassFromDefault,
   generateSeprateClassString,
   parseMetaCRUDFunctionByEntityName,
   generateFunctionsString,
