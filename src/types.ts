@@ -88,6 +88,15 @@ export class ODataFilter {
     return this;
   }
 
+  /**
+   * DEPRECATED
+   * 
+   * dont use this function
+   * 
+   * @param name 
+   * @param start 
+   * @param end 
+   */
   inPeriod(name: string, start: Date, end: Date) {
     this.group(
       ODataFilter.newFilter()
@@ -98,13 +107,52 @@ export class ODataFilter {
     return this;
   }
 
+  betweenDateTime(name: string, start: Date, end: Date) {
+    if (start && end) {
+      this.group(
+        ODataFilter.newFilter()
+          .gtDateTime(name, start)
+          .and()
+          .ltDateTime(name, end)
+      )
+    } else {
+      throw new Error("You must give out the start and end date")
+    }
+
+    return this;
+  }
+
+  betweenDateTimeOffset(name: string, start: Date, end: Date) {
+    if (start && end) {
+      this.group(
+        ODataFilter.newFilter()
+          .gtDateTimeOffset(name, start)
+          .and()
+          .ltDateTimeOffset(name, end)
+      )
+    } else {
+      throw new Error("You must give out the start and end date")
+    }
+    return this;
+  }
+
   gtDateTime(name: string, date: Date) {
     this.field(name).gt(`datetime'${date.toISOString()}'`)
     return this
   }
 
+  gtDateTimeOffset(name: string, date: Date) {
+    this.field(name).gt(`datetimeoffset'${date.toISOString()}'`)
+    return this
+  }
+
   ltDateTime(name: string, date: Date) {
     this.field(name).lt(`datetime'${date.toISOString()}'`)
+    return this
+  }
+
+  ltDateTimeOffset(name: string, date: Date) {
+    this.field(name).lt(`datetimeoffset'${date.toISOString()}'`)
     return this
   }
 
