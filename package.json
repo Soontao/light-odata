@@ -1,6 +1,6 @@
 {
   "name": "c4codata",
-  "version": "1.0.38",
+  "version": "1.0.39",
   "bin": {
     "odata-js-generator": "lib/cli/index.js"
   },

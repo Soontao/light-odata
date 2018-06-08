@@ -308,7 +308,11 @@ export class ODataQueryParam {
    * @param format deafult json
    */
   format(format: "json" | "xml") {
-    this.$format = format
+    if (format === "json") {
+      this.$format = format
+    } else {
+      throw new Error("c4codata dont support xml response")
+    }
     return this
   }
 
@@ -371,10 +375,13 @@ export class C4CODataSingleResult<T> {
     if (object.error) {
       throw new Error(object.error.message.value)
     }
-    rt.d.results = C4CEntity.fromPlainObject(object.d.results, type)
+    if (rt.d && rt.d.results) {
+      rt.d.results = C4CEntity.fromPlainObject(object.d.results, type)
+    } else {
+      throw new Error("not accepted odata reseponse object")
+    }
     return rt;
   }
-
 
   static fromRequestResult = async function <T>(p: Promise<PlainODataResponse>, t: { new(): T }) {
     return C4CODataSingleResult.fromPlainObject(await p, t)
@@ -393,10 +400,16 @@ export class C4CODataResult<T> {
     if (object.error) {
       throw new Error(object.error.message.value)
     }
-    if (object.d.__count) {
-      rt.d.__count = object.d.__count
+
+    if (object.d) {
+      if (object.d.__count) {
+        rt.d.__count = object.d.__count
+      }
+      rt.d.results = object.d.results.map(e => C4CEntity.fromPlainObject(e, type))
+    } else {
+      throw new Error("not accepted odata reseponse object")
     }
-    rt.d.results = object.d.results.map(e => C4CEntity.fromPlainObject(e, type))
+
     return rt;
   }
 
@@ -417,6 +430,8 @@ export class C4CEntity {
 
   ObjectID: string
 
+  ETag: Edm.DateTime
+
   ParentObjectID?: string
 
   /**
@@ -433,7 +448,7 @@ export class C4CEntity {
 
 }
 
-export class DeferredNavigationProperty {
+export interface DeferredNavigationProperty {
   __deferred: {
     uri: string
   }

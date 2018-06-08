@@ -1,7 +1,12 @@
 import "jest"
-import { ODataFilter } from "../src";
+import { ODataFilter, OData } from "../src";
 
 describe("OData Filter Test", () => {
+
+  test('OData filter alternative constructor', () => {
+    expect(OData.newFilter()).toBeInstanceOf(ODataFilter)
+    expect(ODataFilter.newBuilder()).toBeInstanceOf(ODataFilter)
+  })
 
   test("ODataFilter.eqString", () => {
     const filter = ODataFilter.newFilter().field("Name").eqString("test string")
@@ -23,11 +28,19 @@ describe("OData Filter Test", () => {
   })
 
   test('ODataFilter.and(complex)', () => {
-    const filter = ODataFilter.newFilter().field("Name").eq("'test string1'").and(
+    const filter = ODataFilter.newFilter().field("Name2").eq("'test string1'").and(
       ODataFilter.newFilter().fieldIn("Name", ["test string1", "test string2"])
     )
     expect(filter.build())
-      .toEqual("(Name eq 'test string1') and (Name eq 'test string1' or Name eq 'test string2')")
+      .toEqual("(Name2 eq 'test string1') and (Name eq 'test string1' or Name eq 'test string2')")
+  })
+
+  test('ODataFilter.or(complex)', () => {
+    const filter = ODataFilter.newFilter().field("Name").eq("'test string1'").or(
+      ODataFilter.newFilter().fieldIn("Name", ["test string3", "test string2"])
+    )
+    expect(filter.build())
+      .toEqual("(Name eq 'test string1') or (Name eq 'test string3' or Name eq 'test string2')")
   })
 
   test('ODataFilter.inPeriod', () => {
@@ -37,7 +50,5 @@ describe("OData Filter Test", () => {
     expect(filter.build())
       .toEqual("Name eq 'test string1' and (CreationDateTime gt datetime'2018-01-24T12:43:31.839Z' and CreationDateTime lt datetime'2018-05-24T12:43:31.839Z')")
   })
-
-
 
 })
