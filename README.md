@@ -7,16 +7,16 @@
  [![npm](https://img.shields.io/npm/dy/c4codata.svg)](https://www.npmjs.com/package/c4codata)
  [![GitHub repo size in bytes](https://img.shields.io/github/repo-size/Soontao/c4codata.svg)](https://github.com/Soontao/c4codata)
 
-Simplify Code at JS Client for SAP C4C OData (v2) Service
+OData Client for SAP C4C OData (v2) Service
 
 ## install
 
 ```bash
-npm i -g c4codata # global
+npm i -g c4codata # global generator
 npm i -S c4codata # in your project
 ```
 
-## usage
+## generator usage
 
 ```bash
 
@@ -33,7 +33,7 @@ Options:
 
 ```
 
-sample command
+sample command (generate single js file)
 
 ```bash
 # use following command to generate declaration
@@ -59,6 +59,8 @@ expect(result.d.results[0]["CustomerID"]).toEqual("ALFKI")
 ```
 
 ## ODataFilter
+
+use `ODataFilter` to filter data
 
 ```js
 // import
@@ -93,6 +95,8 @@ ODataFilter.newFilter().field("Name").eq("'test string1'").and(
 ```
 
 ## ODataParam
+
+use `ODataParam` to control data size, fields and order
 
 ### page
 
