@@ -51,4 +51,20 @@ describe("OData Filter Test", () => {
       .toEqual("Name eq 'test string1' and (CreationDateTime gt datetime'2018-01-24T12:43:31.839Z' and CreationDateTime lt datetime'2018-05-24T12:43:31.839Z')")
   })
 
+  test('ODataFilter.betweenDateTime', () => {
+    const filter = ODataFilter.newFilter()
+      .field("Name").eq("'test string1'").and()
+      .betweenDateTime("CreationDateTime", new Date("2018-01-24T12:43:31.839Z"), new Date("2018-05-24T12:43:31.839Z"))
+    expect(filter.build())
+      .toEqual("Name eq 'test string1' and (CreationDateTime gt datetime'2018-01-24T12:43:31.839Z' and CreationDateTime lt datetime'2018-05-24T12:43:31.839Z')")
+  })
+
+  test('ODataFilter.betweenDateTimeOffset', () => {
+    const filter = ODataFilter.newFilter()
+      .field("Name").eq("'test string1'").and()
+      .betweenDateTimeOffset("CreationDateTime", new Date("2018-01-24T12:43:31.839Z"), new Date("2018-05-24T12:43:31.839Z"))
+    expect(filter.build())
+      .toEqual("Name eq 'test string1' and (CreationDateTime gt datetimeoffset'2018-01-24T12:43:31.839Z' and CreationDateTime lt datetimeoffset'2018-05-24T12:43:31.839Z')")
+  })
+
 })

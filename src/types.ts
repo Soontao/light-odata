@@ -351,8 +351,8 @@ export class ODataQueryParam {
 
   toString(): string {
     let rt = new UrlSearchParam();
-    if (this.$filter) { rt.append("$filter", this.$filter.toString()); }
     if (this.$format) { rt.append("$format", this.$format); }
+    if (this.$filter) { rt.append("$filter", this.$filter.toString()); }
     if (this.$orderby) { rt.append("$orderby", this.$orderby); }
     if (this.$search) { rt.append("$search", this.$search); }
     if (this.$select && this.$select.length > 0) { rt.append("$select", this.$select); }

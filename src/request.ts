@@ -85,12 +85,14 @@ export class OData {
    * internal csrf token
    */
   private csrfToken: string = "";
+  /**
+   * dont direct use this object
+   */
   private commonHeader: { [headerName: string]: string } = {
     "Accept": "application/json",
     "Accept-Language": "zh",
     "Content-Type": "application/json",
   };
-  private requestUrlRewrite: (url: string) => string = (s) => s;
   private fetchProxy = odataDefaultFetchProxy;
   private processCsrfToken = true;
 
@@ -131,8 +133,14 @@ export class OData {
     metadataUri: string,
     credential?: Credential,
     headers: any = {},
+    /**
+     * deprecated, no use now
+     */
     urlRewrite?: (string) => string,
     fetchProxy?: AdvancedODataClientProxy,
+    /**
+     * auto fetch csrf token before broken operation
+     */
     processCsrfToken: boolean = true
   ) {
     if (fetchProxy) {
@@ -144,14 +152,11 @@ export class OData {
       this.metadataUri = metadataUri;
       // e.g https://c4c-system/sap/c4c/odata/v1/c4codata/
       this.odataEnd = join(slice(split(this.metadataUri, "/"), 0, -1), "/") + "/";
-      this.commonHeader = { ...this.commonHeader, ...headers }
       if (credential) {
         this.credential = credential;
       }
-      if (urlRewrite) {
-        this.requestUrlRewrite = urlRewrite;
-      }
     }
+    this.commonHeader = { ...this.commonHeader, ...headers }
     this.processCsrfToken = processCsrfToken;
   }
 
@@ -196,7 +201,7 @@ export class OData {
     if (this.csrfToken) {
       return await this.csrfToken;
     }
-    const { response: { headers } } = await this.fetchProxy(this.requestUrlRewrite(this.odataEnd), {
+    const { response: { headers } } = await this.fetchProxy(this.odataEnd, {
       method: "GET",
       headers: {
         "x-csrf-token": "fetch",

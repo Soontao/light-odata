@@ -1,7 +1,6 @@
 import "jest"
 import { ODataParam, ODataQueryParam, OData, ODataFilter } from "../src";
 
-
 describe('ODataParams Test', () => {
 
     test('ODataQueryParam alias', () => {
@@ -27,6 +26,15 @@ describe('ODataParams Test', () => {
         expect(decodeURIComponent(param.toString())).toEqual("$format=json&$inlinecount=allpages")
     })
 
+    test('ODataParam filter', () => {
+        const param = OData.newParam().filter(OData.newFilter().field("A").eqString("test"))
+        expect(decodeURIComponent(param.toString())).toEqual("$format=json&$filter=A+eq+'test'")
+        const param2 = OData.newParam().filter("A eq 'test'")
+        expect(decodeURIComponent(param2.toString())).toEqual("$format=json&$filter=A+eq+'test'")
+        expect(() => {
+            OData.newParam().filter(undefined)
+        }).toThrow();
+    })
 
     test('ODataParam inlinecount false', () => {
         const param = ODataParam.newParam().inlinecount(false)
