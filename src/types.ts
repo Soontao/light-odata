@@ -375,7 +375,7 @@ export class C4CODataSingleResult<T> {
     if (object.error) {
       throw new Error(object.error.message.value)
     }
-    if (rt.d && rt.d.results) {
+    if (object.d && object.d.results) {
       rt.d.results = C4CEntity.fromPlainObject(object.d.results, type)
     } else {
       throw new Error("not accepted odata reseponse object")
