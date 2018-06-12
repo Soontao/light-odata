@@ -29,7 +29,8 @@ const options: CliOption = parse({
   pass: ['p', 'c4c password', "string"],
   out: ['o', 'out file', 'string', "c4codata.js"],
   debug: ['d', 'debug mode', 'boolean', false],
-  separate: ['s', 'out with separate files in directory', "string"]
+  separate: ['s', 'out with separate files in directory', "string"],
+  odatajs: ['r', 'seperate generator with odata.js', 'boolean', true]
 }, []);
 
 const generateAndWriteSeprate = (meta: ODataMetadata, options: CliOption) => {
@@ -37,7 +38,9 @@ const generateAndWriteSeprate = (meta: ODataMetadata, options: CliOption) => {
   const odataInitPath = join(basePath, "odata.js")
   const indexPath = join(basePath, "index.js")
   const classes = parseMetaClassFromOnlyClassDefault(meta);
-  writeFileSync(odataInitPath, generateSeprateODataFile(options.uri, options.user, options.pass))
+  if (options.odatajs) {
+    writeFileSync(odataInitPath, generateSeprateODataFile(options.uri, options.user, options.pass))
+  }
   writeFileSync(indexPath, generateSeprateIndexFile(classes))
   map(classes, c => {
     const classFuncs = parseMetaCRUDFunctionByEntityName(meta, c.name)

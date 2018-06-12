@@ -95,7 +95,7 @@ export function parseSingleMetaClassFromOnlyType(entity: ODataEntityType): MetaC
         ({
           name: n.$.Name,
           type: n.$.ToRole,
-          value: `${n.$.Name}`,
+          value: `"${n.$.Name}"`,
           static: true,
           originProperty: n
         })

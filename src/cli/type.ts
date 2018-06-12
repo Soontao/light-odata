@@ -6,4 +6,5 @@ export interface CliOption {
   out: string
   separate: string
   debug?: boolean
+  odatajs: boolean
 }

@@ -41,5 +41,6 @@
     "haskell": "runhaskell",
     "nim": "nim compile --verbosity:0 --hints:off --run"
   },
-  "editor.tabSize": 2
+  "editor.tabSize": 2,
+  "editor.fontSize": 14
 }
