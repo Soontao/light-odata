@@ -21,14 +21,16 @@ npm i -S c4codata # in your project
 ```bash
 
 Usage:
-  cli [OPTIONS] [ARGS]
+  odata-js-generator [OPTIONS] [ARGS]
 
 Options:
   -m, --uri STRING       metadata uri
   -u, --user STRING      c4c username
   -p, --pass STRING      c4c password
   -o, --out [STRING]     out file (Default is c4codata.js)
+  -d, --debug BOOLEAN    debug mode
   -s, --separate STRING  out with separate files in directory
+  -r, --odatajs BOOLEAN  seperate generator without odata.js
   -h, --help             Display help and usage details
 
 ```
