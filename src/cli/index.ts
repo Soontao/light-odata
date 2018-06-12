@@ -30,7 +30,7 @@ const options: CliOption = parse({
   out: ['o', 'out file', 'string', "c4codata.js"],
   debug: ['d', 'debug mode', 'boolean', false],
   separate: ['s', 'out with separate files in directory', "string"],
-  odatajs: ['r', 'seperate generator with odata.js', 'boolean', true]
+  odatajs: ['r', 'seperate generator without odata.js', 'boolean', false]
 }, []);
 
 const generateAndWriteSeprate = (meta: ODataMetadata, options: CliOption) => {
@@ -38,7 +38,7 @@ const generateAndWriteSeprate = (meta: ODataMetadata, options: CliOption) => {
   const odataInitPath = join(basePath, "odata.js")
   const indexPath = join(basePath, "index.js")
   const classes = parseMetaClassFromOnlyClassDefault(meta);
-  if (options.odatajs) {
+  if (!options.odatajs) {
     writeFileSync(odataInitPath, generateSeprateODataFile(options.uri, options.user, options.pass))
   }
   writeFileSync(indexPath, generateSeprateIndexFile(classes))
