@@ -27,7 +27,6 @@ describe('test batch multipart parse & format', () => {
   test('should parse complex multipart', async () => {
     const sample = readFileSync(join(__dirname, "./resources/batch/complex-multipart.response"), { encoding: "utf8" })
     const responses = await parseMultiPartContent(sample, "ejjeeffe0")
-    console.log(await responses[2].text())
   })
 
 

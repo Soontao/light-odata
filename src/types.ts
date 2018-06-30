@@ -1,6 +1,5 @@
-import * as UrlSearchParam from "url-search-params"
 import { concat, assign, map, join, isArray, isString, forEach } from "lodash";
-import { OData } from ".";
+const UrlSearchParam = require("url-search-params")
 
 export type HTTPMethod = "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "PATCH";
 
