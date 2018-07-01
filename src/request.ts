@@ -35,6 +35,18 @@ export interface ODataNewOptions {
   processCsrfToken?: boolean;
 }
 
+export interface BatchRequestOptions {
+  collection: string;
+  id?: string;
+  params?: ODataQueryParam;
+  method?: HTTPMethod,
+  entity?: any,
+  /**
+   * SAP OData need Content-Length but standard reject it
+   */
+  withContentLength?: boolean;
+}
+
 
 const odataDefaultFetchProxy: AdvancedODataClientProxy = async (url: string, init: RequestInit) => {
   const res = await fetch(url, init)
@@ -308,13 +320,16 @@ export class OData {
     return await parseMultiPartContent(content, responseBoundaryString)
   }
 
-  public async newBatchRequest(collection: string, id?: string, params?: ODataQueryParam, method: HTTPMethod = "GET", entity?: any) {
+  public async newBatchRequest(options: BatchRequestOptions) {
+    var { collection, method = "GET", id, withContentLength = false, params, entity } = options;
     var url = collection
     var headers = await this.getHeaders();
+    var rt: BatchRequest = { url, init: { method, } }
 
     if (id) {
       url += `('${id}')`;
     }
+
     if (method === "GET") {
       delete headers['Content-Type']
       // other request dont need param
@@ -322,16 +337,22 @@ export class OData {
         url = `${url}?${params.toString()}`;
       }
     } else {
-      rt.init.body = entity
+
+
+      if (typeof entity === "string") {
+        rt.init.body = entity
+      } else {
+        rt.init.body = JSON.stringify(entity)
+      }
+
+      if (withContentLength) {
+        rt.init.headers["Content-Length"] = decodeURIComponent(rt.init.body).length
+      }
+
     }
 
-    var rt: BatchRequest = {
-      url,
-      init: {
-        method,
-        headers,
-      }
-    }
+    rt.init.headers = headers;
+    rt.url = url;
 
     return rt;
   }

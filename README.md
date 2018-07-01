@@ -1,11 +1,9 @@
 # C4C OData Javascript Library
 
- [![CircleCI](https://circleci.com/gh/Soontao/c4codata.svg?style=shield)](https://circleci.com/gh/Soontao/c4codata)
- [![codecov](https://codecov.io/gh/Soontao/c4codata/branch/master/graph/badge.svg)](https://codecov.io/gh/Soontao/c4codata)
- [![npm version](https://badge.fury.io/js/c4codata.svg)](https://badge.fury.io/js/c4codata)
- [![GitHub top language](https://img.shields.io/github/languages/top/Soontao/c4codata.svg)](https://github.com/Soontao/c4codata)
- [![npm](https://img.shields.io/npm/dy/c4codata.svg)](https://www.npmjs.com/package/c4codata)
- [![GitHub repo size in bytes](https://img.shields.io/github/repo-size/Soontao/c4codata.svg)](https://github.com/Soontao/c4codata)
+[![CircleCI](https://circleci.com/gh/Soontao/c4codata.svg?style=shield)](https://circleci.com/gh/Soontao/c4codata)
+[![codecov](https://codecov.io/gh/Soontao/c4codata/branch/master/graph/badge.svg)](https://codecov.io/gh/Soontao/c4codata)
+[![npm version](https://badge.fury.io/js/c4codata.svg)](https://badge.fury.io/js/c4codata)
+[![npm](https://img.shields.io/npm/dy/c4codata.svg)](https://www.npmjs.com/package/c4codata)
 
 OData Client for SAP C4C OData (v2) Service
 
@@ -57,6 +55,40 @@ const odata = new OData(TestServiceURL)
 const filter = ODataFilter.newFilter().field("Phone").eqString("030-0074321");
 const result = await odata.request("Customers", undefined, ODataParam.newParam().filter(filter))
 expect(result.d.results[0]["CustomerID"]).toEqual("ALFKI")
+
+```
+
+## Batch requests
+
+use odata `$batch` api for operating multi entities in single http request
+
+```javascript
+
+import { OData } from "c4codata"
+
+const odata = OData.New({
+  metadataUri: "http://services.odata.org/V2/(S(fw3rjcrboq25moedupvhuhx3))/OData/OData.svc/$metadata",
+  processCsrfToken: false,
+})
+const bRequest1 = await odata.newBatchRequest({
+  collection: "Products",
+  entity: {
+    ID: 100009
+  },
+  method: "POST",
+  // withContentLength: true, for SAP OData, please set this flag as true
+})
+const bRequest2 = await odata.newBatchRequest({
+  collection: "Products",
+  entity: {
+    ID: 100012
+  },
+  method: "POST",
+  // withContentLength: true, for SAP OData, please set this flag as true
+})
+const result = await odata.execBatchRequests([bRequest1, bRequest2])
+expect(result[0].status).toEqual(201)
+expect(result[1].status).toEqual(201)
 
 ```
 
@@ -134,6 +166,7 @@ SAP Cloud for Customer's OData, only support use AND in different fields and OR 
 
 ## TO-DO
 
+* Batch requests declaration
 * Documents
 * Codelist generator
 * OAuth Support

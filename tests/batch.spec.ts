@@ -32,6 +32,12 @@ describe('test batch multipart parse & format', () => {
     expect(await responses[3].text())
   })
 
+  test('should parse standard odata multipart', async () => {
+    const sample = readFileSync(join(__dirname, "./resources/batch/sample.standard.response"), { encoding: "utf8" })
+    const responses = await parseMultiPartContent(sample, "batchresponse_939aeb3e-6c08-4051-a65c-638da9146941")
+    expect((await responses[0].json())["d"].length).toEqual(1)
+  })
+
 
   test('should format multipart', () => {
     const test: RequestInit = {
@@ -88,18 +94,47 @@ describe('test batch multipart parse & format', () => {
 
   test('should request batch get', async () => {
     const odata = OData.New({
-      metadataUri: "http://services.odata.org/V2/(S(fw3rjcrboq25moedupvhuhx3))/OData/OData.svc/$metadata",
+      metadataUri: "http://services.odata.org/V2/(S(dj5xyxxt14bkddw5m33kfqxz))/OData/OData.svc/",
       processCsrfToken: false,
     })
-    const bRequest1 = await odata.newBatchRequest("Products", undefined, OData.newParam().top(1).inlinecount(true))
-    const bRequest2 = await odata.newBatchRequest("Products", undefined, OData.newParam().skip(1).top(1).inlinecount(true))
+    const bRequest1 = await odata.newBatchRequest({
+      collection: "Products",
+      params: OData.newParam().top(1).inlinecount(true)
+    })
+    const bRequest2 = await odata.newBatchRequest({
+      collection: "Products",
+      params: OData.newParam().skip(1).top(1).inlinecount(true)
+    })
     const result = await odata.execBatchRequests([bRequest1, bRequest2])
     const resultObjects = await Promise.all(result.map(r => r.json()));
     expect(resultObjects[0]["d"]["__count"]).toEqual("9")
     expect(resultObjects[1]["d"]["__count"]).toEqual("9")
   })
 
-
+  test('should request batch create', async () => {
+    const odata = OData.New({
+      metadataUri: "http://services.odata.org/V2/(S(fw3rjcrboq25moedupvhuhx3))/OData/OData.svc/$metadata",
+      processCsrfToken: false,
+    })
+    const bRequest1 = await odata.newBatchRequest({
+      collection: "Products",
+      entity: {
+        ID: 100009
+      },
+      method: "POST"
+    })
+    const bRequest2 = await odata.newBatchRequest({
+      collection: "Products",
+      entity: {
+        ID: 100012
+      },
+      method: "POST",
+      // withContentLength: true, for SAP OData, please set this flag as true
+    })
+    const result = await odata.execBatchRequests([bRequest1, bRequest2])
+    expect(result[0].status).toEqual(201)
+    expect(result[1].status).toEqual(201)
+  })
 
 })
 

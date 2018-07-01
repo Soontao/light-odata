@@ -1,0 +1,81 @@
+--batchresponse_939aeb3e-6c08-4051-a65c-638da9146941
+Content-Type: application/http
+Content-Transfer-Encoding: binary
+
+HTTP/1.1 200 OK
+Cache-Control: no-cache
+DataServiceVersion: 1.0;
+Content-Type: application/json;charset=utf-8
+
+{
+"d" : [
+{
+"__metadata": {
+"uri": "http://services.odata.org/(S(fw3rjcrboq25moedupvhuhx3))/V2/OData/OData.svc/Categories(0)", "type": "ODataDemo.Category"
+}, "ID": 0, "Name": "Food", "Products": {
+"__deferred": {
+"uri": "http://services.odata.org/(S(fw3rjcrboq25moedupvhuhx3))/V2/OData/OData.svc/Categories(0)/Products"
+}
+}
+}
+]
+}
+--batchresponse_939aeb3e-6c08-4051-a65c-638da9146941
+Content-Type: multipart/mixed; boundary=changesetresponse_6dce8cf1-eb9b-49a3-b68a-0380a05d4115
+
+--changesetresponse_6dce8cf1-eb9b-49a3-b68a-0380a05d4115
+Content-Type: application/http
+Content-Transfer-Encoding: binary
+
+HTTP/1.1 201 Created
+Cache-Control: no-cache
+DataServiceVersion: 1.0;
+Content-Type: application/json;charset=utf-8
+Location: http://services.odata.org/(S(fw3rjcrboq25moedupvhuhx3))/V2/OData/OData.svc/Products(100009)
+
+{
+"d" : {
+"__metadata": {
+"uri": "http://services.odata.org/(S(fw3rjcrboq25moedupvhuhx3))/V2/OData/OData.svc/Products(100009)", "type": "ODataDemo.Product"
+}, "ID": 100009, "Name": null, "Description": null, "ReleaseDate": null, "DiscontinuedDate": null, "Rating": null, "Price": null, "Category": {
+"__deferred": {
+"uri": "http://services.odata.org/(S(fw3rjcrboq25moedupvhuhx3))/V2/OData/OData.svc/Products(100009)/Category"
+}
+}, "Supplier": {
+"__deferred": {
+"uri": "http://services.odata.org/(S(fw3rjcrboq25moedupvhuhx3))/V2/OData/OData.svc/Products(100009)/Supplier"
+}
+}
+}
+}
+--changesetresponse_6dce8cf1-eb9b-49a3-b68a-0380a05d4115--
+--batchresponse_939aeb3e-6c08-4051-a65c-638da9146941
+Content-Type: multipart/mixed; boundary=changesetresponse_651e8da3-3fa6-44ee-ad9e-624e9ddc4122
+
+--changesetresponse_651e8da3-3fa6-44ee-ad9e-624e9ddc4122
+Content-Type: application/http
+Content-Transfer-Encoding: binary
+
+HTTP/1.1 201 Created
+Cache-Control: no-cache
+DataServiceVersion: 1.0;
+Content-Type: application/json;charset=utf-8
+Location: http://services.odata.org/(S(fw3rjcrboq25moedupvhuhx3))/V2/OData/OData.svc/Products(100012)
+
+{
+"d" : {
+"__metadata": {
+"uri": "http://services.odata.org/(S(fw3rjcrboq25moedupvhuhx3))/V2/OData/OData.svc/Products(100012)", "type": "ODataDemo.Product"
+}, "ID": 100012, "Name": null, "Description": null, "ReleaseDate": null, "DiscontinuedDate": null, "Rating": null, "Price": null, "Category": {
+"__deferred": {
+"uri": "http://services.odata.org/(S(fw3rjcrboq25moedupvhuhx3))/V2/OData/OData.svc/Products(100012)/Category"
+}
+}, "Supplier": {
+"__deferred": {
+"uri": "http://services.odata.org/(S(fw3rjcrboq25moedupvhuhx3))/V2/OData/OData.svc/Products(100012)/Supplier"
+}
+}
+}
+}
+--changesetresponse_651e8da3-3fa6-44ee-ad9e-624e9ddc4122--
+--batchresponse_939aeb3e-6c08-4051-a65c-638da9146941--
