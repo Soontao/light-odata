@@ -4,6 +4,7 @@ import { readFileSync } from "fs";
 import { join } from "path";
 import { parseMultiPartContent, formatBatchRequest } from "../src/batch";
 import { OData } from "../src/request";
+import { v4 } from "uuid";
 
 describe('test batch multipart parse & format', () => {
 
@@ -113,27 +114,32 @@ describe('test batch multipart parse & format', () => {
 
   test('should request batch create', async () => {
     const odata = OData.New({
-      metadataUri: "http://services.odata.org/V2/(S(fw3rjcrboq25moedupvhuhx3))/OData/OData.svc/$metadata",
+      metadataUri: `http://services.odata.org/V2/(S(${v4()}))/OData/OData.svc/$metadata`,
       processCsrfToken: false,
     })
+    const testDesc1 = v4(); // a generated uuid
+    const testDesc2 = v4();
     const bRequest1 = await odata.newBatchRequest({
       collection: "Products",
       entity: {
-        ID: 100009
+        ID: 100009,
+        Description: testDesc1,
       },
       method: "POST"
     })
     const bRequest2 = await odata.newBatchRequest({
       collection: "Products",
       entity: {
-        ID: 100012
+        ID: 100012,
+        Description: testDesc2,
       },
       method: "POST",
       // withContentLength: true, for SAP OData, please set this flag as true
     })
     const result = await odata.execBatchRequests([bRequest1, bRequest2])
-    expect(result[0].status).toEqual(201)
-    expect(result[1].status).toEqual(201)
+    result.map(r => expect(r.status).toEqual(201))
+    expect((await result[0].json())["d"]["Description"]).toEqual(testDesc1)
+    expect((await result[1].json())["d"]["Description"]).toEqual(testDesc2)
   })
 
 })
