@@ -1,11 +1,12 @@
 
-import { split, filter, isEmpty, slice, map, drop, join, concat } from "lodash";
+import { split, filter, isEmpty, slice, map, join, flatten, concat, startsWith, isObject } from "lodash";
 import { parseResponse } from "http-string-parser";
+import { ODataQueryParam, HTTPMethod } from "./types";
 import { v4 } from "uuid";
 
 const URL = require("url-parse")
 
-interface ParsedResponse {
+export interface ParsedResponse {
   text: () => Promise<string>;
   json: () => Promise<any>;
   status: number;
@@ -13,23 +14,25 @@ interface ParsedResponse {
   statusText: string;
 }
 
-interface Request {
+export interface BatchRequest {
+  /**
+   * for odata batch request, please give a relative path from odata endpoint
+   */
   url: string;
   init?: RequestInit;
 }
 
 export const formatHttpRequestString = (u: string, r: RequestInit) => {
-  const url = URL(u)
   return join(
     [
-      `${r.method || "GET"} ${url.pathname}${url.query || ""} HTTP/1.1`,
+      `${r.method || "GET"} ${u} HTTP/1.1`,
       `${join(map(r.headers, (v, k) => `${k}: ${v}`), "\n")}`,
       `${r.body ? "\n" + r.body : ""}`,
     ], "\n"
   )
 }
 
-export const nonGetAndGetMethodRequest = (requests: Request[]) => {
+export const nonGetAndGetMethodRequest = (requests: BatchRequest[]) => {
   const getRequests = filter(requests, rs => (rs.init.method || "GET") === "GET");
   const nonGetRequests = filter(requests, rs => (rs.init.method || "GET") !== "GET");
   return {
@@ -38,56 +41,47 @@ export const nonGetAndGetMethodRequest = (requests: Request[]) => {
   }
 }
 
-export const generateBoundryString = () => {
-
-}
-
-export const formatBatchRequest = (requests: Request[], boundary: string) => {
-  const changeset_uuid = v4();
-  const { getRequests, nonGetRequests } = nonGetAndGetMethodRequest(requests)
-
+export const formatBatchRequest = (requests: BatchRequest[], boundary: string) => {
   return join(
     concat(
-      map(getRequests, r =>
-        join(
-          [
-            `--${boundary}`,
-            "Content-Type: application/http",
-            `Content-Transfer-Encoding: binary`,
-            "",
-            formatHttpRequestString(r.url, r.init),
-            "",
-          ],
-          "\n"
-        )
-      ),
-      isEmpty(nonGetRequests)
-        ? []
-        : [
-          `--${boundary}`,
-          `Content-Type: multipart/mixed; boundary=${changeset_uuid}`,
-          "",
-          map(
-            nonGetRequests,
-            nr => join(
+      map(requests,
+        r => {
+          if (r.init.method === "GET" || !r.init.method) {
+            return join(
               [
-                `--${changeset_uuid}`,
+                `--${boundary}`,
                 "Content-Type: application/http",
                 `Content-Transfer-Encoding: binary`,
                 "",
-                formatHttpRequestString(nr.url, nr.init),
+                formatHttpRequestString(r.url, r.init),
                 "",
               ],
               "\n"
             )
-          ),
-          `--${changeset_uuid}--`,
-        ],
+          } else {
+            const generated_uuid = v4();
+            return join(
+              [
+                `--${boundary}`,
+                `Content-Type: multipart/mixed; boundary=${generated_uuid}`,
+                "",
+                `--${generated_uuid}`,
+                "Content-Type: application/http",
+                `Content-Transfer-Encoding: binary`,
+                "",
+                formatHttpRequestString(r.url, r.init),
+                "",
+                `--${generated_uuid}--`,
+              ],
+              "\n"
+            )
+          }
+        }
+      ),
       `--${boundary}--`
     ),
     "\n"
   )
-
 
 }
 
@@ -111,12 +105,20 @@ export const parseResponse2 = async (httpResponseString: string): Promise<Parsed
   return rt;
 }
 
-export const parseMultiPartContent = (resBody: string, boundaryString: string) => {
-  if (resBody && boundaryString) {
-    const parts = split(resBody, `--${boundaryString}`)
+export const parseMultiPartContent = async (multipartBodyString: string, boundaryString: string): Promise<ParsedResponse[]> => {
+  if (multipartBodyString && boundaryString) {
+    const parts = split(multipartBodyString, `--${boundaryString}`)
     const meaningfulParts = slice(parts, 1, parts.length - 1)
-    // remove unused first & last part, and remove no use multipart lines, and parse http plain text
-    return Promise.all(map(meaningfulParts, p => parseResponse2(join(drop(split(p, "\n\n")), "\n\n"))))
+    return flatten(await Promise.all(map(meaningfulParts, async p => {
+      var response = await parseResponse2(p)
+      var contentType = response.headers["Content-Type"]
+      if (startsWith(contentType, "multipart/mixed")) {
+        const innerBoundaryString = split(contentType, "=").pop();
+        return parseMultiPartContent(await response.text(), innerBoundaryString);
+      } else if (contentType === "application/http") {
+        return parseResponse2(await response.text())
+      }
+    })))
   } else {
     throw new Error("parameter lost")
   }

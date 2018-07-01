@@ -1,7 +1,9 @@
 import { ODataQueryParam, HTTPMethod, Credential, PlainODataResponse, ODataParam, ODataFilter } from "./types";
-import { split, slice, join } from "lodash";
-import { GetAuthorizationPair, isJSONString } from "./util";
+import { split, slice, join, startsWith } from "lodash";
+import { GetAuthorizationPair } from "./util";
+import { BatchRequest, formatBatchRequest, parseMultiPartContent } from "./batch";
 import { attempt } from "lodash";
+import { v4 } from "uuid";
 
 export type AdvancedODataClientProxy = (url: string, init: RequestInit) => Promise<{
   /**
@@ -36,7 +38,7 @@ export interface ODataNewOptions {
 
 const odataDefaultFetchProxy: AdvancedODataClientProxy = async (url: string, init: RequestInit) => {
   const res = await fetch(url, init)
-  var content: any;
+  var content: any = "";
   if (res.status === 401) {
     throw new Error("401, Unauthorized, check your creadential !");
   }
@@ -47,13 +49,17 @@ const odataDefaultFetchProxy: AdvancedODataClientProxy = async (url: string, ini
     throw new Error("500, internal error")
   }
 
+  const contentType = res.headers.get("Content-Type")
+
   content = await res.text();
-  // result process
-  var jsonResult = attempt(JSON.parse, content);
-  if (!(jsonResult instanceof Error)) {
-    content = jsonResult;
-    if (content.error) {
-      throw new Error(content.error.message.value)
+  if (startsWith(contentType, "application/json")) {
+    // result process
+    var jsonResult = attempt(JSON.parse, content);
+    if (!(jsonResult instanceof Error)) {
+      content = jsonResult;
+      if (content.error) {
+        throw new Error(content.error.message.value)
+      }
     }
   }
 
@@ -163,15 +169,18 @@ export class OData {
   /**
    * generate authorization header
    */
-  private headers() {
+  private async getHeaders() {
+    var rt = { ...this.commonHeader };
     if (this.credential) {
-      return {
-        ...this.commonHeader,
+      rt = {
+        ...rt,
         ...GetAuthorizationPair(this.credential.username, this.credential.password)
       }
-    } else {
-      return this.commonHeader
     }
+    if (this.processCsrfToken) {
+      rt["x-csrf-token"] = await this.getCsrfToken();
+    }
+    return rt;
   }
 
   /**
@@ -201,13 +210,22 @@ export class OData {
     if (this.csrfToken) {
       return await this.csrfToken;
     }
-    const { response: { headers } } = await this.fetchProxy(this.odataEnd, {
+
+    var config: RequestInit = {
       method: "GET",
       headers: {
         "x-csrf-token": "fetch",
-        ...this.headers()
       },
-    });
+    }
+
+    if (this.credential) {
+      config.headers = {
+        ...config.headers,
+        ...GetAuthorizationPair(this.credential.username, this.credential.password)
+      }
+    }
+
+    const { response: { headers } } = await this.fetchProxy(this.odataEnd, config);
     if (headers) {
       this.csrfToken = headers.get("x-csrf-token");
     } else {
@@ -230,33 +248,24 @@ export class OData {
    */
   public async requestUri(uri: string, queryParams?: ODataQueryParam, method: HTTPMethod = "GET", body?: any): Promise<PlainODataResponse> {
     let final_uri = uri;
-    if (queryParams) {
-      final_uri = `${final_uri}?${queryParams.toString()}`;
-    }
-    let config: RequestInit = {
-      method,
-      headers: this.headers(),
-    };
-    if (this.processCsrfToken) {
-      const token = await this.getCsrfToken();
-      config = {
-        method,
-        headers: {
-          "x-csrf-token": token,
-          ...this.headers(),
-        },
-      };
-    }
+    let config: RequestInit = { method, headers: await this.getHeaders(), };
+
+    // format body
     if (method !== "GET" && body) {
-      config.body = JSON.stringify(body);
+      if (typeof body !== "string") {
+        config.body = JSON.stringify(body);
+      } else {
+        config.body = body;
+      }
     }
+
     // request & response
     var res = await this.fetchProxy(final_uri, config);
 
+    // one time retry if csrf token time expired
     if (this.processCsrfToken) {
       if (res.response.headers) {
-        if (res.response.headers.get("x-csrf-token") == "Required") {
-          // one time retry if csrf token time expired
+        if (res.response.headers.get("x-csrf-token") === "Required") {
           this.cleanCsrfToken();
           config.headers["x-csrf-token"] = await this.getCsrfToken();
           res = await this.fetchProxy(final_uri, config);
@@ -278,12 +287,53 @@ export class OData {
    */
   public async request(collection: string, id?: string, queryParams?: ODataQueryParam, method: HTTPMethod = "GET", entity?: any) {
     let url = `${this.odataEnd}${collection}`;
-    /**
-     * System query options '$orderby,$skip,$top,$skiptoken,$inlinecount,' 
-     * are not allowed in the requested URI
-     */
     if (id) { url += `('${id}')`; }
+    if (queryParams) {
+      url = `${url}?${queryParams.toString()}`;
+    }
     return this.requestUri(url, queryParams, method, entity);
+  }
+
+  public async execBatchRequests(requests: BatchRequest[]) {
+    const url = `${this.odataEnd}$batch`
+    const req: RequestInit = {
+      method: "POST",
+      headers: await this.getHeaders(),
+    }
+    const requestBoundaryString = v4();
+    req.headers["Content-Type"] = `multipart/mixed; boundary=${requestBoundaryString}`
+    req.body = formatBatchRequest(requests, requestBoundaryString)
+    const { content, response: { headers } } = await this.fetchProxy(url, req);
+    const responseBoundaryString = headers.get("Content-Type").split("=").pop();
+    return parseMultiPartContent(content, responseBoundaryString)
+  }
+
+  public async newBatchRequest(collection: string, id?: string, params?: ODataQueryParam, method: HTTPMethod = "GET", entity?: any): Promise<BatchRequest> {
+    var url = collection
+    var headers = await this.getHeaders();
+
+    if (id) {
+      url += `('${id}')`;
+    }
+    if (method === "GET") {
+      delete headers['Content-Type']
+      // other request dont need param
+      if (params) {
+        url = `${url}?${params.toString()}`;
+      }
+    } else {
+      rt.init.body = entity
+    }
+
+    var rt: BatchRequest = {
+      url,
+      init: {
+        method,
+        headers,
+      }
+    }
+
+    return rt;
   }
 
 }

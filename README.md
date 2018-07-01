@@ -134,7 +134,6 @@ SAP Cloud for Customer's OData, only support use AND in different fields and OR 
 
 ## TO-DO
 
-* Batch support
 * Documents
 * Codelist generator
 * OAuth Support
