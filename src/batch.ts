@@ -1,10 +1,7 @@
 
-import { split, filter, isEmpty, slice, map, join, flatten, concat, startsWith, isObject } from "lodash";
+import { split, filter, isEmpty, slice, map, join, flatten, concat, startsWith } from "lodash";
 import { parseResponse } from "http-string-parser";
-import { ODataQueryParam, HTTPMethod } from "./types";
 import { v4 } from "uuid";
-
-const URL = require("url-parse")
 
 export interface ParsedResponse {
   text: () => Promise<string>;

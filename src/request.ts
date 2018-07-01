@@ -1,7 +1,7 @@
 import { ODataQueryParam, HTTPMethod, Credential, PlainODataResponse, ODataParam, ODataFilter } from "./types";
 import { split, slice, join, startsWith } from "lodash";
 import { GetAuthorizationPair } from "./util";
-import { BatchRequest, formatBatchRequest, parseMultiPartContent } from "./batch";
+import { BatchRequest, formatBatchRequest, parseMultiPartContent, ParsedResponse } from "./batch";
 import { attempt } from "lodash";
 import { v4 } from "uuid";
 
@@ -294,7 +294,7 @@ export class OData {
     return this.requestUri(url, queryParams, method, entity);
   }
 
-  public async execBatchRequests(requests: BatchRequest[]) {
+  public async execBatchRequests(requests: BatchRequest[]): Promise<ParsedResponse[]> {
     const url = `${this.odataEnd}$batch`
     const req: RequestInit = {
       method: "POST",
@@ -305,10 +305,10 @@ export class OData {
     req.body = formatBatchRequest(requests, requestBoundaryString)
     const { content, response: { headers } } = await this.fetchProxy(url, req);
     const responseBoundaryString = headers.get("Content-Type").split("=").pop();
-    return parseMultiPartContent(content, responseBoundaryString)
+    return await parseMultiPartContent(content, responseBoundaryString)
   }
 
-  public async newBatchRequest(collection: string, id?: string, params?: ODataQueryParam, method: HTTPMethod = "GET", entity?: any): Promise<BatchRequest> {
+  public async newBatchRequest(collection: string, id?: string, params?: ODataQueryParam, method: HTTPMethod = "GET", entity?: any) {
     var url = collection
     var headers = await this.getHeaders();
 
