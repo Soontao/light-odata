@@ -179,6 +179,8 @@ SAP Cloud for Customer's OData, only support use AND in different fields and OR 
 * Codelist generator
 * OAuth Support
 
+## [CHANGELOG](https://github.com/Soontao/c4codata/blob/master/CHANGELOG.md)
+
 ## LICENSE
 
 MIT
