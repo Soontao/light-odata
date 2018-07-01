@@ -29,15 +29,6 @@ export const formatHttpRequestString = (u: string, r: RequestInit) => {
   )
 }
 
-export const nonGetAndGetMethodRequest = (requests: BatchRequest[]) => {
-  const getRequests = filter(requests, rs => (rs.init.method || "GET") === "GET");
-  const nonGetRequests = filter(requests, rs => (rs.init.method || "GET") !== "GET");
-  return {
-    getRequests,
-    nonGetRequests,
-  }
-}
-
 export const formatBatchRequest = (requests: BatchRequest[], boundary: string) => {
   return join(
     concat(
@@ -80,10 +71,6 @@ export const formatBatchRequest = (requests: BatchRequest[], boundary: string) =
     "\n"
   )
 
-}
-
-export const filterNoUseLines = (lines: string[]) => {
-  return filter(lines, line => !isEmpty(line) && line !== "--\n" && line !== "--")
 }
 
 export const parseResponse2 = async (httpResponseString: string): Promise<ParsedResponse> => {
