@@ -6,7 +6,8 @@ export type HTTPMethod = "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "PATCH";
 export interface PlainODataResponse {
   d?: {
     __count?: string;
-    results: any[] | any;
+    results: any | Array<any>;
+    [key: string]: any;
   };
   error?: {
     code: string;
@@ -404,7 +405,7 @@ export class C4CODataResult<T> {
       if (object.d.__count) {
         rt.d.__count = object.d.__count
       }
-      rt.d.results = object.d.results.map(e => C4CEntity.fromPlainObject(e, type))
+      rt.d.results = (object.d.results as Array<any>).map(e => C4CEntity.fromPlainObject(e, type))
     } else {
       throw new Error("not accepted odata reseponse object")
     }

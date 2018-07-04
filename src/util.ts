@@ -1,5 +1,6 @@
 import { Buffer } from "buffer";
 import { attempt, isError } from "lodash";
+import { C4CODataResult } from "./types";
 
 
 /**

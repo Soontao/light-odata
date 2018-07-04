@@ -43,6 +43,8 @@ odata-js-generator -m https://host/sap/c4c/odata/v1/c4codata/$metadata?sap-label
 
 ## OData
 
+a simple request
+
 ```javascript
 import { OData, ODataParam, ODataFilter } from "c4codata"
 
@@ -72,31 +74,32 @@ const odata = OData.New({
 })
 const testDesc1 = v4(); // a generated uuid
 const testDesc2 = v4();
-const bRequest1 = await odata.newBatchRequest({
-  collection: "Products",
-  entity: {
-    ID: 100009,
-    Description: testDesc1,
-  },
-  method: "POST"
-})
-const bRequest2 = await odata.newBatchRequest({
-  collection: "Products",
-  entity: {
-    ID: 100012,
-    Description: testDesc2,
-  },
-  method: "POST",
-  // withContentLength: true, for SAP OData, please set this flag as true
-})
-const result = await odata.execBatchRequests([bRequest1, bRequest2])
+const result = await odata.execBatchRequests([
+  odata.newBatchRequest({
+    collection: "Products",
+    entity: {
+      ID: 100009,
+      Description: testDesc1,
+    },
+    method: "POST",
+    // withContentLength: true, for SAP OData, please set this flag as true
+  }),
+  odata.newBatchRequest({
+    collection: "Products",
+    entity: {
+      ID: 100012,
+      Description: testDesc2,
+    },
+    method: "POST",
+    // withContentLength: true, for SAP OData, please set this flag as true
+  })
+])
 
-const res0 = result[0] // a polyfill response object, can access headers, status, json() and text()
+result.map(r => expect(r.status).toEqual(201)) // Created
 
-result.map(r => expect(r.status).toEqual(201))
-expect((await result[0].json())["d"]["Description"]).toEqual(testDesc1)
-expect((await result[1].json())["d"]["Description"]).toEqual(testDesc2)
-
+// assert
+result[0].json().then(r1 => expect(r1.d["Description"]).toEqual(testDesc1))
+result[1].json().then(r1 => expect(r1.d["Description"]).toEqual(testDesc2))
 
 ```
 
@@ -130,9 +133,9 @@ ODataFilter
 ### filter by one field but multi values
 
 ```js
-// (Name eq 'test string1') and (Name eq 'test string1' or Name eq 'test string2')
+// (Name eq 'test string1') and (Name2 eq 'test string1' or Name eq 'test string2')
 ODataFilter.newFilter().field("Name").eq("'test string1'").and(
-  ODataFilter.newFilter().fieldIn("Name", ["test string1", "test string2"])
+  ODataFilter.newFilter().fieldIn("Name2", ["test string1", "test string2"])
 )
 ```
 

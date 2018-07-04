@@ -8,6 +8,10 @@ import { v4 } from "uuid";
 
 describe('test batch multipart parse & format', () => {
 
+  beforeEach(function () {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 25000;
+  });
+
   test('should parse multipart', async () => {
     const sample = readFileSync(join(__dirname, "./resources/batch/sample.response"), { encoding: "utf8" })
     const responses = await parseMultiPartContent(sample, "ejjeeffe0")
@@ -98,15 +102,16 @@ describe('test batch multipart parse & format', () => {
       metadataUri: "http://services.odata.org/V2/(S(dj5xyxxt14bkddw5m33kfqxz))/OData/OData.svc/$metadata",
       processCsrfToken: false,
     })
-    const bRequest1 = await odata.newBatchRequest({
-      collection: "Products",
-      params: OData.newParam().top(1).inlinecount(true)
-    })
-    const bRequest2 = await odata.newBatchRequest({
-      collection: "Products",
-      params: OData.newParam().skip(1).top(1).inlinecount(true)
-    })
-    const result = await odata.execBatchRequests([bRequest1, bRequest2])
+    const result = await odata.execBatchRequests([
+      odata.newBatchRequest({
+        collection: "Products",
+        params: OData.newParam().top(1).inlinecount(true)
+      }),
+      odata.newBatchRequest({
+        collection: "Products",
+        params: OData.newParam().skip(1).top(1).inlinecount(true)
+      })
+    ])
     const resultObjects = await Promise.all(result.map(r => r.json()));
     expect(resultObjects[0]["d"]["__count"]).toEqual("9")
     expect(resultObjects[1]["d"]["__count"]).toEqual("9")
@@ -119,27 +124,33 @@ describe('test batch multipart parse & format', () => {
     })
     const testDesc1 = v4(); // a generated uuid
     const testDesc2 = v4();
-    const bRequest1 = await odata.newBatchRequest({
-      collection: "Products",
-      entity: {
-        ID: 100009,
-        Description: testDesc1,
-      },
-      method: "POST"
-    })
-    const bRequest2 = await odata.newBatchRequest({
-      collection: "Products",
-      entity: {
-        ID: 100012,
-        Description: testDesc2,
-      },
-      method: "POST",
-      // withContentLength: true, for SAP OData, please set this flag as true
-    })
-    const result = await odata.execBatchRequests([bRequest1, bRequest2])
-    result.map(r => expect(r.status).toEqual(201))
-    expect((await result[0].json())["d"]["Description"]).toEqual(testDesc1)
-    expect((await result[1].json())["d"]["Description"]).toEqual(testDesc2)
+    const result = await odata.execBatchRequests([
+      odata.newBatchRequest({
+        collection: "Products",
+        entity: {
+          ID: 100009,
+          Description: testDesc1,
+        },
+        method: "POST",
+        // withContentLength: true, for SAP OData, please set this flag as true
+      }),
+      odata.newBatchRequest({
+        collection: "Products",
+        entity: {
+          ID: 100012,
+          Description: testDesc2,
+        },
+        method: "POST",
+        // withContentLength: true, for SAP OData, please set this flag as true
+      })
+    ])
+
+    result.map(r => expect(r.status).toEqual(201)) // Created
+
+    // assert
+    result[0].json().then(r1 => expect(r1.d["Description"]).toEqual(testDesc1))
+    result[1].json().then(r1 => expect(r1.d["Description"]).toEqual(testDesc2))
+
   })
 
 })

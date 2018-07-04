@@ -1,5 +1,5 @@
-import { ODataQueryParam, HTTPMethod, Credential, PlainODataResponse, ODataParam, ODataFilter } from "./types";
-import { split, slice, join, startsWith } from "lodash";
+import { ODataQueryParam, HTTPMethod, Credential, PlainODataResponse, ODataParam, ODataFilter, C4CEntity } from "./types";
+import { split, slice, join, startsWith, map } from "lodash";
 import { GetAuthorizationPair } from "./util";
 import { BatchRequest, formatBatchRequest, parseMultiPartContent, ParsedResponse } from "./batch";
 import { attempt } from "lodash";
@@ -35,12 +35,24 @@ export interface ODataNewOptions {
   processCsrfToken?: boolean;
 }
 
-export interface BatchRequestOptions {
+export interface BatchRequestOptions<T> {
+  /**
+   * Collection Name
+   */
   collection: string;
+  /**
+   * OData Entity ObjectID
+   */
   id?: string;
+  /**
+   * OData Param
+   */
   params?: ODataQueryParam;
   method?: HTTPMethod,
-  entity?: any,
+  /**
+   * OData Entity Object
+   */
+  entity?: T,
   /**
    * SAP OData need Content-Length but standard reject it
    */
@@ -306,21 +318,27 @@ export class OData {
     return this.requestUri(url, queryParams, method, entity);
   }
 
-  public async execBatchRequests(requests: BatchRequest[]): Promise<ParsedResponse[]> {
+  public async execBatchRequests(requests: Array<Promise<BatchRequest>>): Promise<Array<ParsedResponse<PlainODataResponse>>> {
     const url = `${this.odataEnd}$batch`
+
     const req: RequestInit = {
       method: "POST",
       headers: await this.getHeaders(),
     }
+
+    // format promised requests
+    const r = await Promise.all(
+      map(requests, async r => await r)
+    )
     const requestBoundaryString = v4();
     req.headers["Content-Type"] = `multipart/mixed; boundary=${requestBoundaryString}`
-    req.body = formatBatchRequest(requests, requestBoundaryString)
+    req.body = formatBatchRequest(r, requestBoundaryString)
     const { content, response: { headers } } = await this.fetchProxy(url, req);
     const responseBoundaryString = headers.get("Content-Type").split("=").pop();
     return await parseMultiPartContent(content, responseBoundaryString)
   }
 
-  public async newBatchRequest(options: BatchRequestOptions) {
+  public async newBatchRequest<T>(options: BatchRequestOptions<T>) {
     var { collection, method = "GET", id, withContentLength = false, params, entity } = options;
     var url = collection
     var headers = await this.getHeaders();

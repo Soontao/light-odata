@@ -3,9 +3,9 @@ import { split, filter, isEmpty, slice, map, join, flatten, concat, startsWith }
 import { parseResponse } from "http-string-parser";
 import { v4 } from "uuid";
 
-export interface ParsedResponse {
+export interface ParsedResponse<T> {
   text: () => Promise<string>;
-  json: () => Promise<any>;
+  json: () => Promise<T>;
   status: number;
   headers: { [key: string]: string };
   statusText: string;
@@ -73,9 +73,9 @@ export const formatBatchRequest = (requests: BatchRequest[], boundary: string) =
 
 }
 
-export const parseResponse2 = async (httpResponseString: string): Promise<ParsedResponse> => {
+export const parseResponse2 = async (httpResponseString: string): Promise<ParsedResponse<any>> => {
   const response = parseResponse(httpResponseString);
-  const rt: ParsedResponse = {
+  const rt: ParsedResponse<any> = {
     json: async () => {
       return JSON.parse(response.body)
     },
@@ -89,7 +89,7 @@ export const parseResponse2 = async (httpResponseString: string): Promise<Parsed
   return rt;
 }
 
-export const parseMultiPartContent = async (multipartBodyString: string, boundaryString: string): Promise<ParsedResponse[]> => {
+export const parseMultiPartContent = async (multipartBodyString: string, boundaryString: string): Promise<ParsedResponse<any>[]> => {
   if (multipartBodyString && boundaryString) {
     const parts = split(multipartBodyString, `--${boundaryString}`)
     const meaningfulParts = slice(parts, 1, parts.length - 1)
