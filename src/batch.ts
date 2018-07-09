@@ -19,7 +19,7 @@ export interface BatchRequest {
   init?: RequestInit;
 }
 
-export const formatHttpRequestString = (u: string, r: RequestInit) => {
+export const formatHttpRequestString = (u: string, r: any) => {
   return join(
     [
       `${r.method || "GET"} ${u} HTTP/1.1`,

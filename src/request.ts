@@ -191,7 +191,7 @@ export class OData {
   }
 
   /**
-   * generate authorization header
+   * generate dynamic header
    */
   private async getHeaders() {
     var rt = { ...this.commonHeader };
@@ -341,7 +341,7 @@ export class OData {
   public async newBatchRequest<T>(options: BatchRequestOptions<T>) {
     var { collection, method = "GET", id, withContentLength = false, params, entity } = options;
     var url = collection
-    var headers = await this.getHeaders();
+    var headers = this.commonHeader;
     var rt: BatchRequest = { url, init: { method, } }
 
     if (id) {
