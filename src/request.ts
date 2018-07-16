@@ -1,20 +1,36 @@
-import { ODataQueryParam, HTTPMethod, Credential, PlainODataResponse, ODataParam, ODataFilter, C4CEntity } from "./types";
+import {
+  ODataQueryParam,
+  HTTPMethod,
+  Credential,
+  PlainODataResponse,
+  ODataParam,
+  ODataFilter,
+  C4CEntity
+} from "./types";
 import { split, slice, join, startsWith, map } from "lodash";
 import { GetAuthorizationPair } from "./util";
-import { BatchRequest, formatBatchRequest, parseMultiPartContent, ParsedResponse } from "./batch";
+import {
+  BatchRequest,
+  formatBatchRequest,
+  parseMultiPartContent,
+  ParsedResponse
+} from "./batch";
 import { attempt } from "lodash";
 import { v4 } from "uuid";
 
-export type AdvancedODataClientProxy = (url: string, init: RequestInit) => Promise<{
+export type AdvancedODataClientProxy = (
+  url: string,
+  init: RequestInit
+) => Promise<{
   /**
    * The Body Content
    */
-  content: any,
+  content: any;
   response: {
-    headers?: Headers,
-    status: number,
-  }
-}>
+    headers?: Headers;
+    status: number;
+  };
+}>;
 
 export interface ODataNewOptions {
   /**
@@ -28,7 +44,7 @@ export interface ODataNewOptions {
   /**
    * fetch proxy of all request
    */
-  fetchProxy?: AdvancedODataClientProxy,
+  fetchProxy?: AdvancedODataClientProxy;
   /**
    * auto process csrf token of c4c
    */
@@ -48,20 +64,22 @@ export interface BatchRequestOptions<T> {
    * OData Param
    */
   params?: ODataQueryParam;
-  method?: HTTPMethod,
+  method?: HTTPMethod;
   /**
    * OData Entity Object
    */
-  entity?: T,
+  entity?: T;
   /**
    * SAP OData need Content-Length but standard reject it
    */
   withContentLength?: boolean;
 }
 
-
-const odataDefaultFetchProxy: AdvancedODataClientProxy = async (url: string, init: RequestInit) => {
-  const res = await fetch(url, init)
+const odataDefaultFetchProxy: AdvancedODataClientProxy = async (
+  url: string,
+  init: RequestInit
+) => {
+  const res = await fetch(url, init);
   var content: any = "";
   if (res.status === 401) {
     throw new Error("401, Unauthorized, check your creadential !");
@@ -70,10 +88,10 @@ const odataDefaultFetchProxy: AdvancedODataClientProxy = async (url: string, ini
     throw new Error("403, Forbidden, check your csrf token !");
   }
   if (res.status === 500) {
-    throw new Error("500, internal error")
+    throw new Error("500, internal error");
   }
 
-  const contentType = res.headers.get("Content-Type")
+  const contentType = res.headers.get("Content-Type");
 
   content = await res.text();
   if (startsWith(contentType, "application/json")) {
@@ -82,7 +100,7 @@ const odataDefaultFetchProxy: AdvancedODataClientProxy = async (url: string, ini
     if (!(jsonResult instanceof Error)) {
       content = jsonResult;
       if (content.error) {
-        throw new Error(content.error.message.value)
+        throw new Error(content.error.message.value);
       }
     }
   }
@@ -93,15 +111,13 @@ const odataDefaultFetchProxy: AdvancedODataClientProxy = async (url: string, ini
       headers: res.headers,
       status: res.status
     }
-  }
-
+  };
 };
 
 /**
  * OData Client
  */
 export class OData {
-
   private metadataUri: string;
   /**
    * odata service path, like /sap/c4c/odata/v1/c4codata/
@@ -119,16 +135,16 @@ export class OData {
    * dont direct use this object
    */
   private commonHeader: { [headerName: string]: string } = {
-    "Accept": "application/json",
+    Accept: "application/json",
     "Accept-Language": "zh",
-    "Content-Type": "application/json",
+    "Content-Type": "application/json"
   };
   private fetchProxy = odataDefaultFetchProxy;
   private processCsrfToken = true;
 
   /**
    * alternative constructor
-   * 
+   *
    * @param options config options
    */
   static New(options: ODataNewOptions) {
@@ -139,7 +155,7 @@ export class OData {
       undefined,
       options.fetchProxy,
       options.processCsrfToken
-    )
+    );
   }
 
   /**
@@ -174,19 +190,20 @@ export class OData {
     processCsrfToken: boolean = true
   ) {
     if (fetchProxy) {
-      this.fetchProxy = fetchProxy
+      this.fetchProxy = fetchProxy;
     }
     if (!metadataUri) {
-      throw new Error("metadata url required !")
+      throw new Error("metadata url required !");
     } else {
       this.metadataUri = metadataUri;
       // e.g https://c4c-system/sap/c4c/odata/v1/c4codata/
-      this.odataEnd = join(slice(split(this.metadataUri, "/"), 0, -1), "/") + "/";
+      this.odataEnd =
+        join(slice(split(this.metadataUri, "/"), 0, -1), "/") + "/";
       if (credential) {
         this.credential = credential;
       }
     }
-    this.commonHeader = { ...this.commonHeader, ...headers }
+    this.commonHeader = { ...this.commonHeader, ...headers };
     this.processCsrfToken = processCsrfToken;
   }
 
@@ -198,8 +215,11 @@ export class OData {
     if (this.credential) {
       rt = {
         ...rt,
-        ...GetAuthorizationPair(this.credential.username, this.credential.password)
-      }
+        ...GetAuthorizationPair(
+          this.credential.username,
+          this.credential.password
+        )
+      };
     }
     if (this.processCsrfToken) {
       rt["x-csrf-token"] = await this.getCsrfToken();
@@ -209,8 +229,8 @@ export class OData {
 
   /**
    * Set OData Client Http Basic credential
-   * 
-   * @param credential 
+   *
+   * @param credential
    */
   public setCredential(credential: Credential) {
     this.credential = credential;
@@ -218,12 +238,12 @@ export class OData {
 
   /**
    * setODataEndPath
-   * 
+   *
    * e.g. https://tenant.c4c.saphybriscloud.cn/sap/c4c/odata/v1/c4codata/
    */
   public setODataEndPath(odataEnd: string) {
     if (odataEnd) {
-      this.odataEnd = odataEnd
+      this.odataEnd = odataEnd;
     }
   }
 
@@ -238,41 +258,53 @@ export class OData {
     var config: RequestInit = {
       method: "GET",
       headers: {
-        "x-csrf-token": "fetch",
-      },
-    }
+        "x-csrf-token": "fetch"
+      }
+    };
 
     if (this.credential) {
       config.headers = {
         ...config.headers,
-        ...GetAuthorizationPair(this.credential.username, this.credential.password)
-      }
+        ...GetAuthorizationPair(
+          this.credential.username,
+          this.credential.password
+        )
+      };
     }
 
-    const { response: { headers } } = await this.fetchProxy(this.odataEnd, config);
+    const {
+      response: { headers }
+    } = await this.fetchProxy(this.odataEnd, config);
     if (headers) {
       this.csrfToken = headers.get("x-csrf-token");
     } else {
-      throw new Error("csrf token need the odata proxy give out headers!")
+      throw new Error("csrf token need the odata proxy give out headers!");
     }
     return this.csrfToken;
   }
 
   public cleanCsrfToken() {
-    if (this.csrfToken) { delete this.csrfToken; }
+    if (this.csrfToken) {
+      delete this.csrfToken;
+    }
   }
 
   /**
    * odata request uri
-   * 
+   *
    * @param uri HTTP URI
    * @param queryParams odata query params
    * @param method HTTP method
    * @param body request content
    */
-  public async requestUri(uri: string, queryParams?: ODataQueryParam, method: HTTPMethod = "GET", body?: any): Promise<PlainODataResponse> {
+  public async requestUri(
+    uri: string,
+    queryParams?: ODataQueryParam,
+    method: HTTPMethod = "GET",
+    body?: any
+  ): Promise<PlainODataResponse> {
     let final_uri = uri;
-    let config: RequestInit = { method, headers: await this.getHeaders(), };
+    let config: RequestInit = { method, headers: await this.getHeaders() };
 
     // format body
     if (method !== "GET" && body) {
@@ -302,71 +334,93 @@ export class OData {
 
   /**
    * odata request
-   * 
+   *
    * @param collection CollectionName
    * @param id entity uuid
    * @param queryParams query param, not work for single entity uri
    * @param method request method
    * @param entity C4C Entity instance
    */
-  public async request(collection: string, id?: string, queryParams?: ODataQueryParam, method: HTTPMethod = "GET", entity?: any) {
+  public async request(
+    collection: string,
+    id?: string,
+    queryParams?: ODataQueryParam,
+    method: HTTPMethod = "GET",
+    entity?: any
+  ) {
     let url = `${this.odataEnd}${collection}`;
-    if (id) { url += `('${id}')`; }
+    if (id) {
+      url += `('${id}')`;
+    }
     if (queryParams) {
       url = `${url}?${queryParams.toString()}`;
     }
     return this.requestUri(url, queryParams, method, entity);
   }
 
-  public async execBatchRequests(requests: Array<Promise<BatchRequest>>): Promise<Array<ParsedResponse<PlainODataResponse>>> {
-    const url = `${this.odataEnd}$batch`
+  public async execBatchRequests(
+    requests: Array<Promise<BatchRequest>>
+  ): Promise<Array<ParsedResponse<PlainODataResponse>>> {
+    const url = `${this.odataEnd}$batch`;
 
     const req: RequestInit = {
       method: "POST",
-      headers: await this.getHeaders(),
-    }
+      headers: await this.getHeaders()
+    };
 
     // format promised requests
-    const r = await Promise.all(
-      map(requests, async r => await r)
-    )
+    const r = await Promise.all(map(requests, async r => await r));
     const requestBoundaryString = v4();
-    req.headers["Content-Type"] = `multipart/mixed; boundary=${requestBoundaryString}`
-    req.body = formatBatchRequest(r, requestBoundaryString)
-    const { content, response: { headers } } = await this.fetchProxy(url, req);
-    const responseBoundaryString = headers.get("Content-Type").split("=").pop();
-    return await parseMultiPartContent(content, responseBoundaryString)
+    req.headers[
+      "Content-Type"
+    ] = `multipart/mixed; boundary=${requestBoundaryString}`;
+    req.body = formatBatchRequest(r, requestBoundaryString);
+    const {
+      content,
+      response: { headers }
+    } = await this.fetchProxy(url, req);
+    const responseBoundaryString = headers
+      .get("Content-Type")
+      .split("=")
+      .pop();
+    return await parseMultiPartContent(content, responseBoundaryString);
   }
 
   public async newBatchRequest<T>(options: BatchRequestOptions<T>) {
-    var { collection, method = "GET", id, withContentLength = false, params, entity } = options;
-    var url = collection
+    var {
+      collection,
+      method = "GET",
+      id,
+      withContentLength = false,
+      params,
+      entity
+    } = options;
+    var url = collection;
     var headers = this.commonHeader;
-    var rt: BatchRequest = { url, init: { method, } }
+    var rt: BatchRequest = { url, init: { method, headers } };
 
     if (id) {
       url += `('${id}')`;
     }
 
     if (method === "GET") {
-      delete headers['Content-Type']
+      delete headers["Content-Type"];
       // other request dont need param
       if (params) {
         url = `${url}?${params.toString()}`;
       }
     } else {
-
-
       if (typeof entity === "string") {
-        rt.init.body = entity
+        rt.init.body = entity;
       } else {
-        rt.init.body = JSON.stringify(entity)
+        rt.init.body = JSON.stringify(entity);
       }
 
       if (withContentLength) {
-        rt.init.headers["Content-Length"] = decodeURIComponent(rt.init.body).length
+        rt.init.headers["Content-Length"] = decodeURIComponent(
+          rt.init.body
+        ).length;
       }
-
     }
 
     rt.init.headers = headers;
@@ -374,5 +428,4 @@ export class OData {
 
     return rt;
   }
-
 }
