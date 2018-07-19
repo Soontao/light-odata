@@ -153,6 +153,12 @@ export function parseMetaCRUDFunctionFrom(collection: ODataCollection): MetaFunc
     exported: true
   })
   rt.push({
+    name: `bRead${name}`,
+    parameters: [{ name: "params", type: "ODataQueryParam" }],
+    body: `return odata.newBatchRequest({ collectionName: "${collection.$.Name}", params })`,
+    exported: true
+  })
+  rt.push({
     name: `readSingle${name}`,
     parameters: [
       { name: "id", type: "string", description: "entity uuid" },
@@ -160,6 +166,15 @@ export function parseMetaCRUDFunctionFrom(collection: ODataCollection): MetaFunc
     ],
     return: `Promise<C4CODataSingleResult<${entityName}>>`,
     body: `return C4CODataSingleResult.fromRequestResult(odata.request("${collection.$.Name}", id, params), ${entityName})`,
+    exported: true
+  })
+  rt.push({
+    name: `bReadSingle${name}`,
+    parameters: [
+      { name: "id", type: "string", description: "entity uuid" },
+      { name: "params", type: "ODataQueryParam", description: "OData param" }
+    ],
+    body: `return odata.newBatchRequest({ collectionName: "${collection.$.Name}", params, id })`,
     exported: true
   })
   if (collection.$["sap:creatable"] == "true") {
@@ -172,6 +187,14 @@ export function parseMetaCRUDFunctionFrom(collection: ODataCollection): MetaFunc
       body: `return C4CODataSingleResult.fromRequestResult(odata.request("${collection.$.Name}", undefined, undefined, "POST", entity), ${entityName})`,
       exported: true
     })
+    rt.push({
+      name: `bCreate${name}`,
+      parameters: [
+        { name: "entity", type: entityName }
+      ],
+      body: `return odata.newBatchRequest({ collectionName: "${collection.$.Name}", params, id, entity, method: "POST" })`,
+      exported: true
+    })
   }
   if (collection.$["sap:updatable"] == "true") {
     rt.push({
@@ -182,6 +205,15 @@ export function parseMetaCRUDFunctionFrom(collection: ODataCollection): MetaFunc
       ],
       return: `Promise<void>`,
       body: `return odata.request("${collection.$.Name}", id, undefined, "PATCH", entity)`,
+      exported: true
+    })
+    rt.push({
+      name: `bUpdate${name}`,
+      parameters: [
+        { name: "id", type: "string", description: `${entityName} UUID` },
+        { name: "entity", type: entityName, description: "part of entity for updating" }
+      ],
+      body: `return odata.newBatchRequest({ collectionName: "${collection.$.Name}", id, entity, method: "PATCH" })`,
       exported: true
     })
     // rt.push({
@@ -202,6 +234,12 @@ export function parseMetaCRUDFunctionFrom(collection: ODataCollection): MetaFunc
       parameters: [{ name: "id", type: "string" }],
       return: `Promise<void>`,
       body: `return odata.request("${collection.$.Name}", id, undefined ,"DELETE")`,
+      exported: true
+    })
+    rt.push({
+      name: `bDeleteSingle${name}`,
+      parameters: [{ name: "id", type: "string" }],
+      body: `return odata.newBatchRequest({ collectionName: "${collection.$.Name}", id, method: "DELETE" })`,
       exported: true
     })
   }

@@ -5,7 +5,6 @@ import {
   PlainODataResponse,
   ODataParam,
   ODataFilter,
-  C4CEntity
 } from "./types";
 import { split, slice, join, startsWith, map } from "lodash";
 import { GetAuthorizationPair } from "./util";
@@ -49,6 +48,10 @@ export interface ODataNewOptions {
    * auto process csrf token of c4c
    */
   processCsrfToken?: boolean;
+  /**
+   * for SAP OData
+   */
+  forSAP?: boolean;
 }
 
 export interface BatchRequestOptions<T> {
@@ -141,6 +144,7 @@ export class OData {
   };
   private fetchProxy = odataDefaultFetchProxy;
   private processCsrfToken = true;
+  private forSAP = false;
 
   /**
    * alternative constructor
@@ -148,7 +152,7 @@ export class OData {
    * @param options config options
    */
   static New(options: ODataNewOptions) {
-    return new OData(
+    const rt = new OData(
       options.metadataUri,
       options.credential,
       undefined,
@@ -156,6 +160,8 @@ export class OData {
       options.fetchProxy,
       options.processCsrfToken
     );
+    rt.forSAP = options.forSAP || false;
+    return rt;
   }
 
   /**
@@ -358,9 +364,10 @@ export class OData {
     return this.requestUri(url, queryParams, method, entity);
   }
 
-  public async execBatchRequests(
-    requests: Array<Promise<BatchRequest>>
-  ): Promise<Array<ParsedResponse<PlainODataResponse>>> {
+  /**
+   * format batch request parameter
+   */
+  public async formatBatchRequests(requests: Array<Promise<BatchRequest>>) {
     const url = `${this.odataEnd}$batch`;
 
     const req: RequestInit = {
@@ -371,30 +378,29 @@ export class OData {
     // format promised requests
     const r = await Promise.all(map(requests, async r => await r));
     const requestBoundaryString = v4();
-    req.headers[
-      "Content-Type"
-    ] = `multipart/mixed; boundary=${requestBoundaryString}`;
+    req.headers["Content-Type"] = `multipart/mixed; boundary=${requestBoundaryString}`;
     req.body = formatBatchRequest(r, requestBoundaryString);
-    const {
-      content,
-      response: { headers }
-    } = await this.fetchProxy(url, req);
-    const responseBoundaryString = headers
-      .get("Content-Type")
-      .split("=")
-      .pop();
+    return { url, req }
+  }
+
+  /**
+   * execute batch requests and get response
+   * 
+   * @param requests batch request
+   */
+  public async execBatchRequests(requests: Array<Promise<BatchRequest>>): Promise<Array<ParsedResponse<PlainODataResponse>>> {
+    const { url, req } = await this.formatBatchRequests(requests);
+    const { content, response: { headers } } = await this.fetchProxy(url, req);
+    const responseBoundaryString = headers.get("Content-Type").split("=").pop();
     return await parseMultiPartContent(content, responseBoundaryString);
   }
 
   public async newBatchRequest<T>(options: BatchRequestOptions<T>) {
-    var {
-      collection,
-      method = "GET",
-      id,
-      withContentLength = false,
-      params,
-      entity
-    } = options;
+    var { collection, method = "GET", id, withContentLength = false, params, entity } = options;
+    if (this.forSAP) {
+      // for SAP OData, need content length header
+      withContentLength = true;
+    }
     var url = collection;
     var headers = this.commonHeader;
     var rt: BatchRequest = { url, init: { method, headers } };
@@ -403,13 +409,16 @@ export class OData {
       url += `('${id}')`;
     }
 
+    // READ OPERATION
     if (method === "GET") {
       delete headers["Content-Type"];
       // other request dont need param
       if (params) {
         url = `${url}?${params.toString()}`;
       }
-    } else {
+    }
+    // WRITE OPERATION
+    else {
       if (typeof entity === "string") {
         rt.init.body = entity;
       } else {
