@@ -355,7 +355,7 @@ export class ODataQueryParam {
     if (this.$filter) { rt.append("$filter", this.$filter.toString()); }
     if (this.$orderby) { rt.append("$orderby", this.$orderby); }
     if (this.$search) { rt.append("$search", this.$search); }
-    if (this.$select && this.$select.length > 0) { rt.append("$select", this.$select); }
+    if (this.$select && this.$select.length > 0) { rt.append("$select", join(this.$select, ",")); }
     if (this.$skip) { rt.append("$skip", this.$skip); }
     if (this.$top && this.$top > 0) { rt.append("$top", this.$top); }
     if (this.$expand && this.$expand.length > 0) { rt.append("$expand", this.$expand.join(",")); }
