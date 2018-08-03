@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.58"></a>
+## [1.0.58](https://github.com/Soontao/c4codata/compare/v1.0.57...v1.0.58) (2018-08-03)
+
+
+
 <a name="1.0.57"></a>
 ## [1.0.57](https://github.com/Soontao/c4codata/compare/v1.0.56...v1.0.57) (2018-08-03)
 
