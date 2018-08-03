@@ -1,4 +1,4 @@
-import { assign, } from "lodash";
+import { assign, isObject, isArray } from "lodash";
 
 export type HTTPMethod = "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "PATCH";
 
@@ -31,10 +31,17 @@ export class C4CODataSingleResult<T> {
     if (object.error) {
       throw new Error(object.error.message.value)
     }
-    if (object.d && object.d.results) {
+    // c4c odata use d.results as response
+    if (object.d && isObject(object.d.results)) {
       rt.d.results = C4CEntity.fromPlainObject(object.d.results, type)
-    } else {
-      throw new Error("not accepted odata reseponse object")
+    }
+    // standard odata use d as response entity
+    else if (isObject(object.d)) {
+      rt.d.results = C4CEntity.fromPlainObject(object.d, type)
+    }
+    // throw erro fi 
+    else {
+      throw new Error("Not acceptable response")
     }
     return rt;
   }
@@ -61,9 +68,13 @@ export class C4CODataResult<T> {
       if (object.d.__count) {
         rt.d.__count = object.d.__count
       }
-      rt.d.results = (object.d.results as Array<any>).map(e => C4CEntity.fromPlainObject(e, type))
+      if (isArray(object.d.results)) {
+        rt.d.results = (object.d.results as Array<any>).map(
+          e => C4CEntity.fromPlainObject(e, type)
+        )
+      }
     } else {
-      throw new Error("not accepted odata reseponse object")
+      throw new Error("Not acceptable response")
     }
 
     return rt;

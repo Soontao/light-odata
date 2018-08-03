@@ -2,7 +2,7 @@
  * unreadable string generator
  */
 
-import { map, filter, startsWith, join } from "lodash";
+import { map, filter, startsWith, join, uniqBy } from "lodash";
 import { MetaClass, MetaFunction } from "./meta_js";
 import { parseEntityCRUDFunctionsMap, ODataMetadata, parseMetaClassFromDefault, parseMetaCRUDFunctionFromDefault, ODataEntityNavigationProperty } from ".";
 import { CliOption } from "../cli/type";
@@ -29,7 +29,9 @@ export const odata = new OData(metadataUri, initCredential);
 
 export function generateSeprateIndexFile(classes: MetaClass[]) {
   return join(
-    map(classes, c => `export * from "./${c.name}"`),
+    map(
+      uniqBy(classes, c => c.name), // remove duplicated class name, for example CodeList
+      c => `export * from "./${c.name}"`),
     "\n"
   )
 }
@@ -56,7 +58,7 @@ export function generateSeprateClassString(clazz: MetaClass, functionsString = "
           filter(clazz.field, f => startsWith(f.type, "DeferredNavigationProperty")),
           ifield => {
             const { $: { ToRole } } = (<ODataEntityNavigationProperty>ifield.originProperty);
-            return `import { ${ ToRole } } from "./${ToRole}"`
+            return `import { ${ToRole} } from "./${ToRole}"`
           }),
         "\n"
       ),

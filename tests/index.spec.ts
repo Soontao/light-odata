@@ -1,7 +1,7 @@
 import "isomorphic-fetch"
 import 'jest';
 import { OData } from "../src/request";
-import { ODataParam, ODataFilter, C4CODataResult, C4CEntity } from '../src';
+import { ODataParam, ODataFilter, C4CODataResult, C4CEntity, C4CODataSingleResult } from '../src';
 
 const TestServiceURL = "http://services.odata.org/V2/Northwind/Northwind.svc/$metadata"
 const odata = new OData(TestServiceURL)
@@ -24,13 +24,19 @@ describe('Read Test', () => {
   })
 
   test.concurrent('Read All', async () => {
-    const result = await odata.request("Customers")
+    const result = await C4CODataResult.fromRequestResult(odata.newRequest({
+      collection: "Customers",
+      params: OData.newParam().inlinecount(true)
+    }), C4CEntity)
+
     expect(result.d.results[0]["CustomerID"]).toEqual("ALFKI")
   })
 
   test.concurrent('Read By ID', async () => {
-    const result = await odata.request("Customers", "ALFKI")
-    expect(result.d["CustomerID"]).toEqual("ALFKI")
+    const r = await C4CODataSingleResult.fromRequestResult(
+      odata.request("Customers", "ALFKI"), C4CEntity
+    )
+    expect(r.d.results["CustomerID"]).toEqual("ALFKI")
   })
 
   test.concurrent('Read By Filter', async () => {
