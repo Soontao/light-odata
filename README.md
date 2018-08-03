@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/Soontao/c4codata/branch/master/graph/badge.svg)](https://codecov.io/gh/Soontao/c4codata)
 [![npm version](https://badge.fury.io/js/c4codata.svg)](https://badge.fury.io/js/c4codata)
 
-OData Client for SAP C4C OData (v2) Service
+OData Client for SAP C4C OData (v2) Service, in theory, support all services implemented by odata v2
 
 ## install
 
@@ -182,7 +182,6 @@ SAP Cloud for Customer's OData, only support use AND in different fields and OR 
 
 ## TO-DO
 
-* Batch requests declaration
 * Documents
 * Codelist generator
 * OAuth Support

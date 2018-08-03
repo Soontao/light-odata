@@ -77,6 +77,14 @@ export interface BatchRequestOptions<T> {
   withContentLength?: boolean;
 }
 
+export interface ODataRequest<T> {
+  collection: string,
+  id?: string,
+  params?: ODataQueryParam,
+  method?: HTTPMethod,
+  entity?: T
+}
+
 const odataDefaultFetchProxy: AdvancedODataClientProxy = async (
   url: string,
   init: RequestInit
@@ -361,6 +369,13 @@ export class OData {
       url = `${url}?${queryParams.toString()}`;
     }
     return this.requestUri(url, queryParams, method, entity);
+  }
+
+  /**
+   * new odata http request
+   */
+  public async newRequest<T>(options: ODataRequest<T>) {
+    return this.request(options.collection, options.id, options.params, options.method, options.entity)
   }
 
   /**
