@@ -2,8 +2,7 @@ import "jest"
 import "isomorphic-fetch"
 import { readFileSync } from "fs";
 import { join } from "path";
-import { parseMultiPartContent, formatBatchRequest } from "../src/batch";
-import { OData } from "../src/request";
+import { parseMultiPartContent, formatBatchRequest, OData } from "../src";
 import { v4 } from "uuid";
 
 describe('test batch multipart parse & format', () => {
@@ -96,62 +95,39 @@ describe('test batch multipart parse & format', () => {
 
   })
 
+  test('should request batch format', async () => {
+    const base = `http://services.odata.org/V2/(S(${v4()}))/OData/OData.svc/`
+    const odata = OData.New({
+      metadataUri: `${base}/$metadata`,
+      processCsrfToken: false,
+    })
+    const testDesc1 = v4(); // a generated uuid
+    const testDesc2 = v4();
+    const result = await odata.formatBatchRequests([
+      odata.newBatchRequest({
+        collection: "Products",
+        entity: {
+          ID: 100009,
+          Description: testDesc1,
+        },
+        method: "POST",
+        // withContentLength: true, for SAP OData, please set this flag as true
+      }),
+      odata.newBatchRequest({
+        collection: "Products",
+        entity: {
+          ID: 100012,
+          Description: testDesc2,
+        },
+        method: "POST",
+        // withContentLength: true, for SAP OData, please set this flag as true
+      })
+    ])
 
-  // test('should request batch get', async () => {
-  //   const odata = OData.New({
-  //     metadataUri: `http://services.odata.org/V2/(S(${v4()}))/OData/OData.svc/$metadata`,
-  //     processCsrfToken: false,
-  //   })
-  //   const result = await odata.execBatchRequests([
-  //     odata.newBatchRequest({
-  //       collection: "Products",
-  //       params: OData.newParam().top(1).inlinecount(true)
-  //     }),
-  //     odata.newBatchRequest({
-  //       collection: "Products",
-  //       params: OData.newParam().skip(1).top(1).inlinecount(true)
-  //     })
-  //   ])
-  //   const resultObjects = await Promise.all(result.map(r => r.json()));
-  //   expect(resultObjects[0]["d"]["__count"]).toEqual("9")
-  //   expect(resultObjects[1]["d"]["__count"]).toEqual("9")
-  // })
+    expect(result.url).toEqual(`${base}/$batch`)
+    expect(result.req.body)
 
-  // test('should request batch create', async () => {
-  //   const odata = OData.New({
-  //     metadataUri: `http://services.odata.org/V2/(S(${v4()}))/OData/OData.svc/$metadata`,
-  //     processCsrfToken: false,
-  //   })
-  //   const testDesc1 = v4(); // a generated uuid
-  //   const testDesc2 = v4();
-  //   const result = await odata.execBatchRequests([
-  //     odata.newBatchRequest({
-  //       collection: "Products",
-  //       entity: {
-  //         ID: 100009,
-  //         Description: testDesc1,
-  //       },
-  //       method: "POST",
-  //       // withContentLength: true, for SAP OData, please set this flag as true
-  //     }),
-  //     odata.newBatchRequest({
-  //       collection: "Products",
-  //       entity: {
-  //         ID: 100012,
-  //         Description: testDesc2,
-  //       },
-  //       method: "POST",
-  //       // withContentLength: true, for SAP OData, please set this flag as true
-  //     })
-  //   ])
-
-  //   result.map(r => expect(r.status).toEqual(201)) // Created
-
-  //   // assert
-  //   result[0].json().then(r1 => expect(r1.d["Description"]).toEqual(testDesc1))
-  //   result[1].json().then(r1 => expect(r1.d["Description"]).toEqual(testDesc2))
-
-  // })
+  })
 
 })
 

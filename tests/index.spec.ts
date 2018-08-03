@@ -1,7 +1,7 @@
 import "isomorphic-fetch"
 import 'jest';
 import { OData } from "../src/request";
-import { PlainODataResponse, ODataQueryParam, ODataParam, ODataFilter } from '../src';
+import { ODataParam, ODataFilter } from '../src';
 
 const TestServiceURL = "http://services.odata.org/V2/Northwind/Northwind.svc/$metadata"
 const odata = new OData(TestServiceURL)
@@ -23,23 +23,23 @@ describe('Read Test', () => {
     }).toThrow()
   })
 
-  test('Read All', async () => {
+  test.concurrent('Read All', async () => {
     const result = await odata.request("Customers")
     expect(result.d.results[0]["CustomerID"]).toEqual("ALFKI")
   })
 
-  test('Read By ID', async () => {
+  test.concurrent('Read By ID', async () => {
     const result = await odata.request("Customers", "ALFKI")
     expect(result.d["CustomerID"]).toEqual("ALFKI")
   })
 
-  test('Read By Filter', async () => {
+  test.concurrent('Read By Filter', async () => {
     const filter = ODataFilter.newFilter().field("Phone").eqString("030-0074321");
     const result = await odata.request("Customers", undefined, ODataParam.newParam().filter(filter))
     expect(result.d.results[0]["CustomerID"]).toEqual("ALFKI")
   })
 
-  test('Read By Group Filter with count', async () => {
+  test.concurrent('Read By Group Filter with count', async () => {
     const filter = ODataFilter
       .newFilter()
       .group(

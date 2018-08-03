@@ -1,10 +1,7 @@
 import {
-  ODataQueryParam,
   HTTPMethod,
   Credential,
   PlainODataResponse,
-  ODataParam,
-  ODataFilter,
 } from "./types";
 import { split, slice, join, startsWith, map } from "lodash";
 import { GetAuthorizationPair } from "./util";
@@ -16,6 +13,8 @@ import {
 } from "./batch";
 import { attempt } from "lodash";
 import { v4 } from "uuid";
+import { ODataFilter } from "./filter";
+import { ODataParam, ODataQueryParam } from "./params";
 
 export type AdvancedODataClientProxy = (
   url: string,

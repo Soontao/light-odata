@@ -1,5 +1,5 @@
 import "jest"
-import { ODataParam, ODataQueryParam, OData, ODataFilter } from "../src";
+import { ODataParam, ODataQueryParam, OData } from "../src";
 
 describe('ODataParams Test', () => {
 
@@ -62,6 +62,14 @@ describe('ODataParams Test', () => {
     test('ODataParam select', () => {
         const param = ODataParam.newParam().select("ObjectID");
         expect(decodeURIComponent(param.toString())).toEqual("$format=json&$select=ObjectID")
+    })
+
+    test('ODataParam select multi', () => {
+        const param = ODataParam
+            .newParam()
+            .select("ObjectID")
+            .select("Name");
+        expect(decodeURIComponent(param.toString())).toEqual("$format=json&$select=ObjectID,Name")
     })
 
     test('expand navigation', () => {

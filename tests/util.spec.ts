@@ -23,6 +23,7 @@ describe('Util Test', () => {
   test('isJSONString', () => {
     expect(isJSONString("[123]")).toEqual(true)
     expect(isJSONString("{hello:2}")).toEqual(false)
+    expect(isJSONString('[asf]]sf')).toEqual(false)
   })
 
 

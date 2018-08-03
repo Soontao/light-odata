@@ -61,7 +61,7 @@ expect(result.d.results[0]["CustomerID"]).toEqual("ALFKI")
 
 ## Batch requests
 
-use odata `$batch` api for operating multi entities in single http request
+use odata `$batch` api for operating multi entities in **single** HTTP request
 
 ```javascript
 
@@ -73,6 +73,8 @@ const odata = OData.New({
 })
 const testDesc1 = v4(); // a generated uuid
 const testDesc2 = v4();
+
+// execute reqeusts and return mocked responses
 const result = await odata.execBatchRequests([
   odata.newBatchRequest({
     collection: "Products",
@@ -95,10 +97,6 @@ const result = await odata.execBatchRequests([
 ])
 
 result.map(r => expect(r.status).toEqual(201)) // Created
-
-// assert
-result[0].json().then(r1 => expect(r1.d["Description"]).toEqual(testDesc1))
-result[1].json().then(r1 => expect(r1.d["Description"]).toEqual(testDesc2))
 
 ```
 
@@ -144,19 +142,25 @@ use `ODataParam` to control data size, fields and order
 
 ### page
 
+`skip` first 30 records and `top` 10 records
+
 ```javascript 
 // equal to $format=json&$skip=30&$top=10
 ODataParam.newParam().skip(30).top(10)
 ```
 
-### inline count 
+### inline count
 
-```javascript 
+response with all pages count, useful
+
+```javascript
 // equal to $format=json&$inlinecount=allpages
-ODataParam.newParam().inlinecount(true)
+ODataParam.newParam().inlinecount(true).top(1).select("ObjectID")
 ```
 
 ### orderby
+
+sort data by one field
 
 ```javascript
 // equal to $format=json&$orderby=CreationDateTime desc
@@ -164,6 +168,8 @@ ODataParam.newParam().orderby("CreationDateTime")
 ```
 
 ### multi fields orderby
+
+sort data by multi field
 
 ```javascript
 // equal to $format=json&$orderby=A desc,B asc
