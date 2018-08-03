@@ -1,0 +1,86 @@
+{
+  "d": {
+    "results": [
+      {
+        "__metadata": {
+          "uri": "https://my500248.c4c.saphybriscloud.cn/sap/c4c/odata/cust/v1/servicemobileapp/ServiceRequestCollection('00163E20C98D1EE8A2F90338EDB5DD6E')",
+          "type": "cust.ServiceRequest",
+          "etag": "W/\"datetimeoffset'2018-07-30T04%3A13%3A49.1740120Z'\""
+        },
+        "ID": "21106"
+      },
+      {
+        "__metadata": {
+          "uri": "https://my500248.c4c.saphybriscloud.cn/sap/c4c/odata/cust/v1/servicemobileapp/ServiceRequestCollection('00163E20C98D1ED89CF7093C97CD7C9A')",
+          "type": "cust.ServiceRequest",
+          "etag": "W/\"datetimeoffset'2018-07-17T03%3A32%3A11.0431660Z'\""
+        },
+        "ID": "20651"
+      },
+      {
+        "__metadata": {
+          "uri": "https://my500248.c4c.saphybriscloud.cn/sap/c4c/odata/cust/v1/servicemobileapp/ServiceRequestCollection('00163E20C98D1ED89CF6FE1C63093C83')",
+          "type": "cust.ServiceRequest",
+          "etag": "W/\"datetimeoffset'2018-06-19T11%3A59%3A47.2664440Z'\""
+        },
+        "ID": "20650"
+      },
+      {
+        "__metadata": {
+          "uri": "https://my500248.c4c.saphybriscloud.cn/sap/c4c/odata/cust/v1/servicemobileapp/ServiceRequestCollection('00163E20C98D1ED89CF6E8228454BBE2')",
+          "type": "cust.ServiceRequest",
+          "etag": "W/\"datetimeoffset'2018-08-01T05%3A05%3A26.9642400Z'\""
+        },
+        "ID": "20649"
+      },
+      {
+        "__metadata": {
+          "uri": "https://my500248.c4c.saphybriscloud.cn/sap/c4c/odata/cust/v1/servicemobileapp/ServiceRequestCollection('00163E20C98D1ED89CF6BB237E217A3D')",
+          "type": "cust.ServiceRequest",
+          "etag": "W/\"datetimeoffset'2018-07-14T04%3A03%3A18.9898760Z'\""
+        },
+        "ID": "20648"
+      },
+      {
+        "__metadata": {
+          "uri": "https://my500248.c4c.saphybriscloud.cn/sap/c4c/odata/cust/v1/servicemobileapp/ServiceRequestCollection('00163E20C98D1ED89CF5E139C6BF3362')",
+          "type": "cust.ServiceRequest",
+          "etag": "W/\"datetimeoffset'2018-06-20T13%3A22%3A46.9510130Z'\""
+        },
+        "ID": "20647"
+      },
+      {
+        "__metadata": {
+          "uri": "https://my500248.c4c.saphybriscloud.cn/sap/c4c/odata/cust/v1/servicemobileapp/ServiceRequestCollection('00163E20C98D1EE89BC083B06E58FACF')",
+          "type": "cust.ServiceRequest",
+          "etag": "W/\"datetimeoffset'2018-06-12T06%3A01%3A34.5778240Z'\""
+        },
+        "ID": "20600"
+      },
+      {
+        "__metadata": {
+          "uri": "https://my500248.c4c.saphybriscloud.cn/sap/c4c/odata/cust/v1/servicemobileapp/ServiceRequestCollection('00163E20C98D1EE89A93FF7EA90674CF')",
+          "type": "cust.ServiceRequest",
+          "etag": "W/\"datetimeoffset'2018-06-05T09%3A08%3A27.2760330Z'\""
+        },
+        "ID": "20461"
+      },
+      {
+        "__metadata": {
+          "uri": "https://my500248.c4c.saphybriscloud.cn/sap/c4c/odata/cust/v1/servicemobileapp/ServiceRequestCollection('00163E20C98D1EE89A93A02D6D6CB1D2')",
+          "type": "cust.ServiceRequest",
+          "etag": "W/\"datetimeoffset'2018-07-10T03%3A41%3A04.9950070Z'\""
+        },
+        "ID": "20339"
+      },
+      {
+        "__metadata": {
+          "uri": "https://my500248.c4c.saphybriscloud.cn/sap/c4c/odata/cust/v1/servicemobileapp/ServiceRequestCollection('00163E20C98D1ED89A8E1E5DE137E4F3')",
+          "type": "cust.ServiceRequest",
+          "etag": "W/\"datetimeoffset'2018-06-05T05%3A13%3A20.4738730Z'\""
+        },
+        "ID": "20323"
+      }
+    ]
+  }
+}

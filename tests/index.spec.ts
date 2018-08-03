@@ -1,7 +1,7 @@
 import "isomorphic-fetch"
 import 'jest';
 import { OData } from "../src/request";
-import { ODataParam, ODataFilter } from '../src';
+import { ODataParam, ODataFilter, C4CODataResult, C4CEntity } from '../src';
 
 const TestServiceURL = "http://services.odata.org/V2/Northwind/Northwind.svc/$metadata"
 const odata = new OData(TestServiceURL)
@@ -52,5 +52,17 @@ describe('Read Test', () => {
     expect(result.d.__count).toEqual("1")
     expect(result.d.results[0]["CustomerID"]).toEqual("ALFKI")
   })
+
+  test('should parse json', () => {
+    const obj = require("../tests/resources/responses/ServiceRequest")
+    const result = C4CODataResult.fromPlainObject(obj, C4CEntity)
+    expect(result.d.results.pop()).toBeInstanceOf(C4CEntity)
+  });
+
+  test('should parse json and throw error', () => {
+    expect(() => {
+      C4CODataResult.fromPlainObject(require("../tests/resources/responses/error"), C4CEntity)
+    }).toThrow("Ungültigen Token an Position 24 gefunden")
+  });
 
 });
