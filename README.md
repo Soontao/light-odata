@@ -130,7 +130,7 @@ ODataFilter
 ### filter by one field but multi values
 
 ```js
-// (Name eq 'test string1') and (Name2 eq 'test string1' or Name eq 'test string2')
+// (Name eq 'test string1') and (Name2 eq 'test string1' or Name2 eq 'test string2')
 ODataFilter.newFilter().field("Name").eq("'test string1'").and(
   ODataFilter.newFilter().fieldIn("Name2", ["test string1", "test string2"])
 )
