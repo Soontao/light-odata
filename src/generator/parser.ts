@@ -155,7 +155,7 @@ export function parseMetaCRUDFunctionFrom(collection: ODataCollection): MetaFunc
   rt.push({
     name: `bRead${name}`,
     parameters: [{ name: "params", type: "ODataQueryParam" }],
-    body: `return odata.newBatchRequest({ collectionName: "${collection.$.Name}", params })`,
+    body: `return odata.newBatchRequest({ collection: "${collection.$.Name}", params, method: "GET" })`,
     exported: true
   })
   rt.push({
@@ -174,7 +174,7 @@ export function parseMetaCRUDFunctionFrom(collection: ODataCollection): MetaFunc
       { name: "id", type: "string", description: "entity uuid" },
       { name: "params", type: "ODataQueryParam", description: "OData param" }
     ],
-    body: `return odata.newBatchRequest({ collectionName: "${collection.$.Name}", params, id })`,
+    body: `return odata.newBatchRequest({ collection: "${collection.$.Name}", params, id, method: "GET" })`,
     exported: true
   })
   if (collection.$["sap:creatable"] == "true") {
@@ -192,7 +192,7 @@ export function parseMetaCRUDFunctionFrom(collection: ODataCollection): MetaFunc
       parameters: [
         { name: "entity", type: entityName }
       ],
-      body: `return odata.newBatchRequest({ collectionName: "${collection.$.Name}", params, id, entity, method: "POST" })`,
+      body: `return odata.newBatchRequest({ collection: "${collection.$.Name}", params, id, entity, method: "POST" })`,
       exported: true
     })
   }
@@ -213,7 +213,7 @@ export function parseMetaCRUDFunctionFrom(collection: ODataCollection): MetaFunc
         { name: "id", type: "string", description: `${entityName} UUID` },
         { name: "entity", type: entityName, description: "part of entity for updating" }
       ],
-      body: `return odata.newBatchRequest({ collectionName: "${collection.$.Name}", id, entity, method: "PATCH" })`,
+      body: `return odata.newBatchRequest({ collection: "${collection.$.Name}", id, entity, method: "PATCH" })`,
       exported: true
     })
     // rt.push({
@@ -239,7 +239,7 @@ export function parseMetaCRUDFunctionFrom(collection: ODataCollection): MetaFunc
     rt.push({
       name: `bDeleteSingle${name}`,
       parameters: [{ name: "id", type: "string" }],
-      body: `return odata.newBatchRequest({ collectionName: "${collection.$.Name}", id, method: "DELETE" })`,
+      body: `return odata.newBatchRequest({ collection: "${collection.$.Name}", id, method: "DELETE" })`,
       exported: true
     })
   }
