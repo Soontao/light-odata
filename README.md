@@ -15,6 +15,8 @@ npm i -S c4codata # in your project
 
 ## generator usage
 
+c4codata includes a type defination generator to help developer invoke odata api.
+
 ```bash
 
 Usage:
@@ -42,7 +44,7 @@ odata-js-generator -m https://host/sap/c4c/odata/v1/c4codata/$metadata?sap-label
 
 ## OData
 
-a simple request
+a simple `Get` request
 
 ```javascript
 import { OData, ODataParam, ODataFilter } from "c4codata"
