@@ -101,12 +101,19 @@ export class ODataQueryParam {
   /**
    * set order sequence
    * 
-   * @param field 
-   * @param order default desc
+   * @param fieldOrOrders 
+   * @param order default desc, disabled when first params is array
    */
-  orderby(field: string, order: "asc" | "desc" = "desc") {
-    this.$orderby = `${field} ${order}`
-    return this
+  orderby(
+    fieldOrOrders: string | ODataParamOrderField[],
+    order: "asc" | "desc" = "desc"
+  ) {
+    if (isArray(fieldOrOrders)) {
+      return this.orderbyMulti(fieldOrOrders)
+    } else {
+      this.$orderby = `${fieldOrOrders} ${order}`
+      return this
+    }
   }
 
   /**

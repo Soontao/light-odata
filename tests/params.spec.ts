@@ -44,12 +44,16 @@ describe('ODataParams Test', () => {
     test('ODataParam orderby multi', () => {
         const param = ODataParam.newParam().orderbyMulti([{ field: "A" }, { field: "B", order: "asc" }]);
         expect(decodeURIComponent(param.toString())).toEqual("$format=json&$orderby=A+desc,B+asc")
+        const p2 = ODataParam.newParam().orderby([{ field: "A" }, { field: "B", order: "asc" }]);
+        expect(decodeURIComponent(p2.toString())).toEqual("$format=json&$orderby=A+desc,B+asc")
     })
 
-    test('ODataParam format xml error', () => {
+    test('ODataParam format', () => {
         expect(() => {
             ODataParam.newParam().format("xml")
         }).toThrow();
+        expect(decodeURIComponent(ODataParam.newParam().format("json").toString())).toEqual("$format=json")
+
     })
 
     test('ODataParam search', () => {
@@ -72,11 +76,12 @@ describe('ODataParams Test', () => {
         expect(decodeURIComponent(param.toString())).toEqual("$format=json&$select=ObjectID,Name")
     })
 
-    test('expand navigation', () => {
+    test('expand navigation & replace', () => {
         const param = ODataParam.newParam().expand("Customer")
         expect(decodeURIComponent(param.toString())).toEqual("$format=json&$expand=Customer")
-        const param2 = ODataParam.newParam().expand(["Customer", "Employee"])
-        expect(decodeURIComponent(param2.toString())).toEqual("$format=json&$expand=Customer,Employee")
+        param.expand(["Customer", "Employee"], true)
+        expect(decodeURIComponent(param.toString())).toEqual("$format=json&$expand=Customer,Employee")
+
     })
 
 

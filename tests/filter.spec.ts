@@ -9,8 +9,10 @@ describe("OData Filter Test", () => {
   })
 
   test("ODataFilter.eqString", () => {
-    const filter = ODataFilter.newFilter().field("Name").eqString("test string")
-    expect(filter.build()).toEqual("Name eq 'test string'")
+    expect(ODataFilter.newFilter().field("Name").eqString("test string").build())
+      .toEqual("Name eq 'test string'")
+    expect(ODataFilter.newFilter().field("Name").neString("test string").build())
+      .toEqual("Name ne 'test string'")
   })
 
   test("ODataFilter.group", () => {
