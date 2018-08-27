@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/Soontao/c4codata/compare/v1.0.60...v1.1.0) (2018-08-27)
+
+
+### Features
+
+* **refactor:** suppose user's operator & document ([034bd6b](https://github.com/Soontao/c4codata/commit/034bd6b))
+
+
+
 <a name="1.0.60"></a>
 ## [1.0.60](https://github.com/Soontao/c4codata/compare/v1.0.59...v1.0.60) (2018-08-20)
 
