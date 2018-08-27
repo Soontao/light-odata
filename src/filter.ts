@@ -1,4 +1,95 @@
-import { forEach } from "lodash";
+import { forEach, isEmpty, join, map, merge, filter, concat } from "lodash";
+
+enum ExprOperator {
+  eq = "eq",
+  ne = "ne",
+  gt = "gt",
+  lt = "lt",
+  ge = "ge",
+  le = "le",
+}
+
+type FieldExpr = {
+  op: ExprOperator;
+  value: string;
+}
+
+
+type FieldExprMappings = {
+  [key: string]: FieldExpr[]
+}
+
+export class ODataFieldExpr {
+
+  constructor(
+    filter: ODataFilter,
+    fieldName: string,
+  ) {
+    this._exprMappings = filter.getExprMapping();
+    this._fieldName = fieldName;
+    this._filter = filter;
+    if (isEmpty(this._getFieldExprs())) {
+      this._exprMappings[this._fieldName] = []
+    }
+  }
+
+  private _filter: ODataFilter;
+
+  private _fieldName: string;
+
+  private _exprMappings: FieldExprMappings
+
+  private _getFieldExprs() {
+    return this._exprMappings[this._fieldName]
+  }
+
+  private _addExpr(op: ExprOperator, value: string) {
+    this._getFieldExprs().push({
+      op,
+      value,
+    })
+  }
+
+  eq(value) {
+    this._addExpr(ExprOperator.eq, value)
+    return this._filter;
+  }
+
+  ne(value) {
+    this._addExpr(ExprOperator.ne, value)
+  }
+
+  eqString(value: string) {
+    this._addExpr(ExprOperator.eq, `'${value}'`)
+    return this._filter;
+  }
+
+  neString(value: string) {
+    this._addExpr(ExprOperator.ne, `'${value}'`)
+    return this._filter;
+  }
+
+  ge(value) {
+    this._addExpr(ExprOperator.ge, value)
+    return this._filter;
+  }
+
+  gt(value) {
+    this._addExpr(ExprOperator.gt, value)
+    return this._filter;
+  }
+
+  le(value) {
+    this._addExpr(ExprOperator.le, value)
+    return this._filter;
+  }
+
+  lt(value) {
+    this._addExpr(ExprOperator.lt, value)
+    return this._filter;
+  }
+
+}
 
 
 
@@ -15,124 +106,92 @@ export class ODataFilter {
     return new ODataFilter()
   }
 
-  private filterStr = "";
+  private _fieldExprMappings: FieldExprMappings = {};
+
+  /**
+   * getExprMapping
+   */
+  public getExprMapping() {
+    return this._fieldExprMappings;
+  }
 
   /**
    * @param name filed name
    */
   field(name: string) {
-    this.filterStr += name;
-    return this;
+    return new ODataFieldExpr(this, name);
   }
 
+  /**
+   * The value of a field matches any value in the list.
+   * 
+   * @deprecated please use fieldValueMatchArray
+   * @param name 
+   * @param values 
+   */
   fieldIn(name: string, values: string[]) {
+    return this.fieldValueMatchArray(name, values);
+  }
+
+  /**
+   * The value of a field matches any value in the list.
+   * 
+   * @param name 
+   * @param values 
+   */
+  fieldValueMatchArray(name: string, values: string[]) {
     if (values) {
-      forEach(values, (value, index, arr) => {
+      forEach(values, (value) => {
         this.field(name).eqString(value)
-        if (index < (arr.length - 1)) {
-          this.or()
-        }
       });
     }
-    return this;
-  }
-
-  eq(value) {
-    this.filterStr += ` eq ${value}`;
-    return this;
-  }
-
-  eqString(value: string) {
-    this.filterStr += ` eq '${value}'`;
-    return this;
-  }
-
-  ge(value) {
-    this.filterStr += ` ge ${value}`;
-    return this;
-  }
-
-  gt(value) {
-    this.filterStr += ` gt ${value}`;
-    return this;
-  }
-
-  le(value) {
-    this.filterStr += ` le ${value}`;
-    return this;
-  }
-
-  lt(value) {
-    this.filterStr += ` lt ${value}`;
     return this;
   }
 
   /**
    * DEPRECATED
    * 
-   * dont use this function
+   * please use betweenDateTime/betweenDateTimeOffset
    * 
+   * @deprecated
    * @param name 
    * @param start 
    * @param end 
    */
   inPeriod(name: string, start: Date, end: Date) {
-    this.group(
-      ODataFilter.newFilter()
-        .gtDateTime(name, start)
-        .and()
-        .ltDateTime(name, end)
-    )
-    return this;
+    return this.betweenDateTime(name, start, end)
   }
 
   betweenDateTime(name: string, start: Date, end: Date) {
     if (start && end) {
-      this.group(
-        ODataFilter.newFilter()
-          .gtDateTime(name, start)
-          .and()
-          .ltDateTime(name, end)
-      )
+      return this.gtDateTime(name, start).ltDateTime(name, end)
     } else {
       throw new Error("You must give out the start and end date")
     }
-
-    return this;
   }
 
   betweenDateTimeOffset(name: string, start: Date, end: Date) {
     if (start && end) {
-      this.group(
-        ODataFilter.newFilter()
-          .gtDateTimeOffset(name, start)
-          .and()
-          .ltDateTimeOffset(name, end)
-      )
+      return this.gtDateTimeOffset(name, start).ltDateTimeOffset(name, end)
     } else {
       throw new Error("You must give out the start and end date")
     }
-    return this;
   }
 
   gtDateTime(name: string, date: Date) {
-    this.field(name).gt(`datetime'${date.toISOString()}'`)
-    return this
+    return this.field(name).gt(`datetime'${date.toISOString()}'`)
   }
 
   gtDateTimeOffset(name: string, date: Date) {
-    this.field(name).gt(`datetimeoffset'${date.toISOString()}'`)
-    return this
+    return this.field(name).gt(`datetimeoffset'${date.toISOString()}'`)
   }
 
   ltDateTime(name: string, date: Date) {
-    this.field(name).lt(`datetime'${date.toISOString()}'`)
-    return this
+    return this.field(name).lt(`datetime'${date.toISOString()}'`)
   }
 
   ltDateTimeOffset(name: string, date: Date) {
-    this.field(name).lt(`datetimeoffset'${date.toISOString()}'`)
-    return this
+    return this.field(name).lt(`datetimeoffset'${date.toISOString()}'`)
   }
 
   /**
@@ -142,28 +201,27 @@ export class ODataFilter {
    * 
    * filter.field("A").eq("'a'").and("B eq 'b'").build() == "A eq 'a' and (B eq 'b')"
    * 
+   * @deprecated
    * @param filter 
    */
   and(filter?: string | ODataFilter) {
-    if (filter) {
-      this.filterStr = `(${this.filterStr}) and (${filter.toString()})`;
-    } else {
-      this.filterStr += " and ";
-    }
     return this;
   }
 
+  /**
+   * @deprecated
+   * @param filter 
+   */
   or(filter?: string | ODataFilter) {
-    if (filter) {
-      this.filterStr = `(${this.filterStr}) or (${filter.toString()})`;
-    } else {
-      this.filterStr += " or ";
-    }
     return this;
   }
 
-  group(filter: string | ODataFilter) {
-    this.filterStr += `(${filter.toString()})`;
+  /**
+   * @deprecated
+   * @param filter 
+   */
+  group(filter: ODataFilter) {
+    this._fieldExprMappings = merge(this._fieldExprMappings, filter.getExprMapping())
     return this;
   }
 
@@ -171,8 +229,51 @@ export class ODataFilter {
     return this.build();
   }
 
+  _buildFieldExprString(field: string) {
+    const exprs = this.getExprMapping()[field];
+    if (!isEmpty(exprs)) {
+      if (isEmpty(filter(exprs, { op: ExprOperator.eq }))) {
+        return `(${join(
+          map(exprs, ({ op, value }) => `${field} ${op} ${value}`),
+          " and "
+        )})`
+      } else {
+        return `(${join(
+          map(exprs, ({ op, value }) => `${field} ${op} ${value}`),
+          " or "
+        )})`
+      }
+    } else {
+      return "";
+    }
+
+  }
+
   build() {
-    return this.filterStr;
+    var _rt = "";
+    _rt = join(
+      // join all fields exprs string
+      map(
+        this.getExprMapping(),
+        (exprs, fieldName) => {
+          switch (exprs.length) {
+            // if one field expr mapping array is empty
+            case 0:
+              return "";
+            // only have one expr
+            case 1:
+              const { op, value } = exprs[0]
+              return `${fieldName} ${op} ${value}`
+            default:
+              // multi exprs
+              return this._buildFieldExprString(fieldName)
+          }
+
+        }
+      ),
+      " and "
+    )
+    return _rt;
   }
 
 }

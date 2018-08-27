@@ -9,7 +9,7 @@ OData Client for SAP C4C OData (v2) Service, in theory, support all services imp
 ## install
 
 ```bash
-npm i -g c4codata # global generator
+npm i -g c4codata # type defination generator
 npm i -S c4codata # in your project
 ```
 
@@ -38,7 +38,7 @@ sample command (generate single js file)
 
 ```bash
 # use following command to generate declaration
-odata-js-generator -m https://host/sap/c4c/odata/v1/c4codata/$metadata?sap-label=true -u user -p pass
+odata-js-generator -m https://host/sap/c4c/odata/v1/c4codata/$metadata?sap-label=true -u c4c-username -p c4c-password
 # then, you could use the c4codata.js to operation OData
 ```
 
@@ -125,37 +125,57 @@ ODataFilter.newFilter().field("Name").eqString("test string")
 ODataFilter
   .newFilter()
   .field("Name").eq("'test string1'")
-  .and()
   .field("Name2").eqString("test string2")
 ```
 
 ### filter by one field but multi values
 
+C4C only support AND operator between different fields, and OR operator between same field
+
+So you don't need to specify the operator between fields
+
 ```js
-// (Name eq 'test string1') and (Name2 eq 'test string1' or Name2 eq 'test string2')
-ODataFilter.newFilter().field("Name").eq("'test string1'").and(
-  ODataFilter.newFilter().fieldIn("Name2", ["test string1", "test string2"])
-)
+// Name2 eq 'test string1' and (Name eq 'test string1' or Name eq 'test string2')
+OData
+  .newFilter()
+  .field("Name2").eq("'test string1'")
+  .fieldIn("Name", ["test string1", "test string2"])
+```
+
+### field by date
+
+Though C4C only support AND operator in different fields, but for gt/lt/ge/le, you can use AND for filtering period data.
+
+```js
+// Name eq 'test string1' and (CreationDateTime gt datetime'2018-01-24T12:43:31.839Z' and CreationDateTime lt datetime'2018-05-24T12:43:31.839Z')
+ODataFilter
+  .newFilter()
+  .field("Name").eq("'test string1'").and()
+  .inPeriod(
+    "CreationDateTime",
+    new Date("2018-01-24T12:43:31.839Z"),
+    new Date("2018-05-24T12:43:31.839Z")
+  )
 ```
 
 ## ODataParam
 
-use `ODataParam` to control data size, fields and order
+use `ODataParam` to control data size, fields and order by
 
 ### page
 
 `skip` first 30 records and `top` 10 records
 
-```javascript 
+```js
 // equal to $format=json&$skip=30&$top=10
 ODataParam.newParam().skip(30).top(10)
 ```
 
 ### inline count
 
-response with all pages count, useful
+response with all pages count, usefully
 
-```javascript
+```js
 // equal to $format=json&$inlinecount=allpages
 ODataParam.newParam().inlinecount(true).top(1).select("ObjectID")
 ```
@@ -186,7 +206,6 @@ SAP Cloud for Customer's OData, only support use AND in different fields and OR 
 
 * Documents
 * Codelist generator
-* OAuth Support
 
 ## [CHANGELOG](https://github.com/Soontao/c4codata/blob/master/CHANGELOG.md)
 
