@@ -1,6 +1,6 @@
 import { forEach, isEmpty, join, map, merge, filter, concat } from "lodash";
 
-enum ExprOperator {
+export enum ExprOperator {
   eq = "eq",
   ne = "ne",
   gt = "gt",
@@ -111,7 +111,7 @@ export class ODataFilter {
   /**
    * getExprMapping
    */
-  public getExprMapping() {
+  getExprMapping() {
     return this._fieldExprMappings;
   }
 
