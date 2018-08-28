@@ -47,14 +47,14 @@ export const parseODataMetadataFromRemote = async (
 /**
  * parse odata metadata xml
  * 
- * @param file_str odata metadata xml string
+ * @param metadataXmlString odata metadata xml string
  */
-export function parseODataMetadata(file_str: string) {
+export function parseODataMetadata(metadataXmlString: string) {
   return new Promise<ODataMetadata>((resolve, reject) => {
-    if (isEmpty(file_str)) {
+    if (isEmpty(metadataXmlString)) {
       reject("not get acceptable odata metadata xml")
     } else {
-      parseString(file_str, function (err, result) {
+      parseString(metadataXmlString, function (err, result) {
         if (err) {
           reject(err)
         } else {
