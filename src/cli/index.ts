@@ -8,7 +8,6 @@ import { writeFileSync } from "fs";
 import { join } from "path";
 import { CliOption } from './type';
 import {
-  parseODataMetadata,
   generateClassString,
   generateSeprateClassString,
   parseMetaCRUDFunctionByEntityName,
@@ -18,7 +17,8 @@ import {
   generateSeprateODataFile,
   ODataMetadata,
   generateSeprateIndexFile,
-  generateAllDefault
+  generateAllDefault,
+  parseODataMetadataFromRemote
 } from "../generator";
 
 const mkdirp = require("mkdirp")
@@ -70,22 +70,21 @@ const d = (string) => {
 
       d(`fetch metadata: ${options.uri}`)
 
-      const res = await fetch(options.uri, { headers: { ...GetAuthorizationPair(options.user, options.pass) } })
-      if (res.status != 200) {
-        throw new Error(`Response not correct, check your network & credential\nStatus:${res.status}\nHeaders:${JSON.stringify(res.headers)}`)
-      }
-      const body = await res.text()
-
-      d(body ? "have content" : "no content")
-
-      // need process exception
-      const meta = await parseODataMetadata(body)
+      const meta = await parseODataMetadataFromRemote(
+        options.uri,
+        { headers: { ...GetAuthorizationPair(options.user, options.pass), }, },
+        fetch,
+      )
 
       if (options.separate) {
+        // save type defination to different files
         mkdirp.sync(join(cwd(), options.separate))
         generateAndWriteSeprate(meta, options)
+
       } else {
+        // save all type defination in single js type
         generateAndWriteSingle(meta, options)
+
       }
 
     } catch (error) {

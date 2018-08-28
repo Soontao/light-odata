@@ -1,7 +1,7 @@
 import { parseString } from "xml2js";
 import { ODataMetadata, ODataEntityType, ODataCollection } from "./meta_odata";
-import { MetaClass, MetaFunction, ClassField, ClassMethod } from "./meta_js";
-import { reduce, concat, map, filter, endsWith, assign, flatten, isEmpty, get } from "lodash";
+import { MetaClass, MetaFunction, ClassField, } from "./meta_js";
+import { reduce, concat, map, filter, endsWith, assign, flatten, isEmpty } from "lodash";
 
 // need refactor data services collection
 
@@ -23,6 +23,24 @@ export function getEntityCollectionByEntityType(meta: ODataMetadata, entityType:
 export function getEntityTypeByEntityCollection(meta: ODataMetadata, collection: ODataCollection) {
   // ignore schema namespace
   return filter(getEntityTypesDefault(meta), t => endsWith(collection.$.EntityType, t.$.Name))
+}
+
+export const parseODataMetadataFromRemote = async (
+  uri: string,
+  headers,
+  fetch
+) => {
+  const res = await fetch(uri, { headers, })
+  if (res.status != 200) {
+    throw new Error(`Response not correct, check your network & credential\nStatus:${res.status}\nHeaders:${JSON.stringify(res.headers)}`)
+  }
+  const body = await res.text()
+
+  if (isEmpty(body)) {
+    throw new Error(`${uri} response empty metadata`)
+  }
+
+  return await parseODataMetadata(body)
 }
 
 
