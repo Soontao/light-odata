@@ -36,7 +36,6 @@
   "dependencies": {
     "buffer": "^5.0.8",
     "cli": "^1.0.1",
-    "docx": "^4.0.0",
     "http-string-parser": "^0.0.6",
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.5",
