@@ -48,7 +48,9 @@ describe("OData Filter Test", () => {
       .toEqual("Name eq 'test string1' and (Name2 eq 'test string3' or Name2 eq 'test string2')")
   })
 
-  test('ODataFilter.inPeriod', () => {
+  test('ODataFilter.inPeriod/field.betweenDateTime', () => {
+    const expected = "Name eq 'test string1' and (CreationDateTime gt datetime'2018-01-24T12:43:31.839Z' and CreationDateTime lt datetime'2018-05-24T12:43:31.839Z')";
+    const expected2 = "(CreationDateTime ge datetime'2018-01-24T12:43:31.839Z' and CreationDateTime le datetime'2018-05-24T12:43:31.839Z')"
     const filter = ODataFilter
       .newFilter()
       .field("Name").eq("'test string1'").and()
@@ -57,8 +59,29 @@ describe("OData Filter Test", () => {
         new Date("2018-01-24T12:43:31.839Z"),
         new Date("2018-05-24T12:43:31.839Z")
       )
-    expect(filter.build())
-      .toEqual("Name eq 'test string1' and (CreationDateTime gt datetime'2018-01-24T12:43:31.839Z' and CreationDateTime lt datetime'2018-05-24T12:43:31.839Z')")
+    expect(filter.build()).toEqual(expected)
+    expect(
+      ODataFilter
+        .newFilter()
+        .field("Name").eq("'test string1'")
+        .field("CreationDateTime").betweenDateTime(
+          new Date("2018-01-24T12:43:31.839Z"),
+          new Date("2018-05-24T12:43:31.839Z"),
+          false
+        )
+        .build()
+    ).toEqual(expected)
+
+    expect(
+      ODataFilter
+      .newFilter()
+      .field("CreationDateTime").betweenDateTime(
+        new Date("2018-01-24T12:43:31.839Z"),
+        new Date("2018-05-24T12:43:31.839Z")
+      )
+      .build()
+    ).toEqual(expected2)
+
   })
 
   test('ODataFilter.betweenDateTime', () => {

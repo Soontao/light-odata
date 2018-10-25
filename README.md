@@ -1,4 +1,4 @@
-# C4C OData Javascript Library
+# OData Javascript Library
 
 [![CircleCI](https://circleci.com/gh/Soontao/c4codata.svg?style=shield)](https://circleci.com/gh/Soontao/c4codata)
 [![codecov](https://codecov.io/gh/Soontao/c4codata/branch/master/graph/badge.svg)](https://codecov.io/gh/Soontao/c4codata)
@@ -10,7 +10,6 @@ OData Client for SAP C4C OData (v2) Service, in theory, support all services imp
 ## install
 
 ```bash
-npm i -g c4codata # type defination generator
 npm i -S c4codata # in your project
 ```
 
@@ -18,35 +17,6 @@ or add [UNPKG](https://unpkg.com/c4codata) link to your page
 
 ```html
 <script src="https://unpkg.com/c4codata"></script>
-```
-
-## generator usage
-
-c4codata includes a type defination generator to help developer invoke odata api.
-
-```bash
-
-Usage:
-  odata-js-generator [OPTIONS] [ARGS]
-
-Options:
-  -m, --uri STRING       metadata uri
-  -u, --user STRING      c4c username
-  -p, --pass STRING      c4c password
-  -o, --out [STRING]     out file (Default is c4codata.js)
-  -d, --debug BOOLEAN    debug mode
-  -s, --separate STRING  out with separate files in directory
-  -r, --odatajs BOOLEAN  seperate generator without odata.js
-  -h, --help             Display help and usage details
-
-```
-
-sample command (generate single js file)
-
-```bash
-# use following command to generate declaration
-odata-js-generator -m https://host/sap/c4c/odata/v1/c4codata/$metadata?sap-label=true -u c4c-username -p c4c-password
-# then, you could use the c4codata.js to operation OData
 ```
 
 ## OData Client
@@ -118,11 +88,24 @@ use `ODataFilter` to filter data
 import { ODataFilter } from "c4codata";
 ```
 
+C4C only support AND operator between different fields, and OR operator between same field
+
+So you don't need to specify the operator between fields.
+
+Though C4C only support AND operator in different fields, but for gt/lt/ge/le, you can use AND for filtering period data.
+
+just ref following examples
+
 ### filter by single field value
 
 ```js
 // Name eq 'test string'
 ODataFilter.newFilter().field("Name").eqString("test string")
+
+// ID lt '1024'
+ODataFilter.newFilter().field("ID").lt("'1024'")
+
+// also support eq/ne/le/lt/gt/ge ...
 ```
 
 ### filter by multi fields
@@ -137,10 +120,6 @@ ODataFilter
 
 ### filter by one field but multi values
 
-C4C only support AND operator between different fields, and OR operator between same field
-
-So you don't need to specify the operator between fields
-
 ```js
 // Name2 eq 'test string1' and (Name eq 'test string1' or Name eq 'test string2')
 OData
@@ -151,18 +130,29 @@ OData
 
 ### field by date
 
-Though C4C only support AND operator in different fields, but for gt/lt/ge/le, you can use AND for filtering period data.
+Depends on field type, use `betweenDateTime` or `betweenDateTimeOffset` to filter date
 
 ```js
 // Name eq 'test string1' and (CreationDateTime gt datetime'2018-01-24T12:43:31.839Z' and CreationDateTime lt datetime'2018-05-24T12:43:31.839Z')
 ODataFilter
   .newFilter()
-  .field("Name").eq("'test string1'").and()
-  .inPeriod(
-    "CreationDateTime",
+  .field("Name").eq("'test string1'")
+  .field("CreationDateTime").betweenDateTime(
+    new Date("2018-01-24T12:43:31.839Z"),
+    new Date("2018-05-24T12:43:31.839Z"),
+    false
+  )
+  .build()
+
+// (CreationDateTime ge datetime'2018-01-24T12:43:31.839Z' and CreationDateTime le datetime'2018-05-24T12:43:31.839Z')
+ODataFilter
+  .newFilter()
+  .field("CreationDateTime").betweenDateTime(
     new Date("2018-01-24T12:43:31.839Z"),
     new Date("2018-05-24T12:43:31.839Z")
+    // include boundary value
   )
+  .build()
 ```
 
 ## ODataParam
@@ -209,13 +199,67 @@ ODataParam.newParam().orderbyMulti([{ field: "A" }, { field: "B", order: "asc" }
 
 SAP Cloud for Customer's OData, only support use AND in different fields and OR in same field..
 
+## generator usage
+
+install it global firstly
+
+```bash
+npm i -g c4codata # type defination generator
+```
+
+c4codata includes a type defination generator to help developer invoke odata api.
+
+```bash
+
+Usage:
+  odata-js-generator [OPTIONS] [ARGS]
+
+Options:
+  -m, --uri STRING       metadata uri
+  -u, --user STRING      c4c username
+  -p, --pass STRING      c4c password
+  -o, --out [STRING]     out file (Default is c4codata.js)
+  -d, --debug BOOLEAN    debug mode
+  -s, --separate STRING  out with separate files in directory
+  -r, --odatajs BOOLEAN  seperate generator without odata.js
+  -h, --help             Display help and usage details
+
+```
+
+sample command (generate single js file)
+
+```bash
+# use following command to generate declaration
+odata-js-generator -m https://host/sap/c4c/odata/v1/c4codata/$metadata?sap-label=true -u c4c-username -p c4c-password
+# then, you could use the c4codata.js to operation OData
+```
+
 ## TO-DO
 
 * Documents
-* Codelist generator
 
 ## [CHANGELOG](https://github.com/Soontao/c4codata/blob/master/CHANGELOG.md)
 
 ## LICENSE
 
-MIT
+MIT License
+
+Copyright (c) 2018 Theo Sun
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

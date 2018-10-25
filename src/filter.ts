@@ -89,6 +89,38 @@ export class ODataFieldExpr {
     return this._filter;
   }
 
+  between(lower, max, includeBoundary = true) {
+    if (lower && max) {
+      if (includeBoundary) {
+        this.ge(lower);
+        this.le(max);
+      } else {
+        this.gt(lower);
+        this.lt(max);
+      }
+
+      return this._filter;
+    } else {
+      throw new Error("You must give out the start and end date")
+    }
+  }
+
+  betweenDateTime(start: Date, end: Date, includeBoundary = true) {
+    if (start && end) {
+      return this.between(`datetime'${start.toISOString()}'`, `datetime'${end.toISOString()}'`, includeBoundary)
+    } else {
+      throw new Error("You must give out the start and end date")
+    }
+  }
+
+  betweenDateTimeOffset(start: Date, end: Date, includeBoundary = true) {
+    if (start && end) {
+      return this.between(`datetimeoffset'${start.toISOString()}'`, `datetimeoffset'${end.toISOString()}'`, includeBoundary)
+    } else {
+      throw new Error("You must give out the start and end date")
+    }
+  }
+
 }
 
 
@@ -102,6 +134,9 @@ export class ODataFilter {
     return new ODataFilter()
   }
 
+  /**
+   * construct a new filter
+   */
   static newFilter() {
     return new ODataFilter()
   }
@@ -162,6 +197,12 @@ export class ODataFilter {
     return this.betweenDateTime(name, start, end)
   }
 
+  /**
+   * @deprecated
+   * @param name 
+   * @param start 
+   * @param end 
+   */
   betweenDateTime(name: string, start: Date, end: Date) {
     if (start && end) {
       return this.gtDateTime(name, start).ltDateTime(name, end)
@@ -170,6 +211,12 @@ export class ODataFilter {
     }
   }
 
+  /**
+   * @deprecated
+   * @param name 
+   * @param start 
+   * @param end 
+   */
   betweenDateTimeOffset(name: string, start: Date, end: Date) {
     if (start && end) {
       return this.gtDateTimeOffset(name, start).ltDateTimeOffset(name, end)

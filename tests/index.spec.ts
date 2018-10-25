@@ -3,7 +3,7 @@ import 'jest';
 import { OData } from "../src/request";
 import { ODataParam, ODataFilter, C4CODataResult, C4CEntity, C4CODataSingleResult } from '../src';
 
-const TestServiceURL = "http://services.odata.org/V2/Northwind/Northwind.svc/$metadata"
+const TestServiceURL = "https://services.odata.org/V2/Northwind/Northwind.svc/$metadata"
 const odata = new OData(TestServiceURL)
 
 describe('Read Test', () => {
