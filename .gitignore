@@ -2,5 +2,4 @@ node_modules
 coverage
 lib
 out
-*.js
 the_tests
