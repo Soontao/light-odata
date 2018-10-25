@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/Soontao/c4codata/compare/v1.1.3...v1.2.0) (2018-10-25)
+
+
+### Features
+
+* **umd:** module support ([a6483ae](https://github.com/Soontao/c4codata/commit/a6483ae))
+
+
+
 <a name="1.1.3"></a>
 ## [1.1.3](https://github.com/Soontao/c4codata/compare/v1.1.2...v1.1.3) (2018-08-28)
 
