@@ -1,7 +1,12 @@
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const { join } = require("path")
+
 module.exports = {
   entry: './src/index.ts',
+  mode: 'production',
   output: {
-    filename: './lib/c4codata-umd.js',
+    path: join(__dirname, './lib'),
+    filename: "c4codata-umd.js",
     libraryTarget: 'umd'
   },
   resolve: {
@@ -13,9 +18,15 @@ module.exports = {
       // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
       {
         test: /\.tsx?$/, loader: "ts-loader", options: {
-          configFile : "tsconfig-umd.json"
+          configFile: "tsconfig-umd.json"
         }
       }
     ]
+  },
+  optimization: {
+    minimizer: [new UglifyJsPlugin({
+      parallel: true,
+      cache: true
+    })]
   }
 }
