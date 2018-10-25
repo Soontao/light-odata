@@ -3,6 +3,7 @@
 [![CircleCI](https://circleci.com/gh/Soontao/c4codata.svg?style=shield)](https://circleci.com/gh/Soontao/c4codata)
 [![codecov](https://codecov.io/gh/Soontao/c4codata/branch/master/graph/badge.svg)](https://codecov.io/gh/Soontao/c4codata)
 [![npm version](https://badge.fury.io/js/c4codata.svg)](https://badge.fury.io/js/c4codata)
+[![unpkg](https://img.shields.io/github/license/mashape/apistatus.svg)](https://unpkg.com/c4codata?meta)
 
 OData Client for SAP C4C OData (v2) Service, in theory, support all services implemented by odata v2
 
@@ -11,6 +12,12 @@ OData Client for SAP C4C OData (v2) Service, in theory, support all services imp
 ```bash
 npm i -g c4codata # type defination generator
 npm i -S c4codata # in your project
+```
+
+or add [UNPKG](https://unpkg.com/c4codata) link to your page
+
+```html
+<script src="https://unpkg.com/c4codata"></script>
 ```
 
 ## generator usage
@@ -42,7 +49,7 @@ odata-js-generator -m https://host/sap/c4c/odata/v1/c4codata/$metadata?sap-label
 # then, you could use the c4codata.js to operation OData
 ```
 
-## OData
+## OData Client
 
 a simple `Get` request
 
