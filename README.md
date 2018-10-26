@@ -21,27 +21,28 @@ or add [UNPKG](https://unpkg.com/c4codata) link to your page
 
 ## OData Client
 
-a simple `Get` request
+Start with a simple query:
 
 ```javascript
-import { OData, ODataParam, ODataFilter } from "c4codata"
+import { OData } from "c4codata"
 
-// odata sample service
+// odata.org sample odata service
 const TestServiceURL = "https://services.odata.org/V2/Northwind/Northwind.svc/$metadata"
 const odata = new OData(TestServiceURL)
 
-// read by filter
-// http://services.odata.org/V2/Northwind/Northwind.svc/Customers?$format=json&$filter=Phone eq '030-0074321'
+// Query by filter
+//
+// GET /V2/Northwind/Northwind.svc/Customers?$format=json&$filter=Phone eq '030-0074321'
 const filter = OData.newFilter().field("Phone").eqString("030-0074321");
-const result = await odata.newRequest({
-  collection: "Customers",
-  params: OData.newParam().filter(filter)
+// In fact, you cant use await in top level, just a sample
+const result = await odata.newRequest({ // ODataRequest object
+  collection: "Customers", // collection name
+  params: OData.newParam().filter(filter) // odata param
+  // method: "GET", default with GET method for QUERY/READ
 })
-expect(result.d.results[0]["CustomerID"]).toEqual("ALFKI")
-
 ```
 
-request interface as following
+`ODataRequest` interface as following:
 
 ```ts
 interface ODataRequest<T> {
