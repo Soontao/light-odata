@@ -40,8 +40,11 @@ describe('Read Test', () => {
   })
 
   test.concurrent('Read By Filter', async () => {
-    const filter = ODataFilter.newFilter().field("Phone").eqString("030-0074321");
-    const result = await odata.request("Customers", undefined, ODataParam.newParam().filter(filter))
+    const filter = OData.newFilter().field("Phone").eqString("030-0074321");
+    const result = await odata.newRequest({
+      collection: "Customers",
+      params: OData.newParam().filter(filter)
+    })
     expect(result.d.results[0]["CustomerID"]).toEqual("ALFKI")
   })
 

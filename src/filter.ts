@@ -103,6 +103,13 @@ export class ODataFieldExpr {
     return this._filter;
   }
 
+  /**
+   * filter by value range
+   * 
+   * @param lower 
+   * @param max 
+   * @param includeBoundary 
+   */
   between(lower, max, includeBoundary = true) {
     if (lower && max) {
       if (includeBoundary) {
@@ -112,10 +119,9 @@ export class ODataFieldExpr {
         this.gt(lower);
         this.lt(max);
       }
-
       return this._filter;
     } else {
-      throw new Error("You must give out the start and end date")
+      throw new Error("You must give out the start and end value")
     }
   }
 

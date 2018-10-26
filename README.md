@@ -27,56 +27,51 @@ a simple `Get` request
 import { OData, ODataParam, ODataFilter } from "c4codata"
 
 // odata sample service
-const TestServiceURL = "http://services.odata.org/V2/Northwind/Northwind.svc/$metadata"
+const TestServiceURL = "https://services.odata.org/V2/Northwind/Northwind.svc/$metadata"
 const odata = new OData(TestServiceURL)
 
 // read by filter
 // http://services.odata.org/V2/Northwind/Northwind.svc/Customers?$format=json&$filter=Phone eq '030-0074321'
-const filter = ODataFilter.newFilter().field("Phone").eqString("030-0074321");
-const result = await odata.request("Customers", undefined, ODataParam.newParam().filter(filter))
+const filter = OData.newFilter().field("Phone").eqString("030-0074321");
+const result = await odata.newRequest({
+  collection: "Customers",
+  params: OData.newParam().filter(filter)
+})
 expect(result.d.results[0]["CustomerID"]).toEqual("ALFKI")
 
 ```
 
-## Batch requests
+request interface as following
 
-use odata `$batch` api for operating multi entities in **single** HTTP request
-
-```javascript
-
-import { OData } from "c4codata"
-
-const odata = OData.New({
-  metadataUri: `https://services.odata.org/V2/(S(${v4()}))/OData/OData.svc/$metadata`,
-  processCsrfToken: false,
-})
-const testDesc1 = v4(); // a generated uuid
-const testDesc2 = v4();
-
-// execute reqeusts and return mocked responses
-const result = await odata.execBatchRequests([
-  odata.newBatchRequest({
-    collection: "Products",
-    entity: {
-      ID: 100009,
-      Description: testDesc1,
-    },
-    method: "POST",
-    // withContentLength: true, for SAP OData, please set this flag as true
-  }),
-  odata.newBatchRequest({
-    collection: "Products",
-    entity: {
-      ID: 100012,
-      Description: testDesc2,
-    },
-    method: "POST",
-    // withContentLength: true, for SAP OData, please set this flag as true
-  })
-])
-
-result.map(r => expect(r.status).toEqual(201)) // Created
-
+```ts
+interface ODataRequest<T> {
+  /**
+   * collection name
+   */
+  collection: string,
+  /**
+   * object key in READ/UPDATE/DELETE
+   */
+  id?: string,
+  /**
+   * params in QUERY
+   */
+  params?: ODataQueryParam,
+  /**
+   * GET for QUERY/READ; for QUERY, you can use params to control response data
+   * 
+   * PATCH for UPDATE
+   * 
+   * POST for CREATE
+   * 
+   * DELETE for delete
+   */
+  method?: HTTPMethod,
+  /**
+   * data object in CREATE/UPDATE
+   */
+  entity?: T
+}
 ```
 
 ## ODataFilter
@@ -189,9 +184,45 @@ sort data by multi field
 OData.newParam().orderbyMulti([{ field: "A" }, { field: "B", order: "asc" }])
 ```
 
-## Limitation
+## Batch requests
 
-SAP Cloud for Customer's OData, only support use AND in different fields and OR in same field..
+use odata `$batch` api for operating multi entities in **single** HTTP request
+
+```javascript
+
+const odata = OData.New({
+  metadataUri: `https://services.odata.org/V2/(S(${v4()}))/OData/OData.svc/$metadata`,
+  processCsrfToken: false, // set false if you dont need process csrf token
+})
+const testDesc1 = v4(); // a generated uuid
+const testDesc2 = v4();
+
+// execute reqeusts and return mocked responses
+const result = await odata.execBatchRequests([
+  odata.newBatchRequest({
+    collection: "Products",
+    entity: {
+      ID: 100009,
+      Description: testDesc1,
+    },
+    method: "POST",
+    // withContentLength: true, for SAP OData, please set this flag as true
+  }),
+  odata.newBatchRequest({
+    collection: "Products",
+    entity: {
+      ID: 100012,
+      Description: testDesc2,
+    },
+    method: "POST",
+    // withContentLength: true, for SAP OData, please set this flag as true
+  })
+])
+
+
+result.map(r => expect(r.status).toEqual(201)) // Created
+
+```
 
 ## generator usage
 
