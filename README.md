@@ -116,7 +116,7 @@ OData
 ### filter by one field but multi values
 
 ```js
-// Name2 eq 'test string1' and (Name eq 'test string1' or Name eq 'test string2')
+// Name eq 'test string1' and (Name2 eq 'test string1' or Name2 eq 'test string2')
 OData.newFilter()
   .field("Name").eq("'test string1'")
   .field("Name2").in(["test string3", "test string2"])
