@@ -40,12 +40,23 @@ describe("OData Filter Test", () => {
   })
 
   test('ODataFilter.or(complex)', () => {
+    const expected = "Name eq 'test string1' and (Name2 eq 'test string3' or Name2 eq 'test string2')"
     const filter = ODataFilter
       .newFilter()
       .field("Name").eq("'test string1'")
       .fieldIn("Name2", ["test string3", "test string2"])
-    expect(filter.build())
-      .toEqual("Name eq 'test string1' and (Name2 eq 'test string3' or Name2 eq 'test string2')")
+
+
+    expect(filter.build()).toEqual(expected)
+
+    expect(
+      OData.newFilter()
+        .field("Name").eq("'test string1'")
+        .field("Name2").in(["test string3", "test string2"])
+        .build()
+    ).toEqual(expected)
+
+
   })
 
   test('ODataFilter.inPeriod/field.betweenDateTime', () => {
@@ -74,12 +85,12 @@ describe("OData Filter Test", () => {
 
     expect(
       ODataFilter
-      .newFilter()
-      .field("CreationDateTime").betweenDateTime(
-        new Date("2018-01-24T12:43:31.839Z"),
-        new Date("2018-05-24T12:43:31.839Z")
-      )
-      .build()
+        .newFilter()
+        .field("CreationDateTime").betweenDateTime(
+          new Date("2018-01-24T12:43:31.839Z"),
+          new Date("2018-05-24T12:43:31.839Z")
+        )
+        .build()
     ).toEqual(expected2)
 
   })

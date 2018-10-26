@@ -22,7 +22,7 @@ describe('ODataParams Test', () => {
     })
 
     test('ODataParam inlinecount', () => {
-        const param = ODataParam.newParam().inlinecount(true)
+        const param = OData.newParam().inlinecount(true)
         expect(decodeURIComponent(param.toString())).toEqual("$format=json&$inlinecount=allpages")
     })
 

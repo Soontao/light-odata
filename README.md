@@ -47,7 +47,7 @@ use odata `$batch` api for operating multi entities in **single** HTTP request
 import { OData } from "c4codata"
 
 const odata = OData.New({
-  metadataUri: `http://services.odata.org/V2/(S(${v4()}))/OData/OData.svc/$metadata`,
+  metadataUri: `https://services.odata.org/V2/(S(${v4()}))/OData/OData.svc/$metadata`,
   processCsrfToken: false,
 })
 const testDesc1 = v4(); // a generated uuid
@@ -83,11 +83,6 @@ result.map(r => expect(r.status).toEqual(201)) // Created
 
 use `ODataFilter` to filter data
 
-```js
-// import
-import { ODataFilter } from "c4codata";
-```
-
 C4C only support AND operator between different fields, and OR operator between same field
 
 So you don't need to specify the operator between fields.
@@ -100,10 +95,10 @@ just ref following examples
 
 ```js
 // Name eq 'test string'
-ODataFilter.newFilter().field("Name").eqString("test string")
+OData.newFilter().field("Name").eqString("test string")
 
 // ID lt '1024'
-ODataFilter.newFilter().field("ID").lt("'1024'")
+OData.newFilter().field("ID").lt("'1024'")
 
 // also support eq/ne/le/lt/gt/ge ...
 ```
@@ -112,7 +107,7 @@ ODataFilter.newFilter().field("ID").lt("'1024'")
 
 ```js
 // Name eq 'test string1' and Name2 eq 'test string2'
-ODataFilter
+OData
   .newFilter()
   .field("Name").eq("'test string1'")
   .field("Name2").eqString("test string2")
@@ -122,10 +117,9 @@ ODataFilter
 
 ```js
 // Name2 eq 'test string1' and (Name eq 'test string1' or Name eq 'test string2')
-OData
-  .newFilter()
-  .field("Name2").eq("'test string1'")
-  .fieldIn("Name", ["test string1", "test string2"])
+OData.newFilter()
+  .field("Name").eq("'test string1'")
+  .field("Name2").in(["test string3", "test string2"])
 ```
 
 ### field by date
@@ -134,7 +128,7 @@ Depends on field type, use `betweenDateTime` or `betweenDateTimeOffset` to filte
 
 ```js
 // Name eq 'test string1' and (CreationDateTime gt datetime'2018-01-24T12:43:31.839Z' and CreationDateTime lt datetime'2018-05-24T12:43:31.839Z')
-ODataFilter
+OData
   .newFilter()
   .field("Name").eq("'test string1'")
   .field("CreationDateTime").betweenDateTime(
@@ -145,7 +139,7 @@ ODataFilter
   .build()
 
 // (CreationDateTime ge datetime'2018-01-24T12:43:31.839Z' and CreationDateTime le datetime'2018-05-24T12:43:31.839Z')
-ODataFilter
+OData
   .newFilter()
   .field("CreationDateTime").betweenDateTime(
     new Date("2018-01-24T12:43:31.839Z"),
@@ -165,7 +159,7 @@ use `ODataParam` to control data size, fields and order by
 
 ```js
 // equal to $format=json&$skip=30&$top=10
-ODataParam.newParam().skip(30).top(10)
+OData.newParam().skip(30).top(10)
 ```
 
 ### inline count
@@ -174,7 +168,7 @@ response with all pages count, usefully
 
 ```js
 // equal to $format=json&$inlinecount=allpages
-ODataParam.newParam().inlinecount(true).top(1).select("ObjectID")
+OData.newParam().inlinecount(true).top(1).select("ObjectID")
 ```
 
 ### orderby
@@ -183,7 +177,7 @@ sort data by one field
 
 ```javascript
 // equal to $format=json&$orderby=CreationDateTime desc
-ODataParam.newParam().orderby("CreationDateTime")
+OData.newParam().orderby("CreationDateTime")
 ```
 
 ### multi fields orderby
@@ -192,7 +186,7 @@ sort data by multi field
 
 ```javascript
 // equal to $format=json&$orderby=A desc,B asc
-ODataParam.newParam().orderbyMulti([{ field: "A" }, { field: "B", order: "asc" }])
+OData.newParam().orderbyMulti([{ field: "A" }, { field: "B", order: "asc" }])
 ```
 
 ## Limitation

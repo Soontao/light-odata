@@ -96,7 +96,7 @@ describe('test batch multipart parse & format', () => {
   })
 
   test('should request batch format', async () => {
-    const base = `http://services.odata.org/V2/(S(${v4()}))/OData/OData.svc/`
+    const base = `https://services.odata.org/V2/(S(${v4()}))/OData/OData.svc/`
     const odata = OData.New({
       metadataUri: `${base}/$metadata`,
       processCsrfToken: false,

@@ -89,6 +89,20 @@ export class ODataFieldExpr {
     return this._filter;
   }
 
+  /**
+   * one field match many different values
+   * 
+   * @param values 
+   */
+  in(values: string[]) {
+    if (!isEmpty(values)) {
+      forEach(values, (value) => {
+        this.eqString(value)
+      });
+    }
+    return this._filter;
+  }
+
   between(lower, max, includeBoundary = true) {
     if (lower && max) {
       if (includeBoundary) {
