@@ -78,10 +78,31 @@ export interface BatchRequestOptions<T> {
 }
 
 export interface ODataRequest<T> {
+  /**
+   * collection name
+   */
   collection: string,
+  /**
+   * object key in READ/UPDATE/DELETE
+   */
   id?: string,
+  /**
+   * params in QUERY
+   */
   params?: ODataQueryParam,
+  /**
+   * GET for QUERY/READ; for QUERY, you can use params to control response data
+   * 
+   * PATCH for UPDATE
+   * 
+   * POST for CREATE
+   * 
+   * DELETE for delete
+   */
   method?: HTTPMethod,
+  /**
+   * data object in CREATE/UPDATE
+   */
   entity?: T
 }
 
