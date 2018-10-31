@@ -1,7 +1,6 @@
 import { Buffer } from "buffer";
-import { attempt, isError } from "lodash";
-import { C4CODataResult } from "./types";
-
+import attempt from "lodash/attempt";
+import isError from "lodash/isError";
 
 /**
  * ConvertDateFromODataTime

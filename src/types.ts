@@ -1,4 +1,7 @@
-import { assign, isObject, isArray } from "lodash";
+
+import isObject from "lodash/isObject";
+import assign from "lodash/assign";
+import isArray from "lodash/isArray";
 
 export type HTTPMethod = "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "PATCH";
 

@@ -1,4 +1,11 @@
-import { split, slice, map, join, flatten, concat, startsWith } from "lodash";
+import split from "lodash/split";
+import slice from "lodash/slice";
+import map from "lodash/map";
+import join from "lodash/join";
+import flatten from "lodash/flatten";
+import concat from "lodash/concat";
+import startsWith from "lodash/startsWith";
+
 import { parseResponse } from "http-string-parser";
 import { v4 } from "uuid";
 

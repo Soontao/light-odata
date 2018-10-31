@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import "isomorphic-fetch"
 import { parse } from "cli";
-import { cwd, exit } from "process";
+import { cwd } from "process";
 import { map } from "lodash";
 import { GetAuthorizationPair } from "../util";
 import { writeFileSync } from "fs";

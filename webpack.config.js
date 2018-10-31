@@ -1,5 +1,5 @@
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const { join } = require("path")
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   entry: './src/index.ts',
@@ -17,8 +17,11 @@ module.exports = {
     rules: [
       // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
       {
-        test: /\.tsx?$/, loader: "ts-loader", options: {
-          configFile: "tsconfig-umd.json"
+        test: /\.tsx?$/,
+        loader: "ts-loader",
+        exclude: /node_modules/,
+        options: {
+          configFile: "tsconfig.umd.json"
         }
       }
     ]

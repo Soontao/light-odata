@@ -1,4 +1,10 @@
-import { forEach, isEmpty, join, map, merge, filter, concat } from "lodash";
+
+import forEach from "lodash/forEach";
+import map from "lodash/map";
+import isEmpty from "lodash/isEmpty";
+import join from "lodash/join";
+import filter from "lodash/filter";
+import merge from "lodash/merge";
 
 export enum ExprOperator {
   eq = "eq",

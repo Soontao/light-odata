@@ -1,9 +1,12 @@
-import {
-  HTTPMethod,
-  Credential,
-  PlainODataResponse,
-} from "./types";
-import { split, slice, join, startsWith, map } from "lodash";
+import { HTTPMethod, Credential, PlainODataResponse, } from "./types";
+
+import split from "lodash/split";
+import map from "lodash/map";
+import slice from "lodash/slice";
+import join from "lodash/join";
+import startsWith from "lodash/startsWith";
+import attempt from "lodash/attempt";
+
 import { GetAuthorizationPair } from "./util";
 import {
   BatchRequest,
@@ -11,10 +14,11 @@ import {
   parseMultiPartContent,
   ParsedResponse
 } from "./batch";
-import { attempt } from "lodash";
-import { v4 } from "uuid";
+
 import { ODataFilter } from "./filter";
 import { ODataParam, ODataQueryParam } from "./params";
+
+const v4 = require("uuid/v4")
 
 export type AdvancedODataClientProxy = (
   url: string,

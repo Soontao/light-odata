@@ -1,5 +1,11 @@
 import { ODataFilter } from "./filter";
-import { concat, join, map, isString, isArray } from "lodash";
+
+import isString from "lodash/isString";
+import map from "lodash/map";
+import isArray from "lodash/isArray";
+import join from "lodash/join";
+import concat from "lodash/concat";
+
 const UrlSearchParam = require("url-search-params")
 
 export interface ODataParamOrderField {

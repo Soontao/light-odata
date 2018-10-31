@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
     "newLine": "LF",
     "noUnusedLocals": false,
     "noUnusedParameters": false,
@@ -27,8 +28,5 @@
     "src/index.ts",
     "src/cli/index.ts",
     "src/generator/index.ts"
-  ],
-  "exclude": [
-    "node_modules"
   ]
 }

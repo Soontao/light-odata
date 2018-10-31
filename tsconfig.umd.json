@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
     "newLine": "LF",
     "noUnusedLocals": false,
     "noUnusedParameters": false,
@@ -13,7 +15,6 @@
     "moduleResolution": "node",
     "charset": "utf-8",
     "emitDecoratorMetadata": true,
-    "declaration": false,
     "removeComments": false,
     "typeRoots": [
       "node_modules/@types"
@@ -24,8 +25,5 @@
   },
   "files": [
     "src/index.ts"
-  ],
-  "exclude": [
-    "node_modules"
   ]
 }
