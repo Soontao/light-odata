@@ -13,7 +13,7 @@ OData Client for SAP C4C OData (v2) Service, in theory, support all services imp
 npm i -S c4codata # in your project
 ```
 
-or add [UNPKG](https://unpkg.com/c4codata) link to your page
+or add [UNPKG](https://unpkg.com/c4codata) link to your page to use umd format module
 
 ```html
 <script src="https://unpkg.com/c4codata"></script>
@@ -79,9 +79,9 @@ interface ODataRequest<T> {
 
 use `ODataFilter` to filter data
 
-C4C only support AND operator between different fields, and OR operator between same field
+Most `SAP` systems only support `AND` operator between different fields, and `OR` operator between same field. (it depends on SAP Netweaver implementation)
 
-So you don't need to specify the operator between fields.
+So you don't need to specify the operator, like `and` `or`,  between fields.
 
 Though C4C only support AND operator in different fields, but for gt/lt/ge/le, you can use AND for filtering period data.
 
@@ -149,7 +149,7 @@ OData
 
 use `ODataParam` to control data size, fields and order by
 
-### page
+### pagination
 
 `skip` first 30 records and `top` 10 records
 
@@ -172,7 +172,7 @@ OData.newParam().inlinecount(true).top(1).select("ObjectID")
 sort data by one field
 
 ```javascript
-// equal to $format=json&$orderby=CreationDateTime desc
+// result is $format=json&$orderby=CreationDateTime desc
 OData.newParam().orderby("CreationDateTime")
 ```
 
@@ -181,13 +181,13 @@ OData.newParam().orderby("CreationDateTime")
 sort data by multi field
 
 ```javascript
-// equal to $format=json&$orderby=A desc,B asc
+// result is $format=json&$orderby=A desc,B asc
 OData.newParam().orderbyMulti([{ field: "A" }, { field: "B", order: "asc" }])
 ```
 
 ## Batch requests
 
-use odata `$batch` api for operating multi entities in **single** HTTP request
+use odata `$batch` api for operating multi entities in **single** HTTP request, it will save a lot of time between client & server (In the case of processing a large number of requests).
 
 ```javascript
 
