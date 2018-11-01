@@ -5,7 +5,7 @@
 [![npm version](https://badge.fury.io/js/c4codata.svg)](https://badge.fury.io/js/c4codata)
 [![unpkg](https://img.shields.io/github/license/mashape/apistatus.svg)](https://unpkg.com/c4codata?meta)
 
-OData Client for OData (v2) Service.
+Lightweight OData Client for OData (v2) Service.
 
 ## install
 
@@ -110,79 +110,6 @@ interface PlainODataResponse {
 }
 ```
 
-## ODataFilter
-
-use `ODataFilter` to filter data
-
-Most `SAP` systems only support `AND` operator between different fields, and `OR` operator between same field. (it depends on SAP Netweaver implementation)
-
-So you don't need to specify the operator, like `and` `or`,  between fields.
-
-Though C4C only support AND operator in different fields, but for gt/lt/ge/le, you can use AND for filtering period data.
-
-just ref following examples
-
-### filter by single field value
-
-```js
-// Name eq 'test string'
-OData.newFilter().field("Name").eqString("test string")
-
-// ID lt '1024'
-OData.newFilter().field("ID").lt("'1024'")
-
-// also support eq/ne/le/lt/gt/ge ...
-```
-
-### filter by multi fields
-
-```js
-// Name eq 'test string1' and Name2 eq 'test string2'
-OData
-  .newFilter()
-  .field("Name").eq("'test string1'")
-  .field("Name2").eqString("test string2")
-```
-
-### filter by one field but multi values
-
-```js
-// Name eq 'test string1' and (Name2 eq 'test string1' or Name2 eq 'test string2')
-OData.newFilter()
-  .field("Name").eq("'test string1'")
-  .field("Name2").in(["test string3", "test string2"])
-```
-
-### field by date
-
-Depends on field type, use `betweenDateTime` or `betweenDateTimeOffset` to filter date。
-
-Please provide `Date` object in this api.
-
-```js
-// Name eq 'test string1' and (CreationDateTime gt datetime'2018-01-24T12:43:31.839Z' and CreationDateTime lt datetime'2018-05-24T12:43:31.839Z')
-OData
-  .newFilter()
-  .field("Name").eq("'test string1'")
-  .field("CreationDateTime").betweenDateTime(
-    new Date("2018-01-24T12:43:31.839Z"),
-    new Date("2018-05-24T12:43:31.839Z"),
-    false
-  )
-  .build()
-
-// include boundary value
-
-// (CreationDateTime ge datetime'2018-01-24T12:43:31.839Z' and CreationDateTime le datetime'2018-05-24T12:43:31.839Z')
-OData
-  .newFilter()
-  .field("CreationDateTime").betweenDateTime(
-    new Date("2018-01-24T12:43:31.839Z"),
-    new Date("2018-05-24T12:43:31.839Z")
-  )
-  .build()
-```
-
 ## ODataParam
 
 use `ODataParam` to control data size, involved fields and order
@@ -194,6 +121,15 @@ use `ODataParam` to control data size, involved fields and order
 ```js
 // equal to $format=json&$skip=30&$top=10
 OData.newParam().skip(30).top(10)
+```
+
+### filter
+
+filter data by fields value
+
+```js
+// $format=json&$filter=A eq 'test'
+OData.newParam().filter(OData.newFilter().field("A").eqString("test"))
 ```
 
 ### inline count
@@ -250,6 +186,79 @@ OData.newParam().search("any word");
 // not fuzzy
 // $format=json&$search=any word
 OData.newParam().search("any word", false);
+```
+
+## ODataFilter
+
+use `ODataFilter` to filter data
+
+Most `SAP` systems only support `AND` operator between different fields, and `OR` operator between same field. (it depends on SAP Netweaver implementation)
+
+So you don't need to specify `AND/OR` operator between fields, `c4codata` will auto process it.
+
+Though C4C only support AND operator in different fields, but for `gt/lt/ge/le`, you can use AND for filtering period data.
+
+just ref following examples
+
+### filter by single field value
+
+```js
+// Name eq 'test string'
+OData.newFilter().field("Name").eqString("test string")
+
+// ID lt '1024'
+OData.newFilter().field("ID").lt("'1024'")
+
+// also support eq/ne/le/lt/gt/ge ...
+```
+
+### filter by multi fields
+
+```js
+// Name eq 'test string1' and Name2 eq 'test string2'
+OData
+  .newFilter()
+  .field("Name").eq("'test string1'")
+  .field("Name2").eqString("test string2")
+```
+
+### filter by one field but multi values
+
+```js
+// Name eq 'test string1' and (Name2 eq 'test string1' or Name2 eq 'test string2')
+OData.newFilter()
+  .field("Name").eq("'test string1'")
+  .field("Name2").in(["test string3", "test string2"])
+```
+
+### filter by date
+
+Depends on field type, use `betweenDateTime` or `betweenDateTimeOffset` to filter date。
+
+Please provide `Date` object in this api.
+
+```js
+// Name eq 'test string1' and (CreationDateTime gt datetime'2018-01-24T12:43:31.839Z' and CreationDateTime lt datetime'2018-05-24T12:43:31.839Z')
+OData
+  .newFilter()
+  .field("Name").eq("'test string1'")
+  .field("CreationDateTime").betweenDateTime(
+    new Date("2018-01-24T12:43:31.839Z"),
+    new Date("2018-05-24T12:43:31.839Z"),
+    false
+  )
+  .build()
+
+// > include boundary value
+
+// (CreationDateTime ge datetime'2018-01-24T12:43:31.839Z' and CreationDateTime le datetime'2018-05-24T12:43:31.839Z')
+OData
+  .newFilter()
+  .field("CreationDateTime").betweenDateTime(
+    new Date("2018-01-24T12:43:31.839Z"),
+    new Date("2018-05-24T12:43:31.839Z")
+  )
+  .build()
 ```
 
  
