@@ -5,23 +5,55 @@
 [![npm version](https://badge.fury.io/js/c4codata.svg)](https://badge.fury.io/js/c4codata)
 [![unpkg](https://img.shields.io/github/license/mashape/apistatus.svg)](https://unpkg.com/c4codata?meta)
 
-OData Client for SAP C4C OData (v2) Service, in theory, support all services implemented by odata v2
+OData Client for OData (v2) Service.
 
 ## install
 
 ```bash
-npm i -S c4codata # in your project
+npm i -S c4codata
 ```
 
-or add [UNPKG](https://unpkg.com/c4codata) link to your page to use umd format module
+Alternative, in pure js environment, just add [UNPKG](https://unpkg.com/c4codata) umd link to your page, and `OData` object will be enabled in `window`.
 
 ```html
 <script src="https://unpkg.com/c4codata"></script>
 ```
 
+## OData Version 2 concepts (from [OData.org](https://www.odata.org/documentation/odata-version-2-0/uri-conventions/))
+
+**If you are already familiar with OData, please skip this section**v
+
+### URI Resource
+
+> A URI used by an OData service has up to three significant parts: the service root URI, resource path and query string options. Additional URI constructs (such as a fragment) MAY be present in a URI used by an OData service; however, this specification applies no further meaning to such additional constructs.
+
+### Query Param: Pagination ($top & $skip)
+
+> A data service URI with a $skip System Query Option identifies a subset of the Entries in the Collection of Entries identified by the Resource Path section of the URI. That subset is defined by seeking N Entries into the Collection and selecting only the remaining Entries (starting with Entry N+1). N is an integer greater than or equal to zero specified by this query option. If a value less than zero is specified, the URI should be considered malformed.
+
+```
+https://services.odata.org/OData/OData.svc/Products?$skip=2&$top=2&$orderby=Rating
+
+The third and fourth Product Entry from the collection of all products when the collection is sorted by Rating (ascending).
+```
+### Query Param: Filter Operators ($filter)
+
+> A URI with a `$filter` System Query Option identifies a subset of the Entries from the Collection of Entries identified by the Resource Path section of the URI. The subset is determined by selecting only the Entries that satisfy the predicate expression specified by the query option.
+
+| Operator             | Description           | Example                                            |
+| -------------------- | --------------------- | -------------------------------------------------- |
+| Eq                   | Equal                 | /Suppliers?$filter=Address/City eq 'Redmond'       |
+| Ne                   | Not equal             | /Suppliers?$filter=Address/City ne 'London'        |
+| Gt                   | Greater than          | /Products?$filter=Price gt 20                      |
+| Ge                   | Greater than or equal | /Products?$filter=Price ge 10                      |
+| Lt                   | Less than             | /Products?$filter=Price lt 20                      |
+| Le                   | Less than or equal    | /Products?$filter=Price le 100                     |
+| And                  | Logical and           | /Products?$filter=Price le 200 and Price gt 3.5    |
+| Or                   | Logical or            | /Products?$filter=Price le 3.5 or Price gt 200     |
+
 ## OData Client
 
-Start with a simple query:
+Start with a simple query, following code start a `GET` http request, and asks the server to respond to all customers which phone number equals 030-0074321
 
 ```javascript
 import { OData } from "c4codata"
@@ -34,44 +66,47 @@ const odata = new OData(TestServiceURL)
 //
 // GET /V2/Northwind/Northwind.svc/Customers?$format=json&$filter=Phone eq '030-0074321'
 const filter = OData.newFilter().field("Phone").eqString("030-0074321");
-// In fact, you cant use await in top level, just a sample
+
 const result = await odata.newRequest({ // ODataRequest object
   collection: "Customers", // collection name
   params: OData.newParam().filter(filter) // odata param
-  // method: "GET", default with GET method for QUERY/READ
 })
 ```
 
-`ODataRequest` interface as following:
+### ODataRequest interface
 
 ```ts
 interface ODataRequest<T> {
-  /**
-   * collection name
-   */
-  collection: string,
-  /**
-   * object key in READ/UPDATE/DELETE
-   */
-  id?: string,
-  /**
-   * params in QUERY
-   */
-  params?: ODataQueryParam,
+  collection: string, /** collection name */
+  id?: string, /** object key in READ/UPDATE/DELETE */
+  params?: ODataQueryParam, /** params in QUERY */
   /**
    * GET for QUERY/READ; for QUERY, you can use params to control response data
-   * 
    * PATCH for UPDATE
-   * 
    * POST for CREATE
-   * 
    * DELETE for delete
    */
   method?: HTTPMethod,
-  /**
-   * data object in CREATE/UPDATE
-   */
-  entity?: T
+  entity?: T /** data object in CREATE/UPDATE */
+}
+```
+### ODataResponse interface
+
+
+```typescript
+interface PlainODataResponse {
+  d?: {
+    __count?: string; /** $inlinecount values */
+    results: any | Array<any>; /** result list/object */
+    [key: string]: any;
+  };
+  error?: { /** if error occured, node error will have value */
+    code: string;
+    message: {
+      lang: string, 
+      value: string /** server error message */
+    }
+  }
 }
 ```
 
@@ -120,7 +155,9 @@ OData.newFilter()
 
 ### field by date
 
-Depends on field type, use `betweenDateTime` or `betweenDateTimeOffset` to filter date
+Depends on field type, use `betweenDateTime` or `betweenDateTimeOffset` to filter date。
+
+Please provide `Date` object in this api.
 
 ```js
 // Name eq 'test string1' and (CreationDateTime gt datetime'2018-01-24T12:43:31.839Z' and CreationDateTime lt datetime'2018-05-24T12:43:31.839Z')
@@ -134,20 +171,21 @@ OData
   )
   .build()
 
+// include boundary value
+
 // (CreationDateTime ge datetime'2018-01-24T12:43:31.839Z' and CreationDateTime le datetime'2018-05-24T12:43:31.839Z')
 OData
   .newFilter()
   .field("CreationDateTime").betweenDateTime(
     new Date("2018-01-24T12:43:31.839Z"),
     new Date("2018-05-24T12:43:31.839Z")
-    // include boundary value
   )
   .build()
 ```
 
 ## ODataParam
 
-use `ODataParam` to control data size, fields and order by
+use `ODataParam` to control data size, involved fields and order
 
 ### pagination
 
@@ -169,22 +207,52 @@ OData.newParam().inlinecount(true).top(1).select("ObjectID")
 
 ### orderby
 
-sort data by one field
+sort response data
 
 ```javascript
 // result is $format=json&$orderby=CreationDateTime desc
 OData.newParam().orderby("CreationDateTime")
+
+// result is $format=json&$orderby=A desc,B asc
+OData.newParam().orderby([{ field: "A" }, { field: "B", order: "asc" }])
 ```
 
-### multi fields orderby
+### navigation property
 
-sort data by multi field
+expand association data
 
 ```javascript
-// result is $format=json&$orderby=A desc,B asc
-OData.newParam().orderbyMulti([{ field: "A" }, { field: "B", order: "asc" }])
+// $expand=Customers
+OData.newParam().expand("Customers")
+// $expand=Customers,Employees
+OData.newParam().expand(["Customers", "Employees"])
 ```
 
+### data modeling
+
+remove unused field from response
+
+```js
+// $format=json&$select=ObjectID,Name
+OData.newParam().select("ObjectID").select("Name");
+```
+
+### full text search (basic query)
+
+search all **supported** fields with text
+
+**LOW PERFORMANCE**
+
+```js
+// fuzzy
+// $format=json&$search=%any word%
+OData.newParam().search("any word");
+// not fuzzy
+// $format=json&$search=any word
+OData.newParam().search("any word", false);
+```
+
+ 
 ## Batch requests
 
 use odata `$batch` api for operating multi entities in **single** HTTP request, it will save a lot of time between client & server (In the case of processing a large number of requests).
@@ -227,6 +295,10 @@ result.map(r => expect(r.status).toEqual(201)) // Created
 
 ## generator usage
 
+This library provide a JS generator, provide ES6 static function declaration, but I dont want to write too must about it.
+
+If you really need that, just contact me.
+
 install it global firstly
 
 ```bash
@@ -260,11 +332,7 @@ odata-js-generator -m https://host/sap/c4c/odata/v1/c4codata/$metadata?sap-label
 # then, you could use the c4codata.js to operation OData
 ```
 
-## TO-DO
-
-* Documents
-
-## [CHANGELOG](https://github.com/Soontao/c4codata/blob/master/CHANGELOG.md)
+## [CHANGELOG](./CHANGELOG.md)
 
 ## LICENSE
 

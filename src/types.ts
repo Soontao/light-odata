@@ -7,15 +7,15 @@ export type HTTPMethod = "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "PATCH";
 
 export interface PlainODataResponse {
   d?: {
-    __count?: string;
-    results: any | Array<any>;
+    __count?: string; /** $inlinecount values */
+    results: any | Array<any>; /** result list/object */
     [key: string]: any;
   };
-  error?: {
+  error?: { /** if error occured, node error will have value */
     code: string;
     message: {
-      lang: string,
-      value: string
+      lang: string, 
+      value: string /** server error message */
     }
   }
 }

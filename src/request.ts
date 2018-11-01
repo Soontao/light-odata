@@ -82,32 +82,17 @@ export interface BatchRequestOptions<T> {
 }
 
 export interface ODataRequest<T> {
-  /**
-   * collection name
-   */
-  collection: string,
-  /**
-   * object key in READ/UPDATE/DELETE
-   */
-  id?: string,
-  /**
-   * params in QUERY
-   */
-  params?: ODataQueryParam,
+  collection: string, /** collection name */
+  id?: string, /** object key in READ/UPDATE/DELETE */
+  params?: ODataQueryParam, /** params in QUERY */
   /**
    * GET for QUERY/READ; for QUERY, you can use params to control response data
-   * 
    * PATCH for UPDATE
-   * 
    * POST for CREATE
-   * 
    * DELETE for delete
    */
   method?: HTTPMethod,
-  /**
-   * data object in CREATE/UPDATE
-   */
-  entity?: T
+  entity?: T /** data object in CREATE/UPDATE */
 }
 
 const odataDefaultFetchProxy: AdvancedODataClientProxy = async (
@@ -218,7 +203,7 @@ export class OData {
     credential?: Credential,
     headers: any = {},
     /**
-     * deprecated, no use now
+     * deprecated, not use now
      */
     urlRewrite?: (string) => string,
     fetchProxy?: AdvancedODataClientProxy,
@@ -286,7 +271,7 @@ export class OData {
   }
 
   /**
-   * 获取CSRF Token
+   * fetch CSRF Token
    */
   public async getCsrfToken() {
     if (this.csrfToken) {
