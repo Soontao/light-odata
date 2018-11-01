@@ -21,7 +21,7 @@ Alternative, in pure js environment, just add [UNPKG](https://unpkg.com/c4codata
 
 ## OData Version 2 concepts (from [OData.org](https://www.odata.org/documentation/odata-version-2-0/uri-conventions/))
 
-**If you are already familiar with OData, please skip this section**v
+**If you are already familiar with OData, please skip this section**
 
 ### URI Resource
 
