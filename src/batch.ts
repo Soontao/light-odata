@@ -44,39 +44,38 @@ export const formatHttpRequestString = (u: string, r: any) => {
 export const formatBatchRequest = (requests: BatchRequest[], boundary: string) => {
   return join(
     concat(
-      map(requests,
-        r => {
-          if (r.init.method === "GET" || !r.init.method) {
-            return join(
-              [
-                `--${boundary}`,
-                "Content-Type: application/http",
-                `Content-Transfer-Encoding: binary`,
-                "",
-                formatHttpRequestString(r.url, r.init),
-                "",
-              ],
-              "\n"
-            )
-          } else {
-            const generated_uuid = v4();
-            return join(
-              [
-                `--${boundary}`,
-                `Content-Type: multipart/mixed; boundary=${generated_uuid}`,
-                "",
-                `--${generated_uuid}`,
-                "Content-Type: application/http",
-                `Content-Transfer-Encoding: binary`,
-                "",
-                formatHttpRequestString(r.url, r.init),
-                "",
-                `--${generated_uuid}--`,
-              ],
-              "\n"
-            )
-          }
+      map(requests, r => {
+        if (r.init.method === "GET" || !r.init.method) {
+          return join(
+            [
+              `--${boundary}`,
+              "Content-Type: application/http",
+              `Content-Transfer-Encoding: binary`,
+              "",
+              formatHttpRequestString(r.url, r.init),
+              "",
+            ],
+            "\n"
+          )
+        } else {
+          const generated_uuid = v4();
+          return join(
+            [
+              `--${boundary}`,
+              `Content-Type: multipart/mixed; boundary=${generated_uuid}`,
+              "",
+              `--${generated_uuid}`,
+              "Content-Type: application/http",
+              `Content-Transfer-Encoding: binary`,
+              "",
+              formatHttpRequestString(r.url, r.init),
+              "",
+              `--${generated_uuid}--`,
+            ],
+            "\n"
+          )
         }
+      }
       ),
       `--${boundary}--`
     ),

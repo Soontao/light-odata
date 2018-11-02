@@ -8,22 +8,14 @@ import startsWith from "lodash/startsWith";
 import attempt from "lodash/attempt";
 
 import { GetAuthorizationPair } from "./util";
-import {
-  BatchRequest,
-  formatBatchRequest,
-  parseMultiPartContent,
-  ParsedResponse
-} from "./batch";
+import { BatchRequest, formatBatchRequest, parseMultiPartContent, ParsedResponse } from "./batch";
 
 import { ODataFilter } from "./filter";
 import { ODataParam, ODataQueryParam } from "./params";
 
 const v4 = require("uuid/v4")
 
-export type AdvancedODataClientProxy = (
-  url: string,
-  init: RequestInit
-) => Promise<{
+export type AdvancedODataClientProxy = (url: string, init: RequestInit) => Promise<{
   /**
    * The Body Content
    */
@@ -95,10 +87,7 @@ export interface ODataRequest<T> {
   entity?: T /** data object in CREATE/UPDATE */
 }
 
-const odataDefaultFetchProxy: AdvancedODataClientProxy = async (
-  url: string,
-  init: RequestInit
-) => {
+const odataDefaultFetchProxy: AdvancedODataClientProxy = async (url: string, init: RequestInit) => {
   const res = await fetch(url, init);
   var content: any = "";
   if (res.status === 401) {
@@ -114,8 +103,8 @@ const odataDefaultFetchProxy: AdvancedODataClientProxy = async (
   const contentType = res.headers.get("Content-Type");
 
   content = await res.text();
-  if (startsWith(contentType, "application/json")) {
-    // result process
+
+  if (startsWith(contentType, "application/json")) { // result process
     var jsonResult = attempt(JSON.parse, content);
     if (!(jsonResult instanceof Error)) {
       content = jsonResult;
@@ -127,10 +116,7 @@ const odataDefaultFetchProxy: AdvancedODataClientProxy = async (
 
   return {
     content,
-    response: {
-      headers: res.headers,
-      status: res.status
-    }
+    response: { headers: res.headers, status: res.status }
   };
 };
 
@@ -274,30 +260,21 @@ export class OData {
    * fetch CSRF Token
    */
   public async getCsrfToken() {
-    if (this.csrfToken) {
-      return await this.csrfToken;
-    }
+    if (this.csrfToken) { return await this.csrfToken; }
 
     var config: RequestInit = {
       method: "GET",
-      headers: {
-        "x-csrf-token": "fetch"
-      }
+      headers: { "x-csrf-token": "fetch" }
     };
 
     if (this.credential) {
       config.headers = {
         ...config.headers,
-        ...GetAuthorizationPair(
-          this.credential.username,
-          this.credential.password
-        )
+        ...GetAuthorizationPair(this.credential.username, this.credential.password)
       };
     }
 
-    const {
-      response: { headers }
-    } = await this.fetchProxy(this.odataEnd, config);
+    const { response: { headers } } = await this.fetchProxy(this.odataEnd, config);
     if (headers) {
       this.csrfToken = headers.get("x-csrf-token");
     } else {
@@ -307,9 +284,7 @@ export class OData {
   }
 
   public cleanCsrfToken() {
-    if (this.csrfToken) {
-      delete this.csrfToken;
-    }
+    if (this.csrfToken) { delete this.csrfToken; }
   }
 
   /**

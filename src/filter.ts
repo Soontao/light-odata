@@ -117,18 +117,17 @@ export class ODataFieldExpr {
    * @param includeBoundary 
    */
   between(lower, max, includeBoundary = true) {
-    if (lower && max) {
-      if (includeBoundary) {
-        this.ge(lower);
-        this.le(max);
-      } else {
-        this.gt(lower);
-        this.lt(max);
-      }
-      return this._filter;
-    } else {
+    if (isEmpty(lower) && isEmpty(max)) {
       throw new Error("You must give out the start and end value")
     }
+    if (includeBoundary) {
+      this.ge(lower);
+      this.le(max);
+    } else {
+      this.gt(lower);
+      this.lt(max);
+    }
+    return this._filter;
   }
 
   betweenDateTime(start: Date, end: Date, includeBoundary = true) {
