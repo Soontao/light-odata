@@ -6,6 +6,7 @@ import slice from "lodash/slice";
 import join from "lodash/join";
 import startsWith from "lodash/startsWith";
 import attempt from "lodash/attempt";
+import clone from "lodash/clone";
 
 import { GetAuthorizationPair } from "./util";
 import { BatchRequest, formatBatchRequest, parseMultiPartContent, ParsedResponse } from "./batch";
@@ -57,7 +58,7 @@ export interface BatchRequestOptions<T> {
   /**
    * OData Entity ObjectID
    */
-  id?: string;
+  id?: any;
   /**
    * OData Param
    */
@@ -75,7 +76,7 @@ export interface BatchRequestOptions<T> {
 
 export interface ODataRequest<T> {
   collection: string, /** collection name */
-  id?: string, /** object key in READ/UPDATE/DELETE */
+  id?: any, /** object key in READ/UPDATE/DELETE */
   params?: ODataQueryParam, /** params in QUERY */
   /**
    * GET for QUERY/READ; for QUERY, you can use params to control response data
@@ -141,7 +142,7 @@ export class OData {
    * dont direct use this object
    */
   private commonHeader: { [headerName: string]: string } = {
-    Accept: "application/json",
+    "Accept": "application/json",
     "Accept-Language": "zh",
     "Content-Type": "application/json"
   };
@@ -340,15 +341,22 @@ export class OData {
    * @param entity C4C Entity instance
    */
   public async request(
-    collection: string,
-    id?: string,
-    queryParams?: ODataQueryParam,
-    method: HTTPMethod = "GET",
-    entity?: any
+    collection: string, id?: string,
+    queryParams?: ODataQueryParam, method: HTTPMethod = "GET", entity?: any
   ) {
     let url = `${this.odataEnd}${collection}`;
     if (id) {
-      url += `('${id}')`;
+      switch (typeof id) {
+        case "number":
+          url += `(${id})`
+          break;
+        case "string":
+          url += `('${id}')`
+          break;
+        default:
+          throw new Error(`Not supported ObjectID type ${typeof id} for request`)
+      }
+
     }
     if (queryParams) {
       url = `${url}?${queryParams.toString()}`;
@@ -375,7 +383,7 @@ export class OData {
     };
 
     // format promised requests
-    const r = await Promise.all(map(requests, async r => await r));
+    const r = await Promise.all(map(requests, async aBatchR => await aBatchR));
     const requestBoundaryString = v4();
     req.headers["Content-Type"] = `multipart/mixed; boundary=${requestBoundaryString}`;
     req.body = formatBatchRequest(r, requestBoundaryString);
@@ -401,15 +409,24 @@ export class OData {
       withContentLength = true;
     }
     var url = collection;
-    var headers = this.commonHeader;
-    var rt: BatchRequest = { url, init: { method, headers } };
+    var headers = clone(this.commonHeader);
+    var rt: BatchRequest = { url, init: { method, headers, body: "" } };
 
-    if (id) {
-      url += `('${id}')`;
+    switch (typeof id) {
+      case "number":
+        url += `(${id})`
+        break;
+      case "string":
+        url += `('${id}')`
+        break;
+      case "undefined":
+        break;
+      default:
+        throw new Error(`Not supported ObjectID type ${typeof id} for request`)
     }
 
     // READ OPERATION
-    if (method === "GET") {
+    if (method === "GET" || method === "DELETE") {
       delete headers["Content-Type"];
       // other request dont need param
       if (params) {
@@ -418,17 +435,21 @@ export class OData {
     }
     // WRITE OPERATION
     else {
-      if (typeof entity === "string") {
-        rt.init.body = entity;
-      } else {
-        rt.init.body = JSON.stringify(entity);
+      switch (typeof entity) {
+        case "string":
+          rt.init.body = entity;
+          break;
+        case "object":
+          rt.init.body = JSON.stringify(entity);
+          break;
+        default:
+          break;
       }
 
       if (withContentLength) {
-        rt.init.headers["Content-Length"] = decodeURIComponent(
-          rt.init.body
-        ).length;
+        rt.init.headers["Content-Length"] = decodeURIComponent(rt.init.body.toString()).length;
       }
+
     }
 
     rt.init.headers = headers;

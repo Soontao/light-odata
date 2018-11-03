@@ -4,6 +4,7 @@ import { readFileSync } from "fs";
 import { join } from "path";
 import { parseMultiPartContent, formatBatchRequest, OData } from "../src";
 import { v4 } from "uuid";
+import map from "lodash/map";
 
 describe('test batch multipart parse & format', () => {
 
@@ -106,10 +107,10 @@ describe('test batch multipart parse & format', () => {
     const result = await odata.formatBatchRequests([
       odata.newBatchRequest({
         collection: "Products",
-        entity: {
+        entity: JSON.stringify({
           ID: 100009,
           Description: testDesc1,
-        },
+        }),
         method: "POST",
         // withContentLength: true, for SAP OData, please set this flag as true
       }),
@@ -127,6 +128,47 @@ describe('test batch multipart parse & format', () => {
     expect(result.url).toEqual(`${base}/$batch`)
     expect(result.req.body)
 
+  })
+
+  test('should request with batch', async () => {
+    const base = `https://services.odata.org/V2/(S(${v4()}))/OData/OData.svc/`
+    const odata = OData.New({
+      metadataUri: `${base}/$metadata`,
+      processCsrfToken: false,
+    })
+    const requests = [
+      odata.newBatchRequest({
+        collection: "Products",
+        params: OData.newParam().skip(1).top(1)
+      }),
+      odata.newBatchRequest({
+        collection: "Products",
+        params: OData.newParam().skip(2).top(1)
+      }),
+      odata.newBatchRequest({
+        collection: "Products",
+        id: 0
+      }),
+      odata.newBatchRequest({
+        collection: "Products",
+        method: "POST",
+        entity: {
+          ID: 100012,
+          Description: "Test Description",
+        }
+      })
+    ]
+    const result = await odata.execBatchRequests(requests)
+    await Promise.all(
+      map(result, async r => {
+        var json = await r.json();
+        if (json) {
+          expect(json.d);
+          expect(json.error).toBeUndefined()
+        }
+        expect(r.status == 200 || r.status == 201).toEqual(true)
+      })
+    )
   })
 
 })
