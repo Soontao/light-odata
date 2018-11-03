@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.6"></a>
+## [1.3.6](https://github.com/Soontao/c4codata/compare/v1.3.5...v1.3.6) (2018-11-03)
+
+
+### Bug Fixes
+
+* **batch:** Read-Write in single batch works now ([ad880cd](https://github.com/Soontao/c4codata/commit/ad880cd))
+
+
+
 <a name="1.3.5"></a>
 ## [1.3.5](https://github.com/Soontao/c4codata/compare/v1.3.4...v1.3.5) (2018-11-02)
 
