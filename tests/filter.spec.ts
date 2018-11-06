@@ -56,6 +56,12 @@ describe("OData Filter Test", () => {
         .build()
     ).toEqual(expected)
 
+    expect(
+      OData.newFilter()
+        .field("Name").eq('test string1')
+        .field("Name2").in(["test string3", "test string2"])
+        .build()
+    ).toEqual(expected)
 
   })
 

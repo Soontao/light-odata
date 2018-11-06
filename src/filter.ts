@@ -27,10 +27,7 @@ type FieldExprMappings = {
 
 export class ODataFieldExpr {
 
-  constructor(
-    filter: ODataFilter,
-    fieldName: string,
-  ) {
+  constructor(filter: ODataFilter, fieldName: string) {
     this._exprMappings = filter.getExprMapping();
     this._fieldName = fieldName;
     this._filter = filter;
@@ -49,18 +46,47 @@ export class ODataFieldExpr {
     return this._exprMappings[this._fieldName]
   }
 
-  private _addExpr(op: ExprOperator, value: string) {
-    this._getFieldExprs().push({
-      op,
-      value,
-    })
+  private _addExpr(op: ExprOperator, value: any) {
+
+    switch (typeof value) {
+      case "number":
+        this._getFieldExprs().push({ op, value: `${value}` })
+        break;
+      case "string":
+        if (value.startsWith("'") || value.startsWith("datetime")) {
+          this._getFieldExprs().push({ op, value })
+        } else {
+          this._getFieldExprs().push({ op, value: `'${value}'` })
+        }
+        break;
+      case "object":
+        if (value instanceof Date) {
+          this._getFieldExprs().push({ op, value: `datetimeoffset'${value.toISOString()}'` })
+          break;
+        } else {
+          throw new Error(`Not support object ${value} in odata filter eq/ne/gt/ge/ne/nt ...`)
+        }
+      case "undefined":
+        throw new Error(`You must set value in odata filter eq/ne/gt/ge/ne/nt ...`)
+      default:
+        throw new Error(`Not support typeof ${typeof value}: ${value} in odata filter eq/ne/gt/ge/ne/nt ...`)
+    }
+
   }
 
+  /**
+   * equal
+   * @param value 
+   */
   eq(value) {
     this._addExpr(ExprOperator.eq, value)
     return this._filter;
   }
 
+  /**
+   * not equal
+   * @param value 
+   */
   ne(value) {
     this._addExpr(ExprOperator.ne, value)
   }
@@ -75,28 +101,44 @@ export class ODataFieldExpr {
     return this._filter;
   }
 
+  /**
+   * greater or equal
+   * @param value 
+   */
   ge(value) {
     this._addExpr(ExprOperator.ge, value)
     return this._filter;
   }
 
+  /**
+   * greater than
+   * @param value 
+   */
   gt(value) {
     this._addExpr(ExprOperator.gt, value)
     return this._filter;
   }
 
+  /**
+   * less or equal
+   * @param value 
+   */
   le(value) {
     this._addExpr(ExprOperator.le, value)
     return this._filter;
   }
 
+  /**
+   * less than
+   * @param value 
+   */
   lt(value) {
     this._addExpr(ExprOperator.lt, value)
     return this._filter;
   }
 
   /**
-   * one field match many different values
+   * match any value in an array
    * 
    * @param values 
    */
@@ -185,7 +227,7 @@ export class ODataFilter {
   /**
    * The value of a field matches any value in the list.
    * 
-   * @deprecated please use fieldValueMatchArray
+   * @deprecated please use filter.field().in()
    * @param name 
    * @param values 
    */
@@ -196,6 +238,7 @@ export class ODataFilter {
   /**
    * The value of a field matches any value in the list.
    * 
+   * @deprecated please use filter.field().in()
    * @param name 
    * @param values 
    */
@@ -273,7 +316,7 @@ export class ODataFilter {
    * 
    * filter.field("A").eq("'a'").and("B eq 'b'").build() == "A eq 'a' and (B eq 'b')"
    * 
-   * @deprecated
+   * @deprecated c4codata will auto detect connect operator between difference fields
    * @param filter 
    */
   and(filter?: string | ODataFilter) {
@@ -281,7 +324,7 @@ export class ODataFilter {
   }
 
   /**
-   * @deprecated
+   * @deprecated c4codata will auto detect connect operator in same fields
    * @param filter 
    */
   or(filter?: string | ODataFilter) {
@@ -289,7 +332,7 @@ export class ODataFilter {
   }
 
   /**
-   * @deprecated
+   * @deprecated c4codata will auto group exprs
    * @param filter 
    */
   group(filter: ODataFilter) {
