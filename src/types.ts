@@ -1,7 +1,5 @@
 
-import isObject from "lodash/isObject";
-import assign from "lodash/assign";
-import isArray from "lodash/isArray";
+import { isObject, assign, isArray } from "lodash";
 
 export type HTTPMethod = "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "PATCH";
 
@@ -14,7 +12,7 @@ export interface PlainODataResponse {
   error?: { /** if error occured, node error will have value */
     code: string;
     message: {
-      lang: string, 
+      lang: string,
       value: string /** server error message */
     }
   }

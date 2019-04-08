@@ -1,6 +1,5 @@
 import { Buffer } from "buffer";
-import attempt from "lodash/attempt";
-import isError from "lodash/isError";
+import { attempt, isError } from "lodash";
 
 /**
  * ConvertDateFromODataTime

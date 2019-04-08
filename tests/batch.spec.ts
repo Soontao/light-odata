@@ -4,7 +4,7 @@ import { readFileSync } from "fs";
 import { join } from "path";
 import { parseMultiPartContent, formatBatchRequest, OData } from "../src";
 import { v4 } from "uuid";
-import map from "lodash/map";
+import { map } from "lodash";
 
 describe('test batch multipart parse & format', () => {
 

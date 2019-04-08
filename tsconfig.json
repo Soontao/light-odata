@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
     "newLine": "LF",
     "noUnusedLocals": false,
     "noUnusedParameters": false,
@@ -16,13 +15,7 @@
     "emitDecoratorMetadata": true,
     "declaration": true,
     "outDir": "lib",
-    "removeComments": false,
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "types": [
-      "@types/node"
-    ]
+    "removeComments": false
   },
   "files": [
     "src/index.ts",

@@ -1,12 +1,6 @@
 import { HTTPMethod, Credential, PlainODataResponse, } from "./types";
 
-import split from "lodash/split";
-import map from "lodash/map";
-import slice from "lodash/slice";
-import join from "lodash/join";
-import startsWith from "lodash/startsWith";
-import attempt from "lodash/attempt";
-import clone from "lodash/clone";
+import { split, map, slice, join, startsWith, attempt, clone } from "lodash";
 
 import { GetAuthorizationPair } from "./util";
 import { BatchRequest, formatBatchRequest, parseMultiPartContent, ParsedResponse } from "./batch";

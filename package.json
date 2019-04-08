@@ -12,16 +12,16 @@
     "@types/node": "^8.0.25",
     "@types/url-parse": "^1.1.0",
     "@types/uuid": "^3.4.3",
-    "jest": "^20.0.4",
-    "jest-cli": "^20.0.0",
+    "jest": "^24",
+    "jest-cli": "^24",
     "pre-commit": "^1.2.2",
     "rimraf": "^2.6.1",
     "standard-version": "^4.2.0",
-    "ts-jest": "^20.0.10",
+    "ts-jest": "^24",
     "ts-loader": "4",
     "tslint": "^5.6.0",
     "tslint-loader": "^3.5.3",
-    "typescript": "2.4.2",
+    "typescript": "3",
     "uglifyjs-webpack-plugin": "^2.0.1",
     "webpack": "^4.23.0",
     "webpack-cli": "^3.1.2"
@@ -39,6 +39,7 @@
     "prepare": "npm run build && npm test"
   },
   "dependencies": {
+    "@ungap/url-search-params": "^0.1.2",
     "buffer": "^5.0.8",
     "cli": "^1.0.1",
     "http-string-parser": "^0.0.6",
@@ -46,15 +47,13 @@
     "lodash": "^4.17.5",
     "mkdirp": "^0.5.1",
     "url-parse": "^1.4.1",
-    "url-search-params": "^0.10.0",
     "uuid": "^3.3.2",
     "xml2js": "^0.4.19"
   },
   "jest": {
     "transform": {
-      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+      ".(ts|tsx)": "ts-jest"
     },
-    "mapCoverage": true,
     "collectCoverageFrom": [
       "src/**/*.ts"
     ],
