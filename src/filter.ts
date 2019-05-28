@@ -8,7 +8,7 @@ export enum ExprOperator {
   lt = "lt",
   ge = "ge",
   le = "le",
-}
+} 
 
 type FieldExpr = {
   op: ExprOperator;
