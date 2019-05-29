@@ -411,7 +411,8 @@ export class OData {
         url += `(${id})`
         break;
       case "string":
-        url += `('${id}')`
+        // Compound Keys are not enclosed by quotes
+        url += id.includes(",") ? `(${id})` : `('${id}')`
         break;
       case "undefined":
         break;
