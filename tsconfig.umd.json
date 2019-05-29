@@ -8,7 +8,8 @@
     "experimentalDecorators": true,
     "lib": [
       "es6",
-      "dom"
+      "dom",
+      "es2017.object"
     ],
     "module": "commonjs",
     "target": "es5",

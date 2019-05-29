@@ -407,6 +407,10 @@ export class OData {
     var rt: BatchRequest = { url, init: { method, headers, body: "" } };
 
     switch (typeof id) {
+      case "object": 
+        const compoundId = Object.entries(id).map(kv => `${kv[0]}=${kv[1]}`).join(",")
+        url += `(${compoundId})`
+        break 
       case "number":
         url += `(${id})`
         break;
