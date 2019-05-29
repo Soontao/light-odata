@@ -66,6 +66,10 @@ export interface BatchRequestOptions<T> {
    * SAP OData need Content-Length but standard reject it
    */
   withContentLength?: boolean;
+  /**
+   * CSFR Token should be included on request header
+   */
+  withCsrf?:boolean;
 }
 
 export interface ODataRequest<T> {
@@ -132,7 +136,6 @@ export class OData {
    * internal csrf token
    */
   private csrfToken: string = "";
-  private sessionCookies : string = ""
   /**
    * dont direct use this object
    */
@@ -224,7 +227,7 @@ export class OData {
           this.credential.username,
           this.credential.password
         ), 
-        cookie: this.sessionCookies
+        cookie: document.cookie
       };
     }
     if (this.processCsrfToken) {
@@ -274,10 +277,6 @@ export class OData {
     const { response: { headers } } = await this.fetchProxy(this.odataEnd, config);
     if (headers) {
       this.csrfToken = headers.get("x-csrf-token");
-
-      const cookiesObject =  ( headers as any )._headers['set-cookie']
-      this.sessionCookies = cookiesObject? Array.from( cookiesObject ).join(';') : this.sessionCookies
-
     } else {
       throw new Error("csrf token need the odata proxy give out headers!");
     }
@@ -385,15 +384,6 @@ export class OData {
     // format promised requests
     const r = await Promise.all(map(requests, async aBatchR => await aBatchR));
     const requestBoundaryString = v4();
-
-    // Include token 
-    if (req.headers.hasOwnProperty('x-csrf-token')) {
-      console.log('X-CSRF-Token:' + req.headers['x-csrf-token'])
-      r.map( aBatchReq => {
-        aBatchReq.init.headers['x-csrf-token'] = req.headers['x-csrf-token']
-      })
-    }
-
     req.headers["Content-Type"] = `multipart/mixed; boundary=${requestBoundaryString}`;
     req.body = formatBatchRequest(r, requestBoundaryString);
     return { url, req }
@@ -412,7 +402,7 @@ export class OData {
   }
 
   public async newBatchRequest<T>(options: BatchRequestOptions<T>) {
-    var { collection, method = "GET", id, withContentLength = false, params, entity } = options;
+    var { collection, method = "GET", id, withContentLength = false, params, entity, withCsrf=false } = options;
     if (this.forSAP) {
       // for SAP OData, need content length header
       withContentLength = true;
@@ -426,7 +416,7 @@ export class OData {
         url += `(${id})`
         break;
       case "string":
-        url += `(${id})`
+        url += `('${id}')`
         break;
       case "undefined":
         break;
@@ -459,6 +449,12 @@ export class OData {
         rt.init.headers["Content-Length"] = decodeURIComponent(rt.init.body.toString()).length;
       }
 
+      if (withCsrf) {
+        const dynamicHeaders = await this.getHeaders()
+        if (dynamicHeaders["x-csrf-token"]) {
+          rt.init.headers["x-csrf-token"] = dynamicHeaders["x-csrf-token"]
+        }
+      }
     }
 
     rt.init.headers = headers;
