@@ -3,3 +3,4 @@ coverage
 lib
 out
 the_tests
+.vscode
