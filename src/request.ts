@@ -426,7 +426,7 @@ export class OData {
         url += `(${id})`
         break;
       case "string":
-        url += `(${id})`
+        url += `('${id}')`
         break;
       case "undefined":
         break;
