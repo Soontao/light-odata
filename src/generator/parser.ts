@@ -30,7 +30,7 @@ export const parseODataMetadataFromRemote = async (
   headers,
   fetch
 ) => {
-  const res = await fetch(uri, { headers, })
+  const res = await fetch(uri, { ...headers, })
   if (res.status != 200) {
     throw new Error(`Response not correct, check your network & credential\nStatus:${res.status}\nHeaders:${JSON.stringify(res.headers)}`)
   }
