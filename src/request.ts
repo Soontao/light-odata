@@ -226,8 +226,7 @@ export class OData {
         ...GetAuthorizationPair(
           this.credential.username,
           this.credential.password
-        ), 
-        cookie: document.cookie
+        )
       };
     }
     if (this.processCsrfToken) {
