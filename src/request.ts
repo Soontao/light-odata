@@ -143,7 +143,7 @@ export class OData {
   };
   private fetchProxy = odataDefaultFetchProxy;
   private processCsrfToken = true;
-  private forSAP = true;
+  private forSAP = false;
 
   /**
    * alternative constructor
