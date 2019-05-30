@@ -329,33 +329,66 @@ export class OData {
    * odata request
    *
    * @param collection CollectionName
-   * @param id entity uuid
+   * @param id entity uuid or compound key
    * @param queryParams query param, not work for single entity uri
    * @param method request method
    * @param entity C4C Entity instance
    */
   public async request(
-    collection: string, id?: string,
+    collection: string, id?: any,
     queryParams?: ODataQueryParam, method: HTTPMethod = "GET", entity?: any
   ) {
     let url = `${this.odataEnd}${collection}`;
     if (id) {
-      switch (typeof id) {
-        case "number":
-          url += `(${id})`
-          break;
-        case "string":
-          url += `('${id}')`
-          break;
-        default:
-          throw new Error(`Not supported ObjectID type ${typeof id} for request`)
-      }
+      url += this.formatIdString(id)
 
     }
     if (queryParams) {
       url = `${url}?${queryParams.toString()}`;
     }
     return this.requestUri(url, queryParams, method, entity);
+  }
+
+  /**
+   * format id part of url
+   * 
+   * @param id 
+   */
+  private formatIdString(id: any): string {
+    var rt = ""
+    switch (typeof id) {
+      // for compound key like 
+      // Alphabetical_list_of_products(CategoryName='Beverages',Discontinued=false,ProductID=1,ProductName='Chai')
+      case "object":
+        const compoundId = Object.entries(id).map(kv => {
+          const k = kv[0]
+          const v = kv[1]
+          switch (typeof v) {
+            case "string":
+              return `${k}='${v}'`
+            case "number":
+              return `${k}=${v}`
+            case "boolean":
+              return `${k}=${v}`
+            default:
+              // other type will be removed
+              return ""
+          }
+        }).filter(v => v).join(",")
+        rt = `(${compoundId})`
+        break
+      case "number":
+        rt = `(${id})`
+        break;
+      case "string":
+        rt = `('${id}')`
+        break;
+      case "undefined":
+        break;
+      default:
+        throw new Error(`Not supported ObjectID type ${typeof id} for request`)
+    }
+    return rt
   }
 
   /**
@@ -399,34 +432,21 @@ export class OData {
   public async newBatchRequest<T>(options: BatchRequestOptions<T>) {
     var { collection, method = "GET", id, withContentLength = false, params, entity } = options;
     if (this.forSAP) {
-      // for SAP OData, need content length header
+      // for SAP NetWeaver Platform OData, need content length header
       withContentLength = true;
     }
     var url = collection;
     var headers = clone(this.commonHeader);
     var rt: BatchRequest = { url, init: { method, headers, body: "" } };
 
-    switch (typeof id) {
-      case "object": 
-        const compoundId = Object.entries(id).map(kv => `${kv[0]}=${kv[1]}`).join(",")
-        url += `(${compoundId})`
-        break 
-      case "number":
-        url += `(${id})`
-        break;
-      case "string":
-        url += `('${id}')`
-        break;
-      case "undefined":
-        break;
-      default:
-        throw new Error(`Not supported ObjectID type ${typeof id} for request`)
+    if (id) {
+      url += this.formatIdString(id)
     }
 
     // READ OPERATION
     if (method === "GET" || method === "DELETE") {
       delete headers["Content-Type"];
-      // other request dont need param
+      // other request don't need param
       if (params) {
         url = `${url}?${params.toString()}`;
       }

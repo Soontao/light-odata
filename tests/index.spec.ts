@@ -39,6 +39,26 @@ describe('Read Test', () => {
     expect(r.d.results["CustomerID"]).toEqual("ALFKI")
   })
 
+  test.concurrent('Read By Compound ID (string)', async () => {
+    const r = await C4CODataSingleResult.fromRequestResult(
+      odata.request("Customers", { CustomerID: "ALFKI" }), C4CEntity
+    )
+    expect(r.d.results["CustomerID"]).toEqual("ALFKI")
+  })
+
+  test.concurrent('Read By Compound Keys', async () => {
+    const r = await C4CODataSingleResult.fromRequestResult(
+      odata.request("Alphabetical_list_of_products", {
+        CategoryName: "Beverages",
+        Discontinued: false,
+        ProductID: 1,
+        ProductName: "Chai"
+      }),
+      C4CEntity
+    )
+    expect(r.d.results["UnitPrice"]).toEqual("18.0000")
+  })
+
   test.concurrent('Read By Filter', async () => {
     const filter = OData.newFilter().field("Phone").eqString("030-0074321");
     const result = await odata.newRequest({
