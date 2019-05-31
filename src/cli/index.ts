@@ -72,7 +72,7 @@ const d = (string) => {
 
       const meta = await parseODataMetadataFromRemote(
         options.uri,
-        { headers: { ...GetAuthorizationPair(options.user, options.pass), }, },
+        GetAuthorizationPair(options.user, options.pass),
         fetch,
       )
 
