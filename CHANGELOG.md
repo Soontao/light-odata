@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.4.0"></a>
+# [1.4.0](https://github.com/Soontao/c4codata/compare/v1.3.8...v1.4.0) (2019-05-31)
+
+
+### Features
+
+* **retrive:** by compound key ([f317e72](https://github.com/Soontao/c4codata/commit/f317e72))
+
+
+
 <a name="1.3.8"></a>
 ## [1.3.8](https://github.com/Soontao/c4codata/compare/v1.3.7...v1.3.8) (2019-04-08)
 
