@@ -55,7 +55,7 @@ The third and fourth Product Entry from the collection of all products when the 
 | And                  | Logical and           | /Products?$filter=Price le 200 and Price gt 3.5    |
 | Or                   | Logical or            | /Products?$filter=Price le 3.5 or Price gt 200     |
 
-## OData Client
+## Library - OData Client
 
 Start with a simple query, following code start a `GET` http request, and asks the server to respond to all customers which phone number equals 030-0074321
 
@@ -308,7 +308,7 @@ result.map(r => expect(r.status).toEqual(201)) // Created
 
 ## generator usage
 
-This library provide a JS generator, provide ES6 static function declaration, but I dont want to write too must about it.
+This library provide a JS generator, provide ES6 static function declaration, but I dont want to write too much about this.
 
 If you really need that, just contact me.
 
@@ -341,9 +341,11 @@ sample command (generate single js file)
 
 ```bash
 # use following command to generate declaration
-odata-js-generator -m https://host/sap/c4c/odata/v1/c4codata/$metadata?sap-label=true -u c4c-username -p c4c-password
+odata-js-generator -m "https://host/sap/c4c/odata/v1/c4codata/$metadata?sap-label=true" -u c4c-username -p c4c-password
 # then, you could use the c4codata.js to operation OData
 ```
+
+some SAP OData implementations have some different param in url, like `sap-label`, it will response the label value in the UI interface.
 
 ## [CHANGELOG](./CHANGELOG.md)
 
