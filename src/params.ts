@@ -2,9 +2,10 @@ import { ODataFilter } from "./filter";
 
 import { isString, map, isArray, join, concat } from "lodash";
 
-const UrlSearchParam = require("@ungap/url-search-params")
+import UrlSearchParam from "@ungap/url-search-params";
 
 export interface ODataParamOrderField {
+
   /**
    * field name
    */
@@ -14,6 +15,7 @@ export interface ODataParamOrderField {
    * order asc or desc
    */
   order?: "asc" | "desc";
+
 }
 
 

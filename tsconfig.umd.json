@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
     "allowJs": true,
     "newLine": "LF",
     "noUnusedLocals": false,
@@ -13,6 +12,8 @@
     ],
     "module": "commonjs",
     "target": "es5",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "charset": "utf-8",
     "emitDecoratorMetadata": true,
