@@ -31,8 +31,8 @@ Alternative, in pure js environment, just add [UNPKG](https://unpkg.com/c4codata
    1. [Table of Contents](#table-of-contents)
    1. [OData Version 2 concepts ](#odata-version-2-concepts-)
       1. [URI Resource](#uri-resource)
-      1. [Query Param: Pagination ($top & $skip)](#query-param:-pagination-$top--$skip)
-      1. [Query Param: Filter Operators ($filter)](#query-param:-filter-operators-$filter)
+      1. [Query Param: Pagination](#query-param:-pagination)
+      1. [Query Param: Filter Data](#query-param:-filter-data)
    1. [OData Client](#odata-client)
       1. [ODataRequest interface](#odatarequest-interface)
       1. [ODataResponse interface](#odataresponse-interface)
@@ -66,7 +66,7 @@ From [OData.org](https://www.odata.org/documentation/odata-version-2-0/uri-conve
 
 > A URI used by an OData service has up to three significant parts: the service root URI, resource path and query string options. Additional URI constructs (such as a fragment) MAY be present in a URI used by an OData service; however, this specification applies no further meaning to such additional constructs.
 
-### Query Param: Pagination ($top & $skip)
+### Query Param: Pagination
 
 > A data service URI with a $skip System Query Option identifies a subset of the Entries in the Collection of Entries identified by the Resource Path section of the URI. That subset is defined by seeking N Entries into the Collection and selecting only the remaining Entries (starting with Entry N+1). N is an integer greater than or equal to zero specified by this query option. If a value less than zero is specified, the URI should be considered malformed.
 
@@ -75,7 +75,7 @@ https://services.odata.org/OData/OData.svc/Products?$skip=2&$top=2&$orderby=Rati
 
 The third and fourth Product Entry from the collection of all products when the collection is sorted by Rating (ascending).
 ```
-### Query Param: Filter Operators ($filter)
+### Query Param: Filter Data
 
 > A URI with a `$filter` System Query Option identifies a subset of the Entries from the Collection of Entries identified by the Resource Path section of the URI. The subset is determined by selecting only the Entries that satisfy the predicate expression specified by the query option.
 
@@ -203,7 +203,7 @@ OData.newParam().expand("Customers")
 OData.newParam().expand(["Customers", "Employees"])
 ```
 
-### data modeling
+### fields select
 
 remove unused field from response
 
@@ -215,6 +215,8 @@ OData.newParam().select("ObjectID").select("Name");
 ### full text search (basic query)
 
 search all **supported** fields with text
+
+**SAP systems feature**
 
 **LOW PERFORMANCE**
 
@@ -229,9 +231,9 @@ OData.newParam().search("any word", false);
 
 ## ODataFilter
 
-use `ODataFilter` to filter data
+Use the `ODataFilter` to filter data
 
-Most `SAP` systems only support `AND` operator between different fields, and `OR` operator between same field. (it depends on SAP Netweaver implementation)
+Most `SAP` systems only support `AND` operator between different fields, and `OR` operator in a same field. (it depends on SAP Netweaver implementation)
 
 So you don't need to specify `AND/OR` operator between fields, `c4codata` will auto process it.
 
