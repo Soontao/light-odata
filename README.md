@@ -117,13 +117,14 @@ const result = await odata.newRequest({ // ODataRequest object
 ```ts
 interface ODataRequest<T> {
   collection: string, /** collection name */
-  id?: string, /** object key in READ/UPDATE/DELETE */
+  id?: any, /** object key in READ/UPDATE/DELETE, user could set this field with number/string/object type */
   params?: ODataQueryParam, /** params in QUERY */
   /**
    * GET for QUERY/READ; for QUERY, you can use params to control response data
-   * PATCH for UPDATE
+   * PATCH for UPDATE (partial)
+   * PUT for UPDATE (overwrite)
    * POST for CREATE
-   * DELETE for delete
+   * DELETE for DELETE
    */
   method?: HTTPMethod,
   entity?: T /** data object in CREATE/UPDATE */
@@ -139,7 +140,7 @@ interface PlainODataResponse {
     results: any | Array<any>; /** result list/object */
     [key: string]: any;
   };
-  error?: { /** if error occured, node error will have value */
+  error?: { /** if error occurred, node error will have value */
     code: string;
     message: {
       lang: string, 
@@ -175,7 +176,7 @@ OData.newParam().filter(OData.newFilter().field("A").eqString("test"))
 
 response with all records count, usefully.
 
-also could set the `filter`, and response with filtered records count.
+also could set with `filter`, and response with filtered records count.
 
 ```js
 // equal to $format=json&$inlinecount=allpages
@@ -207,7 +208,7 @@ OData.newParam().expand(["Customers", "Employees"])
 
 ### fields select
 
-remove unused field from response
+remove unused fields from response
 
 ```js
 // $format=json&$select=ObjectID,Name

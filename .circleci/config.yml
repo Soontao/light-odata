@@ -91,7 +91,7 @@ workflows:
             tags:
               only: /.*/
             branches:
-              ignore: /.*/
+              only: /.*/
       - sonar:
           filters:
             branches:
