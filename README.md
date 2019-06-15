@@ -18,7 +18,7 @@ Lightweight OData Client for OData (v2) Service.
 npm i -S c4codata
 ```
 
-Alternative, in pure js environment, just add [UNPKG](https://unpkg.com/c4codata) umd link to your page, and `OData` object will be enabled in `window`.
+Alternative, in build-tool-less environment, just add [unpkg](https://unpkg.com/c4codata) umd link to your page, and `OData` object will be available in `window`.
 
 ```html
 <script src="https://unpkg.com/c4codata"></script>
@@ -30,19 +30,19 @@ Alternative, in pure js environment, just add [UNPKG](https://unpkg.com/c4codata
    1. [Installation](#installation)
    1. [Table of Contents](#table-of-contents)
    1. [OData Version 2 concepts ](#odata-version-2-concepts-)
-      1. [URI Resource](#uri-resource)
-      1. [Query Param: Pagination](#query-param:-pagination)
-      1. [Query Param: Filter Data](#query-param:-filter-data)
+      1. [URI Format](#uri-format)
+      1. [Pagination](#pagination)
+      1. [Filter](#filter)
    1. [OData Client](#odata-client)
       1. [ODataRequest interface](#odatarequest-interface)
       1. [ODataResponse interface](#odataresponse-interface)
    1. [ODataParam](#odataparam)
-      1. [pagination](#pagination)
-      1. [filter](#filter)
+      1. [pagination](#pagination-1)
+      1. [filter](#filter-1)
       1. [inline count](#inline-count)
       1. [orderby](#orderby)
       1. [navigation property](#navigation-property)
-      1. [data modeling](#data-modeling)
+      1. [fields select](#fields-select)
       1. [full text search (basic query)](#full-text-search-basic-query)
    1. [ODataFilter](#odatafilter)
       1. [filter by single field value](#filter-by-single-field-value)
@@ -62,11 +62,11 @@ From [OData.org](https://www.odata.org/documentation/odata-version-2-0/uri-conve
 
 **If you are already familiar with OData, please skip this section**
 
-### URI Resource
+### URI Format
 
 > A URI used by an OData service has up to three significant parts: the service root URI, resource path and query string options. Additional URI constructs (such as a fragment) MAY be present in a URI used by an OData service; however, this specification applies no further meaning to such additional constructs.
 
-### Query Param: Pagination
+### Pagination
 
 > A data service URI with a $skip System Query Option identifies a subset of the Entries in the Collection of Entries identified by the Resource Path section of the URI. That subset is defined by seeking N Entries into the Collection and selecting only the remaining Entries (starting with Entry N+1). N is an integer greater than or equal to zero specified by this query option. If a value less than zero is specified, the URI should be considered malformed.
 
@@ -75,7 +75,7 @@ https://services.odata.org/OData/OData.svc/Products?$skip=2&$top=2&$orderby=Rati
 
 The third and fourth Product Entry from the collection of all products when the collection is sorted by Rating (ascending).
 ```
-### Query Param: Filter Data
+### Filter
 
 > A URI with a `$filter` System Query Option identifies a subset of the Entries from the Collection of Entries identified by the Resource Path section of the URI. The subset is determined by selecting only the Entries that satisfy the predicate expression specified by the query option.
 
@@ -173,7 +173,9 @@ OData.newParam().filter(OData.newFilter().field("A").eqString("test"))
 
 ### inline count
 
-response with all pages count, usefully
+response with all records count, usefully.
+
+also could set the `filter`, and response with filtered records count.
 
 ```js
 // equal to $format=json&$inlinecount=allpages
