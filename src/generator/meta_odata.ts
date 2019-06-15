@@ -46,7 +46,7 @@ export interface PropertyRef {
   $: {
     Name: string
   }
-}[]
+}
 
 export interface ODataEntityProperty {
   $: {
