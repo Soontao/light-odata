@@ -1,7 +1,4 @@
-# Javascript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
+
 version: 2
 jobs:
   build:
@@ -32,7 +29,17 @@ jobs:
 
       # upload coverage
       - run: bash <(curl -s https://codecov.io/bash)
-      
+
+  sonar:
+    docker:
+      - image: dmoscrop/circleci-sonar-scanner-docker
+    steps:
+      - checkout
+      - run: 
+          name: Sonar Scanner
+          command: sonar-scanner -Dsonar.projectKey=Soontao_c4codata -Dsonar.organization=soontao-github -Dsonar.sources=src -Dsonar.host.url=https://sonarcloud.io  -Dsonar.login=228c4dd05770b34ad56d9f304bc6d613c0ac66b8
+
+
   deploy:
     working_directory: ~/repo
     docker:
@@ -64,3 +71,9 @@ workflows:
               only: /.*/
             branches:
               ignore: /.*/
+      - sonar:
+          filters:
+            branches:
+              only: /.*/
+            tags:
+              only: /.*/

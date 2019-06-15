@@ -1,3 +1,4 @@
+
 # OData Javascript Library
 
 [![CircleCI](https://circleci.com/gh/Soontao/c4codata.svg?style=shield)](https://circleci.com/gh/Soontao/c4codata)
@@ -11,7 +12,7 @@
 
 Lightweight OData Client for OData (v2) Service.
 
-## install
+## Installation
 
 ```bash
 npm i -S c4codata
@@ -23,7 +24,41 @@ Alternative, in pure js environment, just add [UNPKG](https://unpkg.com/c4codata
 <script src="https://unpkg.com/c4codata"></script>
 ```
 
-## OData Version 2 concepts (from [OData.org](https://www.odata.org/documentation/odata-version-2-0/uri-conventions/))
+<!-- ToC start -->
+## Table of Contents
+
+   1. [Installation](#installation)
+   1. [Table of Contents](#table-of-contents)
+   1. [OData Version 2 concepts ](#odata-version-2-concepts-)
+      1. [URI Resource](#uri-resource)
+      1. [Query Param: Pagination ($top & $skip)](#query-param:-pagination-$top--$skip)
+      1. [Query Param: Filter Operators ($filter)](#query-param:-filter-operators-$filter)
+   1. [OData Client](#odata-client)
+      1. [ODataRequest interface](#odatarequest-interface)
+      1. [ODataResponse interface](#odataresponse-interface)
+   1. [ODataParam](#odataparam)
+      1. [pagination](#pagination)
+      1. [filter](#filter)
+      1. [inline count](#inline-count)
+      1. [orderby](#orderby)
+      1. [navigation property](#navigation-property)
+      1. [data modeling](#data-modeling)
+      1. [full text search (basic query)](#full-text-search-basic-query)
+   1. [ODataFilter](#odatafilter)
+      1. [filter by single field value](#filter-by-single-field-value)
+      1. [filter by multi fields](#filter-by-multi-fields)
+      1. [filter by one field but multi values](#filter-by-one-field-but-multi-values)
+      1. [filter by date](#filter-by-date)
+   1. [Batch requests](#batch-requests)
+   1. [Generator usage](#generator-usage)
+   1. [Others](#others)
+   1. [CHANGELOG](#changelog)
+   1. [LICENSE](#license)
+<!-- ToC end -->
+
+## OData Version 2 concepts 
+
+From [OData.org](https://www.odata.org/documentation/odata-version-2-0/uri-conventions/)
 
 **If you are already familiar with OData, please skip this section**
 
@@ -55,7 +90,7 @@ The third and fourth Product Entry from the collection of all products when the 
 | And                  | Logical and           | /Products?$filter=Price le 200 and Price gt 3.5    |
 | Or                   | Logical or            | /Products?$filter=Price le 3.5 or Price gt 200     |
 
-## Library - OData Client
+## OData Client
 
 Start with a simple query, following code start a `GET` http request, and asks the server to respond to all customers which phone number equals 030-0074321
 
@@ -306,7 +341,7 @@ result.map(r => expect(r.status).toEqual(201)) // Created
 
 ```
 
-## generator usage
+## Generator usage
 
 This library provide a JS generator, provide ES6 static function declaration, but I dont want to write too much about this.
 
@@ -339,15 +374,30 @@ Options:
 
 sample command (generate single js file)
 
+use following command to generate declaration
+
 ```bash
-# use following command to generate declaration
-odata-js-generator -m "https://host/sap/c4c/odata/v1/c4codata/$metadata?sap-label=true" -u c4c-username -p c4c-password
-# then, you could use the c4codata.js to operation OData
+odata-js-generator -m "https://host/sap/c4c/odata/v1/c4codata/$metadata?sap-label=true" -u c4c-username -p c4c-password 
 ```
+
+then, you could use the c4codata.js to operation OData
 
 some SAP OData implementations have some different param in url, like `sap-label`, it will response the label value in the UI interface.
 
-## [CHANGELOG](./CHANGELOG.md)
+## Others
+
+Use [markdown-toc](https://github.com/sebdah/markdown-toc) to generate table of contents, with following commands: 
+
+
+```bash
+markdown-toc --replace --inline --header "## Table of Contents" --skip-headers=1  README.md
+```
+
+
+
+## CHANGELOG
+
+[CHANGELOG](./CHANGELOG.md)
 
 ## LICENSE
 
