@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.4.2"></a>
+## [1.4.2](https://github.com/Soontao/c4codata/compare/v1.4.1...v1.4.2) (2019-09-09)
+
+
+### Bug Fixes
+
+* **ci:** script ([e99dcc0](https://github.com/Soontao/c4codata/commit/e99dcc0))
+* **ts:** types ([06258b4](https://github.com/Soontao/c4codata/commit/06258b4))
+* http EOL issue ([cafd33b](https://github.com/Soontao/c4codata/commit/cafd33b))
+
+
+
 <a name="1.4.1"></a>
 ## [1.4.1](https://github.com/Soontao/c4codata/compare/v1.4.0...v1.4.1) (2019-06-14)
 
