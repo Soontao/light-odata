@@ -44,7 +44,7 @@
     "cli": "^1.0.1",
     "http-string-parser": "^0.0.6",
     "isomorphic-fetch": "^2.2.1",
-    "lodash": "^4.17.5",
+    "lodash": "^4.17.15",
     "mkdirp": "^0.5.1",
     "url-parse": "^1.4.1",
     "uuid": "^3.3.2",

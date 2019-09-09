@@ -3,6 +3,11 @@ import { split, slice, map, join, flatten, concat, startsWith } from "lodash";
 import { parseResponse } from "http-string-parser";
 import { v4 } from "uuid";
 
+const HTTP_EOL = "\r\n"
+
+/**
+ * parsed mock batch response
+ */
 export interface ParsedResponse<T> {
   text: () => Promise<string>;
   json: () => Promise<T>;
@@ -11,6 +16,9 @@ export interface ParsedResponse<T> {
   statusText: string;
 }
 
+/**
+ * batch request
+ */
 export interface BatchRequest {
   /**
    * for odata batch request, please give a relative path from odata endpoint
@@ -23,17 +31,18 @@ export const formatHttpRequestString = (u: string, r: any) => {
   return join(
     [
       `${r.method || "GET"} ${u} HTTP/1.1`,
-      `${join(map(r.headers, (v, k) => `${k}: ${v}`), "\n")}`,
-      `${r.body ? "\n" + r.body : ""}`,
-    ], "\n"
+      `${join(map(r.headers, (v, k) => `${k}: ${v}`), HTTP_EOL)}`,
+      `${r.body ? HTTP_EOL + r.body : ""}`,
+    ], HTTP_EOL
   )
 }
+
 
 /**
  * format batch request string body
  * 
  * @param requests 
- * @param boundary a gived boundary id
+ * @param boundary a given boundary id
  */
 export const formatBatchRequest = (requests: BatchRequest[], boundary: string) => {
   return join(
@@ -49,7 +58,7 @@ export const formatBatchRequest = (requests: BatchRequest[], boundary: string) =
               formatHttpRequestString(r.url, r.init),
               "",
             ],
-            "\n"
+            HTTP_EOL
           )
         } else {
           const generated_uuid = v4();
@@ -66,14 +75,14 @@ export const formatBatchRequest = (requests: BatchRequest[], boundary: string) =
               "",
               `--${generated_uuid}--`,
             ],
-            "\n"
+            HTTP_EOL
           )
         }
       }
       ),
       `--${boundary}--`
     ),
-    "\n"
+    HTTP_EOL
   )
 
 }
@@ -97,13 +106,10 @@ export const parseResponse2 = async (httpResponseString: string): Promise<Parsed
   return rt;
 }
 
-export const parseMultiPartContent = async (
-  multipartBodyString: string,
-  boundaryString: string
-): Promise<ParsedResponse<any>[]> => {
-  if (multipartBodyString && boundaryString) {
+export const parseMultiPartContent = async (multipartBody: string, boundaryId: string): Promise<ParsedResponse<any>[]> => {
+  if (multipartBody && boundaryId) {
     // split
-    const parts = split(multipartBodyString, `--${boundaryString}`)
+    const parts = split(multipartBody, `--${boundaryId}`)
     // remote head and tail parts
     const meaningfulParts = slice(parts, 1, parts.length - 1)
     return flatten(await Promise.all(map(meaningfulParts, async p => {

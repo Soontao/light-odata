@@ -1,6 +1,6 @@
 import { HTTPMethod, Credential, PlainODataResponse, } from "./types";
 
-import { split, map, slice, join, startsWith, attempt, clone } from "lodash";
+import { split, map, slice, join, startsWith, attempt, clone, isEmpty } from "lodash";
 
 import { GetAuthorizationPair } from "./util";
 import { BatchRequest, formatBatchRequest, parseMultiPartContent, ParsedResponse } from "./batch";
@@ -426,6 +426,9 @@ export class OData {
     const { url, req } = await this.formatBatchRequests(requests);
     const { content, response: { headers } } = await this.fetchProxy(url, req);
     const responseBoundaryString = headers.get("Content-Type").split("=").pop();
+    if (isEmpty(responseBoundaryString)) {
+      // if boundary string empty, error here
+    }
     return await parseMultiPartContent(content, responseBoundaryString);
   }
 
@@ -465,7 +468,7 @@ export class OData {
       }
 
       if (withContentLength) {
-        rt.init.headers["Content-Length"] = decodeURIComponent(rt.init.body.toString()).length;
+        rt.init.headers["Content-Length"] = encodeURI(rt.init.body.toString()).length;
       }
 
     }
