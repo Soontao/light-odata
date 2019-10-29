@@ -11,20 +11,20 @@
     "@types/lodash": "^4.14.102",
     "@types/node": "^8.0.25",
     "@types/url-parse": "^1.1.0",
-    "@types/uuid": "^3.4.3",
+    "@types/uuid": "^3.4.5",
     "jest": "^24",
     "jest-cli": "^24",
     "pre-commit": "^1.2.2",
-    "rimraf": "^2.6.1",
-    "standard-version": "^4.2.0",
+    "rimraf": "^3",
+    "standard-version": "^7",
     "ts-jest": "^24",
-    "ts-loader": "4",
-    "tslint": "^5.6.0",
-    "tslint-loader": "^3.5.3",
+    "ts-loader": "^6",
+    "tslint": "^5.20.0",
+    "tslint-loader": "^3.5.4",
     "typescript": "3",
-    "uglifyjs-webpack-plugin": "^2.0.1",
-    "webpack": "^4.23.0",
-    "webpack-cli": "^3.1.2"
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9"
   },
   "typings": "lib/index.d.ts",
   "scripts": {
@@ -40,15 +40,15 @@
   },
   "dependencies": {
     "@ungap/url-search-params": "^0.1.2",
-    "buffer": "^5.0.8",
+    "buffer": "^5.4.3",
     "cli": "^1.0.1",
     "http-string-parser": "^0.0.6",
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.15",
     "mkdirp": "^0.5.1",
-    "url-parse": "^1.4.1",
-    "uuid": "^3.3.2",
-    "xml2js": "^0.4.19"
+    "url-parse": "^1.4.7",
+    "uuid": "^3.3.3",
+    "xml2js": "^0.4.22"
   },
   "jest": {
     "transform": {
