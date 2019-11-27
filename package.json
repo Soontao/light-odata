@@ -36,7 +36,7 @@
     "coverage": "npm test -- --coverage --no-cache",
     "coverage:watch": "npm run coverage -- --watch",
     "release": "standard-version --no-verify && git push --follow-tags origin master",
-    "prepare": "npm run build && npm test"
+    "prepublishOnly": "npm run build && npm test"
   },
   "dependencies": {
     "@ungap/url-search-params": "^0.1.2",
