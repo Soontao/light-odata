@@ -10,20 +10,8 @@ jobs:
     steps:
       - checkout
 
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
       - run: npm install
 
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-        
       # run tests!
       - run: npm run coverage
 
@@ -51,12 +39,12 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-          
+
       - run:
           name: Converge
           command: npm run coverage
 
-      - run: 
+      - run:
           name: Sonar Scanner
           command: sonar-scanner -Dsonar.projectKey=Soontao_c4codata -Dsonar.organization=soontao-github -Dsonar.sources=src -Dsonar.host.url=https://sonarcloud.io  -Dsonar.login=228c4dd05770b34ad56d9f304bc6d613c0ac66b8
 
