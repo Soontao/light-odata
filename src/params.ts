@@ -22,7 +22,7 @@ export interface ODataParamOrderField {
 
 /**
  * OData Param Object
- * 
+ *
  * ref https://github.com/SAP/C4CODATAAPIDEVGUIDE
  */
 export class ODataQueryParam {
@@ -55,7 +55,7 @@ export class ODataQueryParam {
 
   /**
    * filter
-   * @param filter 
+   * @param filter
    */
   filter(filter: string | ODataFilter) {
     if (filter instanceof ODataFilter) {
@@ -72,8 +72,8 @@ export class ODataQueryParam {
 
   /**
    * skip first records
-   * 
-   * @param skip 
+   *
+   * @param skip
    */
   skip(skip: number) {
     this.$skip = skip
@@ -83,8 +83,8 @@ export class ODataQueryParam {
 
   /**
    * limit result max records
-   * 
-   * @param top 
+   *
+   * @param top
    */
   top(top: number) {
     this.$top = top
@@ -94,8 +94,8 @@ export class ODataQueryParam {
 
   /**
    * select viewed fields
-   * 
-   * @param selects 
+   *
+   * @param selects
    */
   select(selects: string | string[]) {
     this.$select = concat(this.$select, selects)
@@ -104,8 +104,8 @@ export class ODataQueryParam {
 
   /**
    * set order sequence
-   * 
-   * @param fieldOrOrders 
+   *
+   * @param fieldOrOrders
    * @param order default desc, disabled when first params is array
    */
   orderby(
@@ -122,8 +122,8 @@ export class ODataQueryParam {
 
   /**
    * set order by multi field
-   * 
-   * @param fields 
+   *
+   * @param fields
    */
   orderbyMulti(fields: ODataParamOrderField[]) {
     this.$orderby = join(map(fields, f => `${f.field} ${f.order || "desc"}`), ",")
@@ -132,7 +132,7 @@ export class ODataQueryParam {
 
   /**
    * result format, please keep it as json
-   * 
+   *
    * @param format deafult json
    */
   format(format: "json" | "xml") {
@@ -146,10 +146,10 @@ export class ODataQueryParam {
 
   /**
    * full text search
-   * 
+   *
    * default with fuzzy search
-   * 
-   * @param value 
+   *
+   * @param value
    */
   search(value: string, fuzzy: boolean = true) {
     this.$search = fuzzy ? `%${value}%` : value
@@ -158,8 +158,8 @@ export class ODataQueryParam {
 
   /**
    * expand navigation props
-   * 
-   * @param fields 
+   *
+   * @param fields
    * @param replace
    */
   expand(fields: string | string[], replace = false) {
@@ -184,8 +184,8 @@ export class ODataQueryParam {
     if (this.$orderby) { rt.append("$orderby", this.$orderby); }
     if (this.$search) { rt.append("$search", this.$search); }
     if (this.$select && this.$select.length > 0) { rt.append("$select", join(this.$select, ",")); }
-    if (this.$skip) { rt.append("$skip", this.$skip); }
-    if (this.$top && this.$top > 0) { rt.append("$top", this.$top); }
+    if (this.$skip) { rt.append("$skip", (this.$skip || "").toString()); }
+    if (this.$top && this.$top > 0) { rt.append("$top", (this.$top || "").toString()); }
     if (this.$expand && this.$expand.length > 0) { rt.append("$expand", this.$expand.join(",")); }
     if (this.$inlinecount) { rt.append("$inlinecount", this.$inlinecount) }
     return rt.toString();

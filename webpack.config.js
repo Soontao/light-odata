@@ -1,5 +1,5 @@
 const { join } = require("path")
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
   entry: './src/index.ts',
@@ -27,9 +27,7 @@ module.exports = {
     ]
   },
   optimization: {
-    minimizer: [new UglifyJsPlugin({
-      parallel: true,
-      cache: true
-    })]
-  }
+    minimize: true,
+    minimizer: [new TerserPlugin()],
+  },
 }

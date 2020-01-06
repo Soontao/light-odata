@@ -17,14 +17,14 @@
     "pre-commit": "^1.2.2",
     "rimraf": "^3",
     "standard-version": "^7",
+    "terser-webpack-plugin": "^2.3.1",
     "ts-jest": "^24",
     "ts-loader": "^6",
     "tslint": "^5.20.0",
     "tslint-loader": "^3.5.4",
     "typescript": "3",
-    "uglifyjs-webpack-plugin": "^2.2.0",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.9"
+    "webpack": "^4",
+    "webpack-cli": "^3"
   },
   "typings": "lib/index.d.ts",
   "scripts": {
@@ -39,7 +39,7 @@
     "prepublishOnly": "npm run build && npm test"
   },
   "dependencies": {
-    "@ungap/url-search-params": "^0.1.2",
+    "@ungap/url-search-params": "^0.1.4",
     "buffer": "^5.4.3",
     "cli": "^1.0.1",
     "http-string-parser": "^0.0.6",
@@ -48,7 +48,7 @@
     "mkdirp": "^0.5.1",
     "url-parse": "^1.4.7",
     "uuid": "^3.3.3",
-    "xml2js": "^0.4.22"
+    "xml2js": "^0.4.23"
   },
   "jest": {
     "transform": {
