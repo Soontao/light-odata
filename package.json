@@ -1,6 +1,6 @@
 {
   "name": "c4codata",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "unpkg": "./lib/c4codata-umd.js",
   "bin": {
     "odata-js-generator": "lib/cli/index.js"
