@@ -2,6 +2,9 @@
   "name": "c4codata",
   "version": "1.4.4",
   "unpkg": "./lib/c4codata-umd.js",
+  "engines": {
+    "node": ">10"
+  },
   "bin": {
     "odata-js-generator": "lib/cli/index.js"
   },
@@ -39,9 +42,9 @@
     "prepublishOnly": "npm run build && npm test"
   },
   "dependencies": {
-    "@ungap/url-search-params": "^0.1.4",
     "buffer": "^5.4.3",
     "cli": "^1.0.1",
+    "core-js": "^3.6.4",
     "http-string-parser": "^0.0.6",
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.15",

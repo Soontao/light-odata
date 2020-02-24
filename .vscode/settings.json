@@ -3,8 +3,5 @@
   "editor.fontSize": 14,
   "editor.wordWrap": "on",
   "editor.formatOnSave": true,
-  "cSpell.words": [
-    "Netweaver",
-    "odata"
-  ]
+  "cSpell.enabled": false
 }

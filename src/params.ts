@@ -2,7 +2,7 @@ import { ODataFilter } from "./filter";
 
 import { isString, map, isArray, join, concat } from "lodash";
 
-import UrlSearchParam from "@ungap/url-search-params";
+import URLSearchParams from "core-js/features/url-search-params";
 
 export interface ODataParamOrderField {
 
@@ -178,7 +178,7 @@ export class ODataQueryParam {
 
 
   toString(): string {
-    let rt = new UrlSearchParam();
+    let rt = new URLSearchParams();
     if (this.$format) { rt.append("$format", this.$format); }
     if (this.$filter) { rt.append("$filter", this.$filter.toString()); }
     if (this.$orderby) { rt.append("$orderby", this.$orderby); }

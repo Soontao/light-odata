@@ -71,7 +71,7 @@ export class ODataFieldExpr {
 
   /**
    * equal
-   * @param value 
+   * @param value
    */
   eq(value) {
     this._addExpr(ExprOperator.eq, value)
@@ -80,7 +80,7 @@ export class ODataFieldExpr {
 
   /**
    * not equal
-   * @param value 
+   * @param value
    */
   ne(value) {
     this._addExpr(ExprOperator.ne, value)
@@ -98,7 +98,7 @@ export class ODataFieldExpr {
 
   /**
    * greater or equal
-   * @param value 
+   * @param value
    */
   ge(value) {
     this._addExpr(ExprOperator.ge, value)
@@ -107,7 +107,7 @@ export class ODataFieldExpr {
 
   /**
    * greater than
-   * @param value 
+   * @param value
    */
   gt(value) {
     this._addExpr(ExprOperator.gt, value)
@@ -116,7 +116,7 @@ export class ODataFieldExpr {
 
   /**
    * less or equal
-   * @param value 
+   * @param value
    */
   le(value) {
     this._addExpr(ExprOperator.le, value)
@@ -125,7 +125,7 @@ export class ODataFieldExpr {
 
   /**
    * less than
-   * @param value 
+   * @param value
    */
   lt(value) {
     this._addExpr(ExprOperator.lt, value)
@@ -134,8 +134,8 @@ export class ODataFieldExpr {
 
   /**
    * match any value in an array
-   * 
-   * @param values 
+   *
+   * @param values
    */
   in(values: string[]) {
     if (!isEmpty(values)) {
@@ -148,10 +148,10 @@ export class ODataFieldExpr {
 
   /**
    * filter by value range
-   * 
-   * @param lower 
-   * @param max 
-   * @param includeBoundary 
+   *
+   * @param lower
+   * @param max
+   * @param includeBoundary
    */
   between(lower, max, includeBoundary = true) {
     if (isEmpty(lower) && isEmpty(max)) {
@@ -221,10 +221,10 @@ export class ODataFilter {
 
   /**
    * The value of a field matches any value in the list.
-   * 
+   *
    * @deprecated please use filter.field().in()
-   * @param name 
-   * @param values 
+   * @param name
+   * @param values
    */
   fieldIn(name: string, values: string[]) {
     return this.fieldValueMatchArray(name, values);
@@ -232,10 +232,10 @@ export class ODataFilter {
 
   /**
    * The value of a field matches any value in the list.
-   * 
+   *
    * @deprecated please use filter.field().in()
-   * @param name 
-   * @param values 
+   * @param name
+   * @param values
    */
   fieldValueMatchArray(name: string, values: string[]) {
     if (values) {
@@ -248,13 +248,13 @@ export class ODataFilter {
 
   /**
    * DEPRECATED
-   * 
+   *
    * please use betweenDateTime/betweenDateTimeOffset
-   * 
+   *
    * @deprecated
-   * @param name 
-   * @param start 
-   * @param end 
+   * @param name
+   * @param start
+   * @param end
    */
   inPeriod(name: string, start: Date, end: Date) {
     return this.betweenDateTime(name, start, end)
@@ -262,9 +262,9 @@ export class ODataFilter {
 
   /**
    * @deprecated
-   * @param name 
-   * @param start 
-   * @param end 
+   * @param name
+   * @param start
+   * @param end
    */
   betweenDateTime(name: string, start: Date, end: Date) {
     if (start && end) {
@@ -276,9 +276,9 @@ export class ODataFilter {
 
   /**
    * @deprecated
-   * @param name 
-   * @param start 
-   * @param end 
+   * @param name
+   * @param start
+   * @param end
    */
   betweenDateTimeOffset(name: string, start: Date, end: Date) {
     if (start && end) {
@@ -306,13 +306,13 @@ export class ODataFilter {
 
   /**
    * AND expr
-   * 
+   *
    * filter.field("A").eq("'a'").and().field("B").eq("'b").build() == "A eq 'a' and B eq 'b'"
-   * 
+   *
    * filter.field("A").eq("'a'").and("B eq 'b'").build() == "A eq 'a' and (B eq 'b')"
-   * 
+   *
    * @deprecated c4codata will auto detect connect operator between difference fields
-   * @param filter 
+   * @param filter
    */
   and(filter?: string | ODataFilter) {
     return this;
@@ -320,7 +320,7 @@ export class ODataFilter {
 
   /**
    * @deprecated c4codata will auto detect connect operator in same fields
-   * @param filter 
+   * @param filter
    */
   or(filter?: string | ODataFilter) {
     return this;
@@ -328,7 +328,7 @@ export class ODataFilter {
 
   /**
    * @deprecated c4codata will auto group exprs
-   * @param filter 
+   * @param filter
    */
   group(filter: ODataFilter) {
     this._fieldExprMappings = merge(this._fieldExprMappings, filter.getExprMapping())
