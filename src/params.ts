@@ -139,7 +139,7 @@ export class ODataQueryParam {
     if (format === "json") {
       this.$format = format
     } else {
-      throw new Error("c4codata dont support xml response")
+      throw new Error("light-odata dont support xml response")
     }
     return this
   }
@@ -147,7 +147,7 @@ export class ODataQueryParam {
   /**
    * full text search
    *
-   * default with fuzzy search
+   * default with fuzzy search, SAP system only
    *
    * @param value
    */

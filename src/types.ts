@@ -23,12 +23,12 @@ export interface Credential {
   password: string
 }
 
-export class C4CODataSingleResult<T> {
+export class LightODataSingleResult<T> {
 
   d: { results: T } = { results: undefined }
 
   static fromPlainObject = function <E>(object: PlainODataResponse, type: { new(): E }) {
-    const rt = new C4CODataSingleResult<E>()
+    const rt = new LightODataSingleResult<E>()
     if (object.error) {
       throw new Error(object.error.message.value)
     }
@@ -40,7 +40,7 @@ export class C4CODataSingleResult<T> {
     else if (isObject(object.d)) {
       rt.d.results = C4CEntity.fromPlainObject(object.d, type)
     }
-    // throw erro fi 
+    // throw erro fi
     else {
       throw new Error("Not acceptable response")
     }
@@ -48,19 +48,19 @@ export class C4CODataSingleResult<T> {
   }
 
   static fromRequestResult = async function <T>(p: Promise<PlainODataResponse>, t: { new(): T }) {
-    return C4CODataSingleResult.fromPlainObject(await p, t)
+    return LightODataSingleResult.fromPlainObject(await p, t)
   }
 
 }
 
-export class C4CODataResult<T> {
+export class LightODataResult<T> {
 
   d: { __count?: string; results: T[]; } = {
     results: []
   }
 
   static fromPlainObject = function <E>(object: PlainODataResponse, type: { new(): E }) {
-    const rt = new C4CODataResult<E>()
+    const rt = new LightODataResult<E>()
     if (object.error) {
       throw new Error(object.error.message.value)
     }
@@ -82,8 +82,8 @@ export class C4CODataResult<T> {
   }
 
 
-  static fromRequestResult = async function <T>(p: Promise<PlainODataResponse>, t: { new(): T }): Promise<C4CODataResult<T>> {
-    return C4CODataResult.fromPlainObject(await p, t)
+  static fromRequestResult = async function <T>(p: Promise<PlainODataResponse>, t: { new(): T }): Promise<LightODataResult<T>> {
+    return LightODataResult.fromPlainObject(await p, t)
   }
 
 }
@@ -104,7 +104,7 @@ export class C4CEntity {
 
   /**
    * parse instance from plain object
-   * @param o 
+   * @param o
    */
   static fromPlainObject = function <T>(o: any, t: { new(): T; }): T {
     return assign(new t(), o);

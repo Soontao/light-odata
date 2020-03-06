@@ -6,7 +6,7 @@ module.exports = {
   mode: 'production',
   output: {
     path: join(__dirname, './lib'),
-    filename: "c4codata-umd.js",
+    filename: "light-odata-umd.js",
     libraryTarget: 'umd'
   },
   resolve: {

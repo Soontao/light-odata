@@ -18,7 +18,7 @@ export function generateAllDefault(meta: ODataMetadata, options?: CliOption) {
 
 export function generateCommonImportString(uri: string, user: string = "", pass: string = "") {
   return `// eslint-disable-next-line
-import { OData, ODataQueryParam, ODataFilter, C4CODataResult, C4CEntity, DeferredNavigationProperty, C4CODataSingleResult } from "c4codata";
+import { OData, ODataQueryParam, ODataFilter, LightODataResult, C4CEntity, DeferredNavigationProperty, LightODataSingleResult } from "light-odata";
 
 const metadataUri = "${uri}"
 // set object value to change odata credential
@@ -39,7 +39,7 @@ export function generateSeprateIndexFile(classes: MetaClass[]) {
 export function generateSeprateODataFile(uri: string, user: string = "", pass: string = "") {
   return join(
     [
-      'import { OData } from "c4codata"',
+      'import { OData } from "light-odata"',
       `const initCredential = { username: "${user}", password: "${pass}" }`,
       `const metadataUri = "${uri}"`,
       'export const odata = new OData(metadataUri, initCredential);',
@@ -51,7 +51,7 @@ export function generateSeprateODataFile(uri: string, user: string = "", pass: s
 export function generateSeprateClassString(clazz: MetaClass, functionsString = "", typeString = "") {
   return join(
     [
-      'import { C4CODataResult, C4CEntity, DeferredNavigationProperty, C4CODataSingleResult } from "c4codata"',
+      'import { LightODataResult, C4CEntity, DeferredNavigationProperty, LightODataSingleResult } from "light-odata"',
       'import { odata } from "./odata"',
       join(
         map(
@@ -74,14 +74,14 @@ export function generateClassString(clazz: MetaClass) {
   return `
 /**
  * ${clazz.name}
- * 
+ *
  * @class ${clazz.name}
  */
 ${clazz.exported ? "export " : ""}class ${clazz.name} ${clazz.extends ? `extends ${clazz.extends} ` : ""}{
 ${clazz.field ? clazz.field.map(f => `
   /**
    * ${f.description ? f.description : ""}
-   * @type {${f.type}} 
+   * @type {${f.type}}
    */
   ${f.static ? "static " : ""}${f.name}${f.value ? ` = ${f.value}` : ""}`).join("\n") : ""}
 ${clazz.method ? clazz.method.map(m => `
@@ -128,6 +128,6 @@ export const CollectionOperation = {
 ${map(parseEntityCRUDFunctionsMap(meta), (m, k) => `  ${k}: {
 ${map(m, item => `    ${item}`).join(",\n")}
   }`).join(",\n")}
-}  
+}
 `
 }

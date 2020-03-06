@@ -46,7 +46,7 @@ export const parseODataMetadataFromRemote = async (
 
 /**
  * parse odata metadata xml
- * 
+ *
  * @param metadataXmlString odata metadata xml string
  */
 export function parseODataMetadata(metadataXmlString: string) {
@@ -166,8 +166,8 @@ export function parseMetaCRUDFunctionFrom(collection: ODataCollection): MetaFunc
   rt.push({
     name: `read${name}`,
     parameters: [{ name: "params", type: "ODataQueryParam" }],
-    return: `Promise<C4CODataResult<${entityName}>>`,
-    body: `return C4CODataResult.fromRequestResult(odata.request("${collection.$.Name}", undefined, params), ${entityName})`,
+    return: `Promise<LightODataResult<${entityName}>>`,
+    body: `return LightODataResult.fromRequestResult(odata.request("${collection.$.Name}", undefined, params), ${entityName})`,
     exported: true
   })
   rt.push({
@@ -182,8 +182,8 @@ export function parseMetaCRUDFunctionFrom(collection: ODataCollection): MetaFunc
       { name: "id", type: "string", description: "entity uuid" },
       { name: "params", type: "ODataQueryParam", description: "OData param" }
     ],
-    return: `Promise<C4CODataSingleResult<${entityName}>>`,
-    body: `return C4CODataSingleResult.fromRequestResult(odata.request("${collection.$.Name}", id, params), ${entityName})`,
+    return: `Promise<LightODataSingleResult<${entityName}>>`,
+    body: `return LightODataSingleResult.fromRequestResult(odata.request("${collection.$.Name}", id, params), ${entityName})`,
     exported: true
   })
   rt.push({
@@ -201,8 +201,8 @@ export function parseMetaCRUDFunctionFrom(collection: ODataCollection): MetaFunc
       parameters: [
         { name: "entity", type: entityName }
       ],
-      return: `Promise<C4CODataSingleResult<${entityName}>>`,
-      body: `return C4CODataSingleResult.fromRequestResult(odata.request("${collection.$.Name}", undefined, undefined, "POST", entity), ${entityName})`,
+      return: `Promise<LightODataSingleResult<${entityName}>>`,
+      body: `return LightODataSingleResult.fromRequestResult(odata.request("${collection.$.Name}", undefined, undefined, "POST", entity), ${entityName})`,
       exported: true
     })
     rt.push({
@@ -241,8 +241,8 @@ export function parseMetaCRUDFunctionFrom(collection: ODataCollection): MetaFunc
     //     { name: "id", type: "string" },
     //     { name: "entity", type: entityName, description: "part of entity for updating" }
     //   ],
-    //   return: `Promise<C4CODataSingleResult<${entityName}>>`,
-    //   body: `return C4CODataSingleResult.fromRequestResult(odata.request("${collection.$.Name}", id, undefined, "PUT", entity), ${entityName})`,
+    //   return: `Promise<LightODataSingleResult<${entityName}>>`,
+    //   body: `return LightODataSingleResult.fromRequestResult(odata.request("${collection.$.Name}", id, undefined, "PUT", entity), ${entityName})`,
     //   exported: true
     // })
   }

@@ -1,7 +1,7 @@
 {
-  "name": "c4codata",
-  "version": "1.4.4",
-  "unpkg": "./lib/c4codata-umd.js",
+  "name": "light-odata",
+  "version": "2.0.0",
+  "unpkg": "./lib/light-odata-umd.js",
   "engines": {
     "node": ">10"
   },
@@ -15,15 +15,15 @@
     "@types/node": "^8.0.25",
     "@types/url-parse": "^1.1.0",
     "@types/uuid": "^3.4.5",
-    "jest": "^24",
-    "jest-cli": "^24",
+    "jest": "^25",
+    "jest-cli": "^25",
     "pre-commit": "^1.2.2",
     "rimraf": "^3",
     "standard-version": "^7",
     "terser-webpack-plugin": "^2.3.1",
-    "ts-jest": "^24",
+    "ts-jest": "^25",
     "ts-loader": "^6",
-    "tslint": "^5.20.0",
+    "tslint": "^5",
     "tslint-loader": "^3.5.4",
     "typescript": "3",
     "webpack": "^4",
@@ -60,6 +60,10 @@
     "collectCoverageFrom": [
       "src/**/*.ts"
     ],
+    "transformIgnorePatterns": [
+      "/tests/resources",
+      "/node_modules/"
+    ],
     "coveragePathIgnorePatterns": [
       "/tests/",
       "/node_modules/",
@@ -74,7 +78,7 @@
       "json"
     ]
   },
-  "description": "c4c odata javascript library",
+  "description": "lightweight odata javascript library",
   "homepage": "https://github.com/Soontao/c4codata",
   "author": {
     "name": "Theo Sun",

@@ -19,7 +19,7 @@ Lightweight OData Client for OData (v2) Service.
 ## Installation
 
 ```bash
-npm i -S c4codata
+npm i -S light-odata
 ```
 
 Alternative, in build-tool-less environment, just add [unpkg](https://unpkg.com/c4codata) umd link to your page, and `OData` object will be available in `window`.
@@ -99,7 +99,7 @@ The third and fourth Product Entry from the collection of all products when the 
 Start with a simple query, following code start a `GET` http request, and asks the server to respond to all customers which phone number equals 030-0074321
 
 ```javascript
-import { OData } from "c4codata"
+import { OData } from "light-odata"
 
 // odata.org sample odata service
 const TestServiceURL = "https://services.odata.org/V2/Northwind/Northwind.svc/$metadata"
@@ -242,7 +242,7 @@ Use the `ODataFilter` to filter data
 
 Most `SAP` systems only support `AND` operator between different fields, and `OR` operator in a same field. (it depends on SAP Netweaver implementation)
 
-So you don't need to specify `AND/OR` operator between fields, `c4codata` will auto process it.
+So you don't need to specify `AND/OR` operator between fields, `light-odata` will auto process it.
 
 Though C4C only support AND operator in different fields, but for `gt/lt/ge/le`, you can use AND for filtering period data.
 
@@ -362,7 +362,7 @@ install it global firstly
 npm i -g c4codata # type defination generator
 ```
 
-c4codata includes a type defination generator to help developer invoke odata api.
+light-odata includes a type defination generator to help developer invoke odata api.
 
 ```bash
 
@@ -373,7 +373,7 @@ Options:
   -m, --uri STRING       metadata uri
   -u, --user STRING      c4c username
   -p, --pass STRING      c4c password
-  -o, --out [STRING]     out file (Default is c4codata.js)
+  -o, --out [STRING]     out file (Default is light-odata.js)
   -d, --debug BOOLEAN    debug mode
   -s, --separate STRING  out with separate files in directory
   -r, --odatajs BOOLEAN  seperate generator without odata.js
@@ -386,10 +386,10 @@ sample command (generate single js file)
 use following command to generate declaration
 
 ```bash
-odata-js-generator -m "https://host/sap/c4c/odata/v1/c4codata/$metadata?sap-label=true" -u c4c-username -p c4c-password 
+odata-js-generator -m "https://host/sap/c4c/odata/v1/light-odata/$metadata?sap-label=true" -u c4c-username -p c4c-password 
 ```
 
-then, you could use the c4codata.js to operation OData
+then, you could use the light-odata.js to operation OData
 
 some SAP OData implementations have some different param in url, like `sap-label`, it will response the label value in the UI interface.
 

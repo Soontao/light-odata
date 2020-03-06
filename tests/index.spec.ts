@@ -1,7 +1,7 @@
 import "isomorphic-fetch"
 import 'jest';
 import { OData } from "../src/request";
-import { ODataParam, ODataFilter, C4CODataResult, C4CEntity, C4CODataSingleResult } from '../src';
+import { ODataParam, ODataFilter, LightODataResult, C4CEntity, LightODataSingleResult } from '../src';
 
 const TestServiceURL = "https://services.odata.org/V2/Northwind/Northwind.svc/$metadata"
 const odata = new OData(TestServiceURL)
@@ -24,7 +24,7 @@ describe('Read Test', () => {
   })
 
   test.concurrent('Read All', async () => {
-    const result = await C4CODataResult.fromRequestResult(odata.newRequest({
+    const result = await LightODataResult.fromRequestResult(odata.newRequest({
       collection: "Customers",
       params: OData.newParam().inlinecount(true)
     }), C4CEntity)
@@ -33,21 +33,21 @@ describe('Read Test', () => {
   })
 
   test.concurrent('Read By ID', async () => {
-    const r = await C4CODataSingleResult.fromRequestResult(
+    const r = await LightODataSingleResult.fromRequestResult(
       odata.request("Customers", "ALFKI"), C4CEntity
     )
     expect(r.d.results["CustomerID"]).toEqual("ALFKI")
   })
 
   test.concurrent('Read By Compound ID (string)', async () => {
-    const r = await C4CODataSingleResult.fromRequestResult(
+    const r = await LightODataSingleResult.fromRequestResult(
       odata.request("Customers", { CustomerID: "ALFKI" }), C4CEntity
     )
     expect(r.d.results["CustomerID"]).toEqual("ALFKI")
   })
 
   test.concurrent('Read By Compound Keys', async () => {
-    const r = await C4CODataSingleResult.fromRequestResult(
+    const r = await LightODataSingleResult.fromRequestResult(
       odata.request("Alphabetical_list_of_products", {
         CategoryName: "Beverages",
         Discontinued: false,
@@ -84,13 +84,13 @@ describe('Read Test', () => {
 
   test('should parse json', () => {
     const obj = require("../tests/resources/responses/ServiceRequest")
-    const result = C4CODataResult.fromPlainObject(obj, C4CEntity)
+    const result = LightODataResult.fromPlainObject(obj, C4CEntity)
     expect(result.d.results.pop()).toBeInstanceOf(C4CEntity)
   });
 
   test('should parse json and throw error', () => {
     expect(() => {
-      C4CODataResult.fromPlainObject(require("../tests/resources/responses/error"), C4CEntity)
+      LightODataResult.fromPlainObject(require("../tests/resources/responses/error"), C4CEntity)
     }).toThrow("Ungültigen Token an Position 24 gefunden")
   });
 

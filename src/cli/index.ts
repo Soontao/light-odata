@@ -27,7 +27,7 @@ const options: CliOption = parse({
   uri: ['m', 'metadata uri', "string"],
   user: ['u', 'c4c username', "string"],
   pass: ['p', 'c4c password', "string"],
-  out: ['o', 'out file', 'string', "c4codata.js"],
+  out: ['o', 'out file', 'string', "light-odata.js"],
   debug: ['d', 'debug mode', 'boolean', false],
   separate: ['s', 'out with separate files in directory', "string"],
   odatajs: ['r', 'seperate generator without odata.js', 'boolean', false]
