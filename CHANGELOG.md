@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/Soontao/c4codata/compare/v1.4.4...v2.1.0) (2020-03-06)
+
+
+### Features
+
+* rename module ([8f70d5e](https://github.com/Soontao/c4codata/commit/8f70d5e2dd0b159366f0f7ce842982f1fd6dcffd))
+
 ### [1.4.4](https://github.com/Soontao/c4codata/compare/v1.4.3...v1.4.4) (2020-01-06)
 
 
