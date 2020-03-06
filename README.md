@@ -6,13 +6,10 @@
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Soontao_c4codata&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=Soontao_c4codata)
 [![unpkg](https://img.shields.io/github/license/mashape/apistatus.svg)](https://unpkg.com/c4codata?meta)
 
-[![npm version](https://badge.fury.io/js/c4codata.svg)](https://badge.fury.io/js/c4codata)
-![Download](https://badgen.net/npm/dy/c4codata)
-![Size](https://badgen.net/packagephobia/publish/c4codata)
-
+[![npm version](https://badge.fury.io/js/light-odata.svg)](https://badge.fury.io/js/light-odata)
+![Size](https://badgen.net/packagephobia/publish/light-odata)
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=Soontao_c4codata&metric=sqale_index)](https://sonarcloud.io/dashboard?id=Soontao_c4codata)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Soontao_c4codata&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=Soontao_c4codata)
-[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Soontao_c4codata&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=Soontao_c4codata)
 
 Lightweight OData Client for OData (v2) Service.
 
@@ -22,10 +19,10 @@ Lightweight OData Client for OData (v2) Service.
 npm i -S light-odata
 ```
 
-Alternative, in build-tool-less environment, just add [unpkg](https://unpkg.com/c4codata) umd link to your page, and `OData` object will be available in `window`.
+Alternative, in build-tool-less environment, just add [unpkg](https://unpkg.com/light-odata) umd link to your page, and `OData` object will be available in `window`.
 
 ```html
-<script src="https://unpkg.com/c4codata"></script>
+<script src="https://unpkg.com/light-odata"></script>
 ```
 
 <!-- ToC start -->
