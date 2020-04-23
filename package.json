@@ -42,7 +42,7 @@
     "prepublishOnly": "npm run build && npm test"
   },
   "dependencies": {
-    "buffer": "^5.4.3",
+    "buffer": "^5.5.0",
     "cli": "^1.0.1",
     "core-js": "^3.6.4",
     "http-string-parser": "^0.0.6",
