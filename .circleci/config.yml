@@ -44,11 +44,6 @@ jobs:
           name: Converge
           command: npm run coverage
 
-      - run:
-          name: Sonar Scanner
-          command: sonar-scanner -Dsonar.projectKey=Soontao_c4codata -Dsonar.organization=soontao-github -Dsonar.sources=src -Dsonar.host.url=https://sonarcloud.io  -Dsonar.login=228c4dd05770b34ad56d9f304bc6d613c0ac66b8
-
-
   deploy:
     working_directory: ~/repo
     docker:
