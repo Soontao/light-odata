@@ -347,49 +347,6 @@ result.map(r => expect(r.status).toEqual(201)) // Created
 
 ```
 
-## Generator usage
-
-This library provide a JS generator, provide ES6 static function declaration, but I dont want to write too much about this.
-
-If you really need that, just contact me.
-
-install it global firstly
-
-```bash
-npm i -g c4codata # type defination generator
-```
-
-light-odata includes a type defination generator to help developer invoke odata api.
-
-```bash
-
-Usage:
-  odata-js-generator [OPTIONS] [ARGS]
-
-Options:
-  -m, --uri STRING       metadata uri
-  -u, --user STRING      c4c username
-  -p, --pass STRING      c4c password
-  -o, --out [STRING]     out file (Default is light-odata.js)
-  -d, --debug BOOLEAN    debug mode
-  -s, --separate STRING  out with separate files in directory
-  -r, --odatajs BOOLEAN  seperate generator without odata.js
-  -h, --help             Display help and usage details
-
-```
-
-sample command (generate single js file)
-
-use following command to generate declaration
-
-```bash
-odata-js-generator -m "https://host/sap/c4c/odata/v1/light-odata/$metadata?sap-label=true" -u c4c-username -p c4c-password 
-```
-
-then, you could use the light-odata.js to operation OData
-
-some SAP OData implementations have some different param in url, like `sap-label`, it will response the label value in the UI interface.
-
 ## Others
 
 Use [markdown-toc](https://github.com/sebdah/markdown-toc) to generate table of contents, with following commands: 
