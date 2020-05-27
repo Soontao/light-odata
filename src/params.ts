@@ -184,8 +184,8 @@ export class ODataQueryParam {
     if (this.$orderby) { rt.append("$orderby", this.$orderby); }
     if (this.$search) { rt.append("$search", this.$search); }
     if (this.$select && this.$select.length > 0) { rt.append("$select", join(this.$select, ",")); }
-    if (this.$skip) { rt.append("$skip", (this.$skip || "").toString()); }
-    if (this.$top && this.$top > 0) { rt.append("$top", (this.$top || "").toString()); }
+    if (this.$skip) { rt.append("$skip", this.$skip.toString()); }
+    if (this.$top && this.$top > 0) { rt.append("$top", this.$top.toString()); }
     if (this.$expand && this.$expand.length > 0) { rt.append("$expand", this.$expand.join(",")); }
     if (this.$inlinecount) { rt.append("$inlinecount", this.$inlinecount) }
     return rt.toString();
