@@ -23,7 +23,7 @@
     "terser-webpack-plugin": "^2.3.5",
     "ts-jest": "^25",
     "ts-loader": "^6",
-    "tslint": "^5",
+    "tslint": "^6",
     "tslint-loader": "^3.5.4",
     "typescript": "^3",
     "webpack": "^4",
@@ -42,7 +42,7 @@
     "prepublishOnly": "npm run build && npm test"
   },
   "dependencies": {
-    "buffer": "^5.4.3",
+    "buffer": "^5.5.0",
     "cli": "^1.0.1",
     "core-js": "^3.6.4",
     "http-string-parser": "^0.0.6",
