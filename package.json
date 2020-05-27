@@ -17,7 +17,7 @@
     "pre-commit": "^1.2.2",
     "rimraf": "^3",
     "standard-version": "^7",
-    "terser-webpack-plugin": "^2.3.5",
+    "terser-webpack-plugin": "^3.0.2",
     "ts-jest": "^25",
     "ts-loader": "^6",
     "tslint": "^6",
