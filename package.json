@@ -1,6 +1,6 @@
 {
   "name": "light-odata",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "unpkg": "./lib/light-odata-umd.js",
   "engines": {
     "node": ">10"

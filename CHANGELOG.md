@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/Soontao/c4codata/compare/v2.1.0...v2.2.0) (2020-05-29)
+
+
+### Features
+
+* improve code quality ([e02d671](https://github.com/Soontao/c4codata/commit/e02d671ed2e053ce65a3a10b0b4cafd9cc48dd5e))
+* reduce release size & remove lodash ([f02d9e2](https://github.com/Soontao/c4codata/commit/f02d9e27c77b74a16f94aa86a218b2d8f33370ad))
+* remove generator ([4a902e9](https://github.com/Soontao/c4codata/commit/4a902e95df73366705f2a36bad86d85ed52611b9))
+
+
+### Bug Fixes
+
+* upgrade buffer from 5.4.3 to 5.5.0 ([968e588](https://github.com/Soontao/c4codata/commit/968e58872bcf4bf1e80db56d960dd99fcc6ab347))
+* upgrade uuid from 3.3.3 to 3.4.0 ([ec00889](https://github.com/Soontao/c4codata/commit/ec00889f47062714c8541c3e17cadbca53743a91))
+
 ## [2.1.0](https://github.com/Soontao/c4codata/compare/v1.4.4...v2.1.0) (2020-03-06)
 
 
