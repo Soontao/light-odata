@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:10
 
     working_directory: ~/repo
 
@@ -18,36 +18,10 @@ jobs:
       # upload coverage
       - run: bash <(curl -s https://codecov.io/bash)
 
-  sonar:
-    docker:
-      - image: theosun/circleci-sonar-scanner-node
-    steps:
-      - checkout
-
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
-      - run:
-          name: Install Dependencies
-          command: npm install
-
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-
-      - run:
-          name: Converge
-          command: npm run coverage
-
   deploy:
     working_directory: ~/repo
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:10
     steps:
       - checkout
       - run: npm install
@@ -74,10 +48,4 @@ workflows:
             tags:
               only: /.*/
             branches:
-              only: /.*/
-      - sonar:
-          filters:
-            branches:
-              only: /.*/
-            tags:
               only: /.*/
