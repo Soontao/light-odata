@@ -1,12 +1,13 @@
 
-# OData Javascript Library
+# Light-OData
 
 [![CircleCI](https://circleci.com/gh/Soontao/c4codata.svg?style=shield)](https://circleci.com/gh/Soontao/c4codata)
 [![codecov](https://codecov.io/gh/Soontao/c4codata/branch/master/graph/badge.svg)](https://codecov.io/gh/Soontao/c4codata)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Soontao_c4codata&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=Soontao_c4codata)
 [![unpkg](https://img.shields.io/github/license/mashape/apistatus.svg)](https://unpkg.com/c4codata?meta)
-
 [![npm version](https://badge.fury.io/js/light-odata.svg)](https://badge.fury.io/js/light-odata)
+[![Netlify](https://img.shields.io/netlify/875f9eb3-319e-4dd7-b1eb-b3e5d15656ee?label=doc)](https://tender-dubinsky-6b6899.netlify.app/)
+
 ![Size](https://badgen.net/packagephobia/publish/light-odata)
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=Soontao_c4codata&metric=sqale_index)](https://sonarcloud.io/dashboard?id=Soontao_c4codata)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Soontao_c4codata&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=Soontao_c4codata)
