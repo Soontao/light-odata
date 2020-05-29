@@ -1,6 +1,11 @@
 import { HTTPMethod, Credential, PlainODataResponse, } from "./types";
 
-import { split, map, slice, join, startsWith, attempt, clone, isEmpty } from "lodash";
+import split from "@newdash/newdash/lib/split";
+import join from "@newdash/newdash/lib/join";
+import slice from "@newdash/newdash/lib/slice";
+import startsWith from "@newdash/newdash/lib/startsWith";
+import attempt from "@newdash/newdash/lib/attempt";
+import isEmpty from "@newdash/newdash/lib/isEmpty";
 
 import { GetAuthorizationPair } from "./util";
 import { BatchRequest, formatBatchRequest, parseMultiPartContent, ParsedResponse } from "./batch";
@@ -351,13 +356,13 @@ export class OData {
 
   /**
    * format id part of url
-   * 
-   * @param id 
+   *
+   * @param id
    */
   private formatIdString(id: any): string {
     var rt = ""
     switch (typeof id) {
-      // for compound key like 
+      // for compound key like
       // Alphabetical_list_of_products(CategoryName='Beverages',Discontinued=false,ProductID=1,ProductName='Chai')
       case "object":
         const compoundId = Object.entries(id).map(kv => {
@@ -410,7 +415,7 @@ export class OData {
     };
 
     // format promised requests
-    const r = await Promise.all(map(requests, async aBatchR => await aBatchR));
+    const r = await Promise.all(requests.map(async aBatchR => await aBatchR));
     const requestBoundaryString = v4();
     req.headers["Content-Type"] = `multipart/mixed; boundary=${requestBoundaryString}`;
     req.body = formatBatchRequest(r, requestBoundaryString);
@@ -419,7 +424,7 @@ export class OData {
 
   /**
    * execute batch requests and get response
-   * 
+   *
    * @param requests batch request
    */
   public async execBatchRequests(requests: Array<Promise<BatchRequest>>): Promise<Array<ParsedResponse<PlainODataResponse>>> {
@@ -439,7 +444,7 @@ export class OData {
       withContentLength = true;
     }
     var url = collection;
-    var headers = clone(this.commonHeader);
+    var headers = Object.assign({}, this.commonHeader); // clone
     var rt: BatchRequest = { url, init: { method, headers, body: "" } };
 
     if (id) {

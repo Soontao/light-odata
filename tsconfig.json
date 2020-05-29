@@ -21,8 +21,6 @@
     "removeComments": false
   },
   "files": [
-    "src/index.ts",
-    "src/cli/index.ts",
-    "src/generator/index.ts"
+    "src/index.ts"
   ]
 }

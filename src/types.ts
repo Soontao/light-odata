@@ -1,5 +1,6 @@
 
-import { isObject, assign, isArray } from "lodash";
+import isObject from "@newdash/newdash/lib/isObject";
+import isArray from "@newdash/newdash/lib/isArray";
 
 export type HTTPMethod = "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "PATCH";
 
@@ -107,7 +108,7 @@ export class C4CEntity {
    * @param o
    */
   static fromPlainObject = function <T>(o: any, t: { new(): T; }): T {
-    return assign(new t(), o);
+    return Object.assign(new t(), o);
   }
 
   static fromRequestResult = async function <T>(o: Promise<any>, t: { new(): T; }): Promise<T> {

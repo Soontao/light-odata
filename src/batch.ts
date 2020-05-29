@@ -1,4 +1,11 @@
-import { split, slice, map, join, flatten, concat, startsWith } from "lodash";
+
+import split from "@newdash/newdash/lib/split";
+import slice from "@newdash/newdash/lib/slice";
+import join from "@newdash/newdash/lib/join";
+import flatten from "@newdash/newdash/lib/flatten";
+import concat from "@newdash/newdash/lib/concat";
+import startsWith from "@newdash/newdash/lib/startsWith";
+
 
 import { parseResponse } from "http-string-parser";
 import { v4 } from "uuid";
@@ -31,7 +38,7 @@ export const formatHttpRequestString = (u: string, r: any) => {
   return join(
     [
       `${r.method || "GET"} ${u} HTTP/1.1`,
-      `${join(map(r.headers, (v, k) => `${k}: ${v}`), HTTP_EOL)}`,
+      `${join(Object.entries(r.headers).map(([k, v]) => `${k}: ${v}`), HTTP_EOL)}`,
       `${r.body ? HTTP_EOL + r.body : ""}`,
     ], HTTP_EOL
   )
@@ -40,14 +47,14 @@ export const formatHttpRequestString = (u: string, r: any) => {
 
 /**
  * format batch request string body
- * 
- * @param requests 
+ *
+ * @param requests
  * @param boundary a given boundary id
  */
 export const formatBatchRequest = (requests: BatchRequest[], boundary: string) => {
   return join(
     concat(
-      map(requests, r => {
+      requests.map(r => {
         if (r.init.method === "GET" || !r.init.method) {
           return join(
             [
@@ -80,7 +87,7 @@ export const formatBatchRequest = (requests: BatchRequest[], boundary: string) =
         }
       }
       ),
-      `--${boundary}--`
+      `--${boundary}--` as any
     ),
     HTTP_EOL
   )
@@ -112,7 +119,7 @@ export const parseMultiPartContent = async (multipartBody: string, boundaryId: s
     const parts = split(multipartBody, `--${boundaryId}`)
     // remote head and tail parts
     const meaningfulParts = slice(parts, 1, parts.length - 1)
-    return flatten(await Promise.all(map(meaningfulParts, async p => {
+    return flatten(await Promise.all(meaningfulParts.map(async p => {
       var response = await parseResponse2(p)
       var contentType = response.headers["Content-Type"]
       // recursive parse changeset response

@@ -1,6 +1,8 @@
 import { ODataFilter } from "./filter";
 
-import { isString, map, isArray, join, concat } from "lodash";
+import concat from "@newdash/newdash/lib/concat";
+import join from "@newdash/newdash/lib/join";
+import isArray from "@newdash/newdash/lib/isArray";
 
 import URLSearchParams from "core-js/features/url-search-params";
 
@@ -98,7 +100,7 @@ export class ODataQueryParam {
    * @param selects
    */
   select(selects: string | string[]) {
-    this.$select = concat(this.$select, selects)
+    this.$select = concat(this.$select, selects as any)
     return this
   }
 
@@ -125,8 +127,8 @@ export class ODataQueryParam {
    *
    * @param fields
    */
-  orderbyMulti(fields: ODataParamOrderField[]) {
-    this.$orderby = join(map(fields, f => `${f.field} ${f.order || "desc"}`), ",")
+  orderbyMulti(fields: ODataParamOrderField[] = []) {
+    this.$orderby = join(fields.map(f => `${f.field} ${f.order || "desc"}`), ",")
     return this;
   }
 
@@ -164,14 +166,13 @@ export class ODataQueryParam {
    */
   expand(fields: string | string[], replace = false) {
     if (replace) {
-      if (isString(fields)) {
+      if (typeof fields == 'string') {
         this.$expand = [fields]
-      }
-      if (isArray(fields)) {
+      } else if (isArray(fields)) {
         this.$expand = fields;
       }
     } else {
-      this.$expand = concat(this.$expand, fields)
+      this.$expand = concat(this.$expand, fields as any)
     }
     return this
   }

@@ -1,5 +1,5 @@
-
-import { forEach, map, isEmpty, join, filter, merge } from "lodash";
+import join from "@newdash/newdash/lib/join";
+import isEmpty from "@newdash/newdash/lib/isEmpty";
 
 export enum ExprOperator {
   eq = "eq",
@@ -137,9 +137,9 @@ export class ODataFieldExpr {
    *
    * @param values
    */
-  in(values: string[]) {
+  in(values: string[] = []) {
     if (!isEmpty(values)) {
-      forEach(values, (value) => {
+      values.forEach((value) => {
         this.eqString(value)
       });
     }
@@ -237,9 +237,9 @@ export class ODataFilter {
    * @param name
    * @param values
    */
-  fieldValueMatchArray(name: string, values: string[]) {
+  fieldValueMatchArray(name: string, values: string[] = []) {
     if (values) {
-      forEach(values, (value) => {
+      values.forEach((value) => {
         this.field(name).eqString(value)
       });
     }
@@ -331,7 +331,7 @@ export class ODataFilter {
    * @param filter
    */
   group(filter: ODataFilter) {
-    this._fieldExprMappings = merge(this._fieldExprMappings, filter.getExprMapping())
+    this._fieldExprMappings = Object.assign(this._fieldExprMappings, filter.getExprMapping())
     return this;
   }
 
@@ -342,14 +342,14 @@ export class ODataFilter {
   _buildFieldExprString(field: string) {
     const exprs = this.getExprMapping()[field];
     if (!isEmpty(exprs)) {
-      if (isEmpty(filter(exprs, { op: ExprOperator.eq }))) {
+      if (isEmpty(exprs.filter(expr => expr.op == ExprOperator.eq))) {
         return `(${join(
-          map(exprs, ({ op, value }) => `${field} ${op} ${value}`),
+          exprs.map(({ op, value }) => `${field} ${op} ${value}`),
           " and "
         )})`
       } else {
         return `(${join(
-          map(exprs, ({ op, value }) => `${field} ${op} ${value}`),
+          exprs.map(({ op, value }) => `${field} ${op} ${value}`),
           " or "
         )})`
       }
@@ -363,9 +363,8 @@ export class ODataFilter {
     var _rt = "";
     _rt = join(
       // join all fields exprs string
-      map(
-        this.getExprMapping(),
-        (exprs, fieldName) => {
+      Object.entries(this.getExprMapping()).map(
+        ([fieldName, exprs]) => {
           switch (exprs.length) {
             // if one field expr mapping array is empty
             case 0:
