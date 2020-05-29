@@ -13,7 +13,7 @@
     "@types/url-parse": "^1.1.0",
     "@types/uuid": "^8.0.0",
     "jest": "^25",
-    "jest-cli": "^25",
+    "jest-cli": "^26",
     "pre-commit": "^1.2.2",
     "rimraf": "^3",
     "standard-version": "^7",
