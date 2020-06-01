@@ -45,7 +45,7 @@
     "http-string-parser": "^0.0.6",
     "isomorphic-fetch": "^2.2.1",
     "url-parse": "^1.4.7",
-    "uuid": "^3.4.0",
+    "uuid": "^8.1.0",
     "xml2js": "^0.4.23"
   },
   "jest": {
