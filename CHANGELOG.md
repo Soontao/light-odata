@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.3.0](https://github.com/Soontao/c4codata/compare/v2.2.0...v2.3.0) (2020-06-01)
+
+
+### Features
+
+* reduce release package size ([3cd8d8f](https://github.com/Soontao/c4codata/commit/3cd8d8f3d2b1e5e24f011d8d90ab138b2b2097fe))
+
+
+### Bug Fixes
+
+* ci ([69da1d1](https://github.com/Soontao/c4codata/commit/69da1d1e4134faddb20131e7d1ad099322143530))
+
 ## [2.2.0](https://github.com/Soontao/c4codata/compare/v2.1.0...v2.2.0) (2020-05-29)
 
 
