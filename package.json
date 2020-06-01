@@ -16,7 +16,7 @@
     "jest-cli": "^25",
     "pre-commit": "^1.2.2",
     "rimraf": "^3",
-    "standard-version": "^7",
+    "standard-version": "^8",
     "terser-webpack-plugin": "^3.0.2",
     "ts-jest": "^25",
     "ts-loader": "^7",
