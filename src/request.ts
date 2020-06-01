@@ -1,19 +1,14 @@
-import { HTTPMethod, Credential, PlainODataResponse, } from "./types";
-
-import split from "@newdash/newdash/lib/split";
+import attempt from "@newdash/newdash/lib/attempt";
+import isEmpty from "@newdash/newdash/lib/isEmpty";
 import join from "@newdash/newdash/lib/join";
 import slice from "@newdash/newdash/lib/slice";
 import startsWith from "@newdash/newdash/lib/startsWith";
-import attempt from "@newdash/newdash/lib/attempt";
-import isEmpty from "@newdash/newdash/lib/isEmpty";
-
-import { GetAuthorizationPair } from "./util";
-import { BatchRequest, formatBatchRequest, parseMultiPartContent, ParsedResponse } from "./batch";
-
+import { v4 } from 'uuid';
+import { BatchRequest, formatBatchRequest, ParsedResponse, parseMultiPartContent } from "./batch";
 import { ODataFilter } from "./filter";
 import { ODataParam, ODataQueryParam } from "./params";
-
-const v4 = require("uuid/v4")
+import { Credential, HTTPMethod, PlainODataResponse } from "./types";
+import { GetAuthorizationPair } from "./util";
 
 export type AdvancedODataClientProxy = (url: string, init: RequestInit) => Promise<{
   /**
@@ -207,7 +202,7 @@ export class OData {
       this.metadataUri = metadataUri;
       // e.g https://c4c-system/sap/c4c/odata/v1/c4codata/
       this.odataEnd =
-        join(slice(split(this.metadataUri, "/"), 0, -1), "/") + "/";
+        join(slice(this.metadataUri.split("/"), 0, -1), "/") + "/";
       if (credential) {
         this.credential = credential;
       }

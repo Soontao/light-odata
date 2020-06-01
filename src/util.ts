@@ -1,4 +1,4 @@
-import { Buffer } from "buffer";
+import { encode } from "./base64";
 
 /**
  * ConvertDateFromODataTime
@@ -19,5 +19,5 @@ export function FormatODataDateTimedate(date: Date = new Date()) {
 }
 
 export function GetAuthorizationPair(user: string, password: string) {
-  return { Authorization: "Basic " + Buffer.from(`${user}:${password}`).toString("base64") };
+  return { Authorization: "Basic " + encode(`${user}:${password}`) };
 }

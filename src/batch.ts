@@ -1,5 +1,3 @@
-
-import split from "@newdash/newdash/lib/split";
 import slice from "@newdash/newdash/lib/slice";
 import join from "@newdash/newdash/lib/join";
 import flatten from "@newdash/newdash/lib/flatten";
@@ -116,7 +114,7 @@ export const parseResponse2 = async (httpResponseString: string): Promise<Parsed
 export const parseMultiPartContent = async (multipartBody: string, boundaryId: string): Promise<ParsedResponse<any>[]> => {
   if (multipartBody && boundaryId) {
     // split
-    const parts = split(multipartBody, `--${boundaryId}`)
+    const parts = multipartBody.split(`--${boundaryId}`)
     // remote head and tail parts
     const meaningfulParts = slice(parts, 1, parts.length - 1)
     return flatten(await Promise.all(meaningfulParts.map(async p => {
@@ -124,7 +122,7 @@ export const parseMultiPartContent = async (multipartBody: string, boundaryId: s
       var contentType = response.headers["Content-Type"]
       // recursive parse changeset response
       if (startsWith(contentType, "multipart/mixed")) {
-        const innerBoundaryString = split(contentType, "=").pop();
+        const innerBoundaryString = contentType.split("=").pop();
         return parseMultiPartContent(await response.text(), innerBoundaryString);
       } else if (contentType === "application/http") {
         return parseResponse2(await response.text())
