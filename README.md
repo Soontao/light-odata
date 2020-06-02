@@ -1,7 +1,7 @@
 # Light-OData
 
 [![CircleCI](https://img.shields.io/circleci/build/github/Soontao/light-odata?label=circleci)](https://circleci.com/gh/Soontao/c4codata)
-[![codecov](https://codecov.io/gh/Soontao/c4codata/branch/master/graph/badge.svg)](https://codecov.io/gh/Soontao/c4codata)
+[![codecov](https://codecov.io/gh/Soontao/light-odata/branch/master/graph/badge.svg)](https://codecov.io/gh/Soontao/light-odata)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Soontao_c4codata&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=Soontao_c4codata)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://unpkg.com/c4codata?meta)
 [![](https://data.jsdelivr.com/v1/package/npm/light-odata/badge)](https://www.jsdelivr.com/package/npm/light-odata)
