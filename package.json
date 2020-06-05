@@ -46,6 +46,7 @@
     "uuid": "^8"
   },
   "jest": {
+    "testTimeout": 30000,
     "transform": {
       ".(ts|tsx)": "ts-jest"
     },

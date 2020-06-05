@@ -4,19 +4,55 @@ import isArray from "@newdash/newdash-node/isArray";
 
 export type HTTPMethod = "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "PATCH";
 
-export interface PlainODataResponse {
-  d?: {
-    __count?: string; /** $inlinecount values */
-    results: any | Array<any>; /** result list/object */
-    [key: string]: any;
-  };
+export interface PlainODataResponse<E = any> {
   error?: { /** if error occured, node error will have value */
     code: string;
     message: {
       lang: string,
       value: string /** server error message */
-    }
+    } & string
   }
+
+  /**
+   * context string
+   *
+   * @version 4.0.0
+   */
+  '@odata.context'?: string;
+
+}
+
+export type PlainODataSingleResponse<E = any> = {
+  /**
+   * @version 2.0.0
+   */
+  d?: {
+    __count?: string; /** $inlinecount values */
+    results: E;
+    [key: string]: any;
+  } & E;
+} & E & PlainODataResponse<E>
+
+
+export interface PlainODataMultiResponse<E = any> extends PlainODataResponse<E> {
+
+  /**
+   * @version 2.0.0
+   */
+  d?: {
+    __count?: string; /** $inlinecount values */
+    results: Array<E>; /** result list/object */
+    [key: string]: any;
+  };
+
+
+  /**
+   * values result
+   *
+   * @version 4.0.0
+   */
+  value?: Array<E>;
+
 }
 
 export interface Credential {
@@ -28,18 +64,18 @@ export class LightODataSingleResult<T> {
 
   d: { results: T } = { results: undefined }
 
-  static fromPlainObject = function <E>(object: PlainODataResponse, type: { new(): E }) {
+  static fromPlainObject = function <E>(object: PlainODataMultiResponse, type: { new(): E }) {
     const rt = new LightODataSingleResult<E>()
     if (object.error) {
       throw new Error(object.error.message.value)
     }
     // c4c odata use d.results as response
     if (object.d && isObject(object.d.results)) {
-      rt.d.results = C4CEntity.fromPlainObject(object.d.results, type)
+      rt.d.results = LightODataEntity.fromPlainObject(object.d.results, type)
     }
     // standard odata use d as response entity
     else if (isObject(object.d)) {
-      rt.d.results = C4CEntity.fromPlainObject(object.d, type)
+      rt.d.results = LightODataEntity.fromPlainObject(object.d, type)
     }
     // throw erro fi
     else {
@@ -48,7 +84,7 @@ export class LightODataSingleResult<T> {
     return rt;
   }
 
-  static fromRequestResult = async function <T>(p: Promise<PlainODataResponse>, t: { new(): T }) {
+  static fromRequestResult = async function <T>(p: Promise<PlainODataMultiResponse>, t: { new(): T }) {
     return LightODataSingleResult.fromPlainObject(await p, t)
   }
 
@@ -60,7 +96,7 @@ export class LightODataResult<T> {
     results: []
   }
 
-  static fromPlainObject = function <E>(object: PlainODataResponse, type: { new(): E }) {
+  static fromPlainObject = function <E>(object: PlainODataMultiResponse, type: { new(): E }) {
     const rt = new LightODataResult<E>()
     if (object.error) {
       throw new Error(object.error.message.value)
@@ -72,7 +108,7 @@ export class LightODataResult<T> {
       }
       if (isArray(object.d.results)) {
         rt.d.results = (object.d.results as Array<any>).map(
-          e => C4CEntity.fromPlainObject(e, type)
+          e => LightODataEntity.fromPlainObject(e, type)
         )
       }
     } else {
@@ -83,13 +119,13 @@ export class LightODataResult<T> {
   }
 
 
-  static fromRequestResult = async function <T>(p: Promise<PlainODataResponse>, t: { new(): T }): Promise<LightODataResult<T>> {
+  static fromRequestResult = async function <T>(p: Promise<PlainODataMultiResponse>, t: { new(): T }): Promise<LightODataResult<T>> {
     return LightODataResult.fromPlainObject(await p, t)
   }
 
 }
 
-export class C4CEntity {
+export class LightODataEntity {
 
   __metadata: {
     uri: string,
@@ -112,7 +148,7 @@ export class C4CEntity {
   }
 
   static fromRequestResult = async function <T>(o: Promise<any>, t: { new(): T; }): Promise<T> {
-    return C4CEntity.fromPlainObject(await o, t)
+    return LightODataEntity.fromPlainObject(await o, t)
   }
 
 }

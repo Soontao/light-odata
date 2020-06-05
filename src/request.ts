@@ -6,8 +6,9 @@ import { v4 } from 'uuid';
 import { BatchRequest, formatBatchRequest, ParsedResponse, parseMultiPartContent } from "./batch";
 import { ODataFilter } from "./filter";
 import { ODataParam, ODataQueryParam } from "./params";
-import { Credential, HTTPMethod, PlainODataResponse } from "./types";
+import { Credential, HTTPMethod, PlainODataMultiResponse, PlainODataSingleResponse } from "./types";
 import { GetAuthorizationPair } from "./util";
+import { ODataVersion } from "./types_v4";
 
 export type AdvancedODataClientProxy = (url: string, init: RequestInit) => Promise<{
   /**
@@ -41,6 +42,11 @@ export interface ODataNewOptions {
    * for SAP OData
    */
   forSAP?: boolean;
+
+  /**
+   * odata version, default v2
+   */
+  version?: ODataVersion;
 }
 
 export interface BatchRequestOptions<T> {
@@ -67,10 +73,8 @@ export interface BatchRequestOptions<T> {
   withContentLength?: boolean;
 }
 
-export interface ODataRequest<T> {
+export interface ODataRequest<T = any> {
   collection: string, /** collection name */
-  id?: any, /** object key in READ/UPDATE/DELETE */
-  params?: ODataQueryParam, /** params in QUERY */
   /**
    * GET for QUERY/READ; for QUERY, you can use params to control response data
    * PATCH for UPDATE
@@ -78,6 +82,17 @@ export interface ODataRequest<T> {
    * DELETE for delete
    */
   method?: HTTPMethod,
+}
+
+
+export interface ODataReadIDRequest<T> extends ODataRequest<T> {
+  id?: any, /** object key in READ/UPDATE/DELETE */
+}
+export interface ODataQueryRequest<T> extends ODataRequest<T> {
+  params?: ODataQueryParam, /** params in QUERY */
+}
+
+export interface ODataWriteRequest<T> extends ODataRequest<T> {
   entity?: T /** data object in CREATE/UPDATE */
 }
 
@@ -102,9 +117,9 @@ const odataDefaultFetchProxy: AdvancedODataClientProxy = async (url: string, ini
     var jsonResult = attempt(JSON.parse, content);
     if (!(jsonResult instanceof Error)) {
       content = jsonResult;
-      if (content.error) {
-        throw new Error(content.error.message.value);
-      }
+      // if (content.error) {
+      //   throw new Error(content.error.message.value);
+      // }
     }
   }
 
@@ -113,6 +128,7 @@ const odataDefaultFetchProxy: AdvancedODataClientProxy = async (url: string, ini
     response: { headers: res.headers, status: res.status }
   };
 };
+
 
 /**
  * OData Client
@@ -143,6 +159,8 @@ export class OData {
   private processCsrfToken = true;
   private forSAP = false;
 
+  private version: ODataVersion = "v2"
+
   /**
    * alternative constructor
    *
@@ -158,6 +176,7 @@ export class OData {
       options.processCsrfToken
     );
     rt.forSAP = options.forSAP || false;
+    rt.version = options.version || "v2";
     return rt;
   }
 
@@ -177,8 +196,9 @@ export class OData {
 
   /**
    * OData
+   * @private
    */
-  constructor(
+  private constructor(
     metadataUri: string,
     credential?: Credential,
     headers: any = {},
@@ -253,7 +273,7 @@ export class OData {
   /**
    * fetch CSRF Token
    */
-  public async getCsrfToken() {
+  private async getCsrfToken() {
     if (this.csrfToken) { return await this.csrfToken; }
 
     var config: RequestInit = {
@@ -289,12 +309,7 @@ export class OData {
    * @param method HTTP method
    * @param body request content
    */
-  public async requestUri(
-    uri: string,
-    queryParams?: ODataQueryParam,
-    method: HTTPMethod = "GET",
-    body?: any
-  ): Promise<PlainODataResponse> {
+  private async requestUri<T = any>(uri: string, queryParams?: ODataQueryParam, method: HTTPMethod = "GET", body?: any): Promise<PlainODataMultiResponse<T>> {
     let final_uri = uri;
     let config: RequestInit = { method, headers: await this.getHeaders() };
 
@@ -333,7 +348,7 @@ export class OData {
    * @param method request method
    * @param entity C4C Entity instance
    */
-  public async request(
+  private async request<T = any>(
     collection: string, id?: any,
     queryParams?: ODataQueryParam, method: HTTPMethod = "GET", entity?: any
   ) {
@@ -345,7 +360,7 @@ export class OData {
     if (queryParams) {
       url = `${url}?${queryParams.toString()}`;
     }
-    return this.requestUri(url, queryParams, method, entity);
+    return this.requestUri<T>(url, queryParams, method, entity);
   }
 
   /**
@@ -393,14 +408,17 @@ export class OData {
   /**
    * new odata http request
    */
-  public async newRequest<T>(options: ODataRequest<T>) {
+  public async newRequest<T>(options: ODataQueryRequest<T>): Promise<PlainODataMultiResponse<T>>;
+  public async newRequest<T>(options: ODataWriteRequest<T>): Promise<PlainODataSingleResponse<T>>;
+  public async newRequest<T>(options: ODataReadIDRequest<T>): Promise<PlainODataSingleResponse<T>>;
+  public async newRequest(options: any) {
     return this.request(options.collection, options.id, options.params, options.method, options.entity)
   }
 
   /**
    * format batch request parameter
    */
-  public async formatBatchRequests(requests: Array<Promise<BatchRequest>>) {
+  private async formatBatchRequests(requests: Array<Promise<BatchRequest>>) {
     const url = `${this.odataEnd}$batch`;
 
     const req: RequestInit = {
@@ -421,7 +439,7 @@ export class OData {
    *
    * @param requests batch request
    */
-  public async execBatchRequests(requests: Array<Promise<BatchRequest>>): Promise<Array<ParsedResponse<PlainODataResponse>>> {
+  public async execBatchRequests(requests: Array<Promise<BatchRequest>>): Promise<Array<ParsedResponse<PlainODataMultiResponse>>> {
     const { url, req } = await this.formatBatchRequests(requests);
     const { content, response: { headers } } = await this.fetchProxy(url, req);
     const responseBoundaryString = headers.get("Content-Type").split("=").pop();
@@ -477,4 +495,5 @@ export class OData {
 
     return rt;
   }
+
 }
