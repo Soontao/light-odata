@@ -6,95 +6,12 @@ import { v4 } from 'uuid';
 import { BatchRequest, formatBatchRequest, ParsedResponse, parseMultiPartContent } from "./batch";
 import { ODataFilter } from "./filter";
 import { ODataParam, ODataQueryParam } from "./params";
-import { Credential, HTTPMethod, PlainODataMultiResponse, PlainODataSingleResponse } from "./types";
+import { Credential, HTTPMethod, PlainODataMultiResponse, PlainODataSingleResponse, AdvancedODataClientProxy, ODataNewOptions, BatchRequestOptions, ODataReadIDRequest, ODataWriteRequest, ODataQueryRequest } from "./types";
 import { GetAuthorizationPair } from "./util";
 import { ODataVersion } from "./types_v4";
 
-export type AdvancedODataClientProxy = (url: string, init: RequestInit) => Promise<{
-  /**
-   * The Body Content
-   */
-  content: any;
-  response: {
-    headers?: Headers;
-    status: number;
-  };
-}>;
+const S_X_CSRF_TOKEN = "x-csrf-token"
 
-export interface ODataNewOptions {
-  /**
-   * metadata url
-   */
-  metadataUri: string;
-  /**
-   * basic credential pair
-   */
-  credential?: Credential;
-  /**
-   * fetch proxy of all request
-   */
-  fetchProxy?: AdvancedODataClientProxy;
-  /**
-   * auto process csrf token of c4c
-   */
-  processCsrfToken?: boolean;
-  /**
-   * for SAP OData
-   */
-  forSAP?: boolean;
-
-  /**
-   * odata version, default v2
-   */
-  version?: ODataVersion;
-}
-
-export interface BatchRequestOptions<T> {
-  /**
-   * Collection Name
-   */
-  collection: string;
-  /**
-   * OData Entity ObjectID
-   */
-  id?: any;
-  /**
-   * OData Param
-   */
-  params?: ODataQueryParam;
-  method?: HTTPMethod;
-  /**
-   * OData Entity Object
-   */
-  entity?: T;
-  /**
-   * SAP OData need Content-Length but standard reject it
-   */
-  withContentLength?: boolean;
-}
-
-export interface ODataRequest<T = any> {
-  collection: string, /** collection name */
-  /**
-   * GET for QUERY/READ; for QUERY, you can use params to control response data
-   * PATCH for UPDATE
-   * POST for CREATE
-   * DELETE for delete
-   */
-  method?: HTTPMethod,
-}
-
-
-export interface ODataReadIDRequest<T> extends ODataRequest<T> {
-  id?: any, /** object key in READ/UPDATE/DELETE */
-}
-export interface ODataQueryRequest<T> extends ODataRequest<T> {
-  params?: ODataQueryParam, /** params in QUERY */
-}
-
-export interface ODataWriteRequest<T> extends ODataRequest<T> {
-  entity?: T /** data object in CREATE/UPDATE */
-}
 
 const odataDefaultFetchProxy: AdvancedODataClientProxy = async (url: string, init: RequestInit) => {
   const res = await fetch(url, init);
@@ -245,7 +162,7 @@ export class OData {
       };
     }
     if (this.processCsrfToken) {
-      rt["x-csrf-token"] = await this.getCsrfToken();
+      rt[S_X_CSRF_TOKEN] = await this.getCsrfToken();
     }
     return rt;
   }
@@ -278,7 +195,7 @@ export class OData {
 
     var config: RequestInit = {
       method: "GET",
-      headers: { "x-csrf-token": "fetch" }
+      headers: { S_X_CSRF_TOKEN: "fetch" }
     };
 
     if (this.credential) {
@@ -290,7 +207,7 @@ export class OData {
 
     const { response: { headers } } = await this.fetchProxy(this.odataEnd, config);
     if (headers) {
-      this.csrfToken = headers.get("x-csrf-token");
+      this.csrfToken = headers.get(S_X_CSRF_TOKEN);
     } else {
       throw new Error("csrf token need the odata proxy give out headers!");
     }
@@ -328,9 +245,9 @@ export class OData {
     // one time retry if csrf token time expired
     if (this.processCsrfToken) {
       if (res.response.headers) {
-        if (res.response.headers.get("x-csrf-token") === "Required") {
+        if (res.response.headers.get(S_X_CSRF_TOKEN) === "Required") {
           this.cleanCsrfToken();
-          config.headers["x-csrf-token"] = await this.getCsrfToken();
+          config.headers[S_X_CSRF_TOKEN] = await this.getCsrfToken();
           res = await this.fetchProxy(final_uri, config);
         }
       }

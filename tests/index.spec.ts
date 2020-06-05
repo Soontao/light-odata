@@ -50,6 +50,15 @@ describe('Read Test', () => {
     expect(r.d.CustomerID).toEqual("ALFKI")
   })
 
+  test.concurrent('Read By ID (number)', async () => {
+    const odata = OData.New({ metadataUri: TestServiceURL })
+    const r = await odata.newRequest<{ Title: string }>({
+      collection: "Employees",
+      id: 1
+    })
+    expect(r.d.Title).toEqual("Sales Representative")
+  })
+
   test.concurrent('Read By ID (v4)', async () => {
     const odata_v4 = OData.New({ metadataUri: TestV4ServiceURL, version: "v4" })
     const response = await odata_v4.newRequest<People>({

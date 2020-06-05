@@ -100,6 +100,10 @@ describe("OData Filter Test", () => {
 
   })
 
+  test('ODataFilter.ne', () => {
+    expect(OData.newFilter().field("Name").ne("theo").build()).toEqual("Name ne 'theo'")
+  });
+
   test('ODataFilter.betweenDateTime', () => {
     const filter = ODataFilter.newFilter()
       .field("Name").eq("'test string1'").and()

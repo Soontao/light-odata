@@ -1,4 +1,94 @@
+import { ODataQueryParam } from "./params";
+import { ODataVersion } from "./types_v4";
+
 export type HTTPMethod = "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "PATCH";
+
+export type AdvancedODataClientProxy = (url: string, init: RequestInit) => Promise<{
+  /**
+   * The Body Content
+   */
+  content: any;
+  response: {
+    headers?: Headers;
+    status: number;
+  };
+}>;
+
+export interface ODataNewOptions {
+  /**
+   * metadata url
+   */
+  metadataUri: string;
+  /**
+   * basic credential pair
+   */
+  credential?: Credential;
+  /**
+   * fetch proxy of all request
+   */
+  fetchProxy?: AdvancedODataClientProxy;
+  /**
+   * auto process csrf token of c4c
+   */
+  processCsrfToken?: boolean;
+  /**
+   * for SAP OData
+   */
+  forSAP?: boolean;
+
+  /**
+   * odata version, default v2
+   */
+  version?: ODataVersion;
+}
+
+export interface BatchRequestOptions<T> {
+  /**
+   * Collection Name
+   */
+  collection: string;
+  /**
+   * OData Entity ObjectID
+   */
+  id?: any;
+  /**
+   * OData Param
+   */
+  params?: ODataQueryParam;
+  method?: HTTPMethod;
+  /**
+   * OData Entity Object
+   */
+  entity?: T;
+  /**
+   * SAP OData need Content-Length but standard reject it
+   */
+  withContentLength?: boolean;
+}
+
+export interface ODataRequest<T = any> {
+  collection: string, /** collection name */
+  /**
+   * GET for QUERY/READ; for QUERY, you can use params to control response data
+   * PATCH for UPDATE
+   * POST for CREATE
+   * DELETE for delete
+   */
+  method?: HTTPMethod,
+}
+
+
+export interface ODataReadIDRequest<T> extends ODataRequest<T> {
+  id?: any, /** object key in READ/UPDATE/DELETE */
+}
+export interface ODataQueryRequest<T> extends ODataRequest<T> {
+  params?: ODataQueryParam, /** params in QUERY */
+}
+
+export interface ODataWriteRequest<T> extends ODataRequest<T> {
+  entity?: T /** data object in CREATE/UPDATE */
+}
+
 
 export interface PlainODataResponse<E = any> {
   error?: { /** if error occured, node error will have value */

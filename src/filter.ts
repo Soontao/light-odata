@@ -55,12 +55,7 @@ export class ODataFieldExpr {
         }
         break;
       case "object":
-        if (value instanceof Date) {
-          this._getFieldExprs().push({ op, value: `datetimeoffset'${value.toISOString()}'` })
-          break;
-        } else {
-          throw new Error(`Not support object ${value} in odata filter eq/ne/gt/ge/ne/nt ...`)
-        }
+        throw new Error(`Not support object ${value} in odata filter eq/ne/gt/ge/ne/nt ...`)
       case "undefined":
         throw new Error(`You must set value in odata filter eq/ne/gt/ge/ne/nt ...`)
       default:
@@ -84,6 +79,7 @@ export class ODataFieldExpr {
    */
   ne(value) {
     this._addExpr(ExprOperator.ne, value)
+    return this._filter
   }
 
   eqString(value: string) {
