@@ -21,10 +21,10 @@ Lightweight OData Client for OData (v2) Service.
 npm i -S light-odata
 ```
 
-Alternative, in build-tool-less environment, just add [unpkg](https://unpkg.com/light-odata) umd link to your page, and `OData` object will be available in `window`.
+Alternative, in native browser environment, just add [unpkg](https://unpkg.com/light-odata) or [jsdeliver](https://www.jsdelivr.com/package/npm/light-odata) umd link to your page, and the `OData` object will be available in `window`.
 
 ```html
-<script src="https://unpkg.com/light-odata"></script>
+<script src="https://cdn.jsdelivr.net/npm/light-odata/lib/light-odata-umd.js"></script>
 ```
 
 <!-- ToC start -->
