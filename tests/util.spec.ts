@@ -1,4 +1,3 @@
-import "jest"
 import { ConvertDateFromODataTime, FormatODataDateTimedate, GetAuthorizationPair } from "../src";
 import { encode, decode } from "../src/base64";
 

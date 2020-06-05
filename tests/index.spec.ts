@@ -1,7 +1,7 @@
 import "isomorphic-fetch"
 import { v4 } from "uuid";
 import { OData } from "../src/request";
-import { ODataParam, ODataFilter, LightODataResult, LightODataEntity } from '../src';
+import { ODataParam, ODataFilter } from '../src';
 import { People, Customer, Alphabetical_list_of_product } from "./demo_service_types";
 
 const TestServiceURL = "https://services.odata.org/V2/Northwind/Northwind.svc/$metadata"
@@ -18,13 +18,16 @@ describe('Read Test', () => {
   })
 
   test.concurrent('Read All', async () => {
+
     const odata = OData.New({ metadataUri: TestServiceURL })
-    const result = await LightODataResult.fromRequestResult(odata.newRequest({
+    const result = await odata.newRequest<Customer>({
       collection: "Customers",
       params: OData.newParam().inlinecount(true)
-    }), LightODataEntity)
+    })
 
-    expect(result.d.results[0]["CustomerID"]).toEqual("ALFKI")
+    expect(result.d.results[0].CustomerID).toEqual("ALFKI")
+    expect(result.d.__count).not.toBeUndefined()
+
   })
 
 
@@ -141,16 +144,5 @@ describe('Read Test', () => {
     expect(result.d.results[0].CustomerID).toEqual("ALFKI")
   })
 
-  test('should parse json', () => {
-    const obj = require("../tests/resources/responses/ServiceRequest")
-    const result = LightODataResult.fromPlainObject(obj, LightODataEntity)
-    expect(result.d.results.pop()).toBeInstanceOf(LightODataEntity)
-  });
-
-  test('should parse json and throw error', () => {
-    expect(() => {
-      LightODataResult.fromPlainObject(require("../tests/resources/responses/error"), LightODataEntity)
-    }).toThrow("Ungültigen Token an Position 24 gefunden")
-  });
 
 });

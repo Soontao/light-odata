@@ -1,4 +1,3 @@
-import "jest"
 import "isomorphic-fetch"
 import { readFileSync } from "fs";
 import { join } from "path";
@@ -7,10 +6,6 @@ import { v4 } from "uuid";
 import { map } from "lodash";
 
 describe('test batch multipart parse & format', () => {
-
-  beforeEach(function () {
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 25000;
-  });
 
   test('should parse multipart', async () => {
     const sample = readFileSync(join(__dirname, "./resources/batch/sample.response"), { encoding: "utf8" })

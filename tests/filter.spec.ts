@@ -1,4 +1,3 @@
-import "jest"
 import { ODataFilter, OData } from "../src";
 
 describe("OData Filter Test", () => {
