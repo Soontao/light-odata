@@ -3,16 +3,17 @@
   "version": "2.3.0",
   "unpkg": "./lib/light-odata-umd.js",
   "engines": {
-    "node": ">10"
+    "node": ">=10"
   },
   "devDependencies": {
     "@types/http-string-parser": "^0.0.29",
     "@types/jest": "^25",
-    "@types/lodash": "^4.14.102",
     "@types/node": "^14",
-    "@types/url-parse": "^1.1.0",
     "@types/uuid": "^8.0.0",
     "isomorphic-fetch": "^2.2.1",
+    "@typescript-eslint/eslint-plugin": "^3.0.1",
+    "@typescript-eslint/parser": "^3.0.1",
+    "eslint": "^7.1.0",
     "jest": "^26",
     "jest-cli": "^26",
     "pre-commit": "^1.2.2",
@@ -21,8 +22,6 @@
     "terser-webpack-plugin": "^3.0.2",
     "ts-jest": "^26",
     "ts-loader": "^7",
-    "tslint": "^6",
-    "tslint-loader": "^3.5.4",
     "typescript": "^3",
     "webpack": "^4",
     "webpack-cli": "^3"
@@ -33,6 +32,7 @@
     "clean": "rimraf lib",
     "build": "npm run clean && tsc && npm run build:umd",
     "test": "jest",
+    "lint": "tsc --noEmit && eslint src/**/*.*",
     "test:watch": "npm test -- --watch",
     "coverage": "npm test -- --coverage --no-cache",
     "coverage:watch": "npm run coverage -- --watch",

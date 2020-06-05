@@ -1,2 +1,2 @@
-export type ODataVersion = "v2" | "v4";
+export type ODataVersion = 'v2' | 'v4';
 

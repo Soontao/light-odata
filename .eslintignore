@@ -1,0 +1,6 @@
+src/test
+lib
+dist
+docs
+tests
+node_modules

@@ -1,14 +1,13 @@
-import join from "@newdash/newdash-node/join";
+import join from '@newdash/newdash-node/join';
 
 export enum ExprOperator {
-  eq = "eq",
-  ne = "ne",
-  gt = "gt",
-  lt = "lt",
-  ge = "ge",
-  le = "le",
+  eq = 'eq',
+  ne = 'ne',
+  gt = 'gt',
+  lt = 'lt',
+  ge = 'ge',
+  le = 'le',
 }
-
 type FieldExpr = {
   op: ExprOperator;
   value: string;
@@ -27,7 +26,7 @@ export class ODataFieldExpr {
     this._filter = filter;
     // initilize
     if (this._getFieldExprs() == undefined) {
-      this._exprMappings[this._fieldName] = []
+      this._exprMappings[this._fieldName] = [];
     }
   }
 
@@ -38,28 +37,28 @@ export class ODataFieldExpr {
   private _exprMappings: FieldExprMappings
 
   private _getFieldExprs() {
-    return this._exprMappings[this._fieldName]
+    return this._exprMappings[this._fieldName];
   }
 
   private _addExpr(op: ExprOperator, value: any) {
 
     switch (typeof value) {
-      case "number":
-        this._getFieldExprs().push({ op, value: `${value}` })
+      case 'number':
+        this._getFieldExprs().push({ op, value: `${value}` });
         break;
-      case "string":
-        if (value.startsWith("'") || value.startsWith("datetime")) {
-          this._getFieldExprs().push({ op, value })
+      case 'string':
+        if (value.startsWith("'") || value.startsWith('datetime')) {
+          this._getFieldExprs().push({ op, value });
         } else {
-          this._getFieldExprs().push({ op, value: `'${value}'` })
+          this._getFieldExprs().push({ op, value: `'${value}'` });
         }
         break;
-      case "object":
-        throw new Error(`Not support object ${value} in odata filter eq/ne/gt/ge/ne/nt ...`)
-      case "undefined":
-        throw new Error(`You must set value in odata filter eq/ne/gt/ge/ne/nt ...`)
+      case 'object':
+        throw new Error(`Not support object ${value} in odata filter eq/ne/gt/ge/ne/nt ...`);
+      case 'undefined':
+        throw new Error(`You must set value in odata filter eq/ne/gt/ge/ne/nt ...`);
       default:
-        throw new Error(`Not support typeof ${typeof value}: ${value} in odata filter eq/ne/gt/ge/ne/nt ...`)
+        throw new Error(`Not support typeof ${typeof value}: ${value} in odata filter eq/ne/gt/ge/ne/nt ...`);
     }
 
   }
@@ -69,7 +68,7 @@ export class ODataFieldExpr {
    * @param value
    */
   eq(value) {
-    this._addExpr(ExprOperator.eq, value)
+    this._addExpr(ExprOperator.eq, value);
     return this._filter;
   }
 
@@ -78,17 +77,17 @@ export class ODataFieldExpr {
    * @param value
    */
   ne(value) {
-    this._addExpr(ExprOperator.ne, value)
-    return this._filter
+    this._addExpr(ExprOperator.ne, value);
+    return this._filter;
   }
 
   eqString(value: string) {
-    this._addExpr(ExprOperator.eq, `'${value}'`)
+    this._addExpr(ExprOperator.eq, `'${value}'`);
     return this._filter;
   }
 
   neString(value: string) {
-    this._addExpr(ExprOperator.ne, `'${value}'`)
+    this._addExpr(ExprOperator.ne, `'${value}'`);
     return this._filter;
   }
 
@@ -97,7 +96,7 @@ export class ODataFieldExpr {
    * @param value
    */
   ge(value) {
-    this._addExpr(ExprOperator.ge, value)
+    this._addExpr(ExprOperator.ge, value);
     return this._filter;
   }
 
@@ -106,7 +105,7 @@ export class ODataFieldExpr {
    * @param value
    */
   gt(value) {
-    this._addExpr(ExprOperator.gt, value)
+    this._addExpr(ExprOperator.gt, value);
     return this._filter;
   }
 
@@ -115,7 +114,7 @@ export class ODataFieldExpr {
    * @param value
    */
   le(value) {
-    this._addExpr(ExprOperator.le, value)
+    this._addExpr(ExprOperator.le, value);
     return this._filter;
   }
 
@@ -124,7 +123,7 @@ export class ODataFieldExpr {
    * @param value
    */
   lt(value) {
-    this._addExpr(ExprOperator.lt, value)
+    this._addExpr(ExprOperator.lt, value);
     return this._filter;
   }
 
@@ -136,7 +135,7 @@ export class ODataFieldExpr {
   in(values: string[] = []) {
     if (values.length > 0) {
       values.forEach((value) => {
-        this.eqString(value)
+        this.eqString(value);
       });
     }
     return this._filter;
@@ -151,7 +150,7 @@ export class ODataFieldExpr {
    */
   between(lower: any, max: any, includeBoundary = true) {
     if (lower == undefined || max == undefined) {
-      throw new Error("You must give out the start and end value")
+      throw new Error('You must give out the start and end value');
     }
     if (includeBoundary) {
       this.ge(lower);
@@ -165,22 +164,21 @@ export class ODataFieldExpr {
 
   betweenDateTime(start: Date, end: Date, includeBoundary = true) {
     if (start && end) {
-      return this.between(`datetime'${start.toISOString()}'`, `datetime'${end.toISOString()}'`, includeBoundary)
-    } else {
-      throw new Error("You must give out the start and end date")
+      return this.between(`datetime'${start.toISOString()}'`, `datetime'${end.toISOString()}'`, includeBoundary);
     }
+    throw new Error('You must give out the start and end date');
+
   }
 
   betweenDateTimeOffset(start: Date, end: Date, includeBoundary = true) {
     if (start && end) {
-      return this.between(`datetimeoffset'${start.toISOString()}'`, `datetimeoffset'${end.toISOString()}'`, includeBoundary)
-    } else {
-      throw new Error("You must give out the start and end date")
+      return this.between(`datetimeoffset'${start.toISOString()}'`, `datetimeoffset'${end.toISOString()}'`, includeBoundary);
     }
+    throw new Error('You must give out the start and end date');
+
   }
 
 }
-
 
 
 /**
@@ -189,14 +187,14 @@ export class ODataFieldExpr {
 export class ODataFilter {
 
   static newBuilder() {
-    return new ODataFilter()
+    return new ODataFilter();
   }
 
   /**
    * construct a new filter
    */
   static newFilter() {
-    return new ODataFilter()
+    return new ODataFilter();
   }
 
   private _fieldExprMappings: FieldExprMappings = {};
@@ -236,7 +234,7 @@ export class ODataFilter {
   fieldValueMatchArray(name: string, values: string[] = []) {
     if (values) {
       values.forEach((value) => {
-        this.field(name).eqString(value)
+        this.field(name).eqString(value);
       });
     }
     return this;
@@ -253,7 +251,7 @@ export class ODataFilter {
    * @param end
    */
   inPeriod(name: string, start: Date, end: Date) {
-    return this.betweenDateTime(name, start, end)
+    return this.betweenDateTime(name, start, end);
   }
 
   /**
@@ -264,10 +262,10 @@ export class ODataFilter {
    */
   betweenDateTime(name: string, start: Date, end: Date) {
     if (start && end) {
-      return this.gtDateTime(name, start).ltDateTime(name, end)
-    } else {
-      throw new Error("You must give out the start and end date")
+      return this.gtDateTime(name, start).ltDateTime(name, end);
     }
+    throw new Error('You must give out the start and end date');
+
   }
 
   /**
@@ -278,26 +276,26 @@ export class ODataFilter {
    */
   betweenDateTimeOffset(name: string, start: Date, end: Date) {
     if (start && end) {
-      return this.gtDateTimeOffset(name, start).ltDateTimeOffset(name, end)
-    } else {
-      throw new Error("You must give out the start and end date")
+      return this.gtDateTimeOffset(name, start).ltDateTimeOffset(name, end);
     }
+    throw new Error('You must give out the start and end date');
+
   }
 
   gtDateTime(name: string, date: Date) {
-    return this.field(name).gt(`datetime'${date.toISOString()}'`)
+    return this.field(name).gt(`datetime'${date.toISOString()}'`);
   }
 
   gtDateTimeOffset(name: string, date: Date) {
-    return this.field(name).gt(`datetimeoffset'${date.toISOString()}'`)
+    return this.field(name).gt(`datetimeoffset'${date.toISOString()}'`);
   }
 
   ltDateTime(name: string, date: Date) {
-    return this.field(name).lt(`datetime'${date.toISOString()}'`)
+    return this.field(name).lt(`datetime'${date.toISOString()}'`);
   }
 
   ltDateTimeOffset(name: string, date: Date) {
-    return this.field(name).lt(`datetimeoffset'${date.toISOString()}'`)
+    return this.field(name).lt(`datetimeoffset'${date.toISOString()}'`);
   }
 
   /**
@@ -327,7 +325,7 @@ export class ODataFilter {
    * @param filter
    */
   group(filter: ODataFilter) {
-    this._fieldExprMappings = Object.assign(this._fieldExprMappings, filter.getExprMapping())
+    this._fieldExprMappings = Object.assign(this._fieldExprMappings, filter.getExprMapping());
     return this;
   }
 
@@ -338,25 +336,25 @@ export class ODataFilter {
   _buildFieldExprString(field: string) {
     const exprs = this.getExprMapping()[field];
     if (exprs.length > 0) {
-      if (exprs.filter(expr => expr.op == ExprOperator.eq).length == 0) {
+      if (exprs.filter((expr) => expr.op == ExprOperator.eq).length == 0) {
         return `(${join(
           exprs.map(({ op, value }) => `${field} ${op} ${value}`),
-          " and "
-        )})`
-      } else {
-        return `(${join(
-          exprs.map(({ op, value }) => `${field} ${op} ${value}`),
-          " or "
-        )})`
+          ' and '
+        )})`;
       }
-    } else {
-      return "";
+      return `(${join(
+        exprs.map(({ op, value }) => `${field} ${op} ${value}`),
+        ' or '
+      )})`;
+
     }
+    return '';
+
 
   }
 
   build() {
-    var _rt = "";
+    let _rt = '';
     _rt = join(
       // join all fields exprs string
       Object.entries(this.getExprMapping()).map(
@@ -364,20 +362,20 @@ export class ODataFilter {
           switch (exprs.length) {
             // if one field expr mapping array is empty
             case 0:
-              return "";
+              return '';
             // only have one expr
             case 1:
-              const { op, value } = exprs[0]
-              return `${fieldName} ${op} ${value}`
+              const { op, value } = exprs[0];
+              return `${fieldName} ${op} ${value}`;
             default:
               // multi exprs
-              return this._buildFieldExprString(fieldName)
+              return this._buildFieldExprString(fieldName);
           }
 
         }
       ),
-      " and "
-    )
+      ' and '
+    );
     return _rt;
   }
 

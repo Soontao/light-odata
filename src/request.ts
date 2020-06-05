@@ -1,37 +1,42 @@
-import attempt from "@newdash/newdash-node/attempt";
-import join from "@newdash/newdash-node/join";
-import slice from "@newdash/newdash-node/slice";
-import startsWith from "@newdash/newdash-node/startsWith";
+import attempt from '@newdash/newdash-node/attempt';
+import join from '@newdash/newdash-node/join';
+import slice from '@newdash/newdash-node/slice';
+import startsWith from '@newdash/newdash-node/startsWith';
 import { v4 } from 'uuid';
-import { BatchRequest, formatBatchRequest, ParsedResponse, parseMultiPartContent } from "./batch";
-import { ODataFilter } from "./filter";
-import { ODataParam, ODataQueryParam } from "./params";
-import { Credential, HTTPMethod, PlainODataMultiResponse, PlainODataSingleResponse, AdvancedODataClientProxy, ODataNewOptions, BatchRequestOptions, ODataReadIDRequest, ODataWriteRequest, ODataQueryRequest } from "./types";
-import { GetAuthorizationPair } from "./util";
-import { ODataVersion } from "./types_v4";
+import { BatchRequest, formatBatchRequest, ParsedResponse, parseMultiPartContent } from './batch';
+import { ODataFilter } from './filter';
+import { ODataParam, ODataQueryParam } from './params';
+import {
+  Credential, HTTPMethod,
+  PlainODataMultiResponse, PlainODataSingleResponse, AdvancedODataClientProxy,
+  ODataNewOptions, BatchRequestOptions,
+  ODataReadIDRequest, ODataWriteRequest, ODataQueryRequest
+} from './types';
+import { GetAuthorizationPair } from './util';
+import { ODataVersion } from './types_v4';
 
-const S_X_CSRF_TOKEN = "x-csrf-token"
+const S_X_CSRF_TOKEN = 'x-csrf-token';
 
 
-const odataDefaultFetchProxy: AdvancedODataClientProxy = async (url: string, init: RequestInit) => {
+const odataDefaultFetchProxy: AdvancedODataClientProxy = async(url: string, init: RequestInit) => {
   const res = await fetch(url, init);
-  var content: any = "";
+  let content: any = '';
   if (res.status === 401) {
-    throw new Error("401, Unauthorized, check your creadential !");
+    throw new Error('401, Unauthorized, check your creadential !');
   }
   if (res.status === 403) {
-    throw new Error("403, Forbidden, check your csrf token !");
+    throw new Error('403, Forbidden, check your csrf token !');
   }
   if (res.status === 500) {
-    throw new Error("500, internal error");
+    throw new Error('500, internal error');
   }
 
-  const contentType = res.headers.get("Content-Type");
+  const contentType = res.headers.get('Content-Type');
 
   content = await res.text();
 
-  if (startsWith(contentType, "application/json")) { // result process
-    var jsonResult = attempt(JSON.parse, content);
+  if (startsWith(contentType, 'application/json')) { // result process
+    const jsonResult = attempt(JSON.parse, content);
     if (!(jsonResult instanceof Error)) {
       content = jsonResult;
       // if (content.error) {
@@ -63,20 +68,20 @@ export class OData {
   /**
    * internal csrf token
    */
-  private csrfToken: string = "";
+  private csrfToken = '';
   /**
    * dont direct use this object
    */
   private commonHeader: { [headerName: string]: string } = {
-    "Accept": "application/json",
-    "Accept-Language": "zh",
-    "Content-Type": "application/json"
+    'Accept': 'application/json',
+    'Accept-Language': 'zh',
+    'Content-Type': 'application/json'
   };
   private fetchProxy = odataDefaultFetchProxy;
   private processCsrfToken = true;
   private forSAP = false;
 
-  private version: ODataVersion = "v2"
+  private version: ODataVersion = 'v2'
 
   /**
    * alternative constructor
@@ -93,21 +98,21 @@ export class OData {
       options.processCsrfToken
     );
     rt.forSAP = options.forSAP || false;
-    rt.version = options.version || "v2";
+    rt.version = options.version || 'v2';
     return rt;
   }
 
   /**
    * new odata query param
    */
-  static newParam() {
+  static newParam(): ODataQueryParam {
     return ODataParam.newParam();
   }
 
   /**
    * new filter
    */
-  static newFilter() {
+  static newFilter(): ODataFilter {
     return ODataFilter.newFilter();
   }
 
@@ -127,18 +132,18 @@ export class OData {
     /**
      * auto fetch csrf token before broken operation
      */
-    processCsrfToken: boolean = true
+    processCsrfToken = true
   ) {
     if (fetchProxy) {
       this.fetchProxy = fetchProxy;
     }
     if (!metadataUri) {
-      throw new Error("metadata url required !");
+      throw new Error('metadata url required !');
     } else {
       this.metadataUri = metadataUri;
       // e.g https://c4c-system/sap/c4c/odata/v1/c4codata/
       this.odataEnd =
-        join(slice(this.metadataUri.split("/"), 0, -1), "/") + "/";
+        `${join(slice(this.metadataUri.split('/'), 0, -1), '/')}/`;
       if (credential) {
         this.credential = credential;
       }
@@ -151,7 +156,7 @@ export class OData {
    * generate dynamic header
    */
   private async getHeaders() {
-    var rt = { ...this.commonHeader };
+    let rt = { ...this.commonHeader };
     if (this.credential) {
       rt = {
         ...rt,
@@ -172,7 +177,7 @@ export class OData {
    *
    * @param credential
    */
-  public setCredential(credential: Credential) {
+  public setCredential(credential: Credential): void {
     this.credential = credential;
   }
 
@@ -181,7 +186,7 @@ export class OData {
    *
    * e.g. https://tenant.c4c.saphybriscloud.cn/sap/c4c/odata/v1/c4codata/
    */
-  public setODataEndPath(odataEnd: string) {
+  public setODataEndPath(odataEnd: string): void {
     if (odataEnd) {
       this.odataEnd = odataEnd;
     }
@@ -193,9 +198,9 @@ export class OData {
   private async getCsrfToken() {
     if (this.csrfToken) { return await this.csrfToken; }
 
-    var config: RequestInit = {
-      method: "GET",
-      headers: { S_X_CSRF_TOKEN: "fetch" }
+    const config: RequestInit = {
+      method: 'GET',
+      headers: { S_X_CSRF_TOKEN: 'fetch' }
     };
 
     if (this.credential) {
@@ -209,7 +214,7 @@ export class OData {
     if (headers) {
       this.csrfToken = headers.get(S_X_CSRF_TOKEN);
     } else {
-      throw new Error("csrf token need the odata proxy give out headers!");
+      throw new Error('csrf token need the odata proxy give out headers!');
     }
     return this.csrfToken;
   }
@@ -226,13 +231,13 @@ export class OData {
    * @param method HTTP method
    * @param body request content
    */
-  private async requestUri<T = any>(uri: string, queryParams?: ODataQueryParam, method: HTTPMethod = "GET", body?: any): Promise<PlainODataMultiResponse<T>> {
-    let final_uri = uri;
-    let config: RequestInit = { method, headers: await this.getHeaders() };
+  private async requestUri<T = any>(uri: string, queryParams?: ODataQueryParam, method: HTTPMethod = 'GET', body?: any): Promise<PlainODataMultiResponse<T>> {
+    const finalUri = uri;
+    const config: RequestInit = { method, headers: await this.getHeaders() };
 
     // format body
-    if (method !== "GET" && body) {
-      if (typeof body !== "string") {
+    if (method !== 'GET' && body) {
+      if (typeof body !== 'string') {
         config.body = JSON.stringify(body);
       } else {
         config.body = body;
@@ -240,15 +245,15 @@ export class OData {
     }
 
     // request & response
-    var res = await this.fetchProxy(final_uri, config);
+    let res = await this.fetchProxy(finalUri, config);
 
     // one time retry if csrf token time expired
     if (this.processCsrfToken) {
       if (res.response.headers) {
-        if (res.response.headers.get(S_X_CSRF_TOKEN) === "Required") {
+        if (res.response.headers.get(S_X_CSRF_TOKEN) === 'Required') {
           this.cleanCsrfToken();
           config.headers[S_X_CSRF_TOKEN] = await this.getCsrfToken();
-          res = await this.fetchProxy(final_uri, config);
+          res = await this.fetchProxy(finalUri, config);
         }
       }
     }
@@ -267,11 +272,11 @@ export class OData {
    */
   private async request<T = any>(
     collection: string, id?: any,
-    queryParams?: ODataQueryParam, method: HTTPMethod = "GET", entity?: any
+    queryParams?: ODataQueryParam, method: HTTPMethod = 'GET', entity?: any
   ) {
     let url = `${this.odataEnd}${collection}`;
     if (id) {
-      url += this.formatIdString(id)
+      url += this.formatIdString(id);
 
     }
     if (queryParams) {
@@ -286,40 +291,40 @@ export class OData {
    * @param id
    */
   private formatIdString(id: any): string {
-    var rt = ""
+    let rt = '';
     switch (typeof id) {
       // for compound key like
       // Alphabetical_list_of_products(CategoryName='Beverages',Discontinued=false,ProductID=1,ProductName='Chai')
-      case "object":
-        const compoundId = Object.entries(id).map(kv => {
-          const k = kv[0]
-          const v = kv[1]
+      case 'object':
+        const compoundId = Object.entries(id).map((kv) => {
+          const k = kv[0];
+          const v = kv[1];
           switch (typeof v) {
-            case "string":
-              return `${k}='${v}'`
-            case "number":
-              return `${k}=${v}`
-            case "boolean":
-              return `${k}=${v}`
+            case 'string':
+              return `${k}='${v}'`;
+            case 'number':
+              return `${k}=${v}`;
+            case 'boolean':
+              return `${k}=${v}`;
             default:
               // other type will be removed
-              return ""
+              return '';
           }
-        }).filter(v => v).join(",")
-        rt = `(${compoundId})`
-        break
-      case "number":
-        rt = `(${id})`
+        }).filter((v) => v).join(',');
+        rt = `(${compoundId})`;
         break;
-      case "string":
-        rt = `('${id}')`
+      case 'number':
+        rt = `(${id})`;
         break;
-      case "undefined":
+      case 'string':
+        rt = `('${id}')`;
+        break;
+      case 'undefined':
         break;
       default:
-        throw new Error(`Not supported ObjectID type ${typeof id} for request`)
+        throw new Error(`Not supported ObjectID type ${typeof id} for request`);
     }
-    return rt
+    return rt;
   }
 
   /**
@@ -329,7 +334,7 @@ export class OData {
   public async newRequest<T>(options: ODataWriteRequest<T>): Promise<PlainODataSingleResponse<T>>;
   public async newRequest<T>(options: ODataReadIDRequest<T>): Promise<PlainODataSingleResponse<T>>;
   public async newRequest(options: any) {
-    return this.request(options.collection, options.id, options.params, options.method, options.entity)
+    return this.request(options.collection, options.id, options.params, options.method, options.entity);
   }
 
   /**
@@ -339,16 +344,16 @@ export class OData {
     const url = `${this.odataEnd}$batch`;
 
     const req: RequestInit = {
-      method: "POST",
+      method: 'POST',
       headers: await this.getHeaders()
     };
 
     // format promised requests
-    const r = await Promise.all(requests.map(async aBatchR => await aBatchR));
+    const r = await Promise.all(requests.map(async(aBatchR) => await aBatchR));
     const requestBoundaryString = v4();
-    req.headers["Content-Type"] = `multipart/mixed; boundary=${requestBoundaryString}`;
+    req.headers['Content-Type'] = `multipart/mixed; boundary=${requestBoundaryString}`;
     req.body = formatBatchRequest(r, requestBoundaryString);
-    return { url, req }
+    return { url, req };
   }
 
   /**
@@ -359,7 +364,7 @@ export class OData {
   public async execBatchRequests(requests: Array<Promise<BatchRequest>>): Promise<Array<ParsedResponse<PlainODataMultiResponse>>> {
     const { url, req } = await this.formatBatchRequests(requests);
     const { content, response: { headers } } = await this.fetchProxy(url, req);
-    const responseBoundaryString = headers.get("Content-Type").split("=").pop();
+    const responseBoundaryString = headers.get('Content-Type').split('=').pop();
     if (responseBoundaryString.length == 0) {
       // if boundary string empty, error here
     }
@@ -367,22 +372,23 @@ export class OData {
   }
 
   public async newBatchRequest<T>(options: BatchRequestOptions<T>) {
-    var { collection, method = "GET", id, withContentLength = false, params, entity } = options;
+    let { withContentLength = false } = options;
+    const { collection, method = 'GET', id, params, entity } = options;
     if (this.forSAP) {
       // for SAP NetWeaver Platform OData, need content length header
       withContentLength = true;
     }
-    var url = collection;
-    var headers = Object.assign({}, this.commonHeader); // clone
-    var rt: BatchRequest = { url, init: { method, headers, body: "" } };
+    let url = collection;
+    const headers = Object.assign({}, this.commonHeader); // clone
+    const rt: BatchRequest = { url, init: { method, headers, body: '' } };
 
     if (id) {
-      url += this.formatIdString(id)
+      url += this.formatIdString(id);
     }
 
     // READ OPERATION
-    if (method === "GET" || method === "DELETE") {
-      delete headers["Content-Type"];
+    if (method === 'GET' || method === 'DELETE') {
+      delete headers['Content-Type'];
       // other request don't need param
       if (params) {
         url = `${url}?${params.toString()}`;
@@ -391,10 +397,10 @@ export class OData {
     // WRITE OPERATION
     else {
       switch (typeof entity) {
-        case "string":
+        case 'string':
           rt.init.body = entity;
           break;
-        case "object":
+        case 'object':
           rt.init.body = JSON.stringify(entity);
           break;
         default:
@@ -402,7 +408,7 @@ export class OData {
       }
 
       if (withContentLength) {
-        rt.init.headers["Content-Length"] = encodeURI(rt.init.body.toString()).length;
+        rt.init.headers['Content-Length'] = encodeURI(rt.init.body.toString()).length;
       }
 
     }

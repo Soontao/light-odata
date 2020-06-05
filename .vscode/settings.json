@@ -2,6 +2,9 @@
   "editor.tabSize": 2,
   "editor.fontSize": 14,
   "editor.wordWrap": "on",
-  "editor.formatOnSave": true,
-  "cSpell.enabled": false
+  "editor.formatOnSave": false,
+  "cSpell.enabled": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  }
 }

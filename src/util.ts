@@ -1,12 +1,12 @@
-import { encode } from "./base64";
+import { encode } from './base64';
 
 /**
  * ConvertDateFromODataTime
  *
  * @param dateString date string, format is /Date(1512691200000)/
  */
-export function ConvertDateFromODataTime(dateString: string = "0") {
-  return new Date(parseInt(dateString.replace(/[^\d.]/g, ""), 10));
+export function ConvertDateFromODataTime(dateString = '0'): Date {
+  return new Date(parseInt(dateString.replace(/[^\d.]/g, ''), 10));
 }
 
 /**
@@ -14,10 +14,10 @@ export function ConvertDateFromODataTime(dateString: string = "0") {
  *
  * format date to /Date(1512691200000)/ format
  */
-export function FormatODataDateTimedate(date: Date = new Date()) {
-  return `/Date(${date.getTime()})/`
+export function FormatODataDateTimedate(date: Date = new Date()): string {
+  return `/Date(${date.getTime()})/`;
 }
 
-export function GetAuthorizationPair(user: string, password: string) {
-  return { Authorization: "Basic " + encode(`${user}:${password}`) };
+export function GetAuthorizationPair(user: string, password: string): { Authorization: string } {
+  return { Authorization: `Basic ${encode(`${user}:${password}`)}` };
 }

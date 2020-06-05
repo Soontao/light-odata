@@ -1,7 +1,7 @@
-import { ODataQueryParam } from "./params";
-import { ODataVersion } from "./types_v4";
+import { ODataQueryParam } from './params';
+import { ODataVersion } from './types_v4';
 
-export type HTTPMethod = "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "PATCH";
+export type HTTPMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
 export type AdvancedODataClientProxy = (url: string, init: RequestInit) => Promise<{
   /**
@@ -144,19 +144,4 @@ export interface PlainODataMultiResponse<E = any> extends PlainODataResponse<E> 
 export interface Credential {
   username: string,
   password: string
-}
-
-declare global {
-  module Edm {
-    type String = string
-    type Guid = string
-    type DateTime = string
-    type DateTimeOffset = string
-    type Boolean = boolean
-    type Decimal = number
-    /**
-     * base64 string
-     */
-    type Binary = string
-  }
 }
