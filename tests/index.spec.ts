@@ -10,7 +10,7 @@ const TestV4ServiceURL = `https://services.odata.org/TripPinRESTierService/(S(${
 describe('Read Test', () => {
 
   // these tests only work for demo odata
-  // C4C OData response is different these
+  // SAP OData response is different from these
 
   test('OData constructor alias', () => {
     expect(OData.New({ metadataUri: TestServiceURL })).toBeInstanceOf(OData)
