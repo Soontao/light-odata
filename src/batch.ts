@@ -1,8 +1,8 @@
-import slice from "@newdash/newdash/lib/slice";
-import join from "@newdash/newdash/lib/join";
-import flatten from "@newdash/newdash/lib/flatten";
-import concat from "@newdash/newdash/lib/concat";
-import startsWith from "@newdash/newdash/lib/startsWith";
+import slice from "@newdash/newdash-node/slice";
+import join from "@newdash/newdash-node/join";
+import flatten from "@newdash/newdash-node/flatten";
+import concat from "@newdash/newdash-node/concat";
+import startsWith from "@newdash/newdash-node/startsWith";
 
 
 import { parseResponse } from "http-string-parser";

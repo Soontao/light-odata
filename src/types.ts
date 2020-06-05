@@ -1,6 +1,6 @@
 
-import isObject from "@newdash/newdash/lib/isObject";
-import isArray from "@newdash/newdash/lib/isArray";
+import isObject from "@newdash/newdash-node/isObject";
+import isArray from "@newdash/newdash-node/isArray";
 
 export type HTTPMethod = "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "PATCH";
 

@@ -40,7 +40,7 @@
     "prepublishOnly": "npm run build && npm test"
   },
   "dependencies": {
-    "@newdash/newdash": "5.3.0",
+    "@newdash/newdash-node": "^5.4.1",
     "core-js": "^3.6.4",
     "http-string-parser": "^0.0.6",
     "uuid": "^8"

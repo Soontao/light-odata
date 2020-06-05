@@ -1,8 +1,8 @@
 import { ODataFilter } from "./filter";
 
-import concat from "@newdash/newdash/lib/concat";
-import join from "@newdash/newdash/lib/join";
-import isArray from "@newdash/newdash/lib/isArray";
+import concat from "@newdash/newdash-node/concat";
+import join from "@newdash/newdash-node/join";
+import isArray from "@newdash/newdash-node/isArray";
 
 import URLSearchParams from "core-js/features/url-search-params";
 

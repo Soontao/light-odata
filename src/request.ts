@@ -1,8 +1,7 @@
-import attempt from "@newdash/newdash/lib/attempt";
-import isEmpty from "@newdash/newdash/lib/isEmpty";
-import join from "@newdash/newdash/lib/join";
-import slice from "@newdash/newdash/lib/slice";
-import startsWith from "@newdash/newdash/lib/startsWith";
+import attempt from "@newdash/newdash-node/attempt";
+import join from "@newdash/newdash-node/join";
+import slice from "@newdash/newdash-node/slice";
+import startsWith from "@newdash/newdash-node/startsWith";
 import { v4 } from 'uuid';
 import { BatchRequest, formatBatchRequest, ParsedResponse, parseMultiPartContent } from "./batch";
 import { ODataFilter } from "./filter";
@@ -426,7 +425,7 @@ export class OData {
     const { url, req } = await this.formatBatchRequests(requests);
     const { content, response: { headers } } = await this.fetchProxy(url, req);
     const responseBoundaryString = headers.get("Content-Type").split("=").pop();
-    if (isEmpty(responseBoundaryString)) {
+    if (responseBoundaryString.length == 0) {
       // if boundary string empty, error here
     }
     return await parseMultiPartContent(content, responseBoundaryString);

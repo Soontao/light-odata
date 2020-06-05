@@ -1,5 +1,4 @@
-import join from "@newdash/newdash/lib/join";
-import isEmpty from "@newdash/newdash/lib/isEmpty";
+import join from "@newdash/newdash-node/join";
 
 export enum ExprOperator {
   eq = "eq",
@@ -26,7 +25,8 @@ export class ODataFieldExpr {
     this._exprMappings = filter.getExprMapping();
     this._fieldName = fieldName;
     this._filter = filter;
-    if (isEmpty(this._getFieldExprs())) {
+    // initilize
+    if (this._getFieldExprs() == undefined) {
       this._exprMappings[this._fieldName] = []
     }
   }
@@ -138,7 +138,7 @@ export class ODataFieldExpr {
    * @param values
    */
   in(values: string[] = []) {
-    if (!isEmpty(values)) {
+    if (values.length > 0) {
       values.forEach((value) => {
         this.eqString(value)
       });
@@ -153,8 +153,8 @@ export class ODataFieldExpr {
    * @param max
    * @param includeBoundary
    */
-  between(lower, max, includeBoundary = true) {
-    if (isEmpty(lower) && isEmpty(max)) {
+  between(lower: any, max: any, includeBoundary = true) {
+    if (lower == undefined || max == undefined) {
       throw new Error("You must give out the start and end value")
     }
     if (includeBoundary) {
@@ -341,8 +341,8 @@ export class ODataFilter {
 
   _buildFieldExprString(field: string) {
     const exprs = this.getExprMapping()[field];
-    if (!isEmpty(exprs)) {
-      if (isEmpty(exprs.filter(expr => expr.op == ExprOperator.eq))) {
+    if (exprs.length > 0) {
+      if (exprs.filter(expr => expr.op == ExprOperator.eq).length == 0) {
         return `(${join(
           exprs.map(({ op, value }) => `${field} ${op} ${value}`),
           " and "
