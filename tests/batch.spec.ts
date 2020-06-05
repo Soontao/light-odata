@@ -104,6 +104,7 @@ describe('test batch multipart parse & format', () => {
     })
     const testDesc1 = v4(); // a generated uuid
     const testDesc2 = v4();
+    // @ts-ignore
     const result = await odata.formatBatchRequests([
       odata.newBatchRequest({
         collection: "Products",
