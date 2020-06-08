@@ -3,8 +3,11 @@ import { ODataFilter } from './filter';
 import concat from '@newdash/newdash-node/concat';
 import join from '@newdash/newdash-node/join';
 import isArray from '@newdash/newdash-node/isArray';
+import uniq from '@newdash/newdash-node/uniq';
+
 
 import URLSearchParams from 'core-js/features/url-search-params';
+import { ODataVersion } from './types_v4';
 
 export interface ODataParamOrderField {
 
@@ -28,7 +31,7 @@ export interface ODataParamOrderField {
  */
 export class ODataQueryParam {
 
-  static newParam() {
+  static newParam(): ODataQueryParam {
     return new ODataQueryParam();
   }
 
@@ -41,16 +44,29 @@ export class ODataQueryParam {
   private $search: string
   private $inlinecount: string
   private $expand: string[] = []
+  private $count = false
 
   /**
    * with $inlinecount value
+   *
+   * @version 2.0.0
    */
-  inlinecount(inlinecount = false) {
+  inlinecount(inlinecount = false): ODataQueryParam {
     if (inlinecount) {
       this.$inlinecount = 'allpages';
     } else {
       delete this.$inlinecount;
     }
+    return this;
+  }
+
+  /**
+   *
+   * @param count
+   * @version 4.0.0
+   */
+  count(count = false): ODataQueryParam {
+    this.$count = count;
     return this;
   }
 
@@ -148,11 +164,12 @@ export class ODataQueryParam {
   /**
    * full text search
    *
-   * default with fuzzy search, SAP system only
+   * default with fuzzy search, SAP system or OData V4 only
    *
    * @param value
+   * @version 4.0.0
    */
-  search(value: string, fuzzy = true) {
+  search(value: string, fuzzy = true): this {
     this.$search = fuzzy ? `%${value}%` : value;
     return this;
   }
@@ -163,7 +180,7 @@ export class ODataQueryParam {
    * @param fields
    * @param replace
    */
-  expand(fields: string | string[], replace = false) {
+  expand(fields: string | string[], replace = false): this {
     if (replace) {
       if (typeof fields == 'string') {
         this.$expand = [fields];
@@ -177,17 +194,27 @@ export class ODataQueryParam {
   }
 
 
-  toString(): string {
+  toString(version: ODataVersion = 'v2'): string {
     const rt = new URLSearchParams();
     if (this.$format) { rt.append('$format', this.$format); }
     if (this.$filter) { rt.append('$filter', this.$filter.toString()); }
     if (this.$orderby) { rt.append('$orderby', this.$orderby); }
     if (this.$search) { rt.append('$search', this.$search); }
-    if (this.$select && this.$select.length > 0) { rt.append('$select', join(this.$select, ',')); }
+    if (this.$select && this.$select.length > 0) { rt.append('$select', join(uniq(this.$select), ',')); }
     if (this.$skip) { rt.append('$skip', this.$skip.toString()); }
     if (this.$top && this.$top > 0) { rt.append('$top', this.$top.toString()); }
     if (this.$expand && this.$expand.length > 0) { rt.append('$expand', this.$expand.join(',')); }
-    if (this.$inlinecount) { rt.append('$inlinecount', this.$inlinecount); }
+
+    switch (version) {
+      case 'v2':
+        if (this.$inlinecount) { rt.append('$inlinecount', this.$inlinecount); }
+        break;
+      case 'v4':
+        if (this.$count) { rt.append('$count', this.$count); }
+        break;
+      default:
+        break;
+    }
     return rt.toString();
   }
 }

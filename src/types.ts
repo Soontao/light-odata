@@ -59,7 +59,7 @@ export interface BatchRequestOptions<T> {
   /**
    * OData Entity Object
    */
-  entity?: T;
+  entity?: Partial<T>;
   /**
    * SAP OData need Content-Length but standard reject it
    */
@@ -86,11 +86,12 @@ export interface ODataQueryRequest<T> extends ODataRequest<T> {
 }
 
 export interface ODataWriteRequest<T> extends ODataRequest<T> {
-  entity?: T /** data object in CREATE/UPDATE */
+  entity?: Partial<T> /** data object in CREATE/UPDATE */
 }
 
 
 export interface PlainODataResponse<E = any> {
+
   error?: { /** if error occured, node error will have value */
     code: string;
     message: {
@@ -105,6 +106,18 @@ export interface PlainODataResponse<E = any> {
    * @version 4.0.0
    */
   '@odata.context'?: string;
+
+  /**
+   * total count
+   */
+  '@odata.count'?: number;
+
+
+  '@odata.id'?: string;
+
+  '@odata.etag'?: string;
+
+  '@odata.editLink'?: string;
 
 }
 

@@ -21,15 +21,6 @@ const S_X_CSRF_TOKEN = 'x-csrf-token';
 const odataDefaultFetchProxy: AdvancedODataClientProxy = async(url: string, init: RequestInit) => {
   const res = await fetch(url, init);
   let content: any = '';
-  if (res.status === 401) {
-    throw new Error('401, Unauthorized, check your creadential !');
-  }
-  if (res.status === 403) {
-    throw new Error('403, Forbidden, check your csrf token !');
-  }
-  if (res.status === 500) {
-    throw new Error('500, internal error');
-  }
 
   const contentType = res.headers.get('Content-Type');
 
@@ -88,7 +79,7 @@ export class OData {
    *
    * @param options config options
    */
-  static New(options: ODataNewOptions) {
+  static New(options: ODataNewOptions): OData {
     const rt = new OData(
       options.metadataUri,
       options.credential,
@@ -280,7 +271,7 @@ export class OData {
 
     }
     if (queryParams) {
-      url = `${url}?${queryParams.toString()}`;
+      url = `${url}?${queryParams.toString(this.version)}`;
     }
     return this.requestUri<T>(url, queryParams, method, entity);
   }
@@ -391,7 +382,7 @@ export class OData {
       delete headers['Content-Type'];
       // other request don't need param
       if (params) {
-        url = `${url}?${params.toString()}`;
+        url = `${url}?${params.toString(this.version)}`;
       }
     }
     // WRITE OPERATION

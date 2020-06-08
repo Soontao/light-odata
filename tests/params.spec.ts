@@ -40,6 +40,11 @@ describe('ODataParams Test', () => {
     expect(decodeURIComponent(param.toString())).toEqual("$format=json")
   })
 
+  test('ODataParam count true', () => {
+    const param = ODataParam.newParam().count(true)
+    expect(decodeURIComponent(param.toString("v4"))).toEqual("$format=json&$count=true")
+  })
+
   test('ODataParam orderby multi', () => {
     const param = ODataParam.newParam().orderbyMulti([{ field: "A" }, { field: "B", order: "asc" }]);
     expect(decodeURIComponent(param.toString())).toEqual("$format=json&$orderby=A+desc,B+asc")
@@ -67,6 +72,11 @@ describe('ODataParams Test', () => {
     expect(decodeURIComponent(param.toString())).toEqual("$format=json&$select=ObjectID")
   })
 
+  test('ODataParam select (duplicate)', () => {
+    const param = ODataParam.newParam().select(["ObjectID", "F1", "F1"]);
+    expect(decodeURIComponent(param.toString())).toEqual("$format=json&$select=ObjectID,F1")
+  })
+
   test('ODataParam select multi', () => {
     const param = ODataParam
       .newParam()
@@ -80,7 +90,7 @@ describe('ODataParams Test', () => {
     expect(decodeURIComponent(param.toString())).toEqual("$format=json&$expand=Customer")
     param.expand(["Customer", "Employee"], true)
     expect(decodeURIComponent(param.toString())).toEqual("$format=json&$expand=Customer,Employee")
-
+    expect(decodeURIComponent(ODataParam.newParam().expand("*").toString())).toEqual("$format=json&$expand=*")
   })
 
 

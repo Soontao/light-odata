@@ -135,6 +135,30 @@ describe('Read Test', () => {
     expect(result.value[0].UserName).toEqual("russellwhyte")
   })
 
+  test.concurrent('Create Instace (v4)', async () => {
+    const odata = OData.New({ metadataUri: TestV4ServiceURL, version: "v4" })
+    const result = await odata.newRequest<People>({
+      collection: "People",
+      method: "POST",
+      entity: {
+        UserName: "theosun",
+        FirstName: "Theo",
+        LastName: "Sun",
+      }
+    })
+    expect(result.error).toBeUndefined()
+
+    const r2 = await odata.newRequest<People>({
+      collection: "People",
+      method: "GET",
+      params: OData.newParam().count(true).filter(OData.newFilter().field("UserName").eq("theosun"))
+    })
+
+    expect(r2["@odata.count"]).toEqual(1)
+
+  })
+
+
   test.concurrent('Read By Group Filter with count', async () => {
     const odata = OData.New({ metadataUri: TestServiceURL })
     const filter = ODataFilter
