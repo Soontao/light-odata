@@ -10,7 +10,7 @@ import {
   Credential, HTTPMethod,
   PlainODataMultiResponse, PlainODataSingleResponse, AdvancedODataClientProxy,
   ODataNewOptions, BatchRequestOptions,
-  ODataReadIDRequest, ODataWriteRequest, ODataQueryRequest
+  ODataReadIDRequest, ODataWriteRequest, ODataQueryRequest, ODataVariant
 } from './types';
 import { GetAuthorizationPair } from './util';
 import { ODataVersion } from './types_v4';
@@ -20,19 +20,13 @@ const S_X_CSRF_TOKEN = 'x-csrf-token';
 
 const odataDefaultFetchProxy: AdvancedODataClientProxy = async(url: string, init: RequestInit) => {
   const res = await fetch(url, init);
-  let content: any = '';
 
-  const contentType = res.headers.get('Content-Type');
+  let content: any = await res.text();
 
-  content = await res.text();
-
-  if (startsWith(contentType, 'application/json')) { // result process
+  if (res.headers.has('Content-Type') && startsWith(res.headers.get('Content-Type') , 'application/json')) {
     const jsonResult = attempt(JSON.parse, content);
     if (!(jsonResult instanceof Error)) {
       content = jsonResult;
-      // if (content.error) {
-      //   throw new Error(content.error.message.value);
-      // }
     }
   }
 
@@ -72,6 +66,8 @@ export class OData {
   private processCsrfToken = true;
   private forSAP = false;
 
+  private variant: ODataVariant = 'default'
+
   private version: ODataVersion = 'v2'
 
   /**
@@ -90,6 +86,7 @@ export class OData {
     );
     rt.forSAP = options.forSAP || false;
     rt.version = options.version || 'v2';
+    rt.variant = options.variant || 'default';
     return rt;
   }
 
@@ -268,7 +265,6 @@ export class OData {
     let url = `${this.odataEnd}${collection}`;
     if (id) {
       url += this.formatIdString(id);
-
     }
     if (queryParams) {
       url = `${url}?${queryParams.toString(this.version)}`;
@@ -308,7 +304,11 @@ export class OData {
         rt = `(${id})`;
         break;
       case 'string':
-        rt = `('${id}')`;
+        if (this.variant == 'cap') {
+          rt = `(${id})`; // for cap framework, id string should remove singlequote
+        } else {
+          rt = `('${id}')`;
+        }
         break;
       case 'undefined':
         break;
@@ -324,7 +324,7 @@ export class OData {
   public async newRequest<T>(options: ODataQueryRequest<T>): Promise<PlainODataMultiResponse<T>>;
   public async newRequest<T>(options: ODataWriteRequest<T>): Promise<PlainODataSingleResponse<T>>;
   public async newRequest<T>(options: ODataReadIDRequest<T>): Promise<PlainODataSingleResponse<T>>;
-  public async newRequest(options: any) {
+  public async newRequest(options: any): Promise<any> {
     return this.request(options.collection, options.id, options.params, options.method, options.entity);
   }
 

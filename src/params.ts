@@ -5,9 +5,26 @@ import join from '@newdash/newdash-node/join';
 import isArray from '@newdash/newdash-node/isArray';
 import uniq from '@newdash/newdash-node/uniq';
 
-
-import URLSearchParams from 'core-js/features/url-search-params';
 import { ODataVersion } from './types_v4';
+
+class SearchParams {
+
+  _store = new Map()
+
+  append(key: string, value: string): void {
+    this._store.set(key, value);
+  }
+
+  toString(): string {
+    const coll = [];
+    this._store.forEach((value, key) => {
+      coll.push(`${key}=${value}`);
+    });
+    return coll.join('&');
+  }
+
+
+}
 
 export interface ODataParamOrderField {
 
@@ -195,7 +212,7 @@ export class ODataQueryParam {
 
 
   toString(version: ODataVersion = 'v2'): string {
-    const rt = new URLSearchParams();
+    const rt = new SearchParams();
     if (this.$format) { rt.append('$format', this.$format); }
     if (this.$filter) { rt.append('$filter', this.$filter.toString()); }
     if (this.$orderby) { rt.append('$orderby', this.$orderby); }
@@ -210,7 +227,7 @@ export class ODataQueryParam {
         if (this.$inlinecount) { rt.append('$inlinecount', this.$inlinecount); }
         break;
       case 'v4':
-        if (this.$count) { rt.append('$count', this.$count); }
+        if (this.$count) { rt.append('$count', 'true'); }
         break;
       default:
         break;

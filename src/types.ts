@@ -3,6 +3,8 @@ import { ODataVersion } from './types_v4';
 
 export type HTTPMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
+export type ODataVariant = 'default' | 'c4c' | 'byd' | 'cap'
+
 export type AdvancedODataClientProxy = (url: string, init: RequestInit) => Promise<{
   /**
    * The Body Content
@@ -33,8 +35,14 @@ export interface ODataNewOptions {
   processCsrfToken?: boolean;
   /**
    * for SAP OData
+   * @deprecated
    */
   forSAP?: boolean;
+
+  /**
+   * service variant
+   */
+  variant?: ODataVariant;
 
   /**
    * odata version, default v2
