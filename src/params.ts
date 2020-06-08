@@ -79,16 +79,20 @@ export class ODataQueryParam {
 
   /**
    *
+   * count items in odata v4
+   *
    * @param count
+   *
    * @version 4.0.0
    */
-  count(count = false): ODataQueryParam {
+  count(count = true): ODataQueryParam {
     this.$count = count;
     return this;
   }
 
   /**
-   * filter
+   * apply filter for query
+   *
    * @param filter
    */
   filter(filter?: string | ODataFilter) {
