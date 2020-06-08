@@ -89,12 +89,14 @@ export interface ODataRequest<T = any> {
 export interface ODataReadIDRequest<T> extends ODataRequest<T> {
   id?: any, /** object key in READ/UPDATE/DELETE */
 }
+
 export interface ODataQueryRequest<T> extends ODataRequest<T> {
   params?: ODataQueryParam, /** params in QUERY */
 }
 
 export interface ODataWriteRequest<T> extends ODataRequest<T> {
   entity?: Partial<T> /** data object in CREATE/UPDATE */
+  id?: any;
 }
 
 
@@ -119,7 +121,6 @@ export interface PlainODataResponse<E = any> {
    * total count
    */
   '@odata.count'?: number;
-
 
   '@odata.id'?: string;
 

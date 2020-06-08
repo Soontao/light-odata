@@ -99,3 +99,16 @@ export enum CategoryName {
   Produce = "Produce",
   Seafood = "Seafood",
 }
+
+export interface CapDemoPeople {
+  ID:               string;
+  createdAt:        Date;
+  createdBy:        string;
+  modifiedAt:       Date;
+  modifiedBy:       string;
+  UserName:         string;
+  Name_FirstName:   string;
+  Name_MiddleName:  string;
+  Name_LastName:    string;
+  Name_NickName:    string;
+}

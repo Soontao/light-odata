@@ -91,7 +91,7 @@ export class ODataQueryParam {
    * filter
    * @param filter
    */
-  filter(filter: string | ODataFilter) {
+  filter(filter?: string | ODataFilter) {
     if (filter instanceof ODataFilter) {
       this.$filter = filter.build();
       return this;
@@ -100,8 +100,6 @@ export class ODataQueryParam {
       return this;
     }
     throw Error('ODataQueryParam.filter only accept string or ODataFilter type parameter');
-
-
   }
 
   /**

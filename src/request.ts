@@ -14,17 +14,20 @@ import {
 } from './types';
 import { GetAuthorizationPair } from './util';
 import { ODataVersion } from './types_v4';
+import { EntitySet } from './entityset';
 
 const S_X_CSRF_TOKEN = 'x-csrf-token';
 
+const S_CONTENT_TYPE = 'Content-Type';
 
 const odataDefaultFetchProxy: AdvancedODataClientProxy = async(url: string, init: RequestInit) => {
   const res = await fetch(url, init);
 
   let content: any = await res.text();
 
-  if (res.headers.has('Content-Type') && startsWith(res.headers.get('Content-Type') , 'application/json')) {
+  if (res.headers.has(S_CONTENT_TYPE) && startsWith(res.headers.get(S_CONTENT_TYPE), 'application/json')) {
     const jsonResult = attempt(JSON.parse, content);
+    // supress error
     if (!(jsonResult instanceof Error)) {
       content = jsonResult;
     }
@@ -91,6 +94,16 @@ export class OData {
   }
 
   /**
+   * create odata client instance for odata v4
+   *
+   * @param options
+   */
+  static New4(options: ODataNewOptions): OData {
+    options.version = 'v4';
+    return OData.New(options);
+  }
+
+  /**
    * new odata query param
    */
   static newParam(): ODataQueryParam {
@@ -106,6 +119,8 @@ export class OData {
 
   /**
    * OData
+   *
+   * @deprecated please use static method create instance
    * @private
    */
   private constructor(
@@ -113,7 +128,7 @@ export class OData {
     credential?: Credential,
     headers: any = {},
     /**
-     * deprecated, not use now
+     * deprecated, DONT use it
      */
     urlRewrite?: (string) => string,
     fetchProxy?: AdvancedODataClientProxy,
@@ -161,6 +176,16 @@ export class OData {
   }
 
   /**
+   * getEntitySet
+   *
+   * @param entitySetName the name of entity set, you can get it from metadata
+   *
+   */
+  public getEntitySet<T>(entitySetName: string): EntitySet<T> {
+    return new EntitySet(entitySetName, this);
+  }
+
+  /**
    * Set OData Client Http Basic credential
    *
    * @param credential
@@ -178,6 +203,10 @@ export class OData {
     if (odataEnd) {
       this.odataEnd = odataEnd;
     }
+  }
+
+  public getVersion(): ODataVersion {
+    return this.version;
   }
 
   /**
@@ -207,7 +236,7 @@ export class OData {
     return this.csrfToken;
   }
 
-  public cleanCsrfToken() {
+  public cleanCsrfToken(): void {
     if (this.csrfToken) { delete this.csrfToken; }
   }
 
