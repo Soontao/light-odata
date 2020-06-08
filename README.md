@@ -53,7 +53,6 @@ Alternative, in native browser environment, just add [unpkg](https://unpkg.com/l
       1. [filter by one field but multi values](#filter-by-one-field-but-multi-values)
       1. [filter by date](#filter-by-date)
    1. [Batch requests](#batch-requests)
-   1. [Generator usage](#generator-usage)
    1. [Others](#others)
    1. [CHANGELOG](#changelog)
    1. [LICENSE](#license)
