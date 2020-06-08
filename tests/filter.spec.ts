@@ -1,4 +1,4 @@
-import { ODataFilter, OData } from "../src";
+import { ODataFilter, OData, ODataDateTime, ODataDateTimeOffset } from "../src";
 
 describe("OData Filter Test", () => {
 
@@ -19,6 +19,52 @@ describe("OData Filter Test", () => {
       ODataFilter.newFilter().fieldIn("Name", ["test string1", "test string2"])
     )
     expect(filter.build()).toEqual("(Name eq 'test string1' or Name eq 'test string2')")
+  })
+
+  test('ODataFilter.gt', () => {
+    expect(
+      ODataFilter.newFilter().field("A")
+        .gt(ODataDateTime.from(new Date("2018-01-24T12:43:31.839Z")))
+        .build()
+    ).toEqual("A gt datetime'2018-01-24T12:43:31.839Z'")
+
+    expect(
+      ODataFilter.newFilter().field("A")
+        .gt(15)
+        .build()
+    ).toEqual("A gt 15")
+
+    expect(
+      ODataFilter.newFilter().field("A")
+        .gt('15')
+        .build()
+    ).toEqual("A gt '15'")
+
+  })
+
+  test('should throw errors', () => {
+
+
+    expect(() => {
+      ODataFilter.newFilter().field("A").gt(undefined).build()
+    }).toThrow()
+
+    expect(() => {
+      ODataFilter.newFilter().field("A").gt(Symbol("AA")).build()
+    }).toThrow()
+
+    expect(() => {
+      ODataFilter.newFilter().field("A").gt({}).build()
+    }).toThrow()
+
+  });
+
+  test('ODataFilter.le', () => {
+    expect(
+      ODataFilter.newFilter().field("A")
+        .le(ODataDateTimeOffset.from(new Date("2018-01-24T12:43:31.839Z")))
+        .build()
+    ).toEqual("A le datetimeoffset'2018-01-24T12:43:31.839Z'")
   })
 
   test('ODataFilter.and(simple)', () => {
@@ -104,12 +150,36 @@ describe("OData Filter Test", () => {
     expect(OData.newFilter().field("Name").ne("theo").build()).toEqual("Name ne 'theo'")
   });
 
+  test("ODataFilter.between", () => {
+    expect(ODataFilter.newFilter().field("A").between(1, 2).build()).toEqual("(A ge 1 and A le 2)")
+    expect(ODataFilter.newFilter().field("A").between(1, 2, false).build()).toEqual("(A gt 1 and A lt 2)")
+  })
+
   test('ODataFilter.betweenDateTime', () => {
     const filter = ODataFilter.newFilter()
       .field("Name").eq("'test string1'").and()
       .betweenDateTime("CreationDateTime", new Date("2018-01-24T12:43:31.839Z"), new Date("2018-05-24T12:43:31.839Z"))
     expect(filter.build())
       .toEqual("Name eq 'test string1' and (CreationDateTime gt datetime'2018-01-24T12:43:31.839Z' and CreationDateTime lt datetime'2018-05-24T12:43:31.839Z')")
+
+    expect(
+      ODataFilter
+        .newFilter()
+        .field("A")
+        .betweenDateTime(new Date("2018-01-24T12:43:31.839Z"))
+        .build()
+    ).toEqual("A ge datetime'2018-01-24T12:43:31.839Z'")
+
+    expect(
+      ODataFilter
+        .newFilter()
+        .field("A")
+        .betweenDateTime(undefined, new Date("2018-01-24T12:43:31.839Z"), false)
+        .build()
+    ).toEqual("A lt datetime'2018-01-24T12:43:31.839Z'")
+
+    expect(() => ODataFilter.newFilter().field("A").betweenDateTime()).toThrow()
+
   })
 
   test('ODataFilter.betweenDateTimeOffset', () => {
@@ -118,6 +188,21 @@ describe("OData Filter Test", () => {
       .betweenDateTimeOffset("CreationDateTime", new Date("2018-01-24T12:43:31.839Z"), new Date("2018-05-24T12:43:31.839Z"))
     expect(filter.build())
       .toEqual("Name eq 'test string1' and (CreationDateTime gt datetimeoffset'2018-01-24T12:43:31.839Z' and CreationDateTime lt datetimeoffset'2018-05-24T12:43:31.839Z')")
+    expect(
+      ODataFilter
+        .newFilter()
+        .field("A")
+        .betweenDateTimeOffset(new Date("2018-01-24T12:43:31.839Z"))
+        .build()
+    ).toEqual("A ge datetimeoffset'2018-01-24T12:43:31.839Z'")
+    expect(
+      ODataFilter
+        .newFilter()
+        .field("A")
+        .betweenDateTimeOffset(undefined, new Date("2018-01-24T12:43:31.839Z"), false)
+        .build()
+    ).toEqual("A lt datetimeoffset'2018-01-24T12:43:31.839Z'")
   })
+
 
 })

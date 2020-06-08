@@ -32,13 +32,11 @@ export interface BatchRequest {
   init?: RequestInit;
 }
 
-export const formatHttpRequestString = (u: string, r: any) => join(
-  [
-    `${r.method || 'GET'} ${u} HTTP/1.1`,
-    `${join(Object.entries(r.headers).map(([k, v]) => `${k}: ${v}`), HTTP_EOL)}`,
-    `${r.body ? HTTP_EOL + r.body : ''}`
-  ], HTTP_EOL
-);
+export const formatHttpRequestString = (u: string, r: any): string => join([
+  `${r.method || 'GET'} ${u} HTTP/1.1`,
+  `${join(Object.entries(r.headers).map(([k, v]) => `${k}: ${v}`), HTTP_EOL)}`,
+  `${r.body ? HTTP_EOL + r.body : ''}`
+], HTTP_EOL);
 
 
 /**
@@ -47,7 +45,7 @@ export const formatHttpRequestString = (u: string, r: any) => join(
  * @param requests
  * @param boundary a given boundary id
  */
-export const formatBatchRequest = (requests: BatchRequest[], boundary: string) => join(
+export const formatBatchRequest = (requests: BatchRequest[], boundary: string):string => join(
   concat(
     requests.map((r) => {
       if (r.init.method === 'GET' || !r.init.method) {
