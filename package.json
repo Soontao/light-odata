@@ -1,6 +1,7 @@
 {
   "name": "light-odata",
   "version": "2.3.0",
+  "description": "lightweight odata javascript library",
   "unpkg": "./lib/light-odata-umd.js",
   "engines": {
     "node": ">=10"
@@ -24,7 +25,7 @@
     "terser-webpack-plugin": "^3.0.2",
     "ts-jest": "^26",
     "ts-loader": "^7",
-    "typescript": "^3",
+    "typescript": "^3.9.5",
     "webpack": "^4",
     "webpack-cli": "^3"
   },
@@ -42,38 +43,11 @@
     "prepublishOnly": "npm run build && npm test"
   },
   "dependencies": {
-    "@newdash/newdash-node": "^5.4.1",
+    "@newdash/newdash-node": "^5.6.0",
     "core-js": "^3.6.4",
     "http-string-parser": "^0.0.6",
     "uuid": "^8"
   },
-  "jest": {
-    "testTimeout": 60000,
-    "transform": {
-      ".(ts|tsx)": "ts-jest"
-    },
-    "collectCoverageFrom": [
-      "src/**/*.ts"
-    ],
-    "transformIgnorePatterns": [
-      "/tests/resources",
-      "/node_modules/"
-    ],
-    "coveragePathIgnorePatterns": [
-      "/tests/",
-      "/node_modules/",
-      "/src/cli",
-      "/src/generator"
-    ],
-    "testEnvironment": "node",
-    "testRegex": "tests/.*\\.spec\\.ts$",
-    "moduleFileExtensions": [
-      "ts",
-      "js",
-      "json"
-    ]
-  },
-  "description": "lightweight odata javascript library",
   "homepage": "https://github.com/Soontao/c4codata",
   "author": {
     "name": "Theo Sun",

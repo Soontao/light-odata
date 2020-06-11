@@ -15,6 +15,8 @@
 
 Lightweight OData Client for OData (v2) Service.
 
+**OData V4 Support is In Progress**
+
 ## Installation
 
 ```bash
