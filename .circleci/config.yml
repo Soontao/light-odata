@@ -10,13 +10,22 @@ jobs:
     steps:
       - checkout
 
-      - run: npm install
+      - restore_cache:
+          keys:
+            - node-v10-{{ checksum "package-lock.json" }}
+
+      - run: npm ci
 
       # run tests!
       - run: npm run coverage
 
       # upload coverage
       - run: bash <(curl -s https://codecov.io/bash)
+
+      - save_cache:
+          paths:
+            - ~/.npm
+          key: node-v10-{{ checksum "package-lock.json" }}
 
   deploy:
     working_directory: ~/repo
