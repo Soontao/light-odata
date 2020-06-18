@@ -362,3 +362,7 @@ markdown-toc --replace --inline --header "## Table of Contents" --skip-headers=1
 ## [CHANGELOG](./CHANGELOG.md)
 
 ## [LICENSE](./LICENSE)
+
+## Thanks JetBrains
+
+[![](https://res.cloudinary.com/digf90pwi/image/upload/c_scale,h_100/v1592445332/jetbrains-variant-2-blackandwhite_ppc34r.png)](https://www.jetbrains.com/?from=light-odata)
