@@ -17,9 +17,9 @@ export class EntitySet<T> {
     if (res.error) {
       switch (this._client.getVersion()) {
         case 'v2':
-          throw new Error(res.error.message.value);
+          throw new Error(res.error?.message?.value);
         case 'v4':
-          throw new Error(res.error.message);
+          throw new Error(res.error?.message);
         default:
           break;
       }
@@ -36,7 +36,7 @@ export class EntitySet<T> {
     switch (this._client.getVersion()) {
       case 'v2':
         // @ts-ignore
-        return res.d.results || res.d;
+        return res.d?.results || res.d;
       case 'v4':
         // @ts-ignore
         return res.value || res;
@@ -45,7 +45,26 @@ export class EntitySet<T> {
     }
   }
 
-  async query(param: ODataQueryParam): Promise<T[]> {
+  async find(base: Partial<T>): Promise<T[]> {
+    const filter = OData.newFilter();
+
+    Object.entries(base).forEach(([key, value]) => {
+      if (typeof value == 'string') {
+        filter.field(key).eqString(value);
+      } else {
+        filter.field(key).eq(value);
+      }
+    });
+
+    return this.query(OData.newParam().filter(filter));
+  }
+
+  async query(param: ODataFilter): Promise<T[]>;
+  async query(param: ODataQueryParam): Promise<T[]>;
+  async query(param: any): Promise<any> {
+    if (param instanceof ODataFilter) {
+      param = ODataQueryParam.newParam().filter(param);
+    }
     const res = await this._client.newRequest<T>({
       collection: this._collection,
       method: 'GET',

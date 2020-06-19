@@ -1,4 +1,5 @@
 import join from '@newdash/newdash-node/join';
+import { ValidationError, FrameworkError } from './errors';
 
 export abstract class ODataDataObject {
   abstract toString(): string;
@@ -105,13 +106,13 @@ class ODataFieldExpr {
         if (value instanceof ODataDataObject) {
           this._getFieldExprs().push({ op, value: value.toString() });
         } else {
-          throw new Error(`Not support object ${value?.constructor?.name || typeof value} in odata filter eq/ne/gt/ge/ne/nt ...`);
+          throw new FrameworkError(`Not support object ${value?.constructor?.name || typeof value} in odata filter eq/ne/gt/ge/ne/nt ...`);
         }
         break;
       case 'undefined':
-        throw new Error(`You must set value in odata filter eq/ne/gt/ge/ne/nt ...`);
+        throw new ValidationError(`You must set value in odata filter eq/ne/gt/ge/ne/nt ...`);
       default:
-        throw new Error(`Not support typeof ${typeof value}: ${value} in odata filter eq/ne/gt/ge/ne/nt ...`);
+        throw new FrameworkError(`Not support typeof ${typeof value}: ${value} in odata filter eq/ne/gt/ge/ne/nt ...`);
     }
 
   }
@@ -203,7 +204,7 @@ class ODataFieldExpr {
    */
   between(low: any, max: any, includeBoundary = true): ODataFilter {
     if (low == undefined || max == undefined) {
-      throw new Error('You must give out the start and end value');
+      throw new ValidationError('You must give out the start and end value');
     }
     if (includeBoundary) {
       this.ge(low);
@@ -217,7 +218,7 @@ class ODataFieldExpr {
 
   betweenDateTime(start?: Date, end?: Date, includeBoundary = true): ODataFilter {
     if (start == undefined && end == undefined) {
-      throw new Error('You must give out the start or end date');
+      throw new ValidationError('You must give out the start or end date');
     }
     if (start instanceof Date) {
       if (includeBoundary) {
@@ -238,7 +239,7 @@ class ODataFieldExpr {
 
   betweenDateTimeOffset(start?: Date, end?: Date, includeBoundary = true): ODataFilter {
     if (start == undefined && end == undefined) {
-      throw new Error('You must give out the start or end date');
+      throw new ValidationError('You must give out the start or end date');
     }
     if (start instanceof Date) {
       if (includeBoundary) {
@@ -346,7 +347,7 @@ export class ODataFilter {
     if (start && end) {
       return this.gtDateTime(name, start).ltDateTime(name, end);
     }
-    throw new Error('You must give out the start and end date');
+    throw new ValidationError('You must give out the start and end date');
 
   }
 
@@ -360,7 +361,7 @@ export class ODataFilter {
     if (start && end) {
       return this.gtDateTimeOffset(name, start).ltDateTimeOffset(name, end);
     }
-    throw new Error('You must give out the start and end date');
+    throw new ValidationError('You must give out the start and end date');
   }
 
   /**

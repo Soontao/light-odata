@@ -1,12 +1,12 @@
 import "isomorphic-fetch"
 import { Random } from "mockjs";
-import { OData, ODataFilter } from "../src";
+import { OData } from "../src";
 import { CapDemoPeople } from "./demo_service_types";
 
 describe('CAP Framework OData (V4) Test Suite (basic)', () => {
 
   const Service = "https://odata-v4-demo-001.herokuapp.com/odata/$metadata"
-  const name = Random.name()
+
   const createClient = () => OData.New4({
     metadataUri: Service,
     processCsrfToken: false,
@@ -14,9 +14,16 @@ describe('CAP Framework OData (V4) Test Suite (basic)', () => {
   })
 
   it('should CRUD as expected', async () => {
+    let name = Random.name()
 
     const odata = createClient()
     const es = odata.getEntitySet<CapDemoPeople>("Peoples")
+
+    const c0 = await es.count(OData.newFilter().field("UserName").eqString(name))
+
+    if (c0 > 0) {
+      name = name + Random.integer(100, 999)
+    }
 
     // CREATE instnace
     const res0 = await es.create({
@@ -26,10 +33,8 @@ describe('CAP Framework OData (V4) Test Suite (basic)', () => {
     expect(res0.UserName).toEqual(name)
     expect(res0.ID).not.toBeUndefined()
 
-    // QUERY by name
-    const res = await es.query(
-      OData.newParam().filter(ODataFilter.newFilter().field("UserName").eqString(name)).count(true)
-    )
+    // QUERY by name, quick find
+    const res = await es.find({ UserName: name })
 
     expect(res).not.toBeUndefined()
     expect(res.length > 0).toBeTruthy()
@@ -53,9 +58,7 @@ describe('CAP Framework OData (V4) Test Suite (basic)', () => {
     await es.delete(id)
 
     // verify DELETE
-    const res4 = await odata.newRequest<CapDemoPeople>({ collection: "Peoples", id })
-    expect(res4.error).not.toBeUndefined()
-
+    await expect(() => es.retrieve(id)).rejects.toThrow()
 
   });
 

@@ -7,13 +7,13 @@ export type ODataVariant = 'default' | 'c4c' | 'byd' | 'cap'
 
 export type AdvancedODataClientProxy = (url: string, init: RequestInit) => Promise<{
   /**
-   * The Body Content
+   * parsed body content
    */
   content: any;
-  response: {
-    headers?: Headers;
-    status: number;
-  };
+  /**
+   * original response object
+   */
+  response: Response;
 }>;
 
 export interface ODataNewOptions {

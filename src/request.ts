@@ -15,12 +15,13 @@ import {
 import { GetAuthorizationPair } from './util';
 import { ODataVersion } from './types_v4';
 import { EntitySet } from './entityset';
+import { FrameworkError } from './errors';
 
 const S_X_CSRF_TOKEN = 'x-csrf-token';
 
 const S_CONTENT_TYPE = 'Content-Type';
 
-const odataDefaultFetchProxy: AdvancedODataClientProxy = async(url: string, init: RequestInit) => {
+const odataDefaultFetchProxy: AdvancedODataClientProxy = async(url: string, init?: RequestInit) => {
   const res = await fetch(url, init);
 
   let content: any = await res.text();
@@ -35,7 +36,7 @@ const odataDefaultFetchProxy: AdvancedODataClientProxy = async(url: string, init
 
   return {
     content,
-    response: { headers: res.headers, status: res.status }
+    response: res
   };
 };
 
@@ -213,7 +214,7 @@ export class OData {
    * fetch CSRF Token
    */
   private async getCsrfToken() {
-    if (this.csrfToken) { return await this.csrfToken; }
+    if (this.csrfToken) { return this.csrfToken; }
 
     const config: RequestInit = {
       method: 'GET',
@@ -275,7 +276,10 @@ export class OData {
       }
     }
 
-    return res.content;
+    const { content } = res;
+
+    return content;
+
   }
 
   /**
@@ -342,7 +346,7 @@ export class OData {
       case 'undefined':
         break;
       default:
-        throw new Error(`Not supported ObjectID type ${typeof id} for request`);
+        throw new FrameworkError(`Not supported ObjectID type ${typeof id} for request`);
     }
     return rt;
   }
