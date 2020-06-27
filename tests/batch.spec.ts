@@ -3,7 +3,7 @@ import { readFileSync } from "fs";
 import { join } from "path";
 import { parseMultiPartContent, formatBatchRequest, OData } from "../src";
 import { v4 } from "uuid";
-import map from "@newdash/newdash-node/map";
+import map from "@newdash/newdash/map";
 
 describe('test batch multipart parse & format', () => {
 

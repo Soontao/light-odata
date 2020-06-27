@@ -1,7 +1,7 @@
-import attempt from '@newdash/newdash-node/attempt';
-import join from '@newdash/newdash-node/join';
-import slice from '@newdash/newdash-node/slice';
-import startsWith from '@newdash/newdash-node/startsWith';
+import attempt from '@newdash/newdash/attempt';
+import join from '@newdash/newdash/join';
+import slice from '@newdash/newdash/slice';
+import startsWith from '@newdash/newdash/startsWith';
 import { v4 } from 'uuid';
 import { BatchRequest, formatBatchRequest, ParsedResponse, parseMultiPartContent } from './batch';
 import { ODataFilter } from './filter';

@@ -1,9 +1,9 @@
 import { ODataFilter } from './filter';
 
-import concat from '@newdash/newdash-node/concat';
-import join from '@newdash/newdash-node/join';
-import isArray from '@newdash/newdash-node/isArray';
-import uniq from '@newdash/newdash-node/uniq';
+import concat from '@newdash/newdash/concat';
+import join from '@newdash/newdash/join';
+import isArray from '@newdash/newdash/isArray';
+import uniq from '@newdash/newdash/uniq';
 
 import { ODataVersion } from './types_v4';
 

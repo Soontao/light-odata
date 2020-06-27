@@ -1,4 +1,4 @@
-import join from '@newdash/newdash-node/join';
+import join from '@newdash/newdash/join';
 import { ValidationError, FrameworkError } from './errors';
 
 export abstract class ODataDataObject {
