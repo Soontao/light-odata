@@ -63,9 +63,9 @@ export class OData {
    */
   private commonHeader: { [headerName: string]: string } = {
     'Accept': 'application/json',
-    'Accept-Language': 'zh',
     'Content-Type': 'application/json'
   };
+
   private fetchProxy = odataDefaultFetchProxy;
   private processCsrfToken = true;
   private forSAP = false;

@@ -3,7 +3,7 @@ import { ODataVersion } from './types_v4';
 
 export type HTTPMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
-export type ODataVariant = 'default' | 'c4c' | 'byd' | 'cap'
+export type ODataVariant = 'default' | 'c4c' | 'byd' | 'cap' | 'cpi'
 
 export type AdvancedODataClientProxy = (url: string, init: RequestInit) => Promise<{
   /**

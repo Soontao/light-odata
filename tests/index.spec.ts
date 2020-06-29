@@ -17,7 +17,7 @@ describe('Read Test', () => {
     expect(() => { OData.New({ metadataUri: undefined }) }).toThrow()
   })
 
-  test.concurrent('Read All', async () => {
+  test('Read All', async () => {
 
     const odata = OData.New({ metadataUri: TestServiceURL })
     const result = await odata.newRequest<Customer>({
@@ -31,7 +31,7 @@ describe('Read Test', () => {
   })
 
 
-  test.concurrent('Read All (v4)', async () => {
+  test('Read All (v4)', async () => {
     const odata_v4 = OData.New({ metadataUri: TestV4ServiceURL, version: "v4" })
     const response = await odata_v4.newRequest<People>({
       collection: "People",
@@ -41,7 +41,7 @@ describe('Read Test', () => {
   })
 
 
-  test.concurrent('Read By ID', async () => {
+  test('Read By ID', async () => {
     const odata = OData.New({ metadataUri: TestServiceURL })
     const r = await odata.newRequest<Customer>({
       collection: "Customers",
@@ -50,7 +50,7 @@ describe('Read Test', () => {
     expect(r.d.CustomerID).toEqual("ALFKI")
   })
 
-  test.concurrent('Read By ID (number)', async () => {
+  test('Read By ID (number)', async () => {
     const odata = OData.New({ metadataUri: TestServiceURL })
     const r = await odata.newRequest<{ Title: string }>({
       collection: "Employees",
@@ -59,7 +59,7 @@ describe('Read Test', () => {
     expect(r.d.Title).toEqual("Sales Representative")
   })
 
-  test.concurrent('Read By ID (v4)', async () => {
+  test('Read By ID (v4)', async () => {
     const odata_v4 = OData.New({ metadataUri: TestV4ServiceURL, version: "v4" })
     const response = await odata_v4.newRequest<People>({
       collection: "People",
@@ -68,7 +68,7 @@ describe('Read Test', () => {
     expect(response.Gender).toBe("Male")
   })
 
-  test.concurrent('Read By ID (v4) not existed', async () => {
+  test('Read By ID (v4) not existed', async () => {
     const odata_v4 = OData.New({ metadataUri: TestV4ServiceURL, version: "v4" })
     const response = await odata_v4.newRequest<People>({
       collection: "People",
@@ -81,7 +81,7 @@ describe('Read Test', () => {
 
   })
 
-  test.concurrent('Read By Compound ID (string)', async () => {
+  test('Read By Compound ID (string)', async () => {
     const odata = OData.New({ metadataUri: TestServiceURL })
     const r = await odata.newRequest<Customer>({
       collection: "Customers",
@@ -90,7 +90,7 @@ describe('Read Test', () => {
     expect(r.d.CustomerID).toEqual("ALFKI")
   })
 
-  test.concurrent('Read By Compound ID (string) (v4)', async () => {
+  test('Read By Compound ID (string) (v4)', async () => {
     const odata = OData.New({ metadataUri: TestV4ServiceURL, version: "v4" })
     const r = await odata.newRequest<People>({
       collection: "People",
@@ -99,7 +99,7 @@ describe('Read Test', () => {
     expect(r.UserName).toEqual("russellwhyte")
   })
 
-  test.concurrent('Read By Compound Keys', async () => {
+  test('Read By Compound Keys', async () => {
     const odata = OData.New({ metadataUri: TestServiceURL })
     const r = await odata.newRequest<Alphabetical_list_of_product>({
       collection: "Alphabetical_list_of_products",
@@ -113,7 +113,7 @@ describe('Read Test', () => {
     expect(r.d.UnitPrice).toEqual("18.0000")
   })
 
-  test.concurrent('Read By Filter', async () => {
+  test('Read By Filter', async () => {
     const odata = OData.New({ metadataUri: TestServiceURL })
     const filter = OData.newFilter().field("Phone").eqString("030-0074321");
     const result = await odata.newRequest({
@@ -123,7 +123,7 @@ describe('Read Test', () => {
     expect(result.d.results[0]["CustomerID"]).toEqual("ALFKI")
   })
 
-  test.concurrent('Read By Filter (v4)', async () => {
+  test('Read By Filter (v4)', async () => {
     const odata = OData.New({ metadataUri: TestV4ServiceURL, version: "v4" })
     const filter = OData.newFilter().field("FirstName").eqString("Russell");
     const result = await odata.newRequest<People>({
@@ -135,7 +135,7 @@ describe('Read Test', () => {
     expect(result.value[0].UserName).toEqual("russellwhyte")
   })
 
-  test.concurrent('Create Instace (v4)', async () => {
+  test('Create Instace (v4)', async () => {
     const odata = OData.New({ metadataUri: TestV4ServiceURL, version: "v4" })
     const result = await odata.newRequest<People>({
       collection: "People",
@@ -159,7 +159,7 @@ describe('Read Test', () => {
   })
 
 
-  test.concurrent('Read By Group Filter with count', async () => {
+  test('Read By Group Filter with count', async () => {
     const odata = OData.New({ metadataUri: TestServiceURL })
     const filter = ODataFilter
       .newFilter()

@@ -30,7 +30,8 @@ d('C4C/ByD OData (V2) Test Suite (basic)', () => {
         username: env.C4C_USER,
         password: env.C4C_PASS
       },
-      processCsrfToken: true
+      processCsrfToken: true,
+      variant: "c4c"
     })
 
     const UserID = v4().split("-").pop()
@@ -59,6 +60,11 @@ d('C4C/ByD OData (V2) Test Suite (basic)', () => {
     // verify
     const t = await set.count(OData.newFilter().field("UserID").eqString(UserID))
     expect(t).toEqual(0)
+
+    await expect(async () => {
+      // @ts-ignore
+      return await set.create({ NotExist: "v1" })
+    }).rejects.toThrow()
 
   });
 
