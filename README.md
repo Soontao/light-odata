@@ -51,6 +51,7 @@ Alternative, in native browser environment, just add [unpkg](https://unpkg.com/l
 **If you are already familiar with OData, please skip this section**
 
 <details><summary>Concepts</summary>
+
 From [OData.org](https://www.odata.org/documentation/odata-version-2-0/uri-conventions/)
 
 
