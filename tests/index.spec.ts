@@ -1,4 +1,4 @@
-import "isomorphic-fetch"
+import "../src/polyfill"
 import { v4 } from "uuid";
 import { OData } from "../src/request";
 import { ODataParam, ODataFilter } from '../src';

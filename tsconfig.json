@@ -20,7 +20,7 @@
     "outDir": "lib",
     "removeComments": false
   },
-  "files": [
-    "src/index.ts"
+  "include": [
+    "src"
   ]
 }

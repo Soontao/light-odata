@@ -1,4 +1,4 @@
-import "isomorphic-fetch"
+import "../src/polyfill"
 import { readFileSync } from "fs";
 import { join } from "path";
 import { parseMultiPartContent, formatBatchRequest, OData } from "../src";

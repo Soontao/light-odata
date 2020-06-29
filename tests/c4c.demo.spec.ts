@@ -1,9 +1,7 @@
+import "../src/polyfill"
 import { env } from "process";
 import { OData, ODataDateTime } from "../src";
 import { v4 } from "uuid";
-
-// browser mock
-global.fetch = require("fetch-cookie")(require("node-fetch"))
 
 let d = describe
 

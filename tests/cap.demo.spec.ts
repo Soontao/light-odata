@@ -1,4 +1,4 @@
-import "isomorphic-fetch"
+import "../src/polyfill"
 import { Random } from "mockjs";
 import { OData } from "../src";
 import { CapDemoPeople } from "./demo_service_types";

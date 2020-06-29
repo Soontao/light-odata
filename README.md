@@ -55,16 +55,20 @@ Alternative, in native browser environment, just add [unpkg](https://unpkg.com/l
       1. [filter by one field but multi values](#filter-by-one-field-but-multi-values)
       1. [filter by date](#filter-by-date)
    1. [Batch requests](#batch-requests)
+   1. [Server Side Polyfill](#server-side-polyfill)
    1. [Others](#others)
-   1. [CHANGELOG](#changelog)
-   1. [LICENSE](#license)
+   1. [[CHANGELOG](./CHANGELOG.md)](#changelog/changelogmd)
+   1. [[LICENSE](./LICENSE)](#license/license)
+   1. [Thanks JetBrains](#thanks-jetbrains)
 <!-- ToC end -->
 
 ## OData Version 2 concepts 
 
+**If you are already familiar with OData, please skip this section**
+
+<details><summary>Concepts</summary>
 From [OData.org](https://www.odata.org/documentation/odata-version-2-0/uri-conventions/)
 
-**If you are already familiar with OData, please skip this section**
 
 ### URI Format
 
@@ -94,7 +98,11 @@ The third and fourth Product Entry from the collection of all products when the 
 | And                  | Logical and           | /Products?$filter=Price le 200 and Price gt 3.5    |
 | Or                   | Logical or            | /Products?$filter=Price le 3.5 or Price gt 200     |
 
+</details>
+
 ## OData Client
+
+<details><summary>How to use light-odata</summary>
 
 Start with a simple query, following code start a `GET` http request, and asks the server to respond to all customers which phone number equals 030-0074321
 
@@ -154,9 +162,13 @@ interface PlainODataResponse {
 }
 ```
 
+</details>
+
 ## ODataParam
 
 use `ODataParam` to control data size, involved fields and order
+
+<details><summary>How to use OdataParam</summary>
 
 ### pagination
 
@@ -235,10 +247,14 @@ OData.newParam().search("any word");
 // $format=json&$search=any word
 OData.newParam().search("any word", false);
 ```
+</details>
 
 ## ODataFilter
 
 Use the `ODataFilter` to filter data
+
+
+<details><summary>How to use OdataFilter</summary>
 
 Most `SAP` systems only support `AND` operator between different fields, and `OR` operator in a same field. (it depends on SAP Netweaver implementation)
 
@@ -309,6 +325,8 @@ OData
   .build()
 ```
 
+</details>
+
  
 ## Batch requests
 
@@ -350,9 +368,18 @@ result.map(r => expect(r.status).toEqual(201)) // Created
 
 ```
 
+## Server Side Polyfill
+
+Use polyfill for your server-side application.
+
+```js
+// import "light-odata/lib/polyfill"
+require("light-odata/lib/polyfill")
+```
+
 ## Others
 
-Use [markdown-toc](https://github.com/sebdah/markdown-toc) to generate table of contents, with following commands: 
+Use the go tool - [markdown-toc](https://github.com/sebdah/markdown-toc) to generate table of contents, with following commands: 
 
 
 ```bash
