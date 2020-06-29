@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.4.0](https://github.com/Soontao/c4codata/compare/v2.3.0...v2.4.0) (2020-06-29)
+
+
+### Features
+
+* [#29](https://github.com/Soontao/c4codata/issues/29) DELETE & CAP demo service test ([89958c1](https://github.com/Soontao/c4codata/commit/89958c1d307a0c673cb25becca773422bcc60913))
+* [#29](https://github.com/Soontao/c4codata/issues/29) odata v4 write ([58771f1](https://github.com/Soontao/c4codata/commit/58771f158adac1706317289a12715ae92b99bab2))
+* [#29](https://github.com/Soontao/c4codata/issues/29) odata v4, basic read support ([7f4cda9](https://github.com/Soontao/c4codata/commit/7f4cda9105ca9246f6d4e603c468ff48b87c493d))
+* [#39](https://github.com/Soontao/c4codata/issues/39) remove wrappers ([1e0c2f8](https://github.com/Soontao/c4codata/commit/1e0c2f8a741ac7d9f697dd4ec0b74dbe2c7a8ad4))
+* entity set ([9b4bc73](https://github.com/Soontao/c4codata/commit/9b4bc731ee2809a01df02132745d929cad1e15e9))
+* processors ([e70373e](https://github.com/Soontao/c4codata/commit/e70373ee2c5285ddceb8ff3b51b3c2fb2f36ea0a))
+* refactor datetime ([a9d5e44](https://github.com/Soontao/c4codata/commit/a9d5e447275911deae5d6edc07b6e9d93dac9a5f))
+* **lint:** use eslint as lint tool ([63c6fac](https://github.com/Soontao/c4codata/commit/63c6fac4820812420667b24ab120028e8cfc0ab7))
+* upgrade newdash version ([7ec0cf5](https://github.com/Soontao/c4codata/commit/7ec0cf5f5ec3ab19fc674c193413c82b0518bd16))
+
+
+### Bug Fixes
+
+* unit test for batch request format ([5ff0fbd](https://github.com/Soontao/c4codata/commit/5ff0fbd5bcc99cf9be57fb858443deaf9d3a0525))
+* unit tests ([989ac2f](https://github.com/Soontao/c4codata/commit/989ac2fd684ae3fc942a3906299461a79e611674))
+
 ## [2.3.0](https://github.com/Soontao/c4codata/compare/v2.2.0...v2.3.0) (2020-06-01)
 
 
