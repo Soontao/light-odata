@@ -375,7 +375,7 @@ Use the go tool '[markdown-toc](https://github.com/sebdah/markdown-toc)' to gene
 
 
 ```bash
-markdown-toc --replace --inline --depth  --header "## Table of Contents" --skip-headers=1  README.md
+markdown-toc --replace --inline --depth 2 --header "## Table of Contents" --skip-headers=1  README.md
 ```
 
 ## [CHANGELOG](./CHANGELOG.md)
