@@ -41,8 +41,8 @@ Alternative, in native browser environment, just add [unpkg](https://unpkg.com/l
    1. [Batch requests](#batch-requests)
    1. [Server Side Polyfill](#server-side-polyfill)
    1. [Others](#others)
-   1. [[CHANGELOG](./CHANGELOG.md)](#changelog/changelogmd)
-   1. [[LICENSE](./LICENSE)](#license/license)
+   1. [CHANGELOG](#changelog)
+   1. [LICENSE](#license)
    1. [Thanks JetBrains](#thanks-jetbrains)
 <!-- ToC end -->
 
