@@ -35,25 +35,9 @@ Alternative, in native browser environment, just add [unpkg](https://unpkg.com/l
    1. [Installation](#installation)
    1. [Table of Contents](#table-of-contents)
    1. [OData Version 2 concepts ](#odata-version-2-concepts-)
-      1. [URI Format](#uri-format)
-      1. [Pagination](#pagination)
-      1. [Filter](#filter)
    1. [OData Client](#odata-client)
-      1. [ODataRequest interface](#odatarequest-interface)
-      1. [ODataResponse interface](#odataresponse-interface)
    1. [ODataParam](#odataparam)
-      1. [pagination](#pagination-1)
-      1. [filter](#filter-1)
-      1. [inline count](#inline-count)
-      1. [orderby](#orderby)
-      1. [navigation property](#navigation-property)
-      1. [fields select](#fields-select)
-      1. [full text search (basic query)](#full-text-search-basic-query)
    1. [ODataFilter](#odatafilter)
-      1. [filter by single field value](#filter-by-single-field-value)
-      1. [filter by multi fields](#filter-by-multi-fields)
-      1. [filter by one field but multi values](#filter-by-one-field-but-multi-values)
-      1. [filter by date](#filter-by-date)
    1. [Batch requests](#batch-requests)
    1. [Server Side Polyfill](#server-side-polyfill)
    1. [Others](#others)
@@ -247,6 +231,7 @@ OData.newParam().search("any word");
 // $format=json&$search=any word
 OData.newParam().search("any word", false);
 ```
+
 </details>
 
 ## ODataFilter
@@ -255,6 +240,7 @@ Use the `ODataFilter` to filter data
 
 
 <details><summary>How to use OdataFilter</summary>
+
 
 Most `SAP` systems only support `AND` operator between different fields, and `OR` operator in a same field. (it depends on SAP Netweaver implementation)
 
@@ -332,6 +318,8 @@ OData
 
 use odata `$batch` api for operating multi entities in **single** HTTP request, it will save a lot of time between client & server (In the case of processing a large number of requests).
 
+<details><summary>Code</summary>
+
 ```javascript
 
 const odata = OData.New({
@@ -368,6 +356,8 @@ result.map(r => expect(r.status).toEqual(201)) // Created
 
 ```
 
+</details>
+
 ## Server Side Polyfill
 
 Use polyfill for your server-side application.
@@ -375,15 +365,17 @@ Use polyfill for your server-side application.
 ```js
 // import "light-odata/lib/polyfill"
 require("light-odata/lib/polyfill")
+
+// use OData
 ```
 
 ## Others
 
-Use the go tool - [markdown-toc](https://github.com/sebdah/markdown-toc) to generate table of contents, with following commands: 
+Use the go tool '[markdown-toc](https://github.com/sebdah/markdown-toc)' to generate table of contents, with following commands: 
 
 
 ```bash
-markdown-toc --replace --inline --header "## Table of Contents" --skip-headers=1  README.md
+markdown-toc --replace --inline --depth  --header "## Table of Contents" --skip-headers=1  README.md
 ```
 
 ## [CHANGELOG](./CHANGELOG.md)
