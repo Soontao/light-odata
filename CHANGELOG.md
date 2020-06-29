@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.4.1](https://github.com/Soontao/c4codata/compare/v2.4.0...v2.4.1) (2020-06-29)
+
+
+### Bug Fixes
+
+* optional value ([85b26d0](https://github.com/Soontao/c4codata/commit/85b26d0e652ca3417a35b2682219286966f08a92))
+
 ## [2.4.0](https://github.com/Soontao/c4codata/compare/v2.3.0...v2.4.0) (2020-06-29)
 
 
