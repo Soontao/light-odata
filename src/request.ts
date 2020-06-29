@@ -214,11 +214,11 @@ export class OData {
    * fetch CSRF Token
    */
   private async getCsrfToken() {
-    if (this.csrfToken) { return this.csrfToken; }
+    if (this.csrfToken && this.csrfToken != null) { return this.csrfToken; }
 
     const config: RequestInit = {
       method: 'GET',
-      headers: { S_X_CSRF_TOKEN: 'fetch' }
+      headers: { [S_X_CSRF_TOKEN]: 'fetch' }
     };
 
     if (this.credential) {

@@ -435,7 +435,7 @@ export class ODataFilter {
     return this.build();
   }
 
-  _buildFieldExprString(field: string): string {
+  protected _buildFieldExprString(field: string): string {
     const exprs = this.getExprMapping()[field];
     if (exprs.length > 0) {
       if (exprs.filter((expr) => expr.op == ExprOperator.eq).length == 0) {
