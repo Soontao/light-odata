@@ -11,7 +11,7 @@
       "es2017.object"
     ],
     "module": "commonjs",
-    "target": "es5",
+    "target": "ES6",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",

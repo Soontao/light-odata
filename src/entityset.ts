@@ -26,6 +26,19 @@ export class EntitySet<T> {
     }
   }
 
+  private _getResult(res: PlainODataResponse<T>) {
+    switch (this._client.getVersion()) {
+      case 'v2':
+        // @ts-ignore
+        return res.d?.results || res.d;
+      case 'v4':
+        // @ts-ignore
+        return res?.value || res;
+      default:
+        break;
+    }
+  }
+
   async retrieve(id: any): Promise<T> {
     const res = await this._client.newRequest<T>({
       collection: this._collection,
@@ -33,16 +46,7 @@ export class EntitySet<T> {
       id
     });
     this._checkError(res);
-    switch (this._client.getVersion()) {
-      case 'v2':
-        // @ts-ignore
-        return res.d?.results || res.d;
-      case 'v4':
-        // @ts-ignore
-        return res.value || res;
-      default:
-        break;
-    }
+    return this._getResult(res);
   }
 
   async find(base: Partial<T>): Promise<T[]> {
@@ -71,16 +75,7 @@ export class EntitySet<T> {
       params: param
     });
     this._checkError(res);
-    switch (this._client.getVersion()) {
-      case 'v2':
-        // @ts-ignore
-        return res.d.results || res.d;
-      case 'v4':
-        // @ts-ignore
-        return res.value || res;
-      default:
-        break;
-    }
+    return this._getResult(res);
   }
 
   async count(filter?: ODataFilter): Promise<number> {
@@ -96,7 +91,7 @@ export class EntitySet<T> {
     this._checkError(res);
     switch (this._client.getVersion()) {
       case 'v2':
-        return parseInt(res.d.__count);
+        return parseInt(res?.d?.__count);
       case 'v4':
         return res['@odata.count'];
       default:
@@ -111,16 +106,8 @@ export class EntitySet<T> {
       entity: body
     });
     this._checkError(res);
-    switch (this._client.getVersion()) {
-      case 'v2':
-        // @ts-ignore
-        return res.d.results || res.d;
-      case 'v4':
-        // @ts-ignore
-        return res.value || res;
-      default:
-        break;
-    }
+    return this._getResult(res);
+
   }
 
   async update(id: any, body: Partial<T>): Promise<T> {
@@ -131,16 +118,7 @@ export class EntitySet<T> {
       entity: body
     });
     this._checkError(res);
-    switch (this._client.getVersion()) {
-      case 'v2':
-        // @ts-ignore
-        return res.d.results || res.d;
-      case 'v4':
-        // @ts-ignore
-        return res.value || res;
-      default:
-        break;
-    }
+    return this._getResult(res);
   }
 
   async delete(id: any): Promise<void> {
