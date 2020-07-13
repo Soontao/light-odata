@@ -153,7 +153,7 @@ interface PlainODataResponse {
 
 use `ODataParam` to control data size, involved fields and order
 
-<details><summary>How to use OdataParam</summary>
+<details><summary>How to use ODataParam</summary>
 
 ### pagination
 
@@ -240,7 +240,7 @@ OData.newParam().search("any word", false);
 Use the `ODataFilter` to filter data
 
 
-<details><summary>How to use OdataFilter</summary>
+<details><summary>How to use ODataFilter</summary>
 
 
 Most `SAP` systems only support `AND` operator between different fields, and `OR` operator in a same field. (it depends on SAP Netweaver implementation)
