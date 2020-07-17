@@ -42,7 +42,6 @@
   },
   "dependencies": {
     "@newdash/newdash": "^5.8.0",
-    "core-js": "^3.6.4",
     "node-fetch": "^2.6.0",
     "fetch-cookie": "^0.10.1",
     "http-string-parser": "^0.0.6",
