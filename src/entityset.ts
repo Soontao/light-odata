@@ -2,6 +2,7 @@ import { ODataQueryParam } from './params';
 import { OData } from './request';
 import { PlainODataResponse } from './types';
 import { ODataFilter } from './filter';
+import { ODataServerError } from './errors';
 
 export class EntitySet<T> {
 
@@ -17,9 +18,9 @@ export class EntitySet<T> {
     if (res.error) {
       switch (this._client.getVersion()) {
         case 'v2':
-          throw new Error(res.error?.message?.value);
+          throw new ODataServerError(res.error?.message?.value);
         case 'v4':
-          throw new Error(res.error?.message);
+          throw new ODataServerError(res.error?.message);
         default:
           break;
       }

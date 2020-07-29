@@ -19,10 +19,8 @@ interface People {
 
 d('C4C/ByD OData (V2) Test Suite (basic)', () => {
 
-
-  it('should CRUD instance', async () => {
-
-    const odata = OData.New({
+  const getOData = () => {
+    return OData.New({
       metadataUri: env.C4C_ODATA,
       credential: {
         username: env.C4C_USER,
@@ -31,10 +29,18 @@ d('C4C/ByD OData (V2) Test Suite (basic)', () => {
       processCsrfToken: true,
       variant: "c4c"
     })
+  }
 
-    const UserID = v4().split("-").pop()
+  const createUUID = () => v4().split('-').join('')
 
-    const TestUserName = v4().split("-").join('')
+
+  it('should CRUD instance', async () => {
+
+    const odata = getOData()
+
+    const UserID = createUUID()
+
+    const TestUserName = createUUID()
 
     const set = odata.getEntitySet<People>("PeopleRootCollection")
 
@@ -66,6 +72,40 @@ d('C4C/ByD OData (V2) Test Suite (basic)', () => {
       // @ts-ignore
       return await set.create({ NotExist: "v1" })
     }).rejects.toThrow()
+
+  });
+
+  it('should support batch operation', async () => {
+
+    const coll = "PeopleRootCollection"
+    const client = getOData()
+    const users = Array(5).fill(0).map(createUUID) // generated test user uuids
+    const es = client.getEntitySet<People>(coll)
+    const reqs = users.map(uid => client.newBatchRequest({
+      collection: coll,
+      method: "POST",
+      entity: {
+        UserID: uid
+      }
+    }))
+
+    const ress = await client.execBatchRequests(reqs)
+
+    ress.forEach(res => {
+      expect(res.status).toBe(201)
+    })
+
+    const resBodies = await Promise.all(ress.map(res => res.json()))
+
+    await client.execBatchRequests(resBodies.map(resBody => client.newBatchRequest({
+      collection: coll,
+      method: "DELETE",
+      id: resBody.d.results.ObjectID
+    })))
+
+    // verify deleted
+    const c = await es.count(client.newFilter().field('UserID').eqString(users[0]))
+    expect(c).toBe(0)
 
   });
 

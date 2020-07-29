@@ -7,13 +7,14 @@ import startsWith from '@newdash/newdash/startsWith';
 
 import { parseResponse } from 'http-string-parser';
 import { v4 } from 'uuid';
+import { FrameworkError } from './errors';
 
 const HTTP_EOL = '\r\n';
 
 /**
  * parsed mock batch response
  */
-export interface ParsedResponse<T> {
+export interface ParsedResponse<T = any> {
   text: () => Promise<string>;
   json: () => Promise<T>;
   status: number;
@@ -45,7 +46,7 @@ export const formatHttpRequestString = (u: string, r: any): string => join([
  * @param requests
  * @param boundary a given boundary id
  */
-export const formatBatchRequest = (requests: BatchRequest[], boundary: string):string => join(
+export const formatBatchRequest = (requests: BatchRequest[], boundary: string): string => join(
   concat(
     requests.map((r) => {
       if (r.init.method === 'GET' || !r.init.method) {
@@ -118,6 +119,6 @@ export const parseMultiPartContent = async(multipartBody: string, boundaryId: st
       }
     })));
   }
-  throw new Error('parameter lost');
+  throw new FrameworkError('parameter lost');
 
 };

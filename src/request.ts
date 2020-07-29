@@ -15,7 +15,7 @@ import {
 import { GetAuthorizationPair } from './util';
 import { ODataVersion } from './types_v4';
 import { EntitySet } from './entityset';
-import { FrameworkError } from './errors';
+import { FrameworkError, ValidationError } from './errors';
 
 const S_X_CSRF_TOKEN = 'x-csrf-token';
 
@@ -142,7 +142,7 @@ export class OData {
       this.fetchProxy = fetchProxy;
     }
     if (!metadataUri) {
-      throw new Error('metadata url required !');
+      throw new ValidationError('metadata url required !');
     } else {
       this.metadataUri = metadataUri;
       // e.g https://c4c-system/sap/c4c/odata/v1/c4codata/
@@ -232,7 +232,7 @@ export class OData {
     if (headers) {
       this.csrfToken = headers.get(S_X_CSRF_TOKEN);
     } else {
-      throw new Error('csrf token need the odata proxy give out headers!');
+      throw new FrameworkError('csrf token need the odata proxy give out headers!');
     }
     return this.csrfToken;
   }
@@ -385,7 +385,7 @@ export class OData {
    *
    * @param requests batch request
    */
-  public async execBatchRequests(requests: Array<Promise<BatchRequest>>): Promise<Array<ParsedResponse<PlainODataMultiResponse>>> {
+  public async execBatchRequests(requests: Array<Promise<BatchRequest>>): Promise<Array<ParsedResponse<any>>> {
     const { url, req } = await this.formatBatchRequests(requests);
     const { content, response: { headers } } = await this.fetchProxy(url, req);
     const responseBoundaryString = headers.get('Content-Type').split('=').pop();
@@ -393,6 +393,24 @@ export class OData {
       // if boundary string empty, error here
     }
     return await parseMultiPartContent(content, responseBoundaryString);
+  }
+
+  /**
+   * create new filter
+   *
+   * @alias OData.newFilter
+   */
+  public newFilter() {
+    return OData.newFilter();
+  }
+
+  /**
+   * create new param
+   *
+   * @alias OData.newParam
+   */
+  public newParam() {
+    return OData.newParam();
   }
 
   public async newBatchRequest<T>(options: BatchRequestOptions<T>) {

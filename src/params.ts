@@ -6,12 +6,16 @@ import isArray from '@newdash/newdash/isArray';
 import uniq from '@newdash/newdash/uniq';
 
 import { ODataVersion } from './types_v4';
+import { ValidationError } from './errors';
 
 class SearchParams {
 
   _store = new Map()
 
   append(key: string, value: string): void {
+    if (this._store.has(key)) {
+      throw new ValidationError(`key ${key} has been appended before, and can not be overwrited!`);
+    }
     this._store.set(key, value);
   }
 
@@ -103,7 +107,7 @@ export class ODataQueryParam {
       this.$filter = filter;
       return this;
     }
-    throw Error('ODataQueryParam.filter only accept string or ODataFilter type parameter');
+    throw new ValidationError('ODataQueryParam.filter only accept string or ODataFilter type parameter');
   }
 
   /**
@@ -175,7 +179,7 @@ export class ODataQueryParam {
     if (format === 'json') {
       this.$format = format;
     } else {
-      throw new Error('light-odata dont support xml response');
+      throw new ValidationError('light-odata doesnt support xml response');
     }
     return this;
   }
