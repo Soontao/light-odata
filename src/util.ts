@@ -21,3 +21,7 @@ export function FormatODataDateTimedate(date: Date = new Date()): string {
 export function GetAuthorizationPair(user: string, password: string): { Authorization: string } {
   return { Authorization: `Basic ${encode(`${user}:${password}`)}` };
 }
+
+export function inArray(obj: any, arr: any[] = []): boolean {
+  return arr.indexOf(obj) >= 0;
+}

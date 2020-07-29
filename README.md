@@ -325,7 +325,6 @@ use odata `$batch` api for operating multi entities in **single** HTTP request, 
 
 const odata = OData.New({
   metadataUri: `https://services.odata.org/V2/(S(${v4()}))/OData/OData.svc/$metadata`,
-  processCsrfToken: false, // set false if you dont need process csrf token
 })
 const testDesc1 = v4(); // a generated uuid
 const testDesc2 = v4();

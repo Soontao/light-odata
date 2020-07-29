@@ -1,7 +1,7 @@
-import "../src/polyfill"
 import { env } from "process";
-import { OData, ODataDateTime } from "../src";
 import { v4 } from "uuid";
+import { OData, ODataDateTime } from "../src";
+import "../src/polyfill";
 
 let d = describe
 
@@ -26,7 +26,6 @@ d('C4C/ByD OData (V2) Test Suite (basic)', () => {
         username: env.C4C_USER,
         password: env.C4C_PASS
       },
-      processCsrfToken: true,
       variant: "c4c"
     })
   }
@@ -100,7 +99,7 @@ d('C4C/ByD OData (V2) Test Suite (basic)', () => {
     await client.execBatchRequests(resBodies.map(resBody => client.newBatchRequest({
       collection: coll,
       method: "DELETE",
-      id: resBody.d.results.ObjectID
+      id: resBody.d.ObjectID
     })))
 
     // verify deleted

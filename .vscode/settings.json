@@ -5,6 +5,7 @@
   "editor.formatOnSave": false,
   "cSpell.enabled": false,
   "editor.codeActionsOnSave": {
-    "source.fixAll": true
+    "source.fixAll": true,
+    "source.organizeImports": true
   }
 }

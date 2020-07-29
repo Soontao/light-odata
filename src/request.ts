@@ -4,24 +4,26 @@ import slice from '@newdash/newdash/slice';
 import startsWith from '@newdash/newdash/startsWith';
 import { v4 } from 'uuid';
 import { BatchRequest, formatBatchRequest, ParsedResponse, parseMultiPartContent } from './batch';
+import { EntitySet } from './entityset';
+import { FrameworkError, ValidationError } from './errors';
 import { ODataFilter } from './filter';
 import { ODataParam, ODataQueryParam } from './params';
 import {
-  Credential, HTTPMethod,
-  PlainODataMultiResponse, PlainODataSingleResponse, AdvancedODataClientProxy,
-  ODataNewOptions, BatchRequestOptions,
-  ODataReadIDRequest, ODataWriteRequest, ODataQueryRequest, ODataVariant
+  BatchPlainODataResponse, BatchRequestOptions, Credential, FetchProxy,
+  HTTPMethod,
+  ODataNewOptions,
+  ODataQueryRequest, ODataReadIDRequest, ODataVariant, ODataWriteRequest, PlainODataMultiResponse,
+  PlainODataSingleResponse,
+  SAPNetweaverOData
 } from './types';
-import { GetAuthorizationPair } from './util';
-import { ODataVersion } from './types_v4';
-import { EntitySet } from './entityset';
-import { FrameworkError, ValidationError } from './errors';
+import { ODataV4, ODataVersion } from './types_v4';
+import { GetAuthorizationPair, inArray } from './util';
 
 const S_X_CSRF_TOKEN = 'x-csrf-token';
 
 const S_CONTENT_TYPE = 'Content-Type';
 
-const odataDefaultFetchProxy: AdvancedODataClientProxy = async(url: string, init?: RequestInit) => {
+const defaultProxy: FetchProxy = async(url: string, init?: RequestInit) => {
   const res = await fetch(url, init);
 
   let content: any = await res.text();
@@ -63,12 +65,11 @@ export class OData {
    */
   private commonHeader: { [headerName: string]: string } = {
     'Accept': 'application/json',
-    'Content-Type': 'application/json'
+    [S_CONTENT_TYPE]: 'application/json'
   };
 
-  private fetchProxy = odataDefaultFetchProxy;
-  private processCsrfToken = true;
-  private forSAP = false;
+  private fetchProxy = defaultProxy;
+  private processCsrfToken = false;
 
   private variant: ODataVariant = 'default'
 
@@ -88,9 +89,15 @@ export class OData {
       options.fetchProxy,
       options.processCsrfToken
     );
-    rt.forSAP = options.forSAP || false;
     rt.version = options.version || 'v2';
     rt.variant = options.variant || 'default';
+    // force process csrf token
+    if (inArray(rt.variant, SAPNetweaverOData)) {
+      rt.processCsrfToken = true;
+      // ref https://cxwiki.sap.com/pages/viewpage.action?pageId=511350333
+      // use compatibility mode for c4c/byd
+      rt.commonHeader['odata-v2-strict-json-format'] = 'true';
+    }
     return rt;
   }
 
@@ -99,8 +106,9 @@ export class OData {
    *
    * @param options
    */
-  static New4(options: ODataNewOptions): OData {
+  static New4(options: ODataNewOptions): ODataV4 {
     options.version = 'v4';
+    // @ts-ignore
     return OData.New(options);
   }
 
@@ -132,11 +140,11 @@ export class OData {
      * deprecated, DONT use it
      */
     urlRewrite?: (string) => string,
-    fetchProxy?: AdvancedODataClientProxy,
+    fetchProxy?: FetchProxy,
     /**
      * auto fetch csrf token before broken operation
      */
-    processCsrfToken = true
+    processCsrfToken = false
   ) {
     if (fetchProxy) {
       this.fetchProxy = fetchProxy;
@@ -385,7 +393,7 @@ export class OData {
    *
    * @param requests batch request
    */
-  public async execBatchRequests(requests: Array<Promise<BatchRequest>>): Promise<Array<ParsedResponse<any>>> {
+  public async execBatchRequests(requests: Array<Promise<BatchRequest>>): Promise<Array<ParsedResponse<BatchPlainODataResponse>>> {
     const { url, req } = await this.formatBatchRequests(requests);
     const { content, response: { headers } } = await this.fetchProxy(url, req);
     const responseBoundaryString = headers.get('Content-Type').split('=').pop();
@@ -416,7 +424,7 @@ export class OData {
   public async newBatchRequest<T>(options: BatchRequestOptions<T>) {
     let { withContentLength = false } = options;
     const { collection, method = 'GET', id, params, entity } = options;
-    if (this.forSAP) {
+    if (inArray(this.variant, SAPNetweaverOData)) {
       // for SAP NetWeaver Platform OData, need content length header
       withContentLength = true;
     }

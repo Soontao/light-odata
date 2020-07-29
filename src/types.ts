@@ -3,9 +3,11 @@ import { ODataVersion } from './types_v4';
 
 export type HTTPMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
-export type ODataVariant = 'default' | 'c4c' | 'byd' | 'cap' | 'cpi'
+export type ODataVariant = 'default' | 'c4c' | 'byd' | 'cap' | 'cpi' | '@odata/server'
 
-export type AdvancedODataClientProxy = (url: string, init: RequestInit) => Promise<{
+export const SAPNetweaverOData = ['c4c', 'byd'];
+
+export type FetchProxy = (url: string, init: RequestInit) => Promise<{
   /**
    * parsed body content
    */
@@ -28,7 +30,7 @@ export interface ODataNewOptions {
   /**
    * fetch proxy of all request
    */
-  fetchProxy?: AdvancedODataClientProxy;
+  fetchProxy?: FetchProxy;
   /**
    * auto process csrf token of c4c
    */
@@ -100,66 +102,43 @@ export interface ODataWriteRequest<T> extends ODataRequest<T> {
 }
 
 
-export interface PlainODataResponse<E = any> {
+export interface PlainODataResponse {
 
   error?: { /** if error occured, node error will have value */
     code: string;
     message: {
       lang: string,
       value: string /** server error message */
-    } & string
+    }
   }
-
-  /**
-   * context string
-   *
-   * @version 4.0.0
-   */
-  '@odata.context'?: string;
-
-  /**
-   * total count
-   */
-  '@odata.count'?: number;
-
-  '@odata.id'?: string;
-
-  '@odata.etag'?: string;
-
-  '@odata.editLink'?: string;
 
 }
 
+export type BatchPlainODataResponse<E = any> = PlainODataResponse & {
+  d?: {
+    __count?: string; /** $inlinecount values */
+    results?: Array<E>;
+  } & E;
+}
+
 export type PlainODataSingleResponse<E = any> = {
+
   /**
    * @version 2.0.0
    */
   d?: {
     __count?: string; /** $inlinecount values */
-    results: E;
-    [key: string]: any;
   } & E;
-} & E & PlainODataResponse<E>
+
+} & PlainODataResponse
 
 
-export interface PlainODataMultiResponse<E = any> extends PlainODataResponse<E> {
+export interface PlainODataMultiResponse<E = any> extends PlainODataResponse {
 
-  /**
-   * @version 2.0.0
-   */
   d?: {
     __count?: string; /** $inlinecount values */
     results: Array<E>; /** result list/object */
-    [key: string]: any;
   };
-
-
-  /**
-   * values result
-   *
-   * @version 4.0.0
-   */
-  value?: Array<E>;
 
 }
 

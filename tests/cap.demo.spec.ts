@@ -1,6 +1,6 @@
-import "../src/polyfill"
 import { Random } from "mockjs";
 import { OData } from "../src";
+import "../src/polyfill";
 import { CapDemoPeople } from "./demo_service_types";
 
 describe('CAP Framework OData (V4) Test Suite (basic)', () => {
@@ -9,15 +9,14 @@ describe('CAP Framework OData (V4) Test Suite (basic)', () => {
 
   const createClient = () => OData.New4({
     metadataUri: Service,
-    processCsrfToken: false,
     variant: "cap"
   })
 
   it('should CRUD as expected', async () => {
     let name = Random.name()
 
-    const odata = createClient()
-    const es = odata.getEntitySet<CapDemoPeople>("Peoples")
+    const client = createClient()
+    const es = client.getEntitySet<CapDemoPeople>("Peoples")
 
     const c0 = await es.count(OData.newFilter().field("UserName").eqString(name))
 

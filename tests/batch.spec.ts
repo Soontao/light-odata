@@ -95,7 +95,6 @@ describe('test batch multipart parse & format', () => {
     const base = `https://services.odata.org/V2/(S(${v4()}))/OData/OData.svc/`
     const odata = OData.New({
       metadataUri: `${base}/$metadata`,
-      processCsrfToken: false,
     })
     const testDesc1 = v4(); // a generated uuid
     const testDesc2 = v4();
@@ -130,7 +129,6 @@ describe('test batch multipart parse & format', () => {
     const base = `https://services.odata.org/V2/(S(${v4()}))/OData/OData.svc/`
     const odata = OData.New({
       metadataUri: `${base}/$metadata`,
-      processCsrfToken: false,
     })
     const requests = [
       odata.newBatchRequest({

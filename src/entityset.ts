@@ -1,8 +1,8 @@
+import { ODataServerError } from './errors';
+import { ODataFilter } from './filter';
 import { ODataQueryParam } from './params';
 import { OData } from './request';
 import { PlainODataResponse } from './types';
-import { ODataFilter } from './filter';
-import { ODataServerError } from './errors';
 
 export class EntitySet<T> {
 
@@ -14,7 +14,7 @@ export class EntitySet<T> {
     this._client = client;
   }
 
-  private _checkError(res: PlainODataResponse): void {
+  private _checkError(res: any): void {
     if (res.error) {
       switch (this._client.getVersion()) {
         case 'v2':
@@ -27,7 +27,7 @@ export class EntitySet<T> {
     }
   }
 
-  private _getResult(res: PlainODataResponse<T>) {
+  private _getResult(res: PlainODataResponse) {
     switch (this._client.getVersion()) {
       case 'v2':
         // @ts-ignore
