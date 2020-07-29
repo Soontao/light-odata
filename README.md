@@ -96,17 +96,36 @@ import { OData } from "light-odata"
 
 // odata.org sample odata service
 const TestServiceURL = "https://services.odata.org/V2/Northwind/Northwind.svc/$metadata"
-const odata = new OData(TestServiceURL)
-
-// Query by filter
-//
-// GET /V2/Northwind/Northwind.svc/Customers?$format=json&$filter=Phone eq '030-0074321'
-const filter = OData.newFilter().field("Phone").eqString("030-0074321");
-
-const result = await odata.newRequest({ // ODataRequest object
-  collection: "Customers", // collection name
-  params: OData.newParam().filter(filter) // odata param
+const client = OData.New({
+  metadataUri: TestServiceURL,
+  // variant: "c4c"
 })
+
+const runner = async () => {
+  
+  // Query by filter
+  //
+  // GET /Customers?$format=json&$filter=Phone eq '030-0074321'
+  const filter = client.newFilter().field("Phone").eqString("030-0074321");
+
+  const result = await client.newRequest({ // ODataRequest object
+    collection: "Customers", // collection name
+    params: client.newParam().filter(filter) // odata param
+  })
+
+}
+```
+
+
+```js
+// OData V4 client
+const Service = "https://odata-v4-demo-001.herokuapp.com/odata/$metadata"
+
+const client = OData.New4({
+  metadataUri: Service,
+  variant: "cap"
+})
+
 ```
 
 ### ODataRequest interface
@@ -127,6 +146,7 @@ interface ODataRequest<T> {
   entity?: T /** data object in CREATE/UPDATE */
 }
 ```
+
 ### ODataResponse interface
 
 
@@ -237,8 +257,7 @@ OData.newParam().search("any word", false);
 
 ## ODataFilter
 
-Use the `ODataFilter` to filter data
-
+use the `ODataFilter` to filter data
 
 <details><summary>How to use ODataFilter</summary>
 
@@ -314,45 +333,96 @@ OData
 
 </details>
 
+## EntitySet
+
+use `EntitySet` to `CRUD` entity
+
+<details><summary>How to use EntitySet</summary>
+
+```ts
+const runner = async () => {
+
+  // odata client
+  const client = createClient()
+  const es = client.getEntitySet<CapDemoPeople>("Peoples")
+
+  // CREATE instnace
+  const res0 = await es.create({
+    UserName: name
+  })
+
+  expect(res0.UserName).toEqual(name)
+  expect(res0.ID).not.toBeUndefined()
+
+  // QUERY by name, quick find
+  const res = await es.find({ UserName: name })
+
+  expect(res).not.toBeUndefined()
+  expect(res.length > 0).toBeTruthy()
+
+  const id = res[0].ID
+  expect(id).not.toBeUndefined()
+
+  // RETRIEVE by id
+  const res2 = await es.retrieve(id)
+  expect(res2.UserName).toEqual(name)
+
+  // UPDATE
+  const firstName = Random.name();
+  await es.update(id, { Name_FirstName: firstName })
+
+  // DELETE
+  await es.delete(id)
+
+}
+```
+
+</details>
+
  
 ## Batch requests
 
 use odata `$batch` api for operating multi entities in **single** HTTP request, it will save a lot of time between client & server (In the case of processing a large number of requests).
 
-<details><summary>Code</summary>
+<details><summary>How to send batch request</summary>
 
 ```javascript
 
-const odata = OData.New({
-  metadataUri: `https://services.odata.org/V2/(S(${v4()}))/OData/OData.svc/$metadata`,
-})
-const testDesc1 = v4(); // a generated uuid
-const testDesc2 = v4();
+const runner = async () => {
 
-// execute reqeusts and return mocked responses
-const result = await odata.execBatchRequests([
-  odata.newBatchRequest({
-    collection: "Products",
-    entity: {
-      ID: 100009,
-      Description: testDesc1,
-    },
-    method: "POST",
-    // withContentLength: true, for SAP OData, please set this flag as true
-  }),
-  odata.newBatchRequest({
-    collection: "Products",
-    entity: {
-      ID: 100012,
-      Description: testDesc2,
-    },
-    method: "POST",
-    // withContentLength: true, for SAP OData, please set this flag as true
+  const odata = OData.New({
+    metadataUri: `https://services.odata.org/V2/(S(${v4()}))/OData/OData.svc/$metadata`,
   })
-])
+  const testDesc1 = v4(); // a generated uuid
+  const testDesc2 = v4();
+
+  // execute reqeusts and return mocked responses
+  const result = await odata.execBatchRequests([
+    odata.newBatchRequest({
+      collection: "Products",
+      entity: {
+        ID: 100009,
+        Description: testDesc1,
+      },
+      method: "POST",
+      // withContentLength: true, for SAP OData, please set this flag as true
+    }),
+    odata.newBatchRequest({
+      collection: "Products",
+      entity: {
+        ID: 100012,
+        Description: testDesc2,
+      },
+      method: "POST",
+      // withContentLength: true, for SAP OData, please set this flag as true
+    })
+  ])
+
+  result.map(r => expect(r.status).toEqual(201)) // Created
+
+}
 
 
-result.map(r => expect(r.status).toEqual(201)) // Created
 
 ```
 
