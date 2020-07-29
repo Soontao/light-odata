@@ -9,11 +9,12 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
         node-version: [10.x, 12.x, 14.x]
+        os: [ubuntu-latest, macos-latest, windows-latest]
 
     steps:
     - uses: actions/checkout@v2
@@ -39,7 +40,7 @@ jobs:
         C4C_ODATA: ${{ secrets.C4C_ODATA }}
         C4C_USER: ${{ secrets.C4C_USER }}
         C4C_PASS: ${{ secrets.C4C_PASS }}
-        
+
     - name: Codecov
       uses: codecov/codecov-action@v1.0.7
       with:
