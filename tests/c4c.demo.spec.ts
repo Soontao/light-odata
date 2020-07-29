@@ -55,7 +55,7 @@ d('C4C/ByD OData (V2) Test Suite (basic)', () => {
     expect(updated_ur.UserName).toEqual(TestUserName)
 
     // delete
-    set.delete(ur.ObjectID)
+    await set.delete(ur.ObjectID)
 
     // verify
     const t = await set.count(OData.newFilter().field("UserName").eqString(TestUserName))
