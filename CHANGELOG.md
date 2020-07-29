@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.6.0](https://github.com/Soontao/c4codata/compare/v2.5.3...v2.6.0) (2020-07-29)
+
+
+### Features
+
+* [#54](https://github.com/Soontao/c4codata/issues/54) batch unit test, [#40](https://github.com/Soontao/c4codata/issues/40) errors ([67efe16](https://github.com/Soontao/c4codata/commit/67efe1619357ff7b45aa5e406b732e5d4ed736f7))
+* [#70](https://github.com/Soontao/c4codata/issues/70) doc for odata(v4) & entityset ([04e8a1e](https://github.com/Soontao/c4codata/commit/04e8a1e711f9cd55021c3e2ccada1e34babf792a))
+
+
+### Bug Fixes
+
+* **ci:** and add verify for batch create ([8e44512](https://github.com/Soontao/c4codata/commit/8e44512de0a253ac338e2feb3afb1f7261dda3c1))
+* c4c test suite ([a3915ce](https://github.com/Soontao/c4codata/commit/a3915cecd5e804035e9c1f578ed58a95507ea608))
+* ci ([1dd336c](https://github.com/Soontao/c4codata/commit/1dd336cdf49285ce39eca636ca29b4f78c029d18))
+
 ### [2.5.3](https://github.com/Soontao/c4codata/compare/v2.5.2...v2.5.3) (2020-07-17)
 
 ### [2.5.2](https://github.com/Soontao/c4codata/compare/v2.5.1...v2.5.2) (2020-07-10)

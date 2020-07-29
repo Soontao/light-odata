@@ -1,6 +1,6 @@
 {
   "name": "light-odata",
-  "version": "2.5.3",
+  "version": "2.6.0",
   "description": "lightweight odata javascript library",
   "unpkg": "./lib/light-odata-umd.js",
   "engines": {
