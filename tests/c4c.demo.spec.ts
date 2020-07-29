@@ -96,6 +96,10 @@ d('C4C/ByD OData (V2) Test Suite (basic)', () => {
 
     const resBodies = await Promise.all(ress.map(res => res.json()))
 
+    // verify created
+    const c1 = await es.count(client.newFilter().field('UserID').eqString(users[0].toUpperCase()))
+    expect(c1).toBe(1)
+
     await client.execBatchRequests(resBodies.map(resBody => client.newBatchRequest({
       collection: coll,
       method: "DELETE",

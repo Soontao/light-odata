@@ -1,8 +1,8 @@
-import "../src/polyfill"
 import { v4 } from "uuid";
+import { ODataFilter, ODataParam } from '../src';
+import "../src/polyfill";
 import { OData } from "../src/request";
-import { ODataParam, ODataFilter } from '../src';
-import { People, Customer, Alphabetical_list_of_product } from "./demo_service_types";
+import { Alphabetical_list_of_product, Customer, People } from "./demo_service_types";
 
 const TestServiceURL = "https://services.odata.org/V2/Northwind/Northwind.svc/$metadata"
 const TestV4ServiceURL = `https://services.odata.org/TripPinRESTierService/(S(${v4()}))/$metadata`
@@ -32,7 +32,7 @@ describe('Read Test', () => {
 
 
   test('Read All (v4)', async () => {
-    const odata_v4 = OData.New({ metadataUri: TestV4ServiceURL, version: "v4" })
+    const odata_v4 = OData.New4({ metadataUri: TestV4ServiceURL, version: "v4" })
     const response = await odata_v4.newRequest<People>({
       collection: "People",
     })
@@ -60,7 +60,7 @@ describe('Read Test', () => {
   })
 
   test('Read By ID (v4)', async () => {
-    const odata_v4 = OData.New({ metadataUri: TestV4ServiceURL, version: "v4" })
+    const odata_v4 = OData.New4({ metadataUri: TestV4ServiceURL, version: "v4" })
     const response = await odata_v4.newRequest<People>({
       collection: "People",
       id: "russellwhyte"
@@ -91,7 +91,7 @@ describe('Read Test', () => {
   })
 
   test('Read By Compound ID (string) (v4)', async () => {
-    const odata = OData.New({ metadataUri: TestV4ServiceURL, version: "v4" })
+    const odata = OData.New4({ metadataUri: TestV4ServiceURL, version: "v4" })
     const r = await odata.newRequest<People>({
       collection: "People",
       id: { UserName: "russellwhyte" }
@@ -124,7 +124,7 @@ describe('Read Test', () => {
   })
 
   test('Read By Filter (v4)', async () => {
-    const odata = OData.New({ metadataUri: TestV4ServiceURL, version: "v4" })
+    const odata = OData.New4({ metadataUri: TestV4ServiceURL, version: "v4" })
     const filter = OData.newFilter().field("FirstName").eqString("Russell");
     const result = await odata.newRequest<People>({
       collection: "People",
