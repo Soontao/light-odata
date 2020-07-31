@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.7.0](https://github.com/Soontao/c4codata/compare/v2.6.0...v2.7.0) (2020-07-31)
+
+
+### Features
+
+* support parameter on retrieve ([e08d025](https://github.com/Soontao/c4codata/commit/e08d025fb4c4626c6b09b054bdcb3df2488d30fb))
+
 ## [2.6.0](https://github.com/Soontao/c4codata/compare/v2.5.3...v2.6.0) (2020-07-29)
 
 
