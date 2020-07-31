@@ -89,7 +89,8 @@ export interface ODataRequest<T = any> {
 
 
 export interface ODataReadIDRequest<T> extends ODataRequest<T> {
-  id?: any, /** object key in READ/UPDATE/DELETE */
+  id: any, /** object key in READ/UPDATE/DELETE */
+  params?: ODataQueryParam,
 }
 
 export interface ODataQueryRequest<T> extends ODataRequest<T> {
@@ -99,6 +100,7 @@ export interface ODataQueryRequest<T> extends ODataRequest<T> {
 export interface ODataWriteRequest<T> extends ODataRequest<T> {
   entity?: Partial<T> /** data object in CREATE/UPDATE */
   id?: any;
+  method: HTTPMethod
 }
 
 

@@ -40,11 +40,12 @@ export class EntitySet<T> {
     }
   }
 
-  async retrieve(id: any): Promise<T> {
+  async retrieve(id: any, params?: ODataQueryParam): Promise<T> {
     const res = await this._client.newRequest<T>({
       collection: this._collection,
       method: 'GET',
-      id
+      id,
+      params
     });
     this._checkError(res);
     return this._getResult(res);

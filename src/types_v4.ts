@@ -1,5 +1,6 @@
 import { BatchRequest, ParsedResponse } from './batch';
 import { EntitySet } from './entityset';
+import { ODataFilter } from './filter';
 import { ODataQueryParam } from './params';
 import { BatchRequestOptions, ODataQueryRequest, ODataReadIDRequest, ODataWriteRequest } from './types';
 
@@ -88,11 +89,18 @@ export interface ODataV4 {
   newRequest<T>(options: ODataReadIDRequest<T>): Promise<PlainODataSingleResponseV4<T>>;
 
   /**
+   * create new filter
+   *
+   * @alias OData.newFilter
+   */
+  newFilter(): ODataFilter
+
+  /**
    * create new param
    *
    * @alias OData.newParam
    */
-  newParam(): ODataQueryParam;
+  newParam(): ODataQueryParam
 
 
   /**
