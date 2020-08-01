@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.8.0](https://github.com/Soontao/c4codata/compare/v2.7.0...v2.8.0) (2020-08-01)
+
+
+### Features
+
+* [#82](https://github.com/Soontao/c4codata/issues/82) renamed to @odata/client ([5a16f44](https://github.com/Soontao/c4codata/commit/5a16f44809436c187a5346733663becd6c63e32c))
+
 ## [2.7.0](https://github.com/Soontao/c4codata/compare/v2.6.0...v2.7.0) (2020-07-31)
 
 
