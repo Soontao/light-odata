@@ -1,8 +1,8 @@
 {
-  "name": "light-odata",
+  "name": "@odata/client",
   "version": "2.7.0",
-  "description": "lightweight odata javascript library",
-  "unpkg": "./lib/light-odata-umd.js",
+  "description": "lightweight odata client",
+  "unpkg": "./lib/odata-client-umd.js",
   "engines": {
     "node": ">=10"
   },

@@ -1,16 +1,13 @@
-# Light-OData
+# OData Client
 
 [![CircleCI](https://img.shields.io/circleci/build/github/Soontao/light-odata?label=circleci)](https://circleci.com/gh/Soontao/c4codata)
 [![codecov](https://codecov.io/gh/Soontao/light-odata/branch/master/graph/badge.svg)](https://codecov.io/gh/Soontao/light-odata)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Soontao_c4codata&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=Soontao_c4codata)
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://unpkg.com/c4codata?meta)
-[![](https://data.jsdelivr.com/v1/package/npm/light-odata/badge)](https://www.jsdelivr.com/package/npm/light-odata)
-[![npm version](https://badge.fury.io/js/light-odata.svg)](https://badge.fury.io/js/light-odata)
+![npm (scoped)](https://img.shields.io/npm/v/@odata/client)
 [![Netlify](https://img.shields.io/netlify/875f9eb3-319e-4dd7-b1eb-b3e5d15656ee?label=doc)](https://tender-dubinsky-6b6899.netlify.app/)
 
-![Size](https://badgen.net/packagephobia/publish/light-odata)
+![npm bundle size (scoped)](https://img.shields.io/bundlephobia/min/@odata/client)
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=Soontao_c4codata&metric=sqale_index)](https://sonarcloud.io/dashboard?id=Soontao_c4codata)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Soontao_c4codata&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=Soontao_c4codata)
 [![DeepScan grade](https://deepscan.io/api/teams/9408/projects/11929/branches/178297/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=9408&pid=11929&bid=178297)
 
 Lightweight OData Client for OData (v2) Service.
@@ -20,13 +17,13 @@ Lightweight OData Client for OData (v2) Service.
 ## Installation
 
 ```bash
-npm i -S light-odata
+npm i -S @odata/client
 ```
 
-Alternative, in native browser environment, just add [unpkg](https://unpkg.com/light-odata) or [jsdeliver](https://www.jsdelivr.com/package/npm/light-odata) umd link to your page, and the `OData` object will be available in `window`.
+Alternative, in native browser environment, just add [unpkg](https://unpkg.com/@odata/client) or [jsdeliver](https://www.jsdelivr.com/package/npm/@odata/client) umd link to your page, and the `OData` object will be available in `window`.
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/light-odata/lib/light-odata-umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@odata/client/lib/odata-client-umd.js"></script>
 ```
 
 <!-- ToC start -->
@@ -88,12 +85,12 @@ The third and fourth Product Entry from the collection of all products when the 
 
 ## OData Client
 
-<details><summary>How to use light-odata</summary>
+<details><summary>How to use @odata/client</summary>
 
 Start with a simple query, following code start a `GET` http request, and asks the server to respond to all customers which phone number equals 030-0074321
 
 ```javascript
-import { OData } from "light-odata"
+import { OData } from "@odata/client"
 
 // odata.org sample odata service
 const TestServiceURL = "https://services.odata.org/V2/Northwind/Northwind.svc/$metadata"
@@ -265,7 +262,7 @@ use the `ODataFilter` to filter data
 
 Most `SAP` systems only support `AND` operator between different fields, and `OR` operator in a same field. (it depends on SAP Netweaver implementation)
 
-So you don't need to specify `AND/OR` operator between fields, `light-odata` will auto process it.
+So you don't need to specify `AND/OR` operator between fields, `@odata/client` will auto process it.
 
 Though C4C only support AND operator in different fields, but for `gt/lt/ge/le`, you can use AND for filtering period data.
 
@@ -434,8 +431,8 @@ const runner = async () => {
 Use polyfill for your server-side application.
 
 ```js
-// import "light-odata/lib/polyfill"
-require("light-odata/lib/polyfill")
+// import "@odata/client/lib/polyfill"
+require("@odata/client/lib/polyfill")
 
 // use OData
 ```

@@ -6,7 +6,7 @@ module.exports = {
   mode: 'production',
   output: {
     path: join(__dirname, './lib'),
-    filename: 'light-odata-umd.js',
+    filename: 'odata-client-umd.js',
     libraryTarget: 'umd'
   },
   resolve: {
