@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { ODataServerError } from './errors';
 import { ODataFilter } from './filter';
 import { ODataQueryParam } from './params';
 import { OData } from './request';
-import { PlainODataResponse } from './types';
+import { DeepPartial, PlainODataResponse } from './types';
 
 export class EntitySet<T> {
 
@@ -51,7 +52,7 @@ export class EntitySet<T> {
     return this._getResult(res);
   }
 
-  async find(base: Partial<T>): Promise<T[]> {
+  async find(base: DeepPartial<T>): Promise<T[]> {
     const filter = OData.newFilter();
 
     Object.entries(base).forEach(([key, value]) => {
@@ -104,7 +105,7 @@ export class EntitySet<T> {
     }
   }
 
-  async create(body: Partial<T>): Promise<T> {
+  async create(body: DeepPartial<T>): Promise<T> {
     const res = await this._client.newRequest<T>({
       collection: this._collection,
       method: 'POST',
@@ -115,7 +116,7 @@ export class EntitySet<T> {
 
   }
 
-  async update(id: any, body: Partial<T>): Promise<T> {
+  async update(id: any, body: DeepPartial<T>): Promise<T> {
     const res = await this._client.newRequest<T>({
       collection: this._collection,
       method: 'PATCH',
