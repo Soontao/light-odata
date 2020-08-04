@@ -5,7 +5,7 @@ import { ODataQueryParam } from './params';
 import { OData } from './request';
 import { DeepPartial, PlainODataResponse } from './types';
 
-export class EntitySet<T> {
+export class EntitySet<T = any> {
 
   private _collection: string;
   private _client: OData;
@@ -105,6 +105,8 @@ export class EntitySet<T> {
     }
   }
 
+  async create(body: DeepPartial<T>): Promise<T>;
+  async create(body: any): Promise<T>;
   async create(body: DeepPartial<T>): Promise<T> {
     const res = await this._client.newRequest<T>({
       collection: this._collection,
@@ -134,6 +136,43 @@ export class EntitySet<T> {
       id
     });
     this._checkError(res);
+  }
+
+  /**
+   * run bounded action
+   *
+   * @param actionName the action name, remember add namespace for it
+   * @param payload
+   */
+  async action(actionName: string, id: any, payload?: any): any {
+    const responseBody = await this._client.newRequest({
+      collection: this._collection,
+      method: 'POST',
+      id,
+      payload,
+      actionName
+    });
+    this._checkError(responseBody);
+    return responseBody;
+  }
+
+  /**
+   * execute function
+   *
+   * @param functionName
+   * @param id
+   * @param payload
+   */
+  async function(functionName: string, id: any, payload?: any): any {
+    const responseBody = await this._client.newRequest({
+      collection: this._collection,
+      method: 'GET',
+      id,
+      payload,
+      functionName
+    });
+    this._checkError(responseBody);
+    return responseBody;
   }
 
 }

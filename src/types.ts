@@ -103,6 +103,18 @@ export interface ODataWriteRequest<T> extends ODataRequest<T> {
   method: HTTPMethod
 }
 
+export interface ODataActionRequest extends ODataRequest<any> {
+  actionName: string;
+  payload?: any;
+  id: any;
+}
+
+export interface ODataFunctionRequest extends ODataRequest<any> {
+  functionName: string;
+  payload?: any;
+  id: any;
+}
+
 
 export interface PlainODataResponse {
 

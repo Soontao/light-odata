@@ -2,7 +2,7 @@ import { BatchRequest, ParsedResponse } from './batch';
 import { EntitySet } from './entityset';
 import { ODataFilter } from './filter';
 import { ODataQueryParam } from './params';
-import { BatchRequestOptions, ODataQueryRequest, ODataReadIDRequest, ODataWriteRequest } from './types';
+import { BatchRequestOptions, ODataActionRequest, ODataFunctionRequest, ODataQueryRequest, ODataReadIDRequest, ODataWriteRequest } from './types';
 
 export type ODataVersion = 'v2' | 'v4';
 
@@ -87,6 +87,8 @@ export interface ODataV4 {
   newRequest<T>(options: ODataQueryRequest<T>): Promise<PlainODataMultiResponseV4<T>>;
   newRequest<T>(options: ODataWriteRequest<T>): Promise<PlainODataSingleResponseV4<T>>;
   newRequest<T>(options: ODataReadIDRequest<T>): Promise<PlainODataSingleResponseV4<T>>;
+  newRequest(options: ODataFunctionRequest): Promise<PlainODataResponseV4>;
+  newRequest(options: ODataActionRequest): Promise<PlainODataResponseV4>;
 
   /**
    * create new filter

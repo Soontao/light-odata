@@ -11,9 +11,13 @@ import { ODataParam, ODataQueryParam } from './params';
 import {
   BatchPlainODataResponse, BatchRequestOptions, Credential, FetchProxy,
   HTTPMethod,
-  ODataNewOptions,
+
+
+  ODataActionRequest, ODataFunctionRequest, ODataNewOptions,
   ODataQueryRequest, ODataReadIDRequest, ODataVariant, ODataWriteRequest, PlainODataMultiResponse,
-  PlainODataSingleResponse,
+
+
+  PlainODataResponse, PlainODataSingleResponse,
   SAPNetweaverOData
 } from './types';
 import { ODataV4, ODataVersion } from './types_v4';
@@ -299,7 +303,7 @@ export class OData {
    * @param method request method
    * @param entity C4C Entity instance
    */
-  private async request<T = any>(
+  private async _executeDataOperation<T = any>(
     collection: string, id?: any,
     queryParams?: ODataQueryParam, method: HTTPMethod = 'GET', entity?: any
   ) {
@@ -365,8 +369,60 @@ export class OData {
   public async newRequest<T>(options: ODataQueryRequest<T>): Promise<PlainODataMultiResponse<T>>;
   public async newRequest<T>(options: ODataWriteRequest<T>): Promise<PlainODataSingleResponse<T>>;
   public async newRequest<T>(options: ODataReadIDRequest<T>): Promise<PlainODataSingleResponse<T>>;
+  public async newRequest<T>(options: ODataFunctionRequest): Promise<PlainODataResponse>;
+  public async newRequest<T>(options: ODataActionRequest): Promise<PlainODataResponse>;
   public async newRequest(options: any): Promise<any> {
-    return this.request(options.collection, options.id, options.params, options.method, options.entity);
+    if (options.actionName || options.functionName) {
+      return this._executeActionOrFunction(options);
+    }
+    return this._executeDataOperation(options.collection, options.id, options.params, options.method, options.entity);
+  }
+
+  private async _executeActionOrFunction(options: ODataFunctionRequest | ODataActionRequest) {
+    let url = `${this.odataEnd}`;
+    let method: HTTPMethod = 'GET';
+
+    if (!options.collection) {
+      throw new ValidationError('must provide collection name');
+    }
+
+    const actionName = options['actionName'];
+    const functionName = options['functionName'];
+
+    if (actionName && functionName) {
+      throw new ValidationError(`'actionName' and 'functionName' can not be fillled in same time.`);
+    }
+
+    if (!actionName && !functionName) {
+      throw new ValidationError(`must provide 'actionName' or 'functionName'.`);
+    }
+
+    url += `${options.collection}`;
+
+    if (options.id) {
+      url += this.formatIdString(options.id);
+    }
+
+    if (functionName) {
+      url += `/${functionName}`;
+      method = 'GET';
+      if (options.payload) {
+        url += this.formatIdString(options.payload);
+      }
+    } else if (options['actionName']) {
+      url += `/${actionName}`;
+      method = 'POST';
+    }
+
+    if (actionName) {
+      // action with payload
+      return this.requestUri(url, undefined, method, options.payload);
+    }
+
+    if (functionName) {
+      return this.requestUri(url, undefined, method);
+    }
+
   }
 
   /**
