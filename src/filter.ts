@@ -1,5 +1,5 @@
 import join from '@newdash/newdash/join';
-import { ValidationError, FrameworkError } from './errors';
+import { FrameworkError, ValidationError } from './errors';
 
 export abstract class ODataDataObject {
   abstract toString(): string;
