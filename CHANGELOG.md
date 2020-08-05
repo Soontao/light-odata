@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.9.0](https://github.com/Soontao/c4codata/compare/v2.8.1...v2.9.0) (2020-08-05)
+
+
+### Features
+
+* [#29](https://github.com/Soontao/c4codata/issues/29), odata bounded action/function support ([0ced34a](https://github.com/Soontao/c4codata/commit/0ced34ab1d679ae9bc577008e8e79061a1dcac6c))
+
 ### [2.8.1](https://github.com/Soontao/c4codata/compare/v2.8.0...v2.8.1) (2020-08-02)
 
 ## [2.8.0](https://github.com/Soontao/c4codata/compare/v2.7.0...v2.8.0) (2020-08-01)
