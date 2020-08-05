@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "newLine": "LF",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "experimentalDecorators": true,
+    "lib": [
+      "ES2015",
+      "ES2016",
+      "ES2017"
+    ],
+    "module": "commonjs",
+    "target": "ES6",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "charset": "utf-8",
+    "emitDecoratorMetadata": true,
+    "declaration": true,
+    "outDir": "lib",
+    "removeComments": false
+  }
+}

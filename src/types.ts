@@ -1,3 +1,4 @@
+import { RequestInit, Response } from 'node-fetch';
 import { ODataQueryParam } from './params';
 import { ODataVersion } from './types_v4';
 

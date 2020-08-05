@@ -1,13 +1,13 @@
-import slice from '@newdash/newdash/slice';
-import join from '@newdash/newdash/join';
-import flatten from '@newdash/newdash/flatten';
 import concat from '@newdash/newdash/concat';
+import flatten from '@newdash/newdash/flatten';
+import join from '@newdash/newdash/join';
+import slice from '@newdash/newdash/slice';
 import startsWith from '@newdash/newdash/startsWith';
-
-
 import { parseResponse } from 'http-string-parser';
+import { RequestInit } from 'node-fetch';
 import { v4 } from 'uuid';
 import { FrameworkError } from './errors';
+
 
 const HTTP_EOL = '\r\n';
 

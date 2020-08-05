@@ -2,6 +2,7 @@ import attempt from '@newdash/newdash/attempt';
 import join from '@newdash/newdash/join';
 import slice from '@newdash/newdash/slice';
 import startsWith from '@newdash/newdash/startsWith';
+import { RequestInit } from 'node-fetch';
 import { v4 } from 'uuid';
 import { BatchRequest, formatBatchRequest, ParsedResponse, parseMultiPartContent } from './batch';
 import { EntitySet } from './entityset';
@@ -9,16 +10,10 @@ import { FrameworkError, ValidationError } from './errors';
 import { ODataFilter } from './filter';
 import { ODataParam, ODataQueryParam } from './params';
 import {
-  BatchPlainODataResponse, BatchRequestOptions, Credential, FetchProxy,
-  HTTPMethod,
-
-
+  BatchPlainODataResponse, BatchRequestOptions, Credential, FetchProxy, HTTPMethod,
   ODataActionRequest, ODataFunctionRequest, ODataNewOptions,
   ODataQueryRequest, ODataReadIDRequest, ODataVariant, ODataWriteRequest, PlainODataMultiResponse,
-
-
-  PlainODataResponse, PlainODataSingleResponse,
-  SAPNetweaverOData
+  PlainODataResponse, PlainODataSingleResponse, SAPNetweaverOData
 } from './types';
 import { ODataV4, ODataVersion } from './types_v4';
 import { GetAuthorizationPair, inArray } from './util';
@@ -28,6 +23,7 @@ const S_X_CSRF_TOKEN = 'x-csrf-token';
 const S_CONTENT_TYPE = 'Content-Type';
 
 const defaultProxy: FetchProxy = async(url: string, init?: RequestInit) => {
+  // @ts-ignore
   const res = await fetch(url, init);
 
   let content: any = await res.text();

@@ -1,30 +1,5 @@
 {
-  "compilerOptions": {
-    "allowJs": true,
-    "newLine": "LF",
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "experimentalDecorators": true,
-    "lib": [
-      "es6",
-      "dom",
-      "es2017.object"
-    ],
-    "module": "commonjs",
-    "target": "ES6",
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
-    "charset": "utf-8",
-    "emitDecoratorMetadata": true,
-    "removeComments": false,
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "types": [
-      "@types/node"
-    ]
-  },
+  "extends": "./tsconfig.base",
   "files": [
     "src/index.ts"
   ]

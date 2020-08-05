@@ -2,7 +2,7 @@ import { BatchRequest, ParsedResponse } from './batch';
 import { EntitySet } from './entityset';
 import { ODataFilter } from './filter';
 import { ODataQueryParam } from './params';
-import { BatchRequestOptions, ODataActionRequest, ODataFunctionRequest, ODataQueryRequest, ODataReadIDRequest, ODataWriteRequest } from './types';
+import { BatchRequestOptions, Credential, ODataActionRequest, ODataFunctionRequest, ODataQueryRequest, ODataReadIDRequest, ODataWriteRequest } from './types';
 
 export type ODataVersion = 'v2' | 'v4';
 
