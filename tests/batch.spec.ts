@@ -1,9 +1,10 @@
-import "../src/polyfill"
-import { readFileSync } from "fs";
-import { join } from "path";
-import { parseMultiPartContent, formatBatchRequest, OData } from "../src";
-import { v4 } from "uuid";
 import map from "@newdash/newdash/map";
+import { readFileSync } from "fs";
+import { RequestInit } from "node-fetch";
+import { join } from "path";
+import { v4 } from "uuid";
+import { formatBatchRequest, OData, parseMultiPartContent } from "../src";
+import "../src/polyfill";
 
 describe('test batch multipart parse & format', () => {
 

@@ -1,5 +1,5 @@
 import { ConvertDateFromODataTime, FormatODataDateTimedate, GetAuthorizationPair } from "../src";
-import { encode, decode } from "../src/base64";
+import { decode, encode } from "../src/base64";
 
 const datetimeStamp = 1527166822530
 const dateString = `/Date(${datetimeStamp})/`
