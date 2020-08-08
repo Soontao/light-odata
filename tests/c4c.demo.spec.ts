@@ -134,19 +134,11 @@ d('C4C/ByD OData (V2) Test Suite (basic)', () => {
 
     // batch delete
     await client.execBatchRequests(createdItems.map(resBody => es.batch().delete(resBody.d.ObjectID)))
-
-    const ress2 = await client.execBatchRequests(
-      createdItems.map(resBody => es.batch().count(
-        client.newFilter().field('UserID').eqString(resBody.d.UserID))
-      )
-    )
-
-    await Promise.all(ress2.map(async res => {
-      expect(res.status).toBe(200)
-      const body = await res.json()
-      expect(parseInt(body.d.__count)).toBe(0)
-    }))
-
+    
+    // verify deleted
+    const c = await es.count(client.newFilter().field('UserID').eqString(users[0]))
+    expect(c).toBe(0)
+    
   });
 
 });
