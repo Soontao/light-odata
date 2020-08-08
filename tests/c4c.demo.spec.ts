@@ -112,7 +112,7 @@ d('C4C/ByD OData (V2) Test Suite (basic)', () => {
 
   });
 
-  it('should support batch operation', async () => {
+  it('should support entityset batch operation', async () => {
 
     const coll = "PeopleRootCollection"
     const client = getOData()
@@ -134,11 +134,56 @@ d('C4C/ByD OData (V2) Test Suite (basic)', () => {
 
     // batch delete
     await client.execBatchRequests(createdItems.map(resBody => es.batch().delete(resBody.d.ObjectID)))
-    
+
     // verify deleted
     const c = await es.count(client.newFilter().field('UserID').eqString(users[0]))
     expect(c).toBe(0)
-    
+
+  });
+
+  const unwrapResponse = async (responses: any): Promise<any[]> => {
+    if (responses instanceof Promise) {
+      responses = await responses
+    }
+    return Promise.all(responses.map(res => {
+      switch (res.status) {
+        case 204:
+          return undefined
+        default:
+          return res.json()
+      }
+    }))
+  }
+
+  it('should support entityset batch operation (advanced)', async () => {
+
+    const coll = "PeopleRootCollection"
+    const client = getOData()
+    const uuid = createUUID().toUpperCase()// generated test user uuids
+    const es = client.getEntitySet<People>(coll)
+
+    const created = await unwrapResponse(client.execBatchRequests([es.batch().create({ UserID: uuid })]))
+
+    expect(created[0].d.UserID).toBe(uuid)
+
+    // c4c/byd not support query in batch 
+    // add validation in exec batch request
+    // const finded = await unwrapResponse(client.execBatchRequests([es.batch().find({ UserID: uuid })]))
+    // expect(finded[0].d.ObjectID).toBe(created[0].d.ObjectID)
+
+    const retrieved = await unwrapResponse(client.execBatchRequests([es.batch().retrieve(created[0].d.ObjectID)]))
+    expect(retrieved[0].d.UserID).toBe(uuid)
+
+    await client.execBatchRequests([es.batch().update(created[0].d.ObjectID, { Age: 30 })])
+    const updated = await unwrapResponse(client.execBatchRequests([es.batch().retrieve(created[0].d.ObjectID)]))
+    expect(updated[0].d.Age).toBe(30)
+
+    // delete
+    await client.execBatchRequests([es.batch().delete(created[0].d.ObjectID)])
+
+    const deleted = await unwrapResponse(client.execBatchRequests([es.batch().retrieve(created[0].d.ObjectID)]))
+    expect(deleted[0].d).toBeUndefined()
+
   });
 
 });
