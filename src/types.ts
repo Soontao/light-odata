@@ -1,4 +1,5 @@
 import { RequestInit, Response } from 'node-fetch';
+import { BatchRequest, ParsedResponse } from './batch';
 import { ODataQueryParam } from './params';
 import { ODataVersion } from './types_v4';
 
@@ -168,3 +169,19 @@ export interface Credential {
 export type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends Array<infer U> ? Array<DeepPartial<U>> : T[P] extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : DeepPartial<T[P]>;
 };
+
+/**
+ * unwrap Promise Type
+ */
+export type UnwrapPromise<T> = T extends PromiseLike<infer U> ? U : T
+
+/**
+ * unwrap batch request
+ */
+export type UnwrapBatchRequest<T> = T extends BatchRequest<infer U> ? U : T
+
+
+/**
+ * unwrap batch request
+ */
+export type UnwrapParsedResponse<T> = T extends ParsedResponse<infer U> ? U : T

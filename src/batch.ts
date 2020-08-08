@@ -7,6 +7,8 @@ import { parseResponse } from 'http-string-parser';
 import { RequestInit } from 'node-fetch';
 import { v4 } from 'uuid';
 import { FrameworkError } from './errors';
+import { BatchPlainODataResponse } from './types';
+import { BatchPlainODataResponseV4 } from './types_v4';
 
 
 const HTTP_EOL = '\r\n';
@@ -16,16 +18,28 @@ const HTTP_EOL = '\r\n';
  */
 export interface ParsedResponse<T = any> {
   text: () => Promise<string>;
-  json: () => Promise<T>;
+  json: () => Promise<BatchPlainODataResponse<T>>;
   status: number;
   headers: { [key: string]: string };
   statusText: string;
 }
 
 /**
+ * parsed mock batch response
+ */
+export interface ParsedResponseV4<T = any> {
+  text: () => Promise<string>;
+  json: () => Promise<BatchPlainODataResponseV4<T>>;
+  status: number;
+  headers: { [key: string]: string };
+  statusText: string;
+}
+
+
+/**
  * batch request
  */
-export interface BatchRequest {
+export interface BatchRequest<R = any> {
   /**
    * for odata batch request, please give a relative path from odata endpoint
    */

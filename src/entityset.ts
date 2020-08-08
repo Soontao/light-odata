@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { BatchRequest } from './batch';
 import { ODataServerError } from './errors';
 import { ODataFilter } from './filter';
 import { ODataQueryParam } from './params';
@@ -9,10 +10,12 @@ export class EntitySet<T = any> {
 
   private _collection: string;
   private _client: OData;
+  private _batchEntitySet: BatchEntitySet<T>;
 
   constructor(collection: string, client: OData) {
     this._collection = collection;
     this._client = client;
+    this._batchEntitySet = new BatchEntitySet(collection, client);
   }
 
   private _checkError(res: any): void {
@@ -50,6 +53,14 @@ export class EntitySet<T = any> {
     });
     this._checkError(res);
     return this._getResult(res);
+  }
+
+
+  /**
+   * batch wrapper for entity set
+   */
+  batch() {
+    return this._batchEntitySet;
   }
 
   async find(base: DeepPartial<T>): Promise<T[]> {
@@ -173,6 +184,99 @@ export class EntitySet<T = any> {
     });
     this._checkError(responseBody);
     return responseBody;
+  }
+
+}
+
+/**
+ * Batch wrappper for entity set
+ */
+export class BatchEntitySet<T = any> {
+
+  private _collection: string;
+  private _client: OData;
+
+  constructor(collection: string, client: OData) {
+    this._collection = collection;
+    this._client = client;
+  }
+
+  retrieve(id: any, params?: ODataQueryParam) {
+    return this._client.newBatchRequest<T>({
+      collection: this._collection,
+      method: 'GET',
+      id,
+      params
+    });
+  }
+
+  find(base: DeepPartial<T>) {
+    const filter = OData.newFilter();
+
+    Object.entries(base).forEach(([key, value]) => {
+      if (typeof value == 'string') {
+        filter.field(key).eqString(value);
+      } else {
+        filter.field(key).eq(value);
+      }
+    });
+
+    return this.query(OData.newParam().filter(filter));
+  }
+
+  query(param?: ODataFilter): Promise<BatchRequest<T>>;
+  query(param?: ODataQueryParam): Promise<BatchRequest<T>>;
+  query(param?: any): any {
+    if (param instanceof ODataFilter) {
+      param = ODataQueryParam.newParam().filter(param);
+    }
+    if (param == undefined) {
+      param = OData.newParam();
+    }
+    return this._client.newBatchRequest<T>({
+      collection: this._collection,
+      method: 'GET',
+      params: param
+    });
+  }
+
+  count(filter?: ODataFilter) {
+    const params = OData.newParam().inlinecount(true).count(true); // set count flag
+    if (filter) {
+      params.filter(filter);
+    }
+    return this._client.newBatchRequest<T>({
+      collection: this._collection,
+      method: 'GET',
+      params
+    });
+  }
+
+  create(body: DeepPartial<T>): Promise<BatchRequest<T>>;
+  create(body: any): Promise<BatchRequest<T>>;
+  create(body: any): any {
+    return this._client.newBatchRequest<T>({
+      collection: this._collection,
+      method: 'POST',
+      entity: body
+    });
+  }
+
+  update(id: any, body: DeepPartial<T>) {
+    return this._client.newBatchRequest<T>({
+      collection: this._collection,
+      method: 'PATCH',
+      id,
+      entity: body
+    });
+  }
+
+  delete(id: any) {
+    return this._client.newBatchRequest<T>({
+      collection: this._collection,
+      method: 'DELETE',
+      id
+    });
   }
 
 }

@@ -80,7 +80,7 @@ d('C4C/ByD OData (V2) Test Suite (basic)', () => {
     const client = getOData()
     const users = Array(5).fill(0).map(createUUID) // generated test user uuids
     const es = client.getEntitySet<People>(coll)
-    const reqs = users.map(uid => client.newBatchRequest({
+    const reqs = users.map(uid => client.newBatchRequest<People>({
       collection: coll,
       method: "POST",
       entity: {
@@ -109,6 +109,43 @@ d('C4C/ByD OData (V2) Test Suite (basic)', () => {
     // verify deleted
     const c = await es.count(client.newFilter().field('UserID').eqString(users[0]))
     expect(c).toBe(0)
+
+  });
+
+  it('should support batch operation', async () => {
+
+    const coll = "PeopleRootCollection"
+    const client = getOData()
+    const users = Array(5).fill(0).map(createUUID) // generated test user uuids
+    const es = client.getEntitySet<People>(coll)
+    const reqs = users.map(uid => es.batch().create({ UserID: uid }))
+
+    const ress = await client.execBatchRequests(reqs)
+
+    ress.forEach(res => {
+      expect(res.status).toBe(201)
+    })
+
+    const createdItems = await Promise.all(ress.map(res => res.json()))
+
+    // verify created
+    const c1 = await es.count(client.newFilter().field('UserID').eqString(users[0].toUpperCase()))
+    expect(c1).toBe(1)
+
+    // batch delete
+    await client.execBatchRequests(createdItems.map(resBody => es.batch().delete(resBody.d.ObjectID)))
+
+    const ress2 = await client.execBatchRequests(
+      createdItems.map(resBody => es.batch().count(
+        client.newFilter().field('UserID').eqString(resBody.d.UserID))
+      )
+    )
+
+    await Promise.all(ress2.map(async res => {
+      expect(res.status).toBe(200)
+      const body = await res.json()
+      expect(parseInt(body.d.__count)).toBe(0)
+    }))
 
   });
 

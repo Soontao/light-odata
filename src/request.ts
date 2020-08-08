@@ -10,10 +10,10 @@ import { FrameworkError, ValidationError } from './errors';
 import { ODataFilter } from './filter';
 import { ODataParam, ODataQueryParam } from './params';
 import {
-  BatchPlainODataResponse, BatchRequestOptions, Credential, FetchProxy, HTTPMethod,
+  BatchRequestOptions, Credential, FetchProxy, HTTPMethod,
   ODataActionRequest, ODataFunctionRequest, ODataNewOptions,
   ODataQueryRequest, ODataReadIDRequest, ODataVariant, ODataWriteRequest, PlainODataMultiResponse,
-  PlainODataResponse, PlainODataSingleResponse, SAPNetweaverOData
+  PlainODataResponse, PlainODataSingleResponse, SAPNetweaverOData, UnwrapBatchRequest, UnwrapPromise
 } from './types';
 import { ODataV4, ODataVersion } from './types_v4';
 import { GetAuthorizationPair, inArray } from './util';
@@ -445,13 +445,14 @@ export class OData {
    *
    * @param requests batch request
    */
-  public async execBatchRequests(requests: Array<Promise<BatchRequest>>): Promise<Array<ParsedResponse<BatchPlainODataResponse>>> {
+  public async execBatchRequests<T extends Array<Promise<BatchRequest>> = any>(requests: T): Promise<{ [K in keyof T]: ParsedResponse<UnwrapBatchRequest<UnwrapPromise<T[K]>>> }> {
     const { url, req } = await this.formatBatchRequests(requests);
     const { content, response: { headers } } = await this.fetchProxy(url, req);
     const responseBoundaryString = headers.get('Content-Type').split('=').pop();
     if (responseBoundaryString.length == 0) {
       // if boundary string empty, error here
     }
+    // @ts-ignore
     return await parseMultiPartContent(content, responseBoundaryString);
   }
 
@@ -482,7 +483,7 @@ export class OData {
     }
     let url = collection;
     const headers = Object.assign({}, this.commonHeader); // clone
-    const rt: BatchRequest = { url, init: { method, headers, body: '' } };
+    const rt: BatchRequest<T> = { url, init: { method, headers, body: '' } };
 
     if (id) {
       url += this.formatIdString(id);
