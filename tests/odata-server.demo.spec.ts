@@ -42,12 +42,17 @@ describe('@odata/server Test Suite', () => {
 
   it('should support batch request in json format (OData V4.01)', async () => {
 
+    interface Teacher {
+      id: number;
+      name: string;
+    }
+
     const testLength = 4
     const testNames = Array(testLength).fill('').map(() => v4())
     const testNumers = Array(testLength).fill(0).map(() => Math.ceil(Math.random() * 1000))
 
     const client = OData.New4({ metadataUri: metadata, variant: "@odata/server" })
-    const teachers = client.getEntitySet("Teachers")
+    const teachers = client.getEntitySet<Teacher>("Teachers")
     const classes = client.getEntitySet("Classes")
 
     const reqs = testNames.map(testName => teachers.batch().create({ name: testName }))

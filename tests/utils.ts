@@ -1,7 +1,12 @@
 // @ts-nocheck
-import { BatchResponses, BatchResponsesV4 } from "../src"
+import { BatchPlainODataResponse, BatchResponses, BatchResponsesV4, ParsedResponse, ParsedResponseV4 } from "../src"
+import { BatchPlainODataResponseV4 } from "../src/types_v4"
 
-export const unwrapBatchResponse = async<T = any>(responses: BatchResponses | BatchResponsesV4): Promise<T[]> => {
+export async function unwrapBatchResponse<T>(responses: ParsedResponseV4<T>[]): Promise<BatchPlainODataResponseV4<T>[]>;
+export async function unwrapBatchResponse<T>(responses: ParsedResponse<T>[]): Promise<BatchPlainODataResponse<T>[]>;
+export async function unwrapBatchResponse<T>(responses: BatchResponsesV4): Promise<BatchPlainODataResponseV4<T>[]>;
+export async function unwrapBatchResponse<T>(responses: BatchResponses): Promise<BatchPlainODataResponse<T>[]>;
+export async function unwrapBatchResponse(responses: any): Promise<any[]> {
   if (responses instanceof Promise) {
     responses = await responses
   }

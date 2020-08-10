@@ -127,7 +127,7 @@ export interface ODataV4 {
 
 
   /**
-   * execute batch requests in OData V4.01 Json format, and get the response
+   * execute batch requests in OData `V4.01` JSON format, and get the response
    *
    * @param requests
    */
