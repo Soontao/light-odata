@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.10.0](https://github.com/Soontao/c4codata/compare/v2.9.0...v2.10.0) (2020-08-10)
+
+
+### Features
+
+* [#29](https://github.com/Soontao/c4codata/issues/29) json batch format test for @odata/server ([78ba971](https://github.com/Soontao/c4codata/commit/78ba97185e467ab977bc5ea860f7dc510c076f74))
+* [#29](https://github.com/Soontao/c4codata/issues/29) json batch requests support init ([3051369](https://github.com/Soontao/c4codata/commit/30513694f08ca7e5adb29ee1d2a3d9143b0e450e))
+* batch for entity set ([72bad1d](https://github.com/Soontao/c4codata/commit/72bad1da44b9fa3f7b30b95c0f80929fb1b253f7))
+
 ## [2.9.0](https://github.com/Soontao/c4codata/compare/v2.8.1...v2.9.0) (2020-08-05)
 
 
