@@ -1,10 +1,12 @@
-import { BatchRequest, ParsedResponseV4 } from './batch';
+import { BatchRequest } from './batch';
 import { EntitySet } from './entityset';
 import { ODataFilter } from './filter';
 import { ODataQueryParam } from './params';
 import {
-  BatchRequestOptions, Credential, ODataActionRequest, ODataFunctionRequest,
-  ODataQueryRequest, ODataReadIDRequest, ODataWriteRequest, UnwrapBatchRequest, UnwrapPromise
+  BatchRequestOptions,
+  BatchRequests,
+  BatchResponsesV4, Credential, ODataActionRequest, ODataFunctionRequest,
+  ODataQueryRequest, ODataReadIDRequest, ODataWriteRequest
 } from './types';
 
 export type ODataVersion = 'v2' | 'v4';
@@ -121,6 +123,14 @@ export interface ODataV4 {
    * @param requests batch request
    *
    */
-  execBatchRequests<T extends Array<Promise<BatchRequest>> = any>(requests: T): Promise<{ [K in keyof T]: ParsedResponseV4<UnwrapBatchRequest<UnwrapPromise<T[K]>>> }>
+  execBatchRequests<T extends BatchRequests = any>(requests: T): BatchResponsesV4<T>
+
+
+  /**
+   * execute batch requests in OData V4.01 Json format, and get the response
+   *
+   * @param requests
+   */
+  execBatchRequestsJson<T extends BatchRequests = any>(requests: T): BatchResponsesV4<T>
 
 }

@@ -2,18 +2,20 @@ import attempt from '@newdash/newdash/attempt';
 import join from '@newdash/newdash/join';
 import slice from '@newdash/newdash/slice';
 import startsWith from '@newdash/newdash/startsWith';
+import { JsonBatchResponseBundle } from '@odata/parser/lib/builder/batch';
 import { RequestInit } from 'node-fetch';
 import { v4 } from 'uuid';
-import { BatchRequest, formatBatchRequest, ParsedResponse, parseMultiPartContent } from './batch';
+import { BatchRequest, formatBatchRequest, formatBatchRequestForOData401, parseMultiPartContent } from './batch';
 import { EntitySet } from './entityset';
 import { FrameworkError, ValidationError } from './errors';
 import { ODataFilter } from './filter';
 import { ODataParam, ODataQueryParam } from './params';
 import {
-  BatchRequestOptions, Credential, FetchProxy, HTTPMethod,
+  BatchRequestOptions, BatchRequests,
+  BatchResponses, Credential, FetchProxy, HTTPMethod,
   ODataActionRequest, ODataFunctionRequest, ODataNewOptions,
   ODataQueryRequest, ODataReadIDRequest, ODataVariant, ODataWriteRequest, PlainODataMultiResponse,
-  PlainODataResponse, PlainODataSingleResponse, SAPNetweaverOData, UnwrapBatchRequest, UnwrapPromise
+  PlainODataResponse, PlainODataSingleResponse, SAPNetweaverOData
 } from './types';
 import { ODataV4, ODataVersion } from './types_v4';
 import { GetAuthorizationPair, inArray } from './util';
@@ -445,7 +447,7 @@ export class OData {
    *
    * @param requests batch request
    */
-  public async execBatchRequests<T extends Array<Promise<BatchRequest>> = any>(requests: T): Promise<{ [K in keyof T]: ParsedResponse<UnwrapBatchRequest<UnwrapPromise<T[K]>>> }> {
+  public async execBatchRequests<T extends BatchRequests = any>(requests: T): BatchResponses<T> {
     const { url, req } = await this.formatBatchRequests(requests);
     const { content, response: { headers } } = await this.fetchProxy(url, req);
     const responseBoundaryString = headers.get('Content-Type').split('=').pop();
@@ -454,6 +456,42 @@ export class OData {
     }
     // @ts-ignore
     return await parseMultiPartContent(content, responseBoundaryString);
+  }
+
+  /**
+   * execute batch requests in OData V4.01 Json format, and get response
+   *
+   * @param requests
+   */
+  public async execBatchRequestsJson<T extends BatchRequests = any>(requests: T): BatchResponses<T> {
+
+    // TO DO, verify odata version here
+
+    const reqs = await Promise.all(requests);
+    const body = formatBatchRequestForOData401(reqs);
+    const url = `${this.odataEnd}$batch`;
+    const headers = await this.getHeaders();
+    const response = await this.fetchProxy(url, { method: 'POST', body: JSON.stringify(body), headers });
+    const responseBody: JsonBatchResponseBundle = response.content;
+    if (responseBody['error']) {
+      // TO DO, raise error message here
+
+    }
+    const rt = [];
+
+    responseBody.responses?.forEach((responseItem) => {
+      rt.push({
+        json: async() => responseItem.body,
+        text: async() => JSON.stringify(responseItem.body),
+        headers: responseItem.headers,
+        status: responseItem.status,
+        statusText: undefined
+      });
+    });
+
+    // @ts-ignore
+    return rt;
+
   }
 
   /**

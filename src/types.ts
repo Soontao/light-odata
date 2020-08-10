@@ -1,5 +1,5 @@
 import { RequestInit, Response } from 'node-fetch';
-import { BatchRequest, ParsedResponse } from './batch';
+import { BatchRequest, ParsedResponse, ParsedResponseV4 } from './batch';
 import { ODataQueryParam } from './params';
 import { ODataVersion } from './types_v4';
 
@@ -185,3 +185,10 @@ export type UnwrapBatchRequest<T> = T extends BatchRequest<infer U> ? U : T
  * unwrap batch request
  */
 export type UnwrapParsedResponse<T> = T extends ParsedResponse<infer U> ? U : T
+
+
+export type BatchRequests = Array<Promise<BatchRequest>>
+
+export type BatchResponses<T> = Promise<{ [K in keyof T]: ParsedResponse<UnwrapBatchRequest<UnwrapPromise<T[K]>>> }>
+
+export type BatchResponsesV4<T> = Promise<{ [K in keyof T]: ParsedResponseV4<UnwrapBatchRequest<UnwrapPromise<T[K]>>> }>

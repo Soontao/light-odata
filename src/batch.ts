@@ -3,6 +3,7 @@ import flatten from '@newdash/newdash/flatten';
 import join from '@newdash/newdash/join';
 import slice from '@newdash/newdash/slice';
 import startsWith from '@newdash/newdash/startsWith';
+import { JsonBatchRequestBundle } from '@odata/parser';
 import { parseResponse } from 'http-string-parser';
 import { RequestInit } from 'node-fetch';
 import { v4 } from 'uuid';
@@ -53,6 +54,29 @@ export const formatHttpRequestString = (u: string, r: any): string => join([
   `${r.body ? HTTP_EOL + r.body : ''}`
 ], HTTP_EOL);
 
+
+/**
+ *
+ * format batch request in json format (in OData V4.01 Spec)
+ *
+ * ref: https://github.com/Soontao/light-odata/issues/29
+ * @param requests
+ */
+export const formatBatchRequestForOData401 = (requests: BatchRequest[] = []) => {
+  const rt: JsonBatchRequestBundle = { requests: [] };
+  requests.forEach((req, idx) => {
+    rt.requests.push({
+      id: idx.toString(),
+      // @ts-ignore
+      method: req.init?.method?.toLocaleLowerCase(),
+      url: req.url,
+      // @ts-ignore
+      headers: req.init?.headers,
+      body: req.init.body
+    });
+  });
+  return rt;
+};
 
 /**
  * format batch request string body
@@ -136,3 +160,5 @@ export const parseMultiPartContent = async(multipartBody: string, boundaryId: st
   throw new FrameworkError('parameter lost');
 
 };
+
+
