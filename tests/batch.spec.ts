@@ -192,7 +192,7 @@ describe('test batch multipart parse & format', () => {
     ]
 
     const result = await client.execBatchRequests(requests)
-    
+
     await Promise.all(
       map(result, async r => {
         var json = await r.json();

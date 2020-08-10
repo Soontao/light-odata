@@ -240,16 +240,48 @@ export class BatchEntitySet<T = any> {
     });
   }
 
-  count(filter?: ODataFilter) {
-    const params = OData.newParam().inlinecount(true).count(true); // set count flag
-    if (filter) {
-      params.filter(filter);
+  count(filter?: ODataFilter);
+  count(filter?: Partial<T>);
+  count(filter?: any) {
+
+    const params = OData.newParam().top(1);
+
+    // set count flag
+    switch (this._client.getVersion()) {
+      case 'v4':
+        params.count(true);
+        break;
+      case 'v2':
+        params.inlinecount(true);
+        break;
+      default:
+        break;
     }
+
+    if (filter) {
+
+      if (filter instanceof ODataFilter) {
+        params.filter(filter);
+      } else {
+        const tmpFilter = ODataFilter.newFilter();
+        Object.entries(filter).forEach(([key, value]) => {
+          if (typeof value == 'string') {
+            tmpFilter.field(key).eqString(value);
+          } else {
+            tmpFilter.field(key).eq(value);
+          }
+        });
+        params.filter(tmpFilter);
+      }
+
+    }
+
     return this._client.newBatchRequest<T>({
       collection: this._collection,
       method: 'GET',
       params
     });
+
   }
 
   create(body: DeepPartial<T>): Promise<BatchRequest<T>>;

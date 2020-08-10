@@ -7,7 +7,7 @@ import { RequestInit } from 'node-fetch';
 import { v4 } from 'uuid';
 import { BatchRequest, formatBatchRequest, formatBatchRequestForOData401, parseMultiPartContent } from './batch';
 import { EntitySet } from './entityset';
-import { FrameworkError, ValidationError } from './errors';
+import { FrameworkError, ODataServerError, ValidationError } from './errors';
 import { ODataFilter } from './filter';
 import { ODataParam, ODataQueryParam } from './params';
 import {
@@ -474,8 +474,7 @@ export class OData {
     const response = await this.fetchProxy(url, { method: 'POST', body: JSON.stringify(body), headers });
     const responseBody: JsonBatchResponseBundle = response.content;
     if (responseBody['error']) {
-      // TO DO, raise error message here
-
+      throw new ODataServerError(responseBody['error']['message'] || 'Unknown server error');
     }
     const rt = [];
 
@@ -537,16 +536,8 @@ export class OData {
     }
     // WRITE OPERATION
     else {
-      switch (typeof entity) {
-        case 'string':
-          rt.init.body = entity;
-          break;
-        case 'object':
-          rt.init.body = JSON.stringify(entity);
-          break;
-        default:
-          break;
-      }
+
+      rt.init.body = entity;
 
       if (withContentLength) {
         rt.init.headers['Content-Length'] = encodeURI(rt.init.body.toString()).length;

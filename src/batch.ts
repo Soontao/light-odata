@@ -3,7 +3,7 @@ import flatten from '@newdash/newdash/flatten';
 import join from '@newdash/newdash/join';
 import slice from '@newdash/newdash/slice';
 import startsWith from '@newdash/newdash/startsWith';
-import { JsonBatchRequestBundle } from '@odata/parser';
+import { JsonBatchRequest, JsonBatchRequestBundle } from '@odata/parser';
 import { parseResponse } from 'http-string-parser';
 import { RequestInit } from 'node-fetch';
 import { v4 } from 'uuid';
@@ -45,14 +45,35 @@ export interface BatchRequest<R = any> {
    * for odata batch request, please give a relative path from odata endpoint
    */
   url: string;
-  init?: RequestInit;
+  init?: RequestInit & { body?: any };
 }
 
-export const formatHttpRequestString = (u: string, r: any): string => join([
-  `${r.method || 'GET'} ${u} HTTP/1.1`,
-  `${join(Object.entries(r.headers).map(([k, v]) => `${k}: ${v}`), HTTP_EOL)}`,
-  `${r.body ? HTTP_EOL + r.body : ''}`
-], HTTP_EOL);
+export const formatHttpRequestString = (u: string, r: any): string => {
+  const parts = [];
+
+  parts.push(`${r.method || 'GET'} ${u} HTTP/1.1`);
+
+  Object.entries(r.headers).forEach(([k, v]) => {
+    parts.push(`${k}: ${v}`);
+  });
+
+  switch (typeof r.body) {
+    case 'string':
+      parts.push(HTTP_EOL);
+      parts.push(r.body);
+      break;
+    case 'object':
+      parts.push(HTTP_EOL);
+      parts.push(JSON.stringify(r.body));
+      break;
+    case 'undefined':
+      parts.push('');
+    default:
+      break;
+  }
+
+  return parts.join(HTTP_EOL);
+};
 
 
 /**
@@ -65,15 +86,23 @@ export const formatHttpRequestString = (u: string, r: any): string => join([
 export const formatBatchRequestForOData401 = (requests: BatchRequest[] = []) => {
   const rt: JsonBatchRequestBundle = { requests: [] };
   requests.forEach((req, idx) => {
-    rt.requests.push({
+
+    const tmpBatchRequestItem: JsonBatchRequest = {
       id: idx.toString(),
       // @ts-ignore
       method: req.init?.method?.toLocaleLowerCase(),
-      url: req.url,
+      url: req.url
+    };
+    if (req.init?.headers) {
       // @ts-ignore
-      headers: req.init?.headers,
-      body: req.init.body
-    });
+      tmpBatchRequestItem.headers = req.init?.headers;
+    }
+
+    if (req.init?.body) {
+      tmpBatchRequestItem.body = req.init.body;
+    }
+
+    rt.requests.push(tmpBatchRequestItem);
   });
   return rt;
 };
