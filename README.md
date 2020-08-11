@@ -29,12 +29,11 @@ Alternative, in native browser environment, just add [unpkg](https://unpkg.com/@
 
    1. [Installation](#installation)
    1. [Table of Contents](#table-of-contents)
-   1. [OData Version 2 concepts ](#odata-version-2-concepts-)
-   1. [OData Client](#odata-client)
-   1. [ODataParam](#odataparam)
-   1. [ODataFilter](#odatafilter)
-   1. [EntitySet](#entityset)
-   1. [Batch requests](#batch-requests)
+   1. [OData Client](#odataclient)
+   1. [OData Param](#odataparam)
+   1. [OData Filter](#odatafilter)
+   1. [Entity Set](#entityset)
+   1. [Batch Requests](#batch-requests)
    1. [Server Side Polyfill](#server-side-polyfill)
    1. [Others](#others)
    1. [CHANGELOG](#changelog)
@@ -42,46 +41,7 @@ Alternative, in native browser environment, just add [unpkg](https://unpkg.com/@
    1. [Thanks JetBrains](#thanks-jetbrains)
 <!-- ToC end -->
 
-## OData Version 2 concepts 
-
-**If you are already familiar with OData, please skip this section**
-
-<details><summary>Concepts</summary>
-
-From [OData.org](https://www.odata.org/documentation/odata-version-2-0/uri-conventions/)
-
-
-### URI Format
-
-> A URI used by an OData service has up to three significant parts: the service root URI, resource path and query string options. Additional URI constructs (such as a fragment) MAY be present in a URI used by an OData service; however, this specification applies no further meaning to such additional constructs.
-
-### Pagination
-
-> A data service URI with a $skip System Query Option identifies a subset of the Entries in the Collection of Entries identified by the Resource Path section of the URI. That subset is defined by seeking N Entries into the Collection and selecting only the remaining Entries (starting with Entry N+1). N is an integer greater than or equal to zero specified by this query option. If a value less than zero is specified, the URI should be considered malformed.
-
-```
-https://services.odata.org/OData/OData.svc/Products?$skip=2&$top=2&$orderby=Rating
-
-The third and fourth Product Entry from the collection of all products when the collection is sorted by Rating (ascending).
-```
-### Filter
-
-> A URI with a `$filter` System Query Option identifies a subset of the Entries from the Collection of Entries identified by the Resource Path section of the URI. The subset is determined by selecting only the Entries that satisfy the predicate expression specified by the query option.
-
-| Operator             | Description           | Example                                            |
-| -------------------- | --------------------- | -------------------------------------------------- |
-| Eq                   | Equal                 | /Suppliers?$filter=Address/City eq 'Redmond'       |
-| Ne                   | Not equal             | /Suppliers?$filter=Address/City ne 'London'        |
-| Gt                   | Greater than          | /Products?$filter=Price gt 20                      |
-| Ge                   | Greater than or equal | /Products?$filter=Price ge 10                      |
-| Lt                   | Less than             | /Products?$filter=Price lt 20                      |
-| Le                   | Less than or equal    | /Products?$filter=Price le 100                     |
-| And                  | Logical and           | /Products?$filter=Price le 200 and Price gt 3.5    |
-| Or                   | Logical or            | /Products?$filter=Price le 3.5 or Price gt 200     |
-
-</details>
-
-## OData Client
+## ODataClient
 
 <details><summary>How to use @odata/client</summary>
 

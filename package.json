@@ -8,20 +8,20 @@
   },
   "devDependencies": {
     "@types/http-string-parser": "^0.0.29",
-    "@types/jest": "^26.0.7",
+    "@types/jest": "^26.0.9",
     "@types/mockjs": "^1.0.2",
     "@types/node": "^14.0.27",
     "@types/uuid": "^8.0.0",
-    "@typescript-eslint/eslint-plugin": "^3.7.1",
-    "@typescript-eslint/parser": "^3.7.1",
-    "eslint": "^7.5.0",
-    "jest": "^26.1.0",
+    "@typescript-eslint/eslint-plugin": "^3.9.0",
+    "@typescript-eslint/parser": "^3.9.0",
+    "eslint": "^7.6.0",
+    "jest": "^26.3.0",
     "mockjs": "^1.1.0",
     "rimraf": "^3.0.2",
     "standard-version": "^8.0.2",
-    "terser-webpack-plugin": "^3.0.8",
+    "terser-webpack-plugin": "^4.1.0",
     "ts-jest": "^26.1.4",
-    "ts-loader": "^8.0.1",
+    "ts-loader": "^8.0.2",
     "typescript": "^3.9.7",
     "webpack": "^4.44.0",
     "webpack-cli": "^3.3.12"
@@ -40,7 +40,7 @@
     "prepublishOnly": "npm run build && npm test"
   },
   "dependencies": {
-    "@newdash/newdash": "^5.12.2",
+    "@newdash/newdash": "^5.13.0",
     "@odata/parser": "^0.1.43",
     "@types/node-fetch": "^2.5.7",
     "fetch-cookie": "^0.10.1",
@@ -48,7 +48,7 @@
     "node-fetch": "^2.6.0",
     "uuid": "^8.3.0"
   },
-  "homepage": "https://github.com/Soontao/c4codata",
+  "homepage": "https://github.com/Soontao/light-odata",
   "author": {
     "name": "Theo Sun",
     "email": "theo.sun@sap.com",
@@ -56,10 +56,10 @@
   },
   "main": "lib/index.js",
   "keywords": [
-    "C4C",
-    "SAP",
-    "OData"
+    "OData",
+    "OData Client",
+    "Rest"
   ],
-  "repository": "Soontao/c4codata",
+  "repository": "Soontao/light-odata",
   "license": "MIT"
 }
