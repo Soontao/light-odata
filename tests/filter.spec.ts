@@ -1,4 +1,4 @@
-import { ODataFilter, OData, ODataDateTime, ODataDateTimeOffset } from "../src";
+import { OData, ODataDateTime, ODataDateTimeOffset, ODataFilter } from "../src";
 
 describe("OData Filter Test", () => {
 
@@ -204,5 +204,12 @@ describe("OData Filter Test", () => {
     ).toEqual("A lt datetimeoffset'2018-01-24T12:43:31.839Z'")
   })
 
+
+  it('should support boolean in filter', () => {
+
+    expect(ODataFilter.newBuilder().field("A").eq(true).build()).toBe("A eq true")
+
+
+  });
 
 })

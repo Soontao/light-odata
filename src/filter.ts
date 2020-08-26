@@ -92,7 +92,7 @@ class ODataFieldExpr {
   private _addExpr(op: ExprOperator, value: any) {
 
     switch (typeof value) {
-      case 'number':
+      case 'number': case 'boolean':
         this._getFieldExprs().push({ op, value: `${value}` });
         break;
       case 'string':
