@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.10.1](https://github.com/Soontao/light-odata/compare/v2.10.0...v2.10.1) (2020-08-26)
+
+
+### Bug Fixes
+
+* filter throw error when given bool ([a07a137](https://github.com/Soontao/light-odata/commit/a07a137c0db65da05476c173e5f59f528eb960b6))
+
 ## [2.10.0](https://github.com/Soontao/c4codata/compare/v2.9.0...v2.10.0) (2020-08-10)
 
 
