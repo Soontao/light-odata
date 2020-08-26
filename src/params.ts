@@ -1,12 +1,11 @@
-import { ODataFilter } from './filter';
-
 import concat from '@newdash/newdash/concat';
-import join from '@newdash/newdash/join';
 import isArray from '@newdash/newdash/isArray';
+import join from '@newdash/newdash/join';
 import uniq from '@newdash/newdash/uniq';
-
-import { ODataVersion } from './types_v4';
 import { ValidationError } from './errors';
+import { ODataFilter } from './filter';
+import { ODataVersion } from './types_v4';
+
 
 class SearchParams {
 
@@ -243,3 +242,7 @@ export class ODataQueryParam {
 }
 
 export const ODataParam = ODataQueryParam;
+
+export function param() {
+  return ODataParam.newParam();
+}

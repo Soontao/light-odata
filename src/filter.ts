@@ -482,3 +482,7 @@ export class ODataFilter {
   }
 
 }
+
+export function filter() {
+  return ODataFilter.newFilter();
+}
