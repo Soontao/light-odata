@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@newdash/newdash": "^5.13.0",
-    "@odata/parser": "^0.1.43",
+    "@odata/parser": "^0.2.1",
     "@types/node-fetch": "^2.5.7",
     "fetch-cookie": "^0.10.1",
     "http-string-parser": "^0.0.6",
