@@ -66,10 +66,7 @@ module.exports = {
 
     'no-unexpected-multiline': ['error'],
 
-    'no-unused-vars': ['error', {
-      'args': 'none',
-      'vars': 'all'
-    }],
+    'no-unused-vars': [0],
 
     'quotes': ['error', 'single', {
       'allowTemplateLiterals': true,

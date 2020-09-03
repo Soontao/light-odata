@@ -78,7 +78,7 @@ export interface BatchRequestOptions<T> {
   withContentLength?: boolean;
 }
 
-export interface ODataRequest<T = any> {
+export interface ODataRequest {
   collection: string, /** collection name */
   /**
    * GET for QUERY/READ; for QUERY, you can use params to control response data
@@ -90,28 +90,28 @@ export interface ODataRequest<T = any> {
 }
 
 
-export interface ODataReadIDRequest<T> extends ODataRequest<T> {
+export interface ODataReadIDRequest<T> extends ODataRequest {
   id: any, /** object key in READ/UPDATE/DELETE */
   params?: ODataQueryParam,
 }
 
-export interface ODataQueryRequest<T> extends ODataRequest<T> {
+export interface ODataQueryRequest<T> extends ODataRequest {
   params?: ODataQueryParam, /** params in QUERY */
 }
 
-export interface ODataWriteRequest<T> extends ODataRequest<T> {
+export interface ODataWriteRequest<T> extends ODataRequest {
   entity?: Partial<T> /** data object in CREATE/UPDATE */
   id?: any;
   method: HTTPMethod
 }
 
-export interface ODataActionRequest extends ODataRequest<any> {
+export interface ODataActionRequest extends ODataRequest {
   actionName: string;
   payload?: any;
   id: any;
 }
 
-export interface ODataFunctionRequest extends ODataRequest<any> {
+export interface ODataFunctionRequest extends ODataRequest {
   functionName: string;
   payload?: any;
   id: any;
