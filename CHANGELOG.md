@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.10.2](https://github.com/Soontao/light-odata/compare/v2.10.1...v2.10.2) (2020-09-03)
+
 ### [2.10.1](https://github.com/Soontao/light-odata/compare/v2.10.0...v2.10.1) (2020-08-26)
 
 
