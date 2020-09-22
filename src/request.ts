@@ -406,6 +406,8 @@ export class OData {
       method = 'GET';
       if (options.payload) {
         url += this.formatIdString(options.payload);
+      } else {
+        url += '()'; // empty parameter
       }
     } else if (options['actionName']) {
       url += `/${actionName}`;
