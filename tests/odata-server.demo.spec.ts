@@ -14,36 +14,39 @@ describe('@odata/server Test Suite', () => {
     const testNumber = Math.ceil(Math.random() * 1000)
 
     const client = OData.New4({ metadataUri: metadata, variant: "@odata/server" })
-    const teachers = client.getEntitySet("Teachers")
-    const classes = client.getEntitySet("Classes")
+    const teachers = client.getEntitySet('Teachers');
+    const classes = client.getEntitySet('Classes');
 
-    const createdTeacher = await teachers.create({ name: "Theo Sun" })
-    let createdClass = await classes.create({ name: "CS", desc: "Computer Science" })
+    const createdTeacher = await teachers.create({ name: 'Theo Sun' });
+    let createdClass = await classes.create({ name: 'CS', desc: 'Computer Science' });
 
-    // >> odata bounded functino
-    const echoResponse = await teachers.function('Default.echo', createdTeacher.id, {
+    // >> odata bounded function
+    const echoResponse = await teachers.function('Default.echo', createdTeacher.tid, {
       inNumber: testNumber,
       inString: testString
-    })
-    expect(echoResponse['outNumber']).toBe(testNumber)
-    expect(echoResponse['outString']).toBe(testString)
+    });
+    expect(echoResponse['outNumber']).toBe(testNumber);
+    expect(echoResponse['outString']).toBe(testString);
 
 
     // >> odata bounded action
-    await teachers.action("Default.addClass", createdTeacher.id, { classId: createdClass.id })
-    createdClass = await classes.retrieve(createdClass.id) // refresh
-    expect(createdClass.teacherOneId).toBe(createdTeacher.id)
+    await teachers.action('Default.addClass', createdTeacher.tid, { classId: createdClass.cid });
+    createdClass = await classes.retrieve(createdClass.cid); // refresh
+    expect(createdClass.teacherOneId).toBe(createdTeacher.tid);
+
+    const t1Classes = await teachers.function('Default.queryClass', createdTeacher.tid);
+    expect(t1Classes.value).toHaveLength(1);
+    expect(t1Classes.value[0]).toBe(createdClass.name);
 
     // >> clean
-    await classes.delete(createdClass.id) // delete ref item firstly
-    await teachers.delete(createdTeacher.id)
-
+    await classes.delete(createdClass.cid); // delete ref item firstly
+    await teachers.delete(createdTeacher.tid);
   });
 
   it('should support batch request in json format (OData V4.01)', async () => {
 
     interface Teacher {
-      id: number;
+      tid: number;
       name: string;
     }
 
@@ -65,9 +68,13 @@ describe('@odata/server Test Suite', () => {
 
     const creations = await unwrapBatchResponse(ress)
 
-    await client.execBatchRequestsJson(creations.map(created => teachers.batch().delete(created.id)))
+    await client.execBatchRequestsJson(creations.map(created => teachers.batch().delete(created.tid)))
 
-    const finds = await unwrapBatchResponse(client.execBatchRequestsJson(creations.map(created => teachers.batch().count({ id: created.id }))))
+    const finds = await unwrapBatchResponse(
+      client.execBatchRequestsJson(
+        creations.map(created => teachers.batch().count({ tid: created.tid }))
+      )
+    )
 
     finds.forEach(finded => expect(finded["@odata.count"]).toBe(0))
 
