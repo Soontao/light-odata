@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.11.1](https://github.com/Soontao/light-odata/compare/v2.11.0...v2.11.1) (2020-10-01)
+
+
+### Bug Fixes
+
+* type of update entityset ([fd399ef](https://github.com/Soontao/light-odata/commit/fd399ef94da101a16872e7dec60897bd6507d89f))
+* types of json batch ([46df891](https://github.com/Soontao/light-odata/commit/46df891bdbd3aa3a9391fc21bd3d31260113875a))
+
 ## [2.11.0](https://github.com/Soontao/light-odata/compare/v2.10.3...v2.11.0) (2020-10-01)
 
 
