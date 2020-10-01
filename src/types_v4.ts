@@ -143,7 +143,7 @@ export interface BatchRequestOptionsV4<T> extends BatchRequestOptions<T> {
   * odata-json-format-v4.01
   * request id
   */
-  id?: string;
+  requestId?: string;
   /**
    * odata-json-format-v4.01
    * atomicityGroup

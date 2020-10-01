@@ -549,7 +549,7 @@ export class OData {
 
     rt.init.headers = headers;
     rt.url = url;
-
+    rt.options = options;
     return rt;
   }
 

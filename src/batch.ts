@@ -8,8 +8,8 @@ import { parseResponse } from 'http-string-parser';
 import { RequestInit } from 'node-fetch';
 import { v4 } from 'uuid';
 import { FrameworkError } from './errors';
-import { BatchPlainODataResponse } from './types';
-import { BatchPlainODataResponseV4 } from './types_v4';
+import { BatchPlainODataResponse, BatchRequestOptions } from './types';
+import { BatchPlainODataResponseV4, BatchRequestOptionsV4 } from './types_v4';
 
 
 const HTTP_EOL = '\r\n';
@@ -46,30 +46,18 @@ export interface BatchRequest<R = any> {
    */
   url: string;
   init?: RequestInit & { body?: any };
+  /**
+   * original options
+   */
+  options?: BatchRequestOptions<any>;
 
 }
 
 export interface BatchRequestV4<R = any> extends BatchRequest<R> {
   /**
-   * odata-json-format-v4.01
-   * request id
+   * original options
    */
-  id?: string;
-  /**
-   * odata-json-format-v4.01
-   * atomicityGroup
-   */
-  atomicityGroup?: string;
-  /**
-   * odata-json-format-v4.01
-   * inner headers
-   */
-  headers?: Record<string, string>;
-  /**
-   * odata-json-format-v4.01
-   * dependsOn
-   */
-  dependsOn?: Array<string>;
+  options?: BatchRequestOptionsV4<any>;
 }
 
 export const formatHttpRequestString = (u: string, r: any): string => {
@@ -113,23 +101,23 @@ export const formatBatchRequestForOData401 = (requests: BatchRequestV4[] = []) =
   requests.forEach((req, idx) => {
 
     const tmpBatchRequestItem: JsonBatchRequest = {
-      id: req.id ?? idx.toString(),
+      id: req.options?.requestId ?? idx.toString(),
       // @ts-ignore
       method: req.init?.method?.toLocaleLowerCase(),
       url: req.url
     };
     if (req.init?.headers) {
       // @ts-ignore
-      tmpBatchRequestItem.headers = req.headers ?? req.init?.headers;
+      tmpBatchRequestItem.headers = req.init?.headers;
     }
     if (req.init?.body) {
       tmpBatchRequestItem.body = req.init.body;
     }
-    if (req.atomicityGroup) {
-      tmpBatchRequestItem.atomicityGroup = req.atomicityGroup;
+    if (req.options?.atomicityGroup) {
+      tmpBatchRequestItem.atomicityGroup = req.options.atomicityGroup;
     }
-    if (req.dependsOn) {
-      tmpBatchRequestItem.dependsOn = req.dependsOn;
+    if (req.options?.dependsOn) {
+      tmpBatchRequestItem.dependsOn = req.options.dependsOn;
     }
 
     rt.requests.push(tmpBatchRequestItem);
