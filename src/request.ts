@@ -486,7 +486,8 @@ export class OData {
         text: async() => JSON.stringify(responseItem.body),
         headers: responseItem.headers,
         status: responseItem.status,
-        statusText: undefined
+        statusText: undefined,
+        raw: responseItem
       });
     });
 
