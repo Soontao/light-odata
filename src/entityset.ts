@@ -161,7 +161,7 @@ export class EntitySet<T = any> {
 
   }
 
-  async update(id: any, body: DeepPartial<T>): Promise<T> {
+  async update(id: any, body: DeepPartial<T>): Promise<void> {
     const res = await this._client.newRequest<T>({
       collection: this._collection,
       method: 'PATCH',
@@ -169,7 +169,6 @@ export class EntitySet<T = any> {
       entity: body
     });
     this._checkError(res);
-    return this._getResult(res);
   }
 
   async delete(id: any): Promise<void> {
