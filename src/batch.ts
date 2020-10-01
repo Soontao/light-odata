@@ -46,6 +46,27 @@ export interface BatchRequest<R = any> {
    */
   url: string;
   init?: RequestInit & { body?: any };
+
+  /**
+   * odata-json-format-v4.01
+   * request id
+   */
+  id?: string;
+  /**
+   * odata-json-format-v4.01
+   * atomicityGroup
+   */
+  atomicityGroup?: string;
+  /**
+   * odata-json-format-v4.01
+   * inner headers
+   */
+  headers?: Record<string, string>;
+  /**
+   * odata-json-format-v4.01
+   * dependsOn
+   */
+  dependsOn?: Array<string>;
 }
 
 export const formatHttpRequestString = (u: string, r: any): string => {
@@ -81,6 +102,7 @@ export const formatHttpRequestString = (u: string, r: any): string => {
  * format batch request in json format (in OData V4.01 Spec)
  *
  * ref: https://github.com/Soontao/light-odata/issues/29
+ *
  * @param requests
  */
 export const formatBatchRequestForOData401 = (requests: BatchRequest[] = []) => {
@@ -88,18 +110,24 @@ export const formatBatchRequestForOData401 = (requests: BatchRequest[] = []) => 
   requests.forEach((req, idx) => {
 
     const tmpBatchRequestItem: JsonBatchRequest = {
-      id: idx.toString(),
+      id: req.id ?? idx.toString(),
       // @ts-ignore
       method: req.init?.method?.toLocaleLowerCase(),
       url: req.url
     };
     if (req.init?.headers) {
       // @ts-ignore
-      tmpBatchRequestItem.headers = req.init?.headers;
+      tmpBatchRequestItem.headers = req.headers ?? req.init?.headers;
     }
 
     if (req.init?.body) {
       tmpBatchRequestItem.body = req.init.body;
+    }
+    if (req.atomicityGroup) {
+      tmpBatchRequestItem.atomicityGroup = req.atomicityGroup;
+    }
+    if (req.dependsOn) {
+      tmpBatchRequestItem.dependsOn = req.dependsOn;
     }
 
     rt.requests.push(tmpBatchRequestItem);
