@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.11.0](https://github.com/Soontao/light-odata/compare/v2.10.3...v2.11.0) (2020-10-01)
+
+
+### Features
+
+* support atom & dependsOn in execBatchJson ([cb7ee75](https://github.com/Soontao/light-odata/commit/cb7ee75a42bed85c9e8ea7855a8d5225749a29d0))
+
+
+### Bug Fixes
+
+* odata function issue ([520f88f](https://github.com/Soontao/light-odata/commit/520f88f8dc37383bc2b0da4ba24a86d00dadf5b4))
+
 ### [2.10.3](https://github.com/Soontao/light-odata/compare/v2.10.2...v2.10.3) (2020-09-22)
 
 ### [2.10.2](https://github.com/Soontao/light-odata/compare/v2.10.1...v2.10.2) (2020-09-03)
