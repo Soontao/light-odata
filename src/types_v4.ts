@@ -1,12 +1,11 @@
-import { BatchRequest } from './batch';
+import { BatchRequestV4, ParsedResponseV4 } from './batch';
 import { EntitySet } from './entityset';
 import { ODataFilter } from './filter';
 import { ODataQueryParam } from './params';
 import {
   BatchRequestOptions,
-  BatchRequests,
-  BatchResponsesV4, Credential, ODataActionRequest, ODataFunctionRequest,
-  ODataQueryRequest, ODataReadIDRequest, ODataWriteRequest
+  Credential, ODataActionRequest, ODataFunctionRequest,
+  ODataQueryRequest, ODataReadIDRequest, ODataWriteRequest, UnwrapBatchRequest, UnwrapPromise
 } from './types';
 
 export type ODataVersion = 'v2' | 'v4';
@@ -115,7 +114,7 @@ export interface ODataV4 {
    *
    * @param options
    */
-  newBatchRequest<T>(options: BatchRequestOptions<T>): Promise<BatchRequest>;
+  newBatchRequest<T>(options: BatchRequestOptionsV4<T>): Promise<BatchRequestV4>;
 
   /**
    * execute batch requests and get response
@@ -123,7 +122,7 @@ export interface ODataV4 {
    * @param requests batch request
    *
    */
-  execBatchRequests<T extends BatchRequests = any>(requests: T): BatchResponsesV4<T>
+  execBatchRequests<T extends BatchRequestsV4 = any>(requests: T): BatchResponsesV4<T>
 
 
   /**
@@ -131,6 +130,33 @@ export interface ODataV4 {
    *
    * @param requests
    */
-  execBatchRequestsJson<T extends BatchRequests = any>(requests: T): BatchResponsesV4<T>
+  execBatchRequestsJson<T extends BatchRequestsV4 = any>(requests: T): BatchResponsesV4<T>
 
+}
+
+export type BatchRequestsV4 = Array<Promise<BatchRequestV4>>
+
+export type BatchResponsesV4<T> = Promise<{ [K in keyof T]: ParsedResponseV4<UnwrapBatchRequest<UnwrapPromise<T[K]>>> }>
+
+export interface BatchRequestOptionsV4<T> extends BatchRequestOptions<T> {
+  /**
+  * odata-json-format-v4.01
+  * request id
+  */
+  id?: string;
+  /**
+   * odata-json-format-v4.01
+   * atomicityGroup
+   */
+  atomicityGroup?: string;
+  /**
+   * odata-json-format-v4.01
+   * inner headers
+   */
+  headers?: Record<string, string>;
+  /**
+   * odata-json-format-v4.01
+   * dependsOn
+   */
+  dependsOn?: Array<string>;
 }

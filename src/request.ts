@@ -367,8 +367,8 @@ export class OData {
   public async newRequest<T>(options: ODataQueryRequest<T>): Promise<PlainODataMultiResponse<T>>;
   public async newRequest<T>(options: ODataWriteRequest<T>): Promise<PlainODataSingleResponse<T>>;
   public async newRequest<T>(options: ODataReadIDRequest<T>): Promise<PlainODataSingleResponse<T>>;
-  public async newRequest<T>(options: ODataFunctionRequest): Promise<PlainODataResponse>;
-  public async newRequest<T>(options: ODataActionRequest): Promise<PlainODataResponse>;
+  public async newRequest(options: ODataFunctionRequest): Promise<PlainODataResponse>;
+  public async newRequest(options: ODataActionRequest): Promise<PlainODataResponse>;
   public async newRequest(options: any): Promise<any> {
     if (options.actionName || options.functionName) {
       return this._executeActionOrFunction(options);

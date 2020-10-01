@@ -47,6 +47,9 @@ export interface BatchRequest<R = any> {
   url: string;
   init?: RequestInit & { body?: any };
 
+}
+
+export interface BatchRequestV4<R = any> extends BatchRequest<R> {
   /**
    * odata-json-format-v4.01
    * request id
@@ -105,7 +108,7 @@ export const formatHttpRequestString = (u: string, r: any): string => {
  *
  * @param requests
  */
-export const formatBatchRequestForOData401 = (requests: BatchRequest[] = []) => {
+export const formatBatchRequestForOData401 = (requests: BatchRequestV4[] = []) => {
   const rt: JsonBatchRequestBundle = { requests: [] };
   requests.forEach((req, idx) => {
 
@@ -119,7 +122,6 @@ export const formatBatchRequestForOData401 = (requests: BatchRequest[] = []) => 
       // @ts-ignore
       tmpBatchRequestItem.headers = req.headers ?? req.init?.headers;
     }
-
     if (req.init?.body) {
       tmpBatchRequestItem.body = req.init.body;
     }
