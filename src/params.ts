@@ -29,12 +29,12 @@ class SearchParams {
 
 }
 
-export interface ODataParamOrderField {
+export interface ODataParamOrderField<T = any> {
 
   /**
    * field name
    */
-  field: string;
+  field: keyof T;
 
   /**
    * order asc or desc
@@ -49,7 +49,7 @@ export interface ODataParamOrderField {
  *
  * ref https://github.com/SAP/C4CODATAAPIDEVGUIDE
  */
-export class ODataQueryParam {
+export class ODataQueryParam<T = any> {
 
   static newParam(): ODataQueryParam {
     return new ODataQueryParam();
@@ -136,7 +136,7 @@ export class ODataQueryParam {
    *
    * @param selects
    */
-  select(selects: string | string[]) {
+  select(selects: keyof T | Array<keyof T>) {
     this.$select = concat(this.$select, selects as any);
     return this;
   }
@@ -148,7 +148,7 @@ export class ODataQueryParam {
    * @param order default desc, disabled when first params is array
    */
   orderby(
-    fieldOrOrders: string | ODataParamOrderField[],
+    fieldOrOrders: keyof T | ODataParamOrderField<T>[],
     order: 'asc' | 'desc' = 'desc'
   ) {
     if (isArray(fieldOrOrders)) {
@@ -164,7 +164,7 @@ export class ODataQueryParam {
    *
    * @param fields
    */
-  orderbyMulti(fields: ODataParamOrderField[] = []) {
+  orderbyMulti(fields: ODataParamOrderField<T>[] = []) {
     this.$orderby = join(fields.map((f) => `${f.field} ${f.order || 'desc'}`), ',');
     return this;
   }
@@ -202,11 +202,12 @@ export class ODataQueryParam {
    * @param fields
    * @param replace
    */
-  expand(fields: string | string[], replace = false): this {
+  expand(fields: keyof T | Array<keyof T>, replace = false): this {
     if (replace) {
       if (typeof fields == 'string') {
         this.$expand = [fields];
       } else if (isArray(fields)) {
+        // @ts-ignore
         this.$expand = fields;
       }
     } else {

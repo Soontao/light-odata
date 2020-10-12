@@ -264,7 +264,7 @@ class ODataFieldExpr {
 /**
  * OData filter builder
  */
-export class ODataFilter {
+export class ODataFilter<T = any> {
 
   static newBuilder(): ODataFilter {
     return new ODataFilter();
@@ -292,7 +292,8 @@ export class ODataFilter {
   /**
    * @param name filed name
    */
-  field(name: string): ODataFieldExpr {
+  field(name: keyof T): ODataFieldExpr {
+    // @ts-ignore
     return new ODataFieldExpr(this, name, this.getExprMapping());
   }
 
@@ -303,7 +304,8 @@ export class ODataFilter {
    * @param name
    * @param values
    */
-  fieldIn(name: string, values: string[]): this {
+  fieldIn(name: keyof T, values: string[]): this {
+    // @ts-ignore
     return this.fieldValueMatchArray(name, values);
   }
 
@@ -314,7 +316,7 @@ export class ODataFilter {
    * @param name
    * @param values
    */
-  fieldValueMatchArray(name: string, values: string[] = []): this {
+  fieldValueMatchArray(name: keyof T, values: string[] = []): this {
     if (values) {
       values.forEach((value) => {
         this.field(name).eqString(value);
@@ -333,7 +335,7 @@ export class ODataFilter {
    * @param start
    * @param end
    */
-  inPeriod(name: string, start: Date, end: Date): ODataFilter {
+  inPeriod(name: keyof T, start: Date, end: Date): ODataFilter {
     return this.betweenDateTime(name, start, end);
   }
 
@@ -343,7 +345,7 @@ export class ODataFilter {
    * @param start
    * @param end
    */
-  betweenDateTime(name: string, start: Date, end: Date): ODataFilter {
+  betweenDateTime(name: keyof T, start: Date, end: Date): ODataFilter {
     if (start && end) {
       return this.gtDateTime(name, start).ltDateTime(name, end);
     }
@@ -357,7 +359,7 @@ export class ODataFilter {
    * @param start
    * @param end
    */
-  betweenDateTimeOffset(name: string, start: Date, end: Date): ODataFilter {
+  betweenDateTimeOffset(name: keyof T, start: Date, end: Date): ODataFilter {
     if (start && end) {
       return this.gtDateTimeOffset(name, start).ltDateTimeOffset(name, end);
     }
@@ -369,7 +371,7 @@ export class ODataFilter {
    * @param name
    * @param date
    */
-  gtDateTime(name: string, date: Date): ODataFilter {
+  gtDateTime(name: keyof T, date: Date): ODataFilter {
     return this.field(name).gt(`datetime'${date.toISOString()}'`);
   }
 
@@ -378,7 +380,7 @@ export class ODataFilter {
    * @param name
    * @param date
    */
-  gtDateTimeOffset(name: string, date: Date): ODataFilter {
+  gtDateTimeOffset(name: keyof T, date: Date): ODataFilter {
     return this.field(name).gt(`datetimeoffset'${date.toISOString()}'`);
   }
 
@@ -387,7 +389,7 @@ export class ODataFilter {
    * @param name
    * @param date
    */
-  ltDateTime(name: string, date: Date): ODataFilter {
+  ltDateTime(name: keyof T, date: Date): ODataFilter {
     return this.field(name).lt(`datetime'${date.toISOString()}'`);
   }
 
@@ -396,7 +398,7 @@ export class ODataFilter {
    * @param name
    * @param date
    */
-  ltDateTimeOffset(name: string, date: Date): ODataFilter {
+  ltDateTimeOffset(name: keyof T, date: Date): ODataFilter {
     return this.field(name).lt(`datetimeoffset'${date.toISOString()}'`);
   }
 

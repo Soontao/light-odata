@@ -28,11 +28,14 @@ describe('@odata/server Test Suite', () => {
     expect(echoResponse['outNumber']).toBe(testNumber);
     expect(echoResponse['outString']).toBe(testString);
 
-
     // >> odata bounded action
-    await teachers.action('Default.addClass', createdTeacher.tid, { classId: createdClass.cid });
-    createdClass = await classes.retrieve(createdClass.cid); // refresh
-    expect(createdClass.teacherOneId).toBe(createdTeacher.tid);
+    await teachers.action(
+      "Default.addClass",
+      createdTeacher.id,
+      { classId: createdClass.id }
+    )
+    createdClass = await classes.retrieve(createdClass.id) // refresh
+    expect(createdClass.teacherOneId).toBe(createdTeacher.id)
 
     const t1Classes = await teachers.function('Default.queryClass', createdTeacher.tid);
     expect(t1Classes.value).toHaveLength(1);
@@ -70,11 +73,7 @@ describe('@odata/server Test Suite', () => {
 
     await client.execBatchRequestsJson(creations.map(created => teachers.batch().delete(created.tid)))
 
-    const finds = await unwrapBatchResponse(
-      client.execBatchRequestsJson(
-        creations.map(created => teachers.batch().count({ tid: created.tid }))
-      )
-    )
+    const finds = await unwrapBatchResponse(client.execBatchRequestsJson(creations.map(created => teachers.batch().count({ tid: created.tid }))))
 
     finds.forEach(finded => expect(finded["@odata.count"]).toBe(0))
 

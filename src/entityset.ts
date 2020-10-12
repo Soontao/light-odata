@@ -44,6 +44,14 @@ export class EntitySet<T = any> {
     }
   }
 
+  public newFilter(): ODataFilter<T> {
+    return this._client.newFilter();
+  }
+
+  public newParam(): ODataQueryParam<T> {
+    return this._client.newParam();
+  }
+
   async retrieve(id: any, params?: ODataQueryParam): Promise<T> {
     const res = await this._client.newRequest<T>({
       collection: this._collection,

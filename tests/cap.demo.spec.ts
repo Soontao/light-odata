@@ -18,7 +18,7 @@ describe('CAP Framework OData (V4) Test Suite (basic)', () => {
     const client = createClient()
     const es = client.getEntitySet<CapDemoPeople>("Peoples")
 
-    const c0 = await es.count(OData.newFilter().field("UserName").eqString(name))
+    const c0 = await es.count(es.newFilter().field("UserName").eqString(name))
 
     if (c0 > 0) {
       name = name + Random.integer(100, 999)
