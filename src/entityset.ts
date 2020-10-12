@@ -31,14 +31,27 @@ export class EntitySet<T = any> {
     }
   }
 
-  private _getResult(res: PlainODataResponse) {
+  private _getResultSingle(res: PlainODataResponse) {
     switch (this._client.getVersion()) {
       case 'v2':
         // @ts-ignore
-        return res.d?.results || res.d;
+        return res.d;
       case 'v4':
         // @ts-ignore
-        return res?.value || res;
+        return res;
+      default:
+        break;
+    }
+  }
+
+  private _getResults(res: PlainODataResponse) {
+    switch (this._client.getVersion()) {
+      case 'v2':
+        // @ts-ignore
+        return res.d?.results;
+      case 'v4':
+        // @ts-ignore
+        return res?.value;
       default:
         break;
     }
@@ -60,7 +73,7 @@ export class EntitySet<T = any> {
       params
     });
     this._checkError(res);
-    return this._getResult(res);
+    return this._getResultSingle(res);
   }
 
 
@@ -100,7 +113,7 @@ export class EntitySet<T = any> {
       params: param
     });
     this._checkError(res);
-    return this._getResult(res);
+    return this._getResults(res);
   }
 
   async count(filter?: ODataFilter): Promise<number>;
@@ -165,7 +178,7 @@ export class EntitySet<T = any> {
       entity: body
     });
     this._checkError(res);
-    return this._getResult(res);
+    return this._getResultSingle(res);
 
   }
 
