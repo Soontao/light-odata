@@ -10,21 +10,21 @@
     "@types/http-string-parser": "^0.0.29",
     "@types/jest": "^26.0.14",
     "@types/mockjs": "^1.0.3",
-    "@types/node": "^14.11.2",
+    "@types/node": "^14.11.8",
     "@types/uuid": "^8.3.0",
-    "@typescript-eslint/eslint-plugin": "^4.3.0",
-    "@typescript-eslint/parser": "^4.3.0",
-    "eslint": "^7.10.0",
-    "jest": "^26.4.2",
+    "@typescript-eslint/eslint-plugin": "^4.4.0",
+    "@typescript-eslint/parser": "^4.4.0",
+    "eslint": "^7.11.0",
+    "jest": "^26.5.3",
     "mockjs": "^1.1.0",
     "rimraf": "^3.0.2",
     "standard-version": "^9.0.0",
-    "terser-webpack-plugin": "^4.2.2",
+    "terser-webpack-plugin": "^4.2.3",
     "ts-jest": "^26.4.1",
     "ts-loader": "^8.0.4",
     "typescript": "^4.0.3",
-    "webpack": "^4.44.2",
-    "webpack-cli": "^3.3.12"
+    "webpack": "^5.0.0",
+    "webpack-cli": "^4.0.0"
   },
   "typings": "lib/index.d.ts",
   "scripts": {
@@ -40,13 +40,13 @@
     "prepublishOnly": "npm run build && npm test"
   },
   "dependencies": {
-    "@newdash/newdash": "^5.14.0",
+    "@newdash/newdash": "^5.15.0",
     "@odata/parser": "^0.2.3",
     "@types/node-fetch": "^2.5.7",
     "fetch-cookie": "^0.10.1",
     "http-string-parser": "^0.0.6",
     "node-fetch": "^2.6.1",
-    "uuid": "^8.3.0"
+    "uuid": "^8.3.1"
   },
   "homepage": "https://github.com/Soontao/light-odata",
   "author": {
