@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.11.3](https://github.com/Soontao/light-odata/compare/v2.11.2...v2.11.3) (2020-10-12)
+
+
+### Bug Fixes
+
+* entityset result parsing ([9fba99b](https://github.com/Soontao/light-odata/commit/9fba99b32c08ac88e0fc5911cc5703a60dea99c9))
+
 ### [2.11.2](https://github.com/Soontao/light-odata/compare/v2.11.1...v2.11.2) (2020-10-12)
 
 ### [2.11.1](https://github.com/Soontao/light-odata/compare/v2.11.0...v2.11.1) (2020-10-01)
