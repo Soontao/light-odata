@@ -3,17 +3,14 @@ import { OData } from "../src";
 import "../src/polyfill";
 import { unwrapBatchResponse } from "./utils";
 
-
 describe('@odata/server Test Suite', () => {
 
   const metadata = 'https://odata-v4-server-demo.herokuapp.com/$metadata'
 
   it('should execute full CRUD operations', async () => {
-
-    const testString = v4()
-    const testNumber = Math.ceil(Math.random() * 1000)
-
     const client = OData.New4({ metadataUri: metadata, variant: "@odata/server" })
+    const testString = v4();
+    const testNumber = Math.ceil(Math.random() * 1000);
     const teachers = client.getEntitySet('Teachers');
     const classes = client.getEntitySet('Classes');
 
@@ -28,22 +25,20 @@ describe('@odata/server Test Suite', () => {
     expect(echoResponse['outNumber']).toBe(testNumber);
     expect(echoResponse['outString']).toBe(testString);
 
-    // >> odata bounded action
-    await teachers.action(
-      "Default.addClass",
-      createdTeacher.id,
-      { classId: createdClass.id }
-    )
-    createdClass = await classes.retrieve(createdClass.id) // refresh
-    expect(createdClass.teacherOneId).toBe(createdTeacher.id)
 
-    const t1Classes = await teachers.function('Default.queryClass', createdTeacher.tid);
+    // >> odata bounded action
+    await teachers.action('Default.addClass', createdTeacher.tid, { classId: createdClass.cid });
+    createdClass = await classes.retrieve(createdClass.cid); // refresh
+    expect(createdClass.teacherOneId).toBe(createdTeacher.tid);
+
+    const t1Classes = await teachers.function('Default.queryClass', createdTeacher.tid, {});
     expect(t1Classes.value).toHaveLength(1);
     expect(t1Classes.value[0]).toBe(createdClass.name);
 
-    // >> clean
-    await classes.delete(createdClass.cid); // delete ref item firstly
-    await teachers.delete(createdTeacher.tid);
+    await teachers.delete(createdTeacher.tid)
+    await classes.delete(createdClass.cid)
+
+
   });
 
   it('should support batch request in json format (OData V4.01)', async () => {
