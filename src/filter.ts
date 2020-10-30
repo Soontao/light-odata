@@ -409,7 +409,7 @@ export class ODataFilter<T = any> {
    *
    * filter.field("A").eq("'a'").and("B eq 'b'").build() == "A eq 'a' and (B eq 'b')"
    *
-   * @deprecated c4codata will auto detect connect operator between difference fields
+   * @deprecated c4codata will auto detect logic operator between difference fields
    * @param filter
    */
   and(filter?: string | ODataFilter): ODataFilter {
@@ -417,7 +417,7 @@ export class ODataFilter<T = any> {
   }
 
   /**
-   * @deprecated c4codata will auto detect connect operator in same fields
+   * @deprecated c4codata will auto detect logic operator in same fields
    * @param filter
    */
   or(filter?: string | ODataFilter): ODataFilter {
