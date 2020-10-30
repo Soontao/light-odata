@@ -2,8 +2,9 @@ import { ODataFilter, ODataParam } from '../src';
 import "../src/polyfill";
 import { OData } from "../src/request";
 import { Alphabetical_list_of_product, Customer } from "./demo_service_types";
+import { ODATA_SAMPLE_SERVICE_HOST } from './utils';
 
-const TestServiceURL = "https://services.odata.org/V2/Northwind/Northwind.svc/$metadata"
+const TestServiceURL = `https://${ODATA_SAMPLE_SERVICE_HOST}/V2/Northwind/Northwind.svc/$metadata`
 
 describe('Read Test', () => {
 
@@ -100,5 +101,45 @@ describe('Read Test', () => {
     expect(result.d.results[0].CustomerID).toEqual("ALFKI")
   })
 
+  it('should support filter field with function (V2)', async () => {
+
+    const client = OData.New({ metadataUri: TestServiceURL })
+
+    const Customers = client.getEntitySet("Customers")
+
+    // query with entityset wrapper
+    // query: /Customers?$filter=endswith(CompanyName, 'Futterkiste') eq true
+    const result = await Customers.query(
+      // with free text filter
+      client.newParam().filter("endswith(CompanyName, 'Futterkiste') eq true")
+    )
+    expect(result).toHaveLength(1)
+    expect(result[0]['CompanyName'].endsWith("Futterkiste")).toBeTruthy()
+
+    // query with entityset wrapper
+    // query: /Customers?$filter=endswith(CompanyName, 'Futterkiste') eq true
+    const result2 = await Customers.query(
+      client.newParam().filter(
+        client.newFilter().field("endswith(CompanyName, 'Futterkiste')").eq(true)
+      )
+    )
+    expect(result2).toHaveLength(1)
+    expect(result2[0]['CompanyName'].endsWith("Futterkiste")).toBeTruthy()
+
+
+    // query with client direct
+    // query: /Customers?$filter=indexof(CompanyName, 'Futterkiste') gt -1
+    const result3 = await client.newRequest({
+      collection: "Customers",
+      method: "GET",
+      params: client.newParam().filter(
+        client.newFilter().field("indexof(CompanyName, 'Futterkiste')").gt(-1)
+      )
+    })
+    expect(result3.d.results).toHaveLength(1)
+    expect(result3.d.results[0]['CompanyName'].substr(1)).toBe("lfreds Futterkiste")
+
+
+  });
 
 });

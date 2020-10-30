@@ -2,10 +2,11 @@ import { v4 } from "uuid";
 import "../src/polyfill";
 import { OData } from "../src/request";
 import { People } from "./demo_service_types";
+import { ODATA_SAMPLE_SERVICE_HOST } from "./utils";
 
 describe('Read Test (V4)', () => {
 
-  const TestV4ServiceURL = `https://services.odata.org/TripPinRESTierService/(S(${v4()}))/$metadata`
+  const TestV4ServiceURL = `https://${ODATA_SAMPLE_SERVICE_HOST}/TripPinRESTierService/(S(${v4()}))/$metadata`
 
   test('Read All (v4)', async () => {
     const odata_v4 = OData.New4({ metadataUri: TestV4ServiceURL, version: "v4" })

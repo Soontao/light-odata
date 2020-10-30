@@ -212,4 +212,16 @@ describe("OData Filter Test", () => {
 
   });
 
+  it('should support function in field', () => {
+    expect(
+      OData.newFilter().field("substring(CompanyName, 1)").eqString("lfreds Futterkiste").build()
+    ).toBe("substring(CompanyName, 1) eq 'lfreds Futterkiste'")
+    expect(
+      OData.newFilter().field("substring(CompanyName, 1)").eq("'lfreds Futterkiste'").build()
+    ).toBe("substring(CompanyName, 1) eq 'lfreds Futterkiste'")
+    expect(
+      OData.newFilter().field("endswith(CompanyName, 'Futterkiste')").eq(true).build()
+    ).toBe("endswith(CompanyName, 'Futterkiste') eq true")
+  });
+
 })

@@ -5,6 +5,7 @@ import { join } from "path";
 import { v4 } from "uuid";
 import { formatBatchRequest, OData, parseMultiPartContent } from "../src";
 import "../src/polyfill";
+import { ODATA_SAMPLE_SERVICE_HOST } from "./utils";
 
 interface Product {
   ID: number,
@@ -98,7 +99,7 @@ describe('test batch multipart parse & format', () => {
   })
 
   test('should request batch format', async () => {
-    const base = `https://services.odata.org/V2/(S(${v4()}))/OData/OData.svc/`
+    const base = `https://${ODATA_SAMPLE_SERVICE_HOST}/V2/(S(${v4()}))/OData/OData.svc/`
     const odata = OData.New({
       metadataUri: `${base}/$metadata`,
     })
@@ -132,7 +133,7 @@ describe('test batch multipart parse & format', () => {
   })
 
   test('should request with batch', async () => {
-    const base = `https://services.odata.org/V2/(S(${v4()}))/OData/OData.svc/`
+    const base = `https://${ODATA_SAMPLE_SERVICE_HOST}/V2/(S(${v4()}))/OData/OData.svc/`
     const odata = OData.New({
       metadataUri: `${base}/$metadata`,
     })
@@ -172,7 +173,7 @@ describe('test batch multipart parse & format', () => {
   })
 
   test('should request with batch entity set', async () => {
-    const base = `https://services.odata.org/V2/(S(${v4()}))/OData/OData.svc/`
+    const base = `https://${ODATA_SAMPLE_SERVICE_HOST}/V2/(S(${v4()}))/OData/OData.svc/`
     const client = OData.New({
       metadataUri: `${base}/$metadata`,
     })
