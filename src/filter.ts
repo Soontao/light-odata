@@ -290,7 +290,7 @@ export class ODataFilter<T = any> {
   }
 
   /**
-   * @param name filed name
+   * @param name field name or function expression
    */
   field(name: keyof T): ODataFieldExpr {
     // @ts-ignore
