@@ -287,6 +287,20 @@ OData
   .build()
 ```
 
+### filter by function
+
+```js
+// CompagnyName contains 'testName' case sensitive
+OData
+  .newFilter()
+  .filter("indexof(CompanyName, 'testName')").gt(-1)
+
+// CompagnyName has legth 8
+OData
+  .newFilter()
+  .filter("length(CompanyName)").eq(8)
+```
+
 </details>
 
 ## EntitySet
