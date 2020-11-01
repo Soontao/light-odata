@@ -287,6 +287,26 @@ OData
   .build()
 ```
 
+### filter by function
+
+```js
+// CompagnyName contains 'testName' case sensitive
+OData
+  .newFilter()
+  .filter("indexof(CompanyName, 'testName')").gt(-1)
+
+// CompagnyName has legth 8
+OData
+  .newFilter()
+  .filter("length(CompanyName)").eq(8)
+
+// CompagnyName has substring 'test'
+OData
+  .newFilter()
+  .filter("substringof('test', CompanyName)").eq(true)
+```
+> see more possiblility at [4.5. Filter System Query Option ($filter) function](https://www.odata.org/documentation/odata-version-2-0/uri-conventions/) odata v2 documentation
+
 </details>
 
 ## EntitySet
