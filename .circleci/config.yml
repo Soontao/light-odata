@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:12
+      - image: circleci/node:14
 
     working_directory: ~/repo
 
@@ -22,12 +22,12 @@ jobs:
       - save_cache:
           paths:
             - ~/.npm
-          key: node-v12-{{ checksum "package-lock.json" }}
+          key: node-v14-{{ checksum "package-lock.json" }}
 
   deploy:
     working_directory: ~/repo
     docker:
-      - image: circleci/node:12
+      - image: circleci/node:14
     steps:
       - checkout
       - run: npm install
