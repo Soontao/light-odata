@@ -26,7 +26,7 @@ export interface ODataNewOptions {
    */
   metadataUri: string;
   /**
-   * basic credential pair
+   * credential configuration, basic/oauth (client credentials)
    */
   credential?: Credential;
   /**
