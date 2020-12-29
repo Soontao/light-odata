@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.12.0](https://github.com/Soontao/light-odata/compare/v2.11.4...v2.12.0) (2020-12-29)
+
+
+### Features
+
+* oauth client ([8e03ff2](https://github.com/Soontao/light-odata/commit/8e03ff20160f05b4cddb779f0e75970c2d61eab1))
+* oauth client ([c839a0c](https://github.com/Soontao/light-odata/commit/c839a0c05cbea01d0d2bc5ecb22d25da7c580d7d))
+* support oauth authendication ([4e69200](https://github.com/Soontao/light-odata/commit/4e692006fe807f3076ba7bfcf5f12d36d41ad171))
+
 ### [2.11.4](https://github.com/Soontao/light-odata/compare/v2.11.3...v2.11.4) (2020-12-11)
 
 ### [2.11.3](https://github.com/Soontao/light-odata/compare/v2.11.2...v2.11.3) (2020-10-12)
