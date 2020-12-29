@@ -159,8 +159,20 @@ export interface PlainODataMultiResponse<E = any> extends PlainODataResponse {
 }
 
 export interface Credential {
-  username: string,
-  password: string
+  username?: string;
+  password?: string;
+  /**
+   * oauth client id
+   */
+  clientId?: string;
+  /**
+   * oauth client secret
+   */
+  clientSecret?: string;
+  /**
+   * oauth token url
+   */
+  tokenUrl?: string;
 }
 
 /**

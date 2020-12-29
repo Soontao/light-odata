@@ -9,6 +9,7 @@ import { BatchRequest, formatBatchRequest, formatBatchRequestForOData401, parseM
 import { EntitySet } from './entityset';
 import { FrameworkError, ODataServerError, ValidationError } from './errors';
 import { ODataFilter } from './filter';
+import { ClientCredentialsOAuthClient } from './oauth';
 import { ODataParam, ODataQueryParam } from './params';
 import {
   BatchRequestOptions, BatchRequests,
@@ -24,6 +25,7 @@ const S_X_CSRF_TOKEN = 'x-csrf-token';
 
 const S_CONTENT_TYPE = 'Content-Type';
 
+// @ts-ignore
 const defaultProxy: FetchProxy = async(url: string, init?: RequestInit) => {
   // @ts-ignore
   const res = await fetch(url, init);
@@ -58,6 +60,11 @@ export class OData {
    * http basic credential
    */
   private credential: Credential;
+
+  /**
+   * oauth client
+   */
+  private oauthClient: ClientCredentialsOAuthClient;
   /**
    * internal csrf token
    */
@@ -160,6 +167,9 @@ export class OData {
         `${join(slice(this.metadataUri.split('/'), 0, -1), '/')}/`;
       if (credential) {
         this.credential = credential;
+        if (credential.tokenUrl && credential.clientId && credential.clientSecret) {
+          this.oauthClient = new ClientCredentialsOAuthClient(credential.tokenUrl, credential.clientId, credential.clientSecret);
+        }
       }
     }
     this.commonHeader = { ...this.commonHeader, ...headers };
@@ -172,13 +182,19 @@ export class OData {
   private async getHeaders() {
     let rt = { ...this.commonHeader };
     if (this.credential) {
-      rt = {
-        ...rt,
-        ...GetAuthorizationPair(
-          this.credential.username,
-          this.credential.password
-        )
-      };
+
+      if (this.credential.username !== undefined) {
+        rt = {
+          ...rt,
+          ...GetAuthorizationPair(this.credential.username, this.credential.password)
+        };
+      } else if (this.oauthClient) {
+        rt = {
+          ...rt,
+          ... (await this.oauthClient.getHeader())
+        };
+      }
+
     }
     if (this.processCsrfToken) {
       rt[S_X_CSRF_TOKEN] = await this.getCsrfToken();

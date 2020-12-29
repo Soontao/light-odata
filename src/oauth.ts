@@ -2,6 +2,7 @@ import { Mutex } from '@newdash/newdash/functional/Semaphore';
 import { SearchParams } from './util';
 
 const S_AUTHORIZATION = 'Authorization';
+const S_BEARER = 'Bearer';
 const S_CLIENT_CREDENTIALS = 'client_credentials';
 const S_CT_URL_FORM = 'application/x-www-form-urlencoded';
 
@@ -60,7 +61,7 @@ class ClientCredentialsOAuthClient {
    * @private
    * @returns {Promise<any>}
    */
-  async fetchOAuthResponse(): Promise<any> {
+  private async fetchOAuthResponse(): Promise<any> {
     const params = new SearchParams();
     params.append('client_id', this.clientId);
     params.append('client_secret', this.clientSecret);
@@ -79,13 +80,22 @@ class ClientCredentialsOAuthClient {
     return body;
   }
 
+  /**
+   * get header pair
+   */
+  public async getHeader() {
+    const token = await this.getToken();
+    return {
+      [S_AUTHORIZATION]: `${S_BEARER} ${token}`
+    };
+  }
 
   /**
    * get current valid oauth token
    *
    * @returns {Promise<string>}
    */
-  async getToken(): Promise<string> {
+  public async getToken(): Promise<string> {
 
     // lock avoid multi fetch token requests in same time
     return this.mut.use(async() => {
@@ -139,7 +149,7 @@ class ClientCredentialsOAuthClient {
    * send axios request with oauth token
    *
    */
-  async fetch(...args: Parameters<typeof fetch>) {
+  public async fetch(...args: Parameters<typeof fetch>) {
     // refresh token if required
     const token = await this.getToken();
 
@@ -156,7 +166,7 @@ class ClientCredentialsOAuthClient {
     // append jwt token
     config.headers = {
       ...(config.headers || {}),
-      [S_AUTHORIZATION]: `Bearer ${token}`
+      [S_AUTHORIZATION]: `${S_BEARER} ${token}`
     };
 
     return fetch(url, config);
@@ -165,7 +175,7 @@ class ClientCredentialsOAuthClient {
   /**
    * destroy this client
    */
-  destroy() {
+  public destroy() {
     if (this.jobId) {
       clearInterval(this.jobId);
     }
