@@ -72,6 +72,9 @@ class ClientCredentialsOAuthClient {
         'Content-Type': S_CT_URL_FORM
       }
     });
+    if (response.status >= 400) {
+      throw new Error(await response.text());
+    }
     const body = await response.json();
     return body;
   }
