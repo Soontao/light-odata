@@ -5,29 +5,8 @@ import uniq from '@newdash/newdash/uniq';
 import { ValidationError } from './errors';
 import { ODataFilter } from './filter';
 import { ODataVersion } from './types_v4';
+import { SearchParams } from './util';
 
-
-class SearchParams {
-
-  _store = new Map()
-
-  append(key: string, value: string): void {
-    if (this._store.has(key)) {
-      throw new ValidationError(`key ${key} has been appended before, and can not be overwrited!`);
-    }
-    this._store.set(key, value);
-  }
-
-  toString(): string {
-    const coll = [];
-    this._store.forEach((value, key) => {
-      coll.push(`${key}=${value}`);
-    });
-    return coll.join('&');
-  }
-
-
-}
 
 export interface ODataParamOrderField<T = any> {
 

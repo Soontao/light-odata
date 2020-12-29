@@ -25,3 +25,20 @@ export function GetAuthorizationPair(user: string, password: string): { Authoriz
 export function inArray(obj: any, arr: any[] = []): boolean {
   return arr.indexOf(obj) >= 0;
 }
+
+export class SearchParams {
+
+  _store = new Map()
+
+  append(key: string, value: string): void {
+    this._store.set(key, value);
+  }
+
+  toString(): string {
+    const coll = [];
+    this._store.forEach((value, key) => { coll.push(`${key}=${value}`); });
+    return coll.join('&');
+  }
+
+
+}
