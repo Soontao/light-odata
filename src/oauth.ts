@@ -21,9 +21,8 @@ const S_CT_URL_FORM = 'application/x-www-form-urlencoded';
  *  "client_id",
  *  "client_secret"
  * )
- * const response = await client.axios({
+ * const response = await client.fetch("http://protected.by.jwt/resource", {
  *  method: "GET",
- *  url: "http://protected.by.jwt/resource"
  * })
  * ```
  *
