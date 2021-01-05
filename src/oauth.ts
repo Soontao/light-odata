@@ -30,12 +30,12 @@ const S_CT_URL_FORM = 'application/x-www-form-urlencoded';
  */
 class ClientCredentialsOAuthClient {
 
-  private tokenUrl: string;
-  private clientId: string;
-  private clientSecret: string;
+  private readonly tokenUrl: string;
+  private readonly clientId: string;
+  private readonly clientSecret: string;
+  private readonly mut: Mutex;
   private token: string;
   private jobId: any;
-  private mut: Mutex;
 
 
   /**
