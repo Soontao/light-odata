@@ -2,14 +2,16 @@ name: unittest
 
 on:
   push:
-    branches: '*'
+    branches:
+      - "*"
   pull_request:
-    branches: '*'
+    branches:
+      - "*"
+  schedule:
+    - cron: "0 2 * * *"
 
 jobs:
-
   test:
-
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -18,31 +20,31 @@ jobs:
         os: [ubuntu-latest, windows-latest]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
 
-    - name: Cache node modules
-      uses: actions/cache@v1
-      env:
-        cache-name: cache-node-modules
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+      - name: Cache node modules
+        uses: actions/cache@v1
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
-    - run: npm ci
-    - run: npm run lint
-    - run: npm run build
-    - name: unit test
-      run: npm run coverage
-      env:
-        C4C_ODATA: ${{ secrets.C4C_ODATA }}
-        C4C_USER: ${{ secrets.C4C_USER }}
-        C4C_PASS: ${{ secrets.C4C_PASS }}
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+      - name: unit test
+        run: npm run coverage
+        env:
+          C4C_ODATA: ${{ secrets.C4C_ODATA }}
+          C4C_USER: ${{ secrets.C4C_USER }}
+          C4C_PASS: ${{ secrets.C4C_PASS }}
 
-    - name: Codecov
-      uses: codecov/codecov-action@v1.0.7
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
+      - name: Codecov
+        uses: codecov/codecov-action@v1.0.7
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
