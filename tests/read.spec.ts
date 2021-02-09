@@ -81,7 +81,15 @@ describe('Read Test', () => {
     expect(result.d.results[0]["CustomerID"]).toEqual("ALFKI")
   })
 
-
+  test('Read By Filter null', async () => {
+    const odata = OData.New({ metadataUri: TestServiceURL })
+    const filter = OData.newFilter().field("Phone").eq(null);
+    const result = await odata.newRequest({
+      collection: "Customers",
+      params: OData.newParam().filter(filter)
+    })
+    expect(result.d.results).toHaveLength(0)
+  })
 
   test('Read By Group Filter with count', async () => {
     const odata = OData.New({ metadataUri: TestServiceURL })

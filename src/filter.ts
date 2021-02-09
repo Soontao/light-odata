@@ -105,6 +105,8 @@ class ODataFieldExpr {
       case 'object':
         if (value instanceof ODataDataObject) {
           this._getFieldExprs().push({ op, value: value.toString() });
+        } else if (value === null) {
+          this._getFieldExprs().push({ op, value: null });
         } else {
           throw new FrameworkError(`Not support object ${value?.constructor?.name || typeof value} in odata filter eq/ne/gt/ge/ne/nt ...`);
         }
