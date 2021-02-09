@@ -14,6 +14,10 @@ describe("OData Filter Test", () => {
       .toEqual("Name ne 'test string'")
   })
 
+  it('should support filter.eq(null)', () => {
+    expect(OData.newFilter().field("Name").eq(null).build()).toEqual("Name eq null")
+  });
+
   test("ODataFilter.group", () => {
     const filter = ODataFilter.newFilter().group(
       ODataFilter.newFilter().fieldIn("Name", ["test string1", "test string2"])
