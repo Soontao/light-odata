@@ -64,10 +64,11 @@ type FieldExprMappings = {
 }
 
 /**
+ * odata property filter expression
  * @private
  * @internal
  */
-class ODataFieldExpr {
+class ODataPropertyExpr {
 
   constructor(filter: ODataFilter, fieldName: string, mapping: FieldExprMappings) {
     this._exprMappings = mapping;
@@ -292,11 +293,22 @@ export class ODataFilter<T = any> {
   }
 
   /**
+   * filter property
+   * @see property
    * @param name field name or function expression
    */
-  field(name: keyof T): ODataFieldExpr {
+  field(name: keyof T): ODataPropertyExpr {
+    return this.property(name);
+  }
+
+  /**
+   * filter property
+   *
+   * @param name property name
+   */
+  property(name: keyof T): ODataPropertyExpr {
     // @ts-ignore
-    return new ODataFieldExpr(this, name, this.getExprMapping());
+    return new ODataPropertyExpr(this, name, this.getExprMapping());
   }
 
   /**
@@ -459,6 +471,9 @@ export class ODataFilter<T = any> {
 
   }
 
+  /**
+   * build filter to string
+   */
   build(): string {
     let _rt = '';
     _rt = join(

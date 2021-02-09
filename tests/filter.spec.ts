@@ -16,6 +16,7 @@ describe("OData Filter Test", () => {
 
   it('should support filter.eq(null)', () => {
     expect(OData.newFilter().field("Name").eq(null).build()).toEqual("Name eq null")
+    expect(OData.newFilter().property("Name").eq(null).build()).toEqual("Name eq null")
   });
 
   test("ODataFilter.group", () => {
