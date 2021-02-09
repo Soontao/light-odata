@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.13.0](https://github.com/Soontao/light-odata/compare/v2.12.0...v2.13.0) (2021-02-09)
+
+
+### Features
+
+* support null in filter ([11744d1](https://github.com/Soontao/light-odata/commit/11744d124696e86d90bedd51eca75a1066975c60))
+
 ## [2.12.0](https://github.com/Soontao/light-odata/compare/v2.11.4...v2.12.0) (2020-12-29)
 
 
