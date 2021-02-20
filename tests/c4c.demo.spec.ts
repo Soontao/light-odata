@@ -21,6 +21,7 @@ d('C4C/ByD OData (V2) Test Suite (basic)', () => {
 
   const getOData = () => {
     return OData.New({
+      // @ts-ignore
       metadataUri: env.C4C_ODATA,
       credential: {
         username: env.C4C_USER,
@@ -103,7 +104,7 @@ d('C4C/ByD OData (V2) Test Suite (basic)', () => {
     await client.execBatchRequests(resBodies.map(resBody => client.newBatchRequest({
       collection: coll,
       method: "DELETE",
-      id: resBody.d.ObjectID
+      id: resBody?.d?.ObjectID
     })))
 
     // verify deleted
@@ -133,7 +134,7 @@ d('C4C/ByD OData (V2) Test Suite (basic)', () => {
     expect(c1).toBe(1)
 
     // batch delete
-    await client.execBatchRequests(createdItems.map(resBody => es.batch().delete(resBody.d.ObjectID)))
+    await client.execBatchRequests(createdItems.map(resBody => es.batch().delete(resBody?.d?.ObjectID)))
 
     // verify deleted
     const c = await es.count(client.newFilter().field('UserID').eqString(users[0]))

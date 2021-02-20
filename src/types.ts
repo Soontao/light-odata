@@ -90,12 +90,12 @@ export interface ODataRequest {
 }
 
 
-export interface ODataReadIDRequest<T> extends ODataRequest {
+export interface ODataReadIDRequest extends ODataRequest {
   id: any, /** object key in READ/UPDATE/DELETE */
   params?: ODataQueryParam,
 }
 
-export interface ODataQueryRequest<T> extends ODataRequest {
+export interface ODataQueryRequest extends ODataRequest {
   params?: ODataQueryParam, /** params in QUERY */
 }
 

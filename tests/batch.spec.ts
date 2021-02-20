@@ -162,12 +162,12 @@ describe('test batch multipart parse & format', () => {
     const result = await odata.execBatchRequests(requests)
     await Promise.all(
       map(result, async r => {
-        var json = await r.json();
+        var json = await r?.json();
         if (json) {
           expect(json.d);
           expect(json.error).toBeUndefined()
         }
-        expect(r.status == 200 || r.status == 201).toEqual(true)
+        expect(r?.status == 200 || r?.status == 201).toEqual(true)
       })
     )
   })
@@ -196,12 +196,12 @@ describe('test batch multipart parse & format', () => {
 
     await Promise.all(
       map(result, async r => {
-        var json = await r.json();
+        var json = await r?.json();
         if (json) {
           expect(json.d);
           expect(json.error).toBeUndefined()
         }
-        expect(r.status == 200 || r.status == 201).toEqual(true)
+        expect(r?.status == 200 || r?.status == 201).toEqual(true)
       })
     )
   })

@@ -98,9 +98,10 @@ export class EntitySet<T = any> {
     return this.query(OData.newParam().filter(filter));
   }
 
-  async query(param?: ODataFilter): Promise<T[]>;
-  async query(param?: ODataQueryParam): Promise<T[]>;
-  async query(param?: any): Promise<any> {
+  async query(param: ODataFilter): Promise<T[]>;
+  async query(param: ODataQueryParam): Promise<T[]>;
+  async query(): Promise<T[]>;
+  async query(param: any): Promise<any> {
     if (param instanceof ODataFilter) {
       param = ODataQueryParam.newParam().filter(param);
     }

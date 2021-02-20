@@ -88,9 +88,9 @@ export interface ODataV4 {
   /**
    * new odata http request
    */
-  newRequest<T>(options: ODataQueryRequest<T>): Promise<PlainODataMultiResponseV4<T>>;
+  newRequest<T>(options: ODataQueryRequest): Promise<PlainODataMultiResponseV4<T>>;
   newRequest<T>(options: ODataWriteRequest<T>): Promise<PlainODataSingleResponseV4<T>>;
-  newRequest<T>(options: ODataReadIDRequest<T>): Promise<PlainODataSingleResponseV4<T>>;
+  newRequest<T>(options: ODataReadIDRequest): Promise<PlainODataSingleResponseV4<T>>;
   newRequest(options: ODataFunctionRequest): Promise<PlainODataResponseV4>;
   newRequest(options: ODataActionRequest): Promise<PlainODataResponseV4>;
 

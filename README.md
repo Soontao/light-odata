@@ -62,7 +62,7 @@ const runner = async () => {
   // Query by filter
   //
   // GET /Customers?$format=json&$filter=Phone eq '030-0074321'
-  const filter = client.newFilter().field("Phone").eqString("030-0074321");
+  const filter = client.newFilter().property("Phone").eqString("030-0074321");
 
   const result = await client.newRequest({ // ODataRequest object
     collection: "Customers", // collection name
@@ -146,7 +146,7 @@ filter data by fields value
 
 ```js
 // $format=json&$filter=A eq 'test'
-OData.newParam().filter(OData.newFilter().field("A").eqString("test"))
+OData.newParam().filter(OData.newFilter().property("A").eqString("test"))
 ```
 
 ### inline count
@@ -183,7 +183,7 @@ OData.newParam().expand("Customers")
 OData.newParam().expand(["Customers", "Employees"])
 ```
 
-### fields select
+### properties select
 
 remove unused fields from response
 
@@ -230,10 +230,10 @@ just ref following examples
 
 ```js
 // Name eq 'test string'
-OData.newFilter().field("Name").eqString("test string")
+OData.newFilter().property("Name").eqString("test string")
 
 // ID lt '1024'
-OData.newFilter().field("ID").lt("'1024'")
+OData.newFilter().property("ID").lt("'1024'")
 
 // also support eq/ne/le/lt/gt/ge ...
 ```
@@ -244,8 +244,8 @@ OData.newFilter().field("ID").lt("'1024'")
 // Name eq 'test string1' and Name2 eq 'test string2'
 OData
   .newFilter()
-  .field("Name").eq("'test string1'")
-  .field("Name2").eqString("test string2")
+  .property("Name").eq("'test string1'")
+  .property("Name2").eqString("test string2")
 ```
 
 ### filter by one field but multi values
@@ -253,8 +253,8 @@ OData
 ```js
 // Name eq 'test string1' and (Name2 eq 'test string1' or Name2 eq 'test string2')
 OData.newFilter()
-  .field("Name").eq("'test string1'")
-  .field("Name2").in(["test string3", "test string2"])
+  .property("Name").eq("'test string1'")
+  .property("Name2").in(["test string3", "test string2"])
 ```
 
 ### filter by date
@@ -267,8 +267,8 @@ Please provide `Date` object in this api.
 // Name eq 'test string1' and (CreationDateTime gt datetime'2018-01-24T12:43:31.839Z' and CreationDateTime lt datetime'2018-05-24T12:43:31.839Z')
 OData
   .newFilter()
-  .field("Name").eq("'test string1'")
-  .field("CreationDateTime").betweenDateTime(
+  .property("Name").eq("'test string1'")
+  .property("CreationDateTime").betweenDateTime(
     new Date("2018-01-24T12:43:31.839Z"),
     new Date("2018-05-24T12:43:31.839Z"),
     false
@@ -280,7 +280,7 @@ OData
 // (CreationDateTime ge datetime'2018-01-24T12:43:31.839Z' and CreationDateTime le datetime'2018-05-24T12:43:31.839Z')
 OData
   .newFilter()
-  .field("CreationDateTime").betweenDateTime(
+  .property("CreationDateTime").betweenDateTime(
     new Date("2018-01-24T12:43:31.839Z"),
     new Date("2018-05-24T12:43:31.839Z")
   )

@@ -208,7 +208,7 @@ export class OData {
    * @param entitySetName the name of entity set, you can get it from metadata
    *
    */
-  public getEntitySet<T>(entitySetName: string): EntitySet<T> {
+  public getEntitySet<T = any>(entitySetName: string): EntitySet<T> {
     return new EntitySet(entitySetName, this);
   }
 
@@ -353,6 +353,9 @@ export class OData {
             case 'boolean':
               return `${k}=${v}`;
             default:
+              if (v === null) {
+                return `${k}=null`;
+              }
               // other type will be removed
               return '';
           }
@@ -363,7 +366,7 @@ export class OData {
         rt = `(${id})`;
         break;
       case 'string':
-        if (this.variant == 'cap') {
+        if (this.variant === 'cap') {
           rt = `(${id})`; // for cap framework, id string should remove singlequote
         } else {
           rt = `('${id}')`;
@@ -380,9 +383,9 @@ export class OData {
   /**
    * new odata http request
    */
-  public async newRequest<T>(options: ODataQueryRequest<T>): Promise<PlainODataMultiResponse<T>>;
-  public async newRequest<T>(options: ODataWriteRequest<T>): Promise<PlainODataSingleResponse<T>>;
-  public async newRequest<T>(options: ODataReadIDRequest<T>): Promise<PlainODataSingleResponse<T>>;
+  public async newRequest<T = any>(options: ODataQueryRequest): Promise<PlainODataMultiResponse<T>>;
+  public async newRequest<T = any>(options: ODataWriteRequest<T>): Promise<PlainODataSingleResponse<T>>;
+  public async newRequest<T = any>(options: ODataReadIDRequest): Promise<PlainODataSingleResponse<T>>;
   public async newRequest(options: ODataFunctionRequest): Promise<PlainODataResponse>;
   public async newRequest(options: ODataActionRequest): Promise<PlainODataResponse>;
   public async newRequest(options: any): Promise<any> {

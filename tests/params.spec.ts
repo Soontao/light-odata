@@ -1,4 +1,4 @@
-import { ODataParam, ODataQueryParam, OData } from "../src";
+import { OData, ODataParam, ODataQueryParam } from "../src";
 
 describe('ODataParams Test', () => {
 
@@ -31,6 +31,7 @@ describe('ODataParams Test', () => {
     const param2 = OData.newParam().filter("A eq 'test'")
     expect(decodeURIComponent(param2.toString())).toEqual("$format=json&$filter=A eq 'test'")
     expect(() => {
+      // @ts-ignore
       OData.newParam().filter(undefined)
     }).toThrow();
   })

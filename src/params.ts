@@ -77,7 +77,7 @@ export class ODataQueryParam<T = any> {
    *
    * @param filter
    */
-  filter(filter?: string | ODataFilter) {
+  filter(filter: string | ODataFilter) {
     if (filter instanceof ODataFilter) {
       this.$filter = filter.build();
       return this;

@@ -13,6 +13,7 @@ describe('Read Test', () => {
 
   test('OData constructor alias', () => {
     expect(OData.New({ metadataUri: TestServiceURL })).toBeInstanceOf(OData)
+    // @ts-ignore
     expect(() => { OData.New({ metadataUri: undefined }) }).toThrow()
   })
 
@@ -24,8 +25,8 @@ describe('Read Test', () => {
       params: OData.newParam().inlinecount(true)
     })
 
-    expect(result.d.results[0].CustomerID).toEqual("ALFKI")
-    expect(result.d.__count).not.toBeUndefined()
+    expect(result?.d?.results[0].CustomerID).toEqual("ALFKI")
+    expect(result?.d?.__count).not.toBeUndefined()
 
   })
 
@@ -35,7 +36,7 @@ describe('Read Test', () => {
       collection: "Customers",
       id: "ALFKI"
     })
-    expect(r.d.CustomerID).toEqual("ALFKI")
+    expect(r?.d?.CustomerID).toEqual("ALFKI")
   })
 
   test('Read By ID (number)', async () => {
@@ -44,7 +45,7 @@ describe('Read Test', () => {
       collection: "Employees",
       id: 1
     })
-    expect(r.d.Title).toEqual("Sales Representative")
+    expect(r?.d?.Title).toEqual("Sales Representative")
   })
 
   test('Read By Compound ID (string)', async () => {
@@ -53,7 +54,7 @@ describe('Read Test', () => {
       collection: "Customers",
       id: { CustomerID: "ALFKI" }
     })
-    expect(r.d.CustomerID).toEqual("ALFKI")
+    expect(r?.d?.CustomerID).toEqual("ALFKI")
   })
 
 
@@ -68,7 +69,7 @@ describe('Read Test', () => {
         ProductName: "Chai"
       }
     })
-    expect(r.d.UnitPrice).toEqual("18.0000")
+    expect(r?.d?.UnitPrice).toEqual("18.0000")
   })
 
   test('Read By Filter', async () => {
@@ -78,7 +79,7 @@ describe('Read Test', () => {
       collection: "Customers",
       params: OData.newParam().filter(filter)
     })
-    expect(result.d.results[0]["CustomerID"]).toEqual("ALFKI")
+    expect(result?.d?.results?.[0]?.["CustomerID"]).toEqual("ALFKI")
   })
 
   test('Read By Filter null', async () => {
@@ -88,7 +89,7 @@ describe('Read Test', () => {
       collection: "Customers",
       params: OData.newParam().filter(filter)
     })
-    expect(result.d.results).toHaveLength(0)
+    expect(result?.d?.results).toHaveLength(0)
   })
 
   test('Read By Group Filter with count', async () => {
@@ -105,8 +106,8 @@ describe('Read Test', () => {
       collection: "Customers",
       params: param
     })
-    expect(result.d.__count).toEqual("1")
-    expect(result.d.results[0].CustomerID).toEqual("ALFKI")
+    expect(result?.d?.__count).toEqual("1")
+    expect(result?.d?.results[0].CustomerID).toEqual("ALFKI")
   })
 
   it('should support filter field with function (V2)', async () => {
@@ -122,7 +123,7 @@ describe('Read Test', () => {
       client.newParam().filter("endswith(CompanyName, 'Futterkiste') eq true")
     )
     expect(result).toHaveLength(1)
-    expect(result[0]['CompanyName'].endsWith("Futterkiste")).toBeTruthy()
+    expect(result?.[0]?.['CompanyName'].endsWith("Futterkiste")).toBeTruthy()
 
     // query with entityset wrapper
     // query: /Customers?$filter=endswith(CompanyName, 'Futterkiste') eq true
@@ -144,8 +145,8 @@ describe('Read Test', () => {
         client.newFilter().field("indexof(CompanyName, 'Futterkiste')").gt(-1)
       )
     })
-    expect(result3.d.results).toHaveLength(1)
-    expect(result3.d.results[0]['CompanyName'].substr(1)).toBe("lfreds Futterkiste")
+    expect(result3?.d?.results).toHaveLength(1)
+    expect(result3?.d?.results[0]['CompanyName'].substr(1)).toBe("lfreds Futterkiste")
 
 
   });

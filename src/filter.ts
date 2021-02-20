@@ -1,11 +1,13 @@
 import join from '@newdash/newdash/join';
 import { FrameworkError, ValidationError } from './errors';
 
-export abstract class ODataDataObject {
+export abstract class ODataValueObject {
   abstract toString(): string;
 }
 
-export class ODataDateTime extends ODataDataObject {
+export type FilterValue = number | string | ODataValueObject | null
+
+export class ODataDateTime extends ODataValueObject {
 
   private constructor(date: Date) {
     super();
@@ -25,7 +27,7 @@ export class ODataDateTime extends ODataDataObject {
 
 }
 
-export class ODataDateTimeOffset extends ODataDataObject {
+export class ODataDateTimeOffset extends ODataValueObject {
 
   private constructor(date: Date) {
     super();
@@ -56,7 +58,7 @@ export enum ExprOperator {
 
 type FieldExpr = {
   op: ExprOperator;
-  value: string;
+  value: FilterValue;
 }
 
 type FieldExprMappings = {
@@ -90,7 +92,7 @@ class ODataPropertyExpr {
     return this._exprMappings[this._fieldName];
   }
 
-  private _addExpr(op: ExprOperator, value: any) {
+  private _addExpr(op: ExprOperator, value: FilterValue) {
 
     switch (typeof value) {
       case 'number': case 'boolean':
@@ -104,12 +106,12 @@ class ODataPropertyExpr {
         }
         break;
       case 'object':
-        if (value instanceof ODataDataObject) {
+        if (value instanceof ODataValueObject) {
           this._getFieldExprs().push({ op, value: value.toString() });
         } else if (value === null) {
           this._getFieldExprs().push({ op, value: null });
         } else {
-          throw new FrameworkError(`Not support object ${value?.constructor?.name || typeof value} in odata filter eq/ne/gt/ge/ne/nt ...`);
+          throw new FrameworkError(`Not support object ${value?.['constructor']?.['name'] || typeof value} in odata filter eq/ne/gt/ge/ne/nt ...`);
         }
         break;
       case 'undefined':
@@ -124,7 +126,7 @@ class ODataPropertyExpr {
    * equal
    * @param value
    */
-  eq(value: number | string | ODataDataObject): ODataFilter {
+  eq(value: FilterValue): ODataFilter {
     this._addExpr(ExprOperator.eq, value);
     return this._filter;
   }
@@ -133,7 +135,7 @@ class ODataPropertyExpr {
    * not equal
    * @param value
    */
-  ne(value: number | string | ODataDataObject): ODataFilter {
+  ne(value: FilterValue): ODataFilter {
     this._addExpr(ExprOperator.ne, value);
     return this._filter;
   }
@@ -152,7 +154,7 @@ class ODataPropertyExpr {
    * greater or equal
    * @param value
    */
-  ge(value: number | string | ODataDataObject): ODataFilter {
+  ge(value: number | string | ODataValueObject): ODataFilter {
     this._addExpr(ExprOperator.ge, value);
     return this._filter;
   }
@@ -161,7 +163,7 @@ class ODataPropertyExpr {
    * greater than
    * @param value
    */
-  gt(value: number | string | ODataDataObject): ODataFilter {
+  gt(value: FilterValue): ODataFilter {
     this._addExpr(ExprOperator.gt, value);
     return this._filter;
   }
@@ -170,7 +172,7 @@ class ODataPropertyExpr {
    * less or equal
    * @param value
    */
-  le(value: number | string | ODataDataObject): ODataFilter {
+  le(value: FilterValue): ODataFilter {
     this._addExpr(ExprOperator.le, value);
     return this._filter;
   }
@@ -179,7 +181,7 @@ class ODataPropertyExpr {
    * less than
    * @param value
    */
-  lt(value: number | string | ODataDataObject): ODataFilter {
+  lt(value: FilterValue): ODataFilter {
     this._addExpr(ExprOperator.lt, value);
     return this._filter;
   }

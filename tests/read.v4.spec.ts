@@ -14,7 +14,8 @@ describe('Read Test (V4)', () => {
       collection: "People",
     })
     expect(response["@odata.context"]).not.toBeUndefined()
-    expect(response.value.length > 0).toBeTruthy()
+    // @ts-ignore
+    expect(response?.value?.length > 0).toBeTruthy()
   })
 
 
@@ -34,9 +35,9 @@ describe('Read Test (V4)', () => {
       id: "not_existed"
     })
 
-    expect(response.error.message).not.toBeUndefined()
-    expect(response.error.code).toBe("") // empty code
-    expect(response.error.message).toBe("The request resource is not found.") // error message
+    expect(response?.error?.message).not.toBeUndefined()
+    expect(response?.error?.code).toBe("") // empty code
+    expect(response?.error?.message).toBe("The request resource is not found.") // error message
 
   })
 
@@ -57,8 +58,9 @@ describe('Read Test (V4)', () => {
       params: OData.newParam().filter(filter)
     })
     expect(result.error).toBeUndefined()
-    expect(result.value.length > 0).toBeTruthy()
-    expect(result.value[0].UserName).toEqual("russellwhyte")
+    // @ts-ignore
+    expect(result?.value?.length > 0).toBeTruthy()
+    expect(result?.value?.[0].UserName).toEqual("russellwhyte")
   })
 
   test('Create Instace (v4)', async () => {

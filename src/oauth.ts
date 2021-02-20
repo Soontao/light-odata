@@ -145,7 +145,7 @@ class ClientCredentialsOAuthClient {
   }
 
   /**
-   * send axios request with oauth token
+   * send requests with oauth token
    *
    */
   public async fetch(...args: Parameters<typeof fetch>) {
