@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.14.0](https://github.com/Soontao/light-odata/compare/v2.13.0...v2.14.0) (2021-02-20)
+
+
+### Features
+
+* add filter.proprety method ([93fe889](https://github.com/Soontao/light-odata/commit/93fe889ce7d10be5b855d9450dce88c1728de214))
+
+
+### Bug Fixes
+
+* [#253](https://github.com/Soontao/light-odata/issues/253) ([b22aa03](https://github.com/Soontao/light-odata/commit/b22aa0367a6672da13e2b6a834cbe64b16cfd446))
+
 ## [2.13.0](https://github.com/Soontao/light-odata/compare/v2.12.0...v2.13.0) (2021-02-09)
 
 
