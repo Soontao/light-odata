@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.14.1](https://github.com/Soontao/light-odata/compare/v2.14.0...v2.14.1) (2021-03-17)
+
+
+### Bug Fixes
+
+* sciprt issue ([14f463c](https://github.com/Soontao/light-odata/commit/14f463c167d63782b87c27458ecdabcfed6f6d3b))
+
 ## [2.14.0](https://github.com/Soontao/light-odata/compare/v2.13.0...v2.14.0) (2021-02-20)
 
 
