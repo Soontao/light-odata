@@ -1,4 +1,4 @@
-import { Mutex } from '@newdash/newdash/functional/Semaphore';
+import { Mutex } from '@newdash/newdash/functional/Mutex';
 import { SearchParams } from './util';
 
 const S_AUTHORIZATION = 'Authorization';
