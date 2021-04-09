@@ -19,7 +19,7 @@ import {
   PlainODataResponse, PlainODataSingleResponse, SAPNetweaverOData
 } from './types';
 import { ODataV4, ODataVersion } from './types_v4';
-import { GetAuthorizationPair, inArray } from './util';
+import { GetAuthorizationPair } from './util';
 
 const S_X_CSRF_TOKEN = 'x-csrf-token';
 
@@ -101,7 +101,7 @@ export class OData {
     rt.version = options.version || 'v2';
     rt.variant = options.variant || 'default';
     // force process csrf token
-    if (inArray(rt.variant, SAPNetweaverOData)) {
+    if (SAPNetweaverOData.includes(rt.variant)) {
       rt.processCsrfToken = true;
       // ref https://cxwiki.sap.com/pages/viewpage.action?pageId=511350333
       // use compatibility mode for c4c/byd
@@ -536,7 +536,7 @@ export class OData {
   public async newBatchRequest<T>(options: BatchRequestOptions<T>) {
     let { withContentLength = false } = options;
     const { collection, method = 'GET', id, params, entity } = options;
-    if (inArray(this.variant, SAPNetweaverOData)) {
+    if (SAPNetweaverOData.includes(this.variant)) {
       // for SAP NetWeaver Platform OData, need content length header
       withContentLength = true;
     }

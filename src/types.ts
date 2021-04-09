@@ -7,7 +7,7 @@ export type HTTPMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
 export type ODataVariant = 'default' | 'c4c' | 'byd' | 'cap' | 'cpi' | '@odata/server'
 
-export const SAPNetweaverOData = ['c4c', 'byd'];
+export const SAPNetweaverOData: Readonly<Array<ODataVariant>> = ['c4c', 'byd'] as const;
 
 export type FetchProxy = (url: string, init: RequestInit) => Promise<{
   /**

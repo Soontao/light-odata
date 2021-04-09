@@ -22,9 +22,6 @@ export function GetAuthorizationPair(user: string, password: string): { Authoriz
   return { Authorization: `Basic ${encode(`${user}:${password}`)}` };
 }
 
-export function inArray(obj: any, arr: any[] = []): boolean {
-  return arr.indexOf(obj) >= 0;
-}
 
 export class SearchParams {
 
