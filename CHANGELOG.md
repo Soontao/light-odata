@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.15.2](https://github.com/Soontao/light-odata/compare/v2.15.1...v2.15.2) (2021-04-13)
+
+
+### Bug Fixes
+
+* url parameter ([17ce072](https://github.com/Soontao/light-odata/commit/17ce07297184042be1de3f31222e0ac4aab1ffdd))
+
 ### [2.15.1](https://github.com/Soontao/light-odata/compare/v2.15.0...v2.15.1) (2021-04-13)
 
 ## [2.15.0](https://github.com/Soontao/light-odata/compare/v2.14.1...v2.15.0) (2021-04-13)
