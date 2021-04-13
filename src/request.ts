@@ -98,8 +98,8 @@ export class OData {
       options.fetchProxy,
       options.processCsrfToken
     );
-    rt.version = options.version || 'v2';
-    rt.variant = options.variant || 'default';
+    rt.version = options.version ?? 'v2';
+    rt.variant = options.variant ?? 'default';
     // force process csrf token
     if (SAPNetweaverOData.includes(rt.variant)) {
       rt.processCsrfToken = true;
@@ -146,7 +146,7 @@ export class OData {
     credential?: Credential,
     headers: any = {},
     /**
-     * deprecated, DONT use it
+     * deprecated, DO NOT use it
      */
     urlRewrite?: (string) => string,
     fetchProxy?: FetchProxy,
@@ -158,7 +158,7 @@ export class OData {
     if (fetchProxy) {
       this.fetchProxy = fetchProxy;
     }
-    if (!metadataUri) {
+    if (metadataUri === undefined) {
       throw new ValidationError('metadata url required !');
     } else {
       this.metadataUri = metadataUri;
@@ -227,8 +227,11 @@ export class OData {
    * e.g. https://tenant.c4c.saphybriscloud.cn/sap/c4c/odata/v1/c4codata/
    */
   public setODataEndPath(odataEnd: string): void {
-    if (odataEnd) {
+    if (odataEnd !== undefined) {
       this.odataEnd = odataEnd;
+      if (!this.odataEnd.endsWith('/')) {
+        this.odataEnd += '/';
+      }
     }
   }
 
