@@ -409,17 +409,20 @@ export class OData {
     if (!actionName && !functionName) {
       throw new ValidationError(`must provide 'actionName' or 'functionName'.`);
     }
-
     if (options.collection !== undefined) {
-      url += `/${options.collection}`;
+      url += `${options.collection}`;
     }
 
     if (options.id) {
       url += this.formatIdString(options.id);
     }
 
+    if (!url.endsWith('/')) {
+      url += '/';
+    }
+
     if (functionName) {
-      url += `/${functionName}`;
+      url += `${functionName}`;
       method = 'GET';
       if (options.payload) {
         url += this.formatIdString(options.payload);
@@ -427,7 +430,7 @@ export class OData {
         url += '()'; // empty parameter
       }
     } else if (options['actionName']) {
-      url += `/${actionName}`;
+      url += `${actionName}`;
       method = 'POST';
     }
 
