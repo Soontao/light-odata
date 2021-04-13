@@ -4,3 +4,4 @@ lib
 out
 the_tests
 .env
+npmlist.json
