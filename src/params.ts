@@ -34,6 +34,10 @@ export class ODataQueryParam<T = any> {
     return new ODataQueryParam();
   }
 
+  constructor() {
+    this._customParams = new SearchParams();
+  }
+
   private $skip = 0
   private $filter: string | ODataFilter
   private $top = 0
@@ -44,6 +48,9 @@ export class ODataQueryParam<T = any> {
   private $inlinecount: string
   private $expand: string[] = []
   private $count = false
+
+  private _customParams: SearchParams;
+
 
   /**
    * with $inlinecount value
@@ -196,8 +203,14 @@ export class ODataQueryParam<T = any> {
   }
 
 
+  custom(key: any, value: any) {
+    this._customParams.append(key, value);
+  }
+
+
   toString(version: ODataVersion = 'v2'): string {
     const rt = new SearchParams();
+    rt.putAll(this._customParams);
     if (this.$format) { rt.append('$format', this.$format); }
     if (this.$filter) { rt.append('$filter', this.$filter.toString()); }
     if (this.$orderby) { rt.append('$orderby', this.$orderby); }

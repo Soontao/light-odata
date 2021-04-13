@@ -399,10 +399,6 @@ export class OData {
     let url = `${this.odataEnd}`;
     let method: HTTPMethod = 'GET';
 
-    if (!options.collection) {
-      throw new ValidationError('must provide collection name');
-    }
-
     const actionName = options['actionName'];
     const functionName = options['functionName'];
 
@@ -414,7 +410,9 @@ export class OData {
       throw new ValidationError(`must provide 'actionName' or 'functionName'.`);
     }
 
-    url += `${options.collection}`;
+    if (options.collection !== undefined) {
+      options.collection !== undefined;
+    }
 
     if (options.id) {
       url += this.formatIdString(options.id);
@@ -431,6 +429,10 @@ export class OData {
     } else if (options['actionName']) {
       url += `/${actionName}`;
       method = 'POST';
+    }
+
+    if (options.params) {
+      url = `${url}?${options.params.toString(this.version)}`;
     }
 
     if (actionName) {

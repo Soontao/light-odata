@@ -220,6 +220,18 @@ export class EntitySet<T = any> {
     return responseBody;
   }
 
+  async actionImport(actionName: string, payload?: any, params?: ODataQueryParam): any {
+    const responseBody = await this._client.newRequest({
+      method: 'POST',
+      params,
+      payload,
+      actionName
+    });
+    this._checkError(responseBody);
+    return responseBody;
+  }
+
+
   /**
    * execute function
    *
@@ -227,17 +239,37 @@ export class EntitySet<T = any> {
    * @param id
    * @param payload
    */
-  async function(functionName: string, id: any, payload?: any): any {
+  async function(functionName: string, id: any, payload?: any, params?: ODataQueryParam): any {
     const responseBody = await this._client.newRequest({
       collection: this._collection,
       method: 'GET',
       id,
+      params,
       payload,
       functionName
     });
     this._checkError(responseBody);
     return responseBody;
   }
+
+  /**
+  * execute function
+  *
+  * @param functionName
+  * @param id
+  * @param payload
+  */
+  async functionImport(functionName: string, payload?: any, params?: ODataQueryParam): any {
+    const responseBody = await this._client.newRequest({
+      payload,
+      params,
+      method: 'GET',
+      functionName
+    });
+    this._checkError(responseBody);
+    return responseBody;
+  }
+
 
 }
 

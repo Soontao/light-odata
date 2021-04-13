@@ -37,5 +37,12 @@ export class SearchParams {
     return coll.join('&');
   }
 
+  putAll(param: SearchParams) {
+    if (param !== undefined && param instanceof SearchParams) {
+      param._store.forEach((value, key) => {
+        this._store.set(key, value);
+      });
+    }
+  }
 
 }

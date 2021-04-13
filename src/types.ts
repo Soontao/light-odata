@@ -79,7 +79,7 @@ export interface BatchRequestOptions<T> {
 }
 
 export interface ODataRequest {
-  collection: string, /** collection name */
+  collection?: string, /** collection name */
   /**
    * GET for QUERY/READ; for QUERY, you can use params to control response data
    * PATCH for UPDATE
@@ -87,6 +87,7 @@ export interface ODataRequest {
    * DELETE for delete
    */
   method?: HTTPMethod,
+  params?: ODataQueryParam,
 }
 
 
