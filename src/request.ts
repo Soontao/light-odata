@@ -411,7 +411,7 @@ export class OData {
     }
 
     if (options.collection !== undefined) {
-      options.collection !== undefined;
+      url += `/${options.collection}`;
     }
 
     if (options.id) {
