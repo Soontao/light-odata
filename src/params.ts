@@ -202,9 +202,9 @@ export class ODataQueryParam<T = any> {
     return this;
   }
 
-
   custom(key: any, value: any) {
     this._customParams.append(key, value);
+    return this;
   }
 
 
