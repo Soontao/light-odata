@@ -458,11 +458,29 @@ export class OData {
     if (isFunction) {
       url += `${functionName}`;
       method = 'GET';
-      if (options.parameters !== undefined) {
-        options.params = options.params ?? this.newParam();
-        Object.entries(options.parameters).forEach(([key, value]) => {
-          options.params.custom(key, value);
-        });
+
+      switch (this.version) {
+        case 'v2':
+          if (options.parameters !== undefined) {
+            options.params = options.params ?? this.newParam();
+            Object
+              .entries(options.parameters)
+              .forEach(([key, value]) => {
+                options.params.custom(key, value);
+              });
+          }
+          url += '()';
+          break;
+        case 'v4':
+          if (options.parameters !== undefined) {
+            url += this.formatIdString(options.parameters);
+          } else {
+            url += '()';
+          }
+          break;
+        default:
+          break;
+
       }
     }
 

@@ -167,7 +167,7 @@ d('C4C/ByD OData (V2) Test Suite (basic)', () => {
 
     expect(created[0].d.UserID).toBe(uuid)
 
-    // c4c/byd not support query in batch 
+    // c4c/byd not support query in batch
     // add validation in exec batch request
     // const finded = await unwrapResponse(client.execBatchRequests([es.batch().find({ UserID: uuid })]))
     // expect(finded[0].d.ObjectID).toBe(created[0].d.ObjectID)
