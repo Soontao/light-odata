@@ -118,6 +118,16 @@ export interface ODataFunctionRequest extends ODataRequest {
   id: any;
 }
 
+export interface ODataActionImportRequest extends ODataRequest {
+  actionName: string;
+  parameters?: { [key: string]: any };
+}
+
+export interface ODataFunctionImportRequest extends ODataRequest {
+  functionName: string;
+  parameters?: { [key: string]: any };
+}
+
 
 export interface PlainODataResponse {
 

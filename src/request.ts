@@ -14,7 +14,8 @@ import { ODataParam, ODataQueryParam } from './params';
 import {
   BatchRequestOptions, BatchRequests,
   BatchResponses, Credential, FetchProxy, HTTPMethod,
-  ODataActionRequest, ODataFunctionRequest, ODataNewOptions,
+  ODataActionImportRequest,
+  ODataActionRequest, ODataFunctionImportRequest, ODataFunctionRequest, ODataNewOptions,
   ODataQueryRequest, ODataReadIDRequest, ODataVariant, ODataWriteRequest, PlainODataMultiResponse,
   PlainODataResponse, PlainODataSingleResponse, SAPNetweaverOData
 } from './types';
@@ -334,6 +335,25 @@ export class OData {
     return this.requestUri<T>(url, queryParams, method, entity);
   }
 
+  async actionImport(actionName: string, parameters?: any, params: ODataQueryParam = this.newParam()) {
+    return this.newRequest({
+      method: 'POST',
+      params,
+      parameters,
+      actionName
+    });
+  }
+
+  async functionImport(functionName: string, parameters?: any, params: ODataQueryParam = this.newParam()) {
+
+    return await this.newRequest({
+      parameters,
+      params,
+      method: 'GET',
+      functionName
+    });
+  }
+
   /**
    * format id part of url
    *
@@ -391,6 +411,8 @@ export class OData {
   public async newRequest<T = any>(options: ODataReadIDRequest): Promise<PlainODataSingleResponse<T>>;
   public async newRequest(options: ODataFunctionRequest): Promise<PlainODataResponse>;
   public async newRequest(options: ODataActionRequest): Promise<PlainODataResponse>;
+  public async newRequest(options: ODataFunctionImportRequest): Promise<PlainODataResponse>;
+  public async newRequest(options: ODataActionImportRequest): Promise<PlainODataResponse>;
   public async newRequest(options: any): Promise<any> {
     if (options.actionName || options.functionName) {
       return this._executeActionOrFunction(options);
@@ -398,55 +420,65 @@ export class OData {
     return this._executeDataOperation(options.collection, options.id, options.params, options.method, options.entity);
   }
 
-  private async _executeActionOrFunction(options: ODataFunctionRequest | ODataActionRequest) {
+
+  private async _executeActionOrFunction(options: ODataActionRequest)
+  private async _executeActionOrFunction(options: ODataFunctionRequest)
+  private async _executeActionOrFunction(options: ODataFunctionImportRequest)
+  private async _executeActionOrFunction(options: ODataActionImportRequest)
+  private async _executeActionOrFunction(options: any) {
+
     let url = `${this.odataEnd}`;
     let method: HTTPMethod = 'GET';
+
+    options.params = options.params ?? this.newParam();
+
+    const isBoundedOperation = ((options.collection !== undefined) && (options.id !== undefined));
 
     const actionName = options['actionName'];
     const functionName = options['functionName'];
 
-    if (actionName && functionName) {
+    const isAction = (typeof actionName === 'string');
+    const isFunction = (typeof functionName === 'string');
+
+    if (isAction && isFunction) {
       throw new ValidationError(`'actionName' and 'functionName' can not be fillled in same time.`);
     }
 
-    if (!actionName && !functionName) {
+    if (!isAction && !isFunction) {
       throw new ValidationError(`must provide 'actionName' or 'functionName'.`);
     }
-    if (options.collection !== undefined) {
-      url += `${options.collection}`;
-    }
 
-    if (options.id) {
+    if (isBoundedOperation) {
+      url += `${options.collection}`;
       url += this.formatIdString(options.id);
     }
 
-    if (!url.endsWith('/')) {
-      url += '/';
-    }
+    if (!url.endsWith('/')) { url += '/'; }
 
-    if (functionName) {
+    if (isFunction) {
       url += `${functionName}`;
       method = 'GET';
-      if (options.payload) {
-        url += this.formatIdString(options.payload);
-      } else {
-        url += '()'; // empty parameter
+      if (options.parameters !== undefined) {
+        options.params = options.params ?? this.newParam();
+        Object.entries(options.parameters).forEach(([key, value]) => {
+          options.params.custom(key, value);
+        });
       }
-    } else if (options['actionName']) {
+    }
+
+    if (isAction) {
       url += `${actionName}`;
       method = 'POST';
     }
 
-    if (options.params) {
-      url = `${url}?${options.params.toString(this.version)}`;
-    }
+    url += `?${options.params.toString(this.version)}`;
 
-    if (actionName) {
+    if (isAction) {
       // action with payload
-      return this.requestUri(url, undefined, method, options.payload);
+      return this.requestUri(url, undefined, method, options.parameters);
     }
 
-    if (functionName) {
+    if (isFunction) {
       return this.requestUri(url, undefined, method);
     }
 

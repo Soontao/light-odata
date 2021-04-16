@@ -4,7 +4,7 @@ import { ODataFilter } from './filter';
 import { ODataQueryParam } from './params';
 import {
   BatchRequestOptions,
-  Credential, ODataActionRequest, ODataFunctionRequest,
+  Credential, ODataActionImportRequest, ODataActionRequest, ODataFunctionImportRequest, ODataFunctionRequest,
   ODataQueryRequest, ODataReadIDRequest, ODataWriteRequest, UnwrapBatchRequest, UnwrapPromise
 } from './types';
 
@@ -93,6 +93,11 @@ export interface ODataV4 {
   newRequest<T>(options: ODataReadIDRequest): Promise<PlainODataSingleResponseV4<T>>;
   newRequest(options: ODataFunctionRequest): Promise<PlainODataResponseV4>;
   newRequest(options: ODataActionRequest): Promise<PlainODataResponseV4>;
+  newRequest(options: ODataFunctionImportRequest): Promise<PlainODataResponseV4>;
+  newRequest(options: ODataActionImportRequest): Promise<PlainODataResponseV4>;
+
+  functionImport(functionName: string, parameters?: any, params?: ODataQueryParam): Promise<PlainODataResponseV4>;
+  actionImport(actionName: string, parameters?: any, params?: ODataQueryParam): Promise<PlainODataResponseV4>;
 
   /**
    * create new filter

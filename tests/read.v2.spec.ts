@@ -6,7 +6,7 @@ import { ODATA_SAMPLE_SERVICE_HOST } from './utils';
 
 const TestServiceURL = `https://${ODATA_SAMPLE_SERVICE_HOST}/V2/Northwind/Northwind.svc/$metadata`
 
-describe('Read Test', () => {
+describe('Read Test (V2)', () => {
 
   // these tests only work for demo odata
   // SAP OData response is different from these

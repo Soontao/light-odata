@@ -38,12 +38,12 @@ export class ODataQueryParam<T = any> {
     this._customParams = new SearchParams();
   }
 
-  private $skip = 0
+  private $skip: number
   private $filter: string | ODataFilter
-  private $top = 0
+  private $top: number
   private $select: string[] = []
   private $orderby: string
-  private $format: 'json' | 'xml' = 'json'
+  private $format: 'json' | 'xml'
   private $search: string
   private $inlinecount: string
   private $expand: string[] = []
@@ -202,6 +202,11 @@ export class ODataQueryParam<T = any> {
     return this;
   }
 
+  /**
+   * @param key addtional url query parameter key
+   * @param value value
+   * @returns
+   */
   custom(key: any, value: any) {
     this._customParams.append(key, value);
     return this;

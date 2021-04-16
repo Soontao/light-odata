@@ -12,24 +12,24 @@ describe('ODataParams Test', () => {
 
   test('ODataParam skip and top', () => {
     const param = ODataParam.newParam().skip(30).top(10)
-    expect(decodeURIComponent(param.toString())).toEqual("$format=json&$skip=30&$top=10")
+    expect(decodeURIComponent(param.toString())).toEqual("$skip=30&$top=10")
   })
 
   test('ODataParam orderby', () => {
     const param = ODataParam.newParam().orderby("CreationDateTime")
-    expect(decodeURIComponent(param.toString())).toEqual("$format=json&$orderby=CreationDateTime desc")
+    expect(decodeURIComponent(param.toString())).toEqual("$orderby=CreationDateTime desc")
   })
 
   test('ODataParam inlinecount', () => {
     const param = OData.newParam().inlinecount(true)
-    expect(decodeURIComponent(param.toString())).toEqual("$format=json&$inlinecount=allpages")
+    expect(decodeURIComponent(param.toString())).toEqual("$inlinecount=allpages")
   })
 
   test('ODataParam filter', () => {
     const param = OData.newParam().filter(OData.newFilter().field("A").eqString("test"))
-    expect(param.toString()).toEqual("$format=json&$filter=A eq 'test'")
+    expect(param.toString()).toEqual("$filter=A eq 'test'")
     const param2 = OData.newParam().filter("A eq 'test'")
-    expect(decodeURIComponent(param2.toString())).toEqual("$format=json&$filter=A eq 'test'")
+    expect(decodeURIComponent(param2.toString())).toEqual("$filter=A eq 'test'")
     expect(() => {
       // @ts-ignore
       OData.newParam().filter(undefined)
@@ -38,19 +38,19 @@ describe('ODataParams Test', () => {
 
   test('ODataParam inlinecount false', () => {
     const param = ODataParam.newParam().inlinecount(false)
-    expect(decodeURIComponent(param.toString())).toEqual("$format=json")
+    expect(decodeURIComponent(param.toString())).toEqual("")
   })
 
   test('ODataParam count true', () => {
     const param = ODataParam.newParam().count(true)
-    expect(decodeURIComponent(param.toString("v4"))).toEqual("$format=json&$count=true")
+    expect(decodeURIComponent(param.toString("v4"))).toEqual("$count=true")
   })
 
   test('ODataParam orderby multi', () => {
     const param = ODataParam.newParam().orderbyMulti([{ field: "A" }, { field: "B", order: "asc" }]);
-    expect(decodeURIComponent(param.toString())).toEqual("$format=json&$orderby=A desc,B asc")
+    expect(decodeURIComponent(param.toString())).toEqual("$orderby=A desc,B asc")
     const p2 = ODataParam.newParam().orderby([{ field: "A" }, { field: "B", order: "asc" }]);
-    expect(decodeURIComponent(p2.toString())).toEqual("$format=json&$orderby=A desc,B asc")
+    expect(decodeURIComponent(p2.toString())).toEqual("$orderby=A desc,B asc")
   })
 
   test('ODataParam format', () => {
@@ -63,19 +63,19 @@ describe('ODataParams Test', () => {
 
   test('ODataParam search', () => {
     const param = ODataParam.newParam().search("any word");
-    expect(param.toString()).toEqual("$format=json&$search=%any word%")
+    expect(param.toString()).toEqual("$search=%any word%")
     const param2 = ODataParam.newParam().search("any word", false);
-    expect(param2.toString()).toEqual("$format=json&$search=any word")
+    expect(param2.toString()).toEqual("$search=any word")
   })
 
   test('ODataParam select', () => {
     const param = ODataParam.newParam().select("ObjectID");
-    expect(decodeURIComponent(param.toString())).toEqual("$format=json&$select=ObjectID")
+    expect(decodeURIComponent(param.toString())).toEqual("$select=ObjectID")
   })
 
   test('ODataParam select (duplicate)', () => {
     const param = ODataParam.newParam().select(["ObjectID", "F1", "F1"]);
-    expect(decodeURIComponent(param.toString())).toEqual("$format=json&$select=ObjectID,F1")
+    expect(decodeURIComponent(param.toString())).toEqual("$select=ObjectID,F1")
   })
 
   test('ODataParam select multi', () => {
@@ -83,15 +83,15 @@ describe('ODataParams Test', () => {
       .newParam()
       .select("ObjectID")
       .select("Name");
-    expect(decodeURIComponent(param.toString())).toEqual("$format=json&$select=ObjectID,Name")
+    expect(decodeURIComponent(param.toString())).toEqual("$select=ObjectID,Name")
   })
 
   test('expand navigation & replace', () => {
     const param = ODataParam.newParam().expand("Customer")
-    expect(decodeURIComponent(param.toString())).toEqual("$format=json&$expand=Customer")
+    expect(decodeURIComponent(param.toString())).toEqual("$expand=Customer")
     param.expand(["Customer", "Employee"], true)
-    expect(decodeURIComponent(param.toString())).toEqual("$format=json&$expand=Customer,Employee")
-    expect(decodeURIComponent(ODataParam.newParam().expand("*").toString())).toEqual("$format=json&$expand=*")
+    expect(decodeURIComponent(param.toString())).toEqual("$expand=Customer,Employee")
+    expect(decodeURIComponent(ODataParam.newParam().expand("*").toString())).toEqual("$expand=*")
   })
 
 

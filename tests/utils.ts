@@ -1,6 +1,7 @@
 // @ts-nocheck
-import { BatchPlainODataResponse, BatchResponses, BatchResponsesV4, ParsedResponse, ParsedResponseV4 } from "../src"
-import { BatchPlainODataResponseV4 } from "../src/types_v4"
+import { v4 } from "uuid";
+import { BatchPlainODataResponse, BatchResponses, BatchResponsesV4, ParsedResponse, ParsedResponseV4 } from "../src";
+import { BatchPlainODataResponseV4 } from "../src/types_v4";
 
 export const ODATA_SAMPLE_SERVICE_HOST = 'odatasampleservices.azurewebsites.net'
 
@@ -20,4 +21,8 @@ export async function unwrapBatchResponse(responses: any): Promise<any[]> {
         return res.json()
     }
   }))
+}
+
+export function createSimpleV2RamdomSevice() {
+  return `https://${ODATA_SAMPLE_SERVICE_HOST}/V2/(S(${v4()}))/OData/OData.svc/`
 }
