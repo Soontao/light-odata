@@ -488,12 +488,15 @@ export class OData {
       url += `${actionName}`;
       method = 'POST';
     }
+    const query = options.params.toString(this.version);
 
-    url += `?${options.params.toString(this.version)}`;
+    if (query.length > 0) {
+      url += `?${query}`;
+    }
 
     if (isAction) {
       // action with payload
-      return this.requestUri(url, undefined, method, options.parameters);
+      return this.requestUri(url, undefined, method, options.parameters ?? {});
     }
 
     if (isFunction) {

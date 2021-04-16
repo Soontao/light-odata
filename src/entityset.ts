@@ -206,14 +206,14 @@ export class EntitySet<T = any> {
    * run bounded action
    *
    * @param actionName the action name, remember add namespace for it
-   * @param payload
+   * @param parameters
    */
-  async action(actionName: string, id: any, payload?: any): any {
+  async action(actionName: string, id: any, parameters?: any): any {
     const responseBody = await this._client.newRequest({
       collection: this._collection,
       method: 'POST',
       id,
-      payload,
+      parameters,
       actionName
     });
     this._checkError(responseBody);
