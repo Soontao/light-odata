@@ -1,0 +1,104 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: weekly
+    time: "21:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: typescript
+    versions:
+    - 4.1.5
+    - 4.2.2
+    - 4.2.3
+    - 4.2.4
+  - dependency-name: "@types/node-fetch"
+    versions:
+    - 2.5.10
+  - dependency-name: "@typescript-eslint/eslint-plugin"
+    versions:
+    - 4.14.1
+    - 4.14.2
+    - 4.15.0
+    - 4.15.1
+    - 4.15.2
+    - 4.16.1
+    - 4.17.0
+    - 4.18.0
+    - 4.19.0
+    - 4.20.0
+    - 4.21.0
+    - 4.22.0
+  - dependency-name: eslint
+    versions:
+    - 7.19.0
+    - 7.20.0
+    - 7.21.0
+    - 7.22.0
+    - 7.23.0
+    - 7.24.0
+  - dependency-name: "@typescript-eslint/parser"
+    versions:
+    - 4.14.1
+    - 4.14.2
+    - 4.15.0
+    - 4.15.1
+    - 4.15.2
+    - 4.16.1
+    - 4.17.0
+    - 4.18.0
+    - 4.19.0
+    - 4.20.0
+    - 4.21.0
+    - 4.22.0
+  - dependency-name: webpack
+    versions:
+    - 5.17.0
+    - 5.19.0
+    - 5.21.2
+    - 5.22.0
+    - 5.23.0
+    - 5.24.2
+    - 5.24.4
+    - 5.26.0
+    - 5.27.2
+    - 5.28.0
+    - 5.30.0
+    - 5.32.0
+  - dependency-name: "@odata/parser"
+    versions:
+    - 0.2.4
+  - dependency-name: ts-loader
+    versions:
+    - 8.0.16
+    - 8.0.17
+    - 8.0.18
+    - 8.1.0
+  - dependency-name: webpack-cli
+    versions:
+    - 4.4.0
+    - 4.6.0
+  - dependency-name: "@types/node"
+    versions:
+    - 14.14.22
+    - 14.14.25
+    - 14.14.28
+    - 14.14.31
+    - 14.14.32
+    - 14.14.35
+    - 14.14.37
+  - dependency-name: "@types/jest"
+    versions:
+    - 26.0.21
+    - 26.0.22
+  - dependency-name: ts-jest
+    versions:
+    - 26.5.0
+    - 26.5.1
+    - 26.5.2
+    - 26.5.3
+    - 26.5.4
+  - dependency-name: standard-version
+    versions:
+    - 9.1.1
