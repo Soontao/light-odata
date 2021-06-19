@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.16.0](https://github.com/Soontao/light-odata/compare/v2.15.2...v2.16.0) (2021-06-19)
+
+
+### Features
+
+* actionImport/functionImport ([e246e66](https://github.com/Soontao/light-odata/commit/e246e66b5d73f0219d3f3959671d96c6399957d4))
+
+
+### Bug Fixes
+
+* parameters ([3e09b22](https://github.com/Soontao/light-odata/commit/3e09b22bdf1a24e5231b83c471fef29f4599bea2))
+
 ### [2.15.2](https://github.com/Soontao/light-odata/compare/v2.15.1...v2.15.2) (2021-04-13)
 
 
