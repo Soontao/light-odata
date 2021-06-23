@@ -25,17 +25,12 @@ export function GetAuthorizationPair(user: string, password: string): { Authoriz
 
 export class SearchParams {
 
-  _store = new Map()
+  private _store = new Map();
 
   append(key: string, value: string): void {
     this._store.set(key, value);
   }
 
-  toString(): string {
-    const coll = [];
-    this._store.forEach((value, key) => { coll.push(`${key}=${value}`); });
-    return coll.join('&');
-  }
 
   putAll(param: SearchParams) {
     if (param !== undefined && param instanceof SearchParams) {
@@ -43,6 +38,10 @@ export class SearchParams {
         this._store.set(key, value);
       });
     }
+  }
+
+  public toString(): string {
+    return Array.from(this._store.entries()).map(([key, value]) => `${key}=${value}`).join('&');
   }
 
 }
