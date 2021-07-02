@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@newdash/newdash": "^5.19.0",
-    "@odata/parser": "^0.2.7",
+    "@odata/parser": "^0.2.8",
     "@types/node-fetch": "^2.5.10",
     "fetch-cookie": "^0.11.0",
     "http-string-parser": "^0.0.6",
@@ -51,7 +51,7 @@
   "homepage": "https://github.com/Soontao/light-odata",
   "author": {
     "name": "Theo Sun",
-    "email": "theo.sun@sap.com",
+    "email": "theo.sun@outlook.com",
     "url": "https://github.com/Soontao"
   },
   "main": "lib/index.js",
