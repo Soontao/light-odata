@@ -20,6 +20,11 @@ describe('ODataParams Test', () => {
     expect(decodeURIComponent(param.toString())).toEqual("$orderby=CreationDateTime desc")
   })
 
+  it('should support empty param', () => {
+    const param = ODataParam.newParam()
+    expect(param.toString()).toBe("")
+  });
+
   test('ODataParam inlinecount', () => {
     const param = OData.newParam().inlinecount(true)
     expect(decodeURIComponent(param.toString())).toEqual("$inlinecount=allpages")

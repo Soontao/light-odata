@@ -27,7 +27,7 @@ const S_X_CSRF_TOKEN = 'x-csrf-token';
 const S_CONTENT_TYPE = 'Content-Type';
 
 // @ts-ignore
-const defaultProxy: FetchProxy = async(url: string, init?: RequestInit) => {
+const defaultProxy: FetchProxy = async (url: string, init?: RequestInit) => {
   // @ts-ignore
   const res = await fetch(url, init);
 
@@ -319,7 +319,7 @@ export class OData {
    * @param id entity uuid or compound key
    * @param queryParams query param, not work for single entity uri
    * @param method request method
-   * @param entity C4C Entity instance
+   * @param entity odata Entity instance
    */
   private async _executeDataOperation<T = any>(
     collection: string, id?: any,
@@ -329,8 +329,9 @@ export class OData {
     if (id) {
       url += this.formatIdString(id);
     }
-    if (queryParams) {
-      url = `${url}?${queryParams.toString(this.version)}`;
+    const query = queryParams?.toString?.(this.version)
+    if (query && query.length > 0) {
+      url = `${url}?${query}`;
     }
     return this.requestUri<T>(url, queryParams, method, entity);
   }
@@ -488,9 +489,9 @@ export class OData {
       url += `${actionName}`;
       method = 'POST';
     }
-    const query = options.params.toString(this.version);
+    const query = options?.params?.toString?.(this.version);
 
-    if (query.length > 0) {
+    if (query && query.length > 0) {
       url += `?${query}`;
     }
 
@@ -517,7 +518,7 @@ export class OData {
     };
 
     // format promised requests
-    const r = await Promise.all(requests.map(async(aBatchR) => await aBatchR));
+    const r = await Promise.all(requests.map(async (aBatchR) => await aBatchR));
     const requestBoundaryString = v4();
     req.headers['Content-Type'] = `multipart/mixed; boundary=${requestBoundaryString}`;
     req.body = formatBatchRequest(r, requestBoundaryString);
@@ -562,8 +563,8 @@ export class OData {
 
     responseBody.responses?.forEach((responseItem) => {
       rt.push({
-        json: async() => responseItem.body,
-        text: async() => JSON.stringify(responseItem.body),
+        json: async () => responseItem.body,
+        text: async () => JSON.stringify(responseItem.body),
         headers: responseItem.headers,
         status: responseItem.status,
         statusText: undefined,
