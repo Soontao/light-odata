@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.16.1](https://github.com/Soontao/light-odata/compare/v2.16.0...v2.16.1) (2021-07-02)
+
+
+### Bug Fixes
+
+* empty query url ([8af6e91](https://github.com/Soontao/light-odata/commit/8af6e91519e261d16570d3a037011ea147d2ed51))
+* lint issue ([aff5ae9](https://github.com/Soontao/light-odata/commit/aff5ae9a27eb6701db2f8eb834631dd0d4a44774))
+
 ## [2.16.0](https://github.com/Soontao/light-odata/compare/v2.15.2...v2.16.0) (2021-06-19)
 
 
