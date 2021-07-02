@@ -27,7 +27,7 @@ const S_X_CSRF_TOKEN = 'x-csrf-token';
 const S_CONTENT_TYPE = 'Content-Type';
 
 // @ts-ignore
-const defaultProxy: FetchProxy = async (url: string, init?: RequestInit) => {
+const defaultProxy: FetchProxy = async(url: string, init?: RequestInit) => {
   // @ts-ignore
   const res = await fetch(url, init);
 
@@ -329,7 +329,7 @@ export class OData {
     if (id) {
       url += this.formatIdString(id);
     }
-    const query = queryParams?.toString?.(this.version)
+    const query = queryParams?.toString?.(this.version);
     if (query && query.length > 0) {
       url = `${url}?${query}`;
     }
@@ -518,7 +518,7 @@ export class OData {
     };
 
     // format promised requests
-    const r = await Promise.all(requests.map(async (aBatchR) => await aBatchR));
+    const r = await Promise.all(requests.map(async(aBatchR) => await aBatchR));
     const requestBoundaryString = v4();
     req.headers['Content-Type'] = `multipart/mixed; boundary=${requestBoundaryString}`;
     req.body = formatBatchRequest(r, requestBoundaryString);
@@ -563,8 +563,8 @@ export class OData {
 
     responseBody.responses?.forEach((responseItem) => {
       rt.push({
-        json: async () => responseItem.body,
-        text: async () => JSON.stringify(responseItem.body),
+        json: async() => responseItem.body,
+        text: async() => JSON.stringify(responseItem.body),
         headers: responseItem.headers,
         status: responseItem.status,
         statusText: undefined,
