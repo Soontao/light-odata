@@ -10,7 +10,7 @@
     "@types/http-string-parser": "^0.0.29",
     "@types/jest": "^27.0.2",
     "@types/mockjs": "^1.0.4",
-    "@types/node": "^14.17.27",
+    "@types/node": "^14.17.32",
     "@types/uuid": "^8.3.1",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
@@ -23,7 +23,7 @@
     "ts-jest": "^27.0.7",
     "ts-loader": "^9.2.6",
     "typescript": "^4.4.4",
-    "webpack": "^5.58.2",
+    "webpack": "^5.61.0",
     "webpack-cli": "^4.9.1"
   },
   "typings": "lib/index.d.ts",
@@ -45,7 +45,7 @@
     "@types/node-fetch": "^2.5.12",
     "fetch-cookie": "^1.0.0",
     "http-string-parser": "^0.0.6",
-    "node-fetch": "^2.6.5",
+    "node-fetch": "^2.6.6",
     "uuid": "^8.3.2"
   },
   "homepage": "https://github.com/Soontao/light-odata",
