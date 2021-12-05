@@ -100,7 +100,7 @@ describe('Read Test (V2)', () => {
         // phone eq '030-0074321' or '(5) 555-4729'
         ODataFilter.newFilter().fieldIn("Phone", ["030-0074321", "(5) 555-4729"])
       )
-      .and().field("CustomerID").eqString("ALFKI") // id eq 'ALFKI'
+      .field("CustomerID").eqString("ALFKI") // id eq 'ALFKI'
     const param = ODataParam.newParam().filter(filter).inlinecount(true)
     const result = await odata.newRequest<Customer>({
       collection: "Customers",
