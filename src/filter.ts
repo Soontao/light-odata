@@ -19,7 +19,7 @@ export class ODataDateTime extends ODataValueObject {
     return rt;
   }
 
-  private _date: Date
+  private _date: Date;
 
   public toString(): string {
     return `datetime'${this._date.toISOString()}'`;
@@ -39,7 +39,7 @@ export class ODataDateTimeOffset extends ODataValueObject {
     return rt;
   }
 
-  private _date: Date
+  private _date: Date;
 
   public toString(): string {
     return `datetimeoffset'${this._date.toISOString()}'`;
@@ -86,7 +86,7 @@ class ODataPropertyExpr {
 
   private _fieldName: string;
 
-  private _exprMappings: FieldExprMappings
+  private _exprMappings: FieldExprMappings;
 
   private _getFieldExprs() {
     return this._exprMappings[this._fieldName];
@@ -416,28 +416,6 @@ export class ODataFilter<T = any> {
    */
   ltDateTimeOffset(name: keyof T, date: Date): ODataFilter {
     return this.field(name).lt(`datetimeoffset'${date.toISOString()}'`);
-  }
-
-  /**
-   * AND expr
-   *
-   * filter.field("A").eq("'a'").and().field("B").eq("'b").build() == "A eq 'a' and B eq 'b'"
-   *
-   * filter.field("A").eq("'a'").and("B eq 'b'").build() == "A eq 'a' and (B eq 'b')"
-   *
-   * @deprecated c4codata will auto detect logic operator between difference fields
-   * @param filter
-   */
-  and(filter?: string | ODataFilter): ODataFilter {
-    return this;
-  }
-
-  /**
-   * @deprecated c4codata will auto detect logic operator in same fields
-   * @param filter
-   */
-  or(filter?: string | ODataFilter): ODataFilter {
-    return this;
   }
 
   /**

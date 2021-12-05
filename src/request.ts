@@ -81,9 +81,9 @@ export class OData {
   private fetchProxy = defaultProxy;
   private processCsrfToken = false;
 
-  private variant: ODataVariant = 'default'
+  private variant: ODataVariant = 'default';
 
-  private version: ODataVersion = 'v2'
+  private version: ODataVersion = 'v2';
 
   /**
    * alternative constructor

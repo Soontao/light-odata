@@ -40,6 +40,7 @@ export interface ParsedResponseV4<T = any> {
 /**
  * batch request
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface BatchRequest<R = any> {
   /**
    * for odata batch request, please give a relative path from odata endpoint
