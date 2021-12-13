@@ -219,7 +219,6 @@ export class ODataQueryParam<T = any> {
     if (this.$format) { rt.append('$format', this.$format); }
     if (this.$filter) { rt.append('$filter', this.$filter.toString()); }
     if (this.$orderby) { rt.append('$orderby', this.$orderby); }
-    if (this.$search) { rt.append('$search', this.$search); }
     if (this.$select && this.$select.length > 0) { rt.append('$select', join(uniq(this.$select), ',')); }
     if (this.$skip) { rt.append('$skip', this.$skip.toString()); }
     if (this.$top && this.$top > 0) { rt.append('$top', this.$top.toString()); }
@@ -227,9 +226,11 @@ export class ODataQueryParam<T = any> {
 
     switch (version) {
       case 'v2':
+        if (this.$search) { rt.append('search', this.$search); }
         if (this.$inlinecount) { rt.append('$inlinecount', this.$inlinecount); }
         break;
       case 'v4':
+        if (this.$search) { rt.append('$search', this.$search); }
         if (this.$count) { rt.append('$count', 'true'); }
         break;
       default:
