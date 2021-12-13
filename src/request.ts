@@ -470,7 +470,7 @@ export class OData {
                 options.params.custom(key, value);
               });
           }
-          url += '()';
+          //url += '()'; //Not for v2 function Imports
           break;
         case 'v4':
           if (options.parameters !== undefined) {
