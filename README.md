@@ -53,7 +53,7 @@ import { OData } from "@odata/client"
 const TestServiceURL = "https://services.odata.org/V2/Northwind/Northwind.svc/$metadata"
 const client = OData.New({
   metadataUri: TestServiceURL,
-  // variant: "c4c"
+  // variant: "cap"
 })
 
 const runner = async () => {
