@@ -1,12 +1,12 @@
-import { encode } from './base64';
+import { encode } from "./base64";
 
 /**
  * ConvertDateFromODataTime
  *
  * @param dateString date string, format is /Date(1512691200000)/
  */
-export function ConvertDateFromODataTime(dateString = '0'): Date {
-  return new Date(parseInt(dateString.replace(/[^\d.]/g, ''), 10));
+export function ConvertDateFromODataTime(dateString = "0"): Date {
+  return new Date(parseInt(dateString.replace(/[^\d.]/g, ""), 10));
 }
 
 /**
@@ -40,7 +40,7 @@ export class SearchParams {
   }
 
   public toString(): string {
-    return Array.from(this._store.entries()).map(([key, value]) => `${key}=${value}`).join('&');
+    return Array.from(this._store.entries()).map(([key, value]) => `${key}=${value}`).join("&");
   }
 
 }

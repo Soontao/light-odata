@@ -5,3 +5,5 @@ docs
 tests
 node_modules
 webpack.config.js
+jest.config.js
+webpack.config.js

@@ -1,7 +1,6 @@
 # OData Client
 
 [![npm (scoped)](https://img.shields.io/npm/v/@odata/client)](https://www.npmjs.com/package/@odata/client)
-[![CircleCI](https://img.shields.io/circleci/build/github/Soontao/light-odata?label=circleci)](https://circleci.com/gh/Soontao/c4codata)
 [![codecov](https://codecov.io/gh/Soontao/light-odata/branch/main/graph/badge.svg)](https://codecov.io/gh/Soontao/light-odata)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Soontao_c4codata&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=Soontao_c4codata)
 [![Netlify](https://img.shields.io/netlify/875f9eb3-319e-4dd7-b1eb-b3e5d15656ee?label=doc)](https://tender-dubinsky-6b6899.netlify.app/)

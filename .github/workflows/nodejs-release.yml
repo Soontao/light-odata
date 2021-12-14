@@ -1,0 +1,29 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+          registry-url: https://registry.npmjs.org/
+
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+      - run: npm run test
+      - run: npm shrinkwrap
+
+      - name: npm auth & publish
+        run: npm run build && npm publish --access public --tag latest
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.Z_NPM_TOKEN}}

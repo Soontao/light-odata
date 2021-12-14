@@ -4,6 +4,9 @@
   "editor.wordWrap": "on",
   "editor.formatOnSave": false,
   "cSpell.enabled": false,
+  "[typescript]": {
+    "editor.formatOnSave": false
+  },
   "editor.codeActionsOnSave": {
     "source.fixAll": true,
     "source.organizeImports": true

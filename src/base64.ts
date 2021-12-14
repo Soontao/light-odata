@@ -1,17 +1,17 @@
 // @ts-nocheck
 // ref https://gist.github.com/aleiphoenix/5472119
-const keyStr = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+const keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 
 /**
  * encode string to base64
  *
  * @param input
  */
-const encode = function(input = ''): string {
+const encode = function(input = ""): string {
   input = input;
-  let output = '';
-  let chr1, chr2, chr3 = '';
-  let enc1, enc2, enc3, enc4 = '';
+  let output = "";
+  let chr1, chr2, chr3 = "";
+  let enc1, enc2, enc3, enc4 = "";
   let i = 0;
 
   do {
@@ -35,8 +35,8 @@ const encode = function(input = ''): string {
       keyStr.charAt(enc2) +
       keyStr.charAt(enc3) +
       keyStr.charAt(enc4);
-    chr1 = chr2 = chr3 = '';
-    enc1 = enc2 = enc3 = enc4 = '';
+    chr1 = chr2 = chr3 = "";
+    enc1 = enc2 = enc3 = enc4 = "";
   } while (i < input.length);
 
   return output;
@@ -48,19 +48,19 @@ const encode = function(input = ''): string {
  * @param input base64 string
  */
 const decode = function(input: string): string {
-  let output = '';
-  let chr1, chr2, chr3 = '';
-  let enc1, enc2, enc3, enc4 = '';
+  let output = "";
+  let chr1, chr2, chr3 = "";
+  let enc1, enc2, enc3, enc4 = "";
   let i = 0;
 
   // remove all characters that are not A-Z, a-z, 0-9, +, /, or =
   const base64test = /[^A-Za-z0-9\+\/\=]/g;
   if (base64test.exec(input)) {
-    throw new Error('There were invalid base64 characters in the input text.\n' +
+    throw new Error("There were invalid base64 characters in the input text.\n" +
       "Valid base64 characters are A-Z, a-z, 0-9, '+', '/',and '='\n" +
-      'Expect errors in decoding.');
+      "Expect errors in decoding.");
   }
-  input = input.replace(/[^A-Za-z0-9\+\/\=]/g, '');
+  input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
 
   do {
     enc1 = keyStr.indexOf(input.charAt(i++));
@@ -81,8 +81,8 @@ const decode = function(input: string): string {
       output = output + String.fromCharCode(chr3);
     }
 
-    chr1 = chr2 = chr3 = '';
-    enc1 = enc2 = enc3 = enc4 = '';
+    chr1 = chr2 = chr3 = "";
+    enc1 = enc2 = enc3 = enc4 = "";
 
   } while (i < input.length);
 
