@@ -209,6 +209,17 @@ OData.newParam().search("any word");
 OData.newParam().search("any word", false);
 ```
 
+
+### custom properties
+
+> i know some odata system support custom field for key authentication or other usage
+
+```ts
+OData.newParam().custom("access_token", "token_value"); // => $format=json&access_token=token_value
+OData.newParam().custom("search", "v1"); // => $format=json&search=v1
+
+```
+
 </details>
 
 ## ODataFilter

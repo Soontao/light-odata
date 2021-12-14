@@ -203,9 +203,17 @@ export class ODataQueryParam<T = any> {
   }
 
   /**
+   * add addtional custom properties in final url query
+   *
    * @param key addtional url query parameter key
    * @param value value
    * @returns
+   *
+   * @example
+   *
+   * ```ts
+   * OData.newParam().
+   * ```
    */
   custom(key: any, value: any) {
     this._customParams.append(key, value);
@@ -238,6 +246,14 @@ export class ODataQueryParam<T = any> {
     }
     return rt.toString();
   }
+
+  /**
+   * get the serialized param string value
+   */
+  get string() {
+    return this.toString();
+  }
+
 }
 
 export const ODataParam = ODataQueryParam;
