@@ -138,6 +138,7 @@ export interface PlainODataResponse {
       value: string /** server error message */
     }
   }
+  d?: any;
 
 }
 

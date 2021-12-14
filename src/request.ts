@@ -359,6 +359,13 @@ export class OData {
    * format id part of url
    *
    * @param id
+   *
+   * @example
+   *
+   * ```ts
+   * this.formatIdString(1) // => '(1)'
+   * this.formatIdString({UUID:'xxx'}) // => '(UUID='xxx')'
+   * ```
    */
   private formatIdString(id: any): string {
     let rt = '';
@@ -433,6 +440,9 @@ export class OData {
 
     options.params = options.params ?? this.newParam();
 
+    /**
+     * is bounded operation, means the operation maybe affected to a specific instance
+     */
     const isBoundedOperation = ((options.collection !== undefined) && (options.id !== undefined));
 
     const actionName = options['actionName'];
@@ -449,6 +459,7 @@ export class OData {
       throw new ValidationError(`must provide 'actionName' or 'functionName'.`);
     }
 
+    // if is bound operation, add the collection and key here
     if (isBoundedOperation) {
       url += `${options.collection}`;
       url += this.formatIdString(options.id);
@@ -463,6 +474,7 @@ export class OData {
       switch (this.version) {
         case 'v2':
           if (options.parameters !== undefined) {
+            // convert function parameters to params custom params
             options.params = options.params ?? this.newParam();
             Object
               .entries(options.parameters)
@@ -470,7 +482,6 @@ export class OData {
                 options.params.custom(key, value);
               });
           }
-          url += '()';
           break;
         case 'v4':
           if (options.parameters !== undefined) {
@@ -489,9 +500,11 @@ export class OData {
       url += `${actionName}`;
       method = 'POST';
     }
+
+    // append query to uru
     const query = options?.params?.toString?.(this.version);
 
-    if (query && query.length > 0) {
+    if (query !== undefined && query.length > 0) {
       url += `?${query}`;
     }
 

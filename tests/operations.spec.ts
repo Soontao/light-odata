@@ -1,10 +1,10 @@
 import { OData } from "../src";
 import "../src/polyfill";
-import { createSimpleV2RamdomSevice } from "./utils";
+import { createSampleV2RamdomSevice } from "./utils";
 
 describe('Function/Action Test Suite', () => {
 
-  const randomV2Service = createSimpleV2RamdomSevice()
+  const randomV2Service = createSampleV2RamdomSevice()
 
   it('should support call FunctionImport with parameters', async () => {
     const client = OData.New({ metadataUri: randomV2Service })
@@ -18,6 +18,13 @@ describe('Function/Action Test Suite', () => {
     const response = await client.functionImport("GetProductsByRating", {}, client.newParam().custom("rating", 4))
     expect(response.error).toBeUndefined()
     expect(response['d']).toHaveLength(1)
+  });
+
+  it('should support call FunctionImport with params directly', async () => {
+    const client = OData.New({ metadataUri: createSampleV2RamdomSevice() })
+    const response = await client.functionImport("GetProductsByRating", { rating: 3 })
+    expect(response.error).toBeUndefined()
+    expect(response.d).toHaveLength(8)
   });
 
   it('should support call FunctionImport with parameters & params', async () => {

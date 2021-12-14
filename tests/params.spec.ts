@@ -99,5 +99,9 @@ describe('ODataParams Test', () => {
     expect(decodeURIComponent(ODataParam.newParam().expand("*").toString())).toEqual("$expand=*")
   })
 
+  it('should support custom properties', () => {
+    expect(OData.newParam().custom("search","v1").string).toBe("search=v1")
+  });
+
 
 })

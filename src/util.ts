@@ -27,12 +27,11 @@ export class SearchParams {
 
   private _store = new Map();
 
-  append(key: string, value: string): void {
+  public append(key: string, value: string): void {
     this._store.set(key, value);
   }
 
-
-  putAll(param: SearchParams) {
+  public putAll(param: SearchParams) {
     if (param !== undefined && param instanceof SearchParams) {
       param._store.forEach((value, key) => {
         this._store.set(key, value);
