@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.17.0](https://github.com/Soontao/light-odata/compare/v2.16.3...v2.17.0) (2021-12-14)
+
+
+### Features
+
+* add new variant for sap-gateway ([bac1d59](https://github.com/Soontao/light-odata/commit/bac1d59b1914b31bb549c4cd823acb63959d5185))
+* adjust the search parameter ([80909f7](https://github.com/Soontao/light-odata/commit/80909f7a7015303ff6511c14341d9fb247aab25f))
+
+
+### Bug Fixes
+
+* crlf line break ([d03d117](https://github.com/Soontao/light-odata/commit/d03d117cf3cb844ef347aa78ad9ec5d613fa7529))
+
 ### [2.16.3](https://github.com/Soontao/light-odata/compare/v2.16.2...v2.16.3) (2021-12-14)
 
 
