@@ -1,26 +1,26 @@
 module.exports = {
-  'testTimeout': 300 * 1000,
-  'transform': {
-    '.(ts|tsx)': 'ts-jest'
+  "testTimeout": 300 * 1000,
+  "transform": {
+    ".(ts|tsx)": "ts-jest"
   },
-  'collectCoverageFrom': [
-    'src/**/*.ts'
+  "collectCoverageFrom": [
+    "src/**/*.ts"
   ],
-  'transformIgnorePatterns': [
-    '/tests/resources',
-    '/node_modules/'
+  "transformIgnorePatterns": [
+    "/tests/resources",
+    "/node_modules/"
   ],
-  'coveragePathIgnorePatterns': [
-    '/tests/',
-    '/node_modules/',
-    '/src/cli',
-    '/src/generator'
+  "coveragePathIgnorePatterns": [
+    "/tests/",
+    "/node_modules/",
+    "/src/cli",
+    "/src/generator"
   ],
-  'testEnvironment': 'node',
-  'testRegex': 'tests/.*\\.spec\\.ts$',
-  'moduleFileExtensions': [
-    'ts',
-    'js',
-    'json'
+  "testEnvironment": "node",
+  "testRegex": "tests/.*\\.spec\\.ts$",
+  "moduleFileExtensions": [
+    "ts",
+    "js",
+    "json"
   ]
 };

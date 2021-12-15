@@ -1,13 +1,13 @@
-import { RequestInit, Response } from 'node-fetch';
-import { BatchRequest, ParsedResponse } from './batch';
-import { ODataQueryParam } from './params';
-import { ODataVersion } from './types_v4';
+import { RequestInit, Response } from "node-fetch";
+import { BatchRequest, ParsedResponse } from "./batch";
+import { ODataQueryParam } from "./params";
+import { ODataVersion } from "./types_v4";
 
-export type HTTPMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+export type HTTPMethod = "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "PATCH";
 
-export type ODataVariant = 'default' | 'c4c' | 'byd' | 'cap' | 'cpi' | '@odata/server' | 'sap-gateway'
+export type ODataVariant = "default" | "c4c" | "byd" | "cap" | "cpi" | "@odata/server" | "sap-gateway"
 
-export const SAPNetweaverOData: Readonly<Array<ODataVariant>> = ['c4c', 'byd'] as const;
+export const SAPNetweaverOData: Readonly<Array<ODataVariant>> = ["c4c", "byd", "sap-gateway"] as const;
 
 export type FetchProxy = (url: string, init: RequestInit) => Promise<{
   /**
@@ -191,7 +191,10 @@ export interface Credential {
  * Same as Partial<T> but goes deeper and makes Partial<T> all its properties and sub-properties.
  */
 export type DeepPartial<T> = {
-  [P in keyof T]?: T[P] extends Array<infer U> ? Array<DeepPartial<U>> : T[P] extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : DeepPartial<T[P]>;
+  [P in keyof T]?:
+  T[P] extends Array<infer U> ?
+    Array<DeepPartial<U>> : T[P] extends ReadonlyArray<infer U> ?
+      ReadonlyArray<DeepPartial<U>> : DeepPartial<T[P]>;
 };
 
 /**

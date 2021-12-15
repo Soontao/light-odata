@@ -1,4 +1,4 @@
-import { encode } from './base64';
+import { encode } from "./base64";
 
 /**
  * ConvertDateFromODataTime (OData V2)
@@ -9,14 +9,14 @@ export function ConvertDateFromODataTime(dateString: any): Date {
   if (dateString instanceof Date) {
     return dateString;
   }
-  if (typeof dateString === 'string') {
+  if (typeof dateString === "string") {
     // thanks https://github.com/Soontao/light-odata/pull/412#issuecomment-993708386
     const r1 =  /\/Date\(([+|-]?\d+)\)\//g.exec(dateString);
     if (r1 !== null && r1[1] !== undefined) {
       return new Date(parseInt(r1[1]));
     }
   }
-  throw new Error('date/datetime format is not correct');
+  throw new Error("date/datetime format is not correct");
 }
 
 /**
@@ -29,7 +29,7 @@ export function FormatODataDateTimedate(date: Date = new Date()): string {
 }
 
 export function GetAuthorizationPair(user: string, password: string): { Authorization: string } {
-  return { Authorization: `Basic ${encode(`${user ?? ''}:${password ?? ''}`)}` };
+  return { Authorization: `Basic ${encode(`${user ?? ""}:${password ?? ""}`)}` };
 }
 
 
@@ -50,7 +50,7 @@ export class SearchParams {
   }
 
   public toString(): string {
-    return Array.from(this._store.entries()).map(([key, value]) => `${key}=${value}`).join('&');
+    return Array.from(this._store.entries()).map(([key, value]) => `${key}=${value}`).join("&");
   }
 
 }

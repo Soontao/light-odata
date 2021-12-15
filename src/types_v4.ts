@@ -1,14 +1,14 @@
-import { BatchRequestV4, ParsedResponseV4 } from './batch';
-import { EntitySet } from './entityset';
-import { ODataFilter } from './filter';
-import { ODataQueryParam } from './params';
+import { BatchRequestV4, ParsedResponseV4 } from "./batch";
+import { EntitySet } from "./entityset";
+import { ODataFilter } from "./filter";
+import { ODataQueryParam } from "./params";
 import {
   BatchRequestOptions,
   Credential, ODataActionImportRequest, ODataActionRequest, ODataFunctionImportRequest, ODataFunctionRequest,
   ODataQueryRequest, ODataReadIDRequest, ODataWriteRequest, UnwrapBatchRequest, UnwrapPromise
-} from './types';
+} from "./types";
 
-export type ODataVersion = 'v2' | 'v4';
+export type ODataVersion = "v2" | "v4";
 
 export interface PlainODataResponseV4 {
 
@@ -23,18 +23,18 @@ export interface PlainODataResponseV4 {
   /**
    * context string
    */
-  '@odata.context'?: string;
+  "@odata.context"?: string;
 
   /**
    * total count
    */
-  '@odata.count'?: number;
+  "@odata.count"?: number;
 
-  '@odata.id'?: string;
+  "@odata.id"?: string;
 
-  '@odata.etag'?: string;
+  "@odata.etag"?: string;
 
-  '@odata.editLink'?: string;
+  "@odata.editLink"?: string;
 
 }
 

@@ -1,5 +1,6 @@
-import join from '@newdash/newdash/join';
-import { FrameworkError, ValidationError } from './errors';
+/* eslint-disable max-len */
+import join from "@newdash/newdash/join";
+import { FrameworkError, ValidationError } from "./errors";
 
 export abstract class ODataValueObject {
   abstract toString(): string;
@@ -48,12 +49,12 @@ export class ODataDateTimeOffset extends ODataValueObject {
 }
 
 export enum ExprOperator {
-  eq = 'eq',
-  ne = 'ne',
-  gt = 'gt',
-  lt = 'lt',
-  ge = 'ge',
-  le = 'le',
+  eq = "eq",
+  ne = "ne",
+  gt = "gt",
+  lt = "lt",
+  ge = "ge",
+  le = "le",
 }
 
 type FieldExpr = {
@@ -95,26 +96,26 @@ class ODataPropertyExpr {
   private _addExpr(op: ExprOperator, value: FilterValue) {
 
     switch (typeof value) {
-      case 'number': case 'boolean':
+      case "number": case "boolean":
         this._getFieldExprs().push({ op, value: `${value}` });
         break;
-      case 'string':
-        if (value.startsWith("'") || value.startsWith('datetime')) {
+      case "string":
+        if (value.startsWith("'") || value.startsWith("datetime")) {
           this._getFieldExprs().push({ op, value });
         } else {
           this._getFieldExprs().push({ op, value: `'${value}'` });
         }
         break;
-      case 'object':
+      case "object":
         if (value instanceof ODataValueObject) {
           this._getFieldExprs().push({ op, value: value.toString() });
         } else if (value === null) {
           this._getFieldExprs().push({ op, value: null });
         } else {
-          throw new FrameworkError(`Not support object ${value?.['constructor']?.['name'] || typeof value} in odata filter eq/ne/gt/ge/ne/nt ...`);
+          throw new FrameworkError(`Not support object ${value?.["constructor"]?.["name"] || typeof value} in odata filter eq/ne/gt/ge/ne/nt ...`);
         }
         break;
-      case 'undefined':
+      case "undefined":
         throw new ValidationError(`You must set value in odata filter eq/ne/gt/ge/ne/nt ...`);
       default:
         throw new FrameworkError(`Not support typeof ${typeof value}: ${value} in odata filter eq/ne/gt/ge/ne/nt ...`);
@@ -209,7 +210,7 @@ class ODataPropertyExpr {
    */
   between(low: any, max: any, includeBoundary = true): ODataFilter {
     if (low == undefined || max == undefined) {
-      throw new ValidationError('You must give out the start and end value');
+      throw new ValidationError("You must give out the start and end value");
     }
     if (includeBoundary) {
       this.ge(low);
@@ -223,7 +224,7 @@ class ODataPropertyExpr {
 
   betweenDateTime(start?: Date, end?: Date, includeBoundary = true): ODataFilter {
     if (start == undefined && end == undefined) {
-      throw new ValidationError('You must give out the start or end date');
+      throw new ValidationError("You must give out the start or end date");
     }
     if (start instanceof Date) {
       if (includeBoundary) {
@@ -244,7 +245,7 @@ class ODataPropertyExpr {
 
   betweenDateTimeOffset(start?: Date, end?: Date, includeBoundary = true): ODataFilter {
     if (start == undefined && end == undefined) {
-      throw new ValidationError('You must give out the start or end date');
+      throw new ValidationError("You must give out the start or end date");
     }
     if (start instanceof Date) {
       if (includeBoundary) {
@@ -365,7 +366,7 @@ export class ODataFilter<T = any> {
     if (start && end) {
       return this.gtDateTime(name, start).ltDateTime(name, end);
     }
-    throw new ValidationError('You must give out the start and end date');
+    throw new ValidationError("You must give out the start and end date");
 
   }
 
@@ -379,7 +380,7 @@ export class ODataFilter<T = any> {
     if (start && end) {
       return this.gtDateTimeOffset(name, start).ltDateTimeOffset(name, end);
     }
-    throw new ValidationError('You must give out the start and end date');
+    throw new ValidationError("You must give out the start and end date");
   }
 
   /**
@@ -437,16 +438,16 @@ export class ODataFilter<T = any> {
       if (exprs.filter((expr) => expr.op == ExprOperator.eq).length == 0) {
         return `(${join(
           exprs.map(({ op, value }) => `${field} ${op} ${value}`),
-          ' and '
+          " and "
         )})`;
       }
       return `(${join(
         exprs.map(({ op, value }) => `${field} ${op} ${value}`),
-        ' or '
+        " or "
       )})`;
 
     }
-    return '';
+    return "";
 
 
   }
@@ -455,7 +456,7 @@ export class ODataFilter<T = any> {
    * build filter to string
    */
   build(): string {
-    let _rt = '';
+    let _rt = "";
     _rt = join(
       // join all fields exprs string
       Object.entries(this.getExprMapping()).map(
@@ -463,7 +464,7 @@ export class ODataFilter<T = any> {
           switch (exprs.length) {
             // if one field expr mapping array is empty
             case 0:
-              return '';
+              return "";
             // only have one expr
             case 1:
               const { op, value } = exprs[0];
@@ -475,7 +476,7 @@ export class ODataFilter<T = any> {
 
         }
       ),
-      ' and '
+      " and "
     );
     return _rt;
   }

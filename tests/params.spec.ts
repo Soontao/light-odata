@@ -99,8 +99,13 @@ describe('ODataParams Test', () => {
     expect(decodeURIComponent(ODataParam.newParam().expand("*").toString())).toEqual("$expand=*")
   })
 
+  it('should support toString by varient', () => {
+    expect(OData.newParam().custom("search","v1").toString()).toBe("search=v1")
+  });
+
   it('should support custom properties', () => {
-    expect(OData.newParam().custom("search","v1").string).toBe("search=v1")
+    expect(OData.newParam().search("v1").toString("v2")).toBe("$search=%v1%")
+    expect(OData.newParam().search("v1").toString("v2", "sap-gateway")).toBe("search=%v1%")
   });
 
 

@@ -8,7 +8,7 @@ on:
     branches:
       - "*"
   schedule:
-    - cron: "0 2 * * *"
+    - cron: "23 6 * * *"
 
 jobs:
   test:
@@ -16,10 +16,15 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x]
+        node-version: [ 16.x, 17.x ]
         os: [ubuntu-latest, windows-latest]
 
     steps:
+      - name: Set git to use LF to checkout
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1

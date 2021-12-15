@@ -1,10 +1,10 @@
-import { Mutex } from '@newdash/newdash/functional/Mutex';
-import { SearchParams } from './util';
+import { Mutex } from "@newdash/newdash/functional/Mutex";
+import { SearchParams } from "./util";
 
-const S_AUTHORIZATION = 'Authorization';
-const S_BEARER = 'Bearer';
-const S_CLIENT_CREDENTIALS = 'client_credentials';
-const S_CT_URL_FORM = 'application/x-www-form-urlencoded';
+const S_AUTHORIZATION = "Authorization";
+const S_BEARER = "Bearer";
+const S_CLIENT_CREDENTIALS = "client_credentials";
+const S_CT_URL_FORM = "application/x-www-form-urlencoded";
 
 /**
  * Client Credential OAuth Client
@@ -31,10 +31,15 @@ const S_CT_URL_FORM = 'application/x-www-form-urlencoded';
 class ClientCredentialsOAuthClient {
 
   private readonly tokenUrl: string;
+
   private readonly clientId: string;
+
   private readonly clientSecret: string;
+
   private readonly mut: Mutex;
+
   private token: string;
+
   private jobId: any;
 
 
@@ -62,14 +67,14 @@ class ClientCredentialsOAuthClient {
    */
   private async fetchOAuthResponse(): Promise<any> {
     const params = new SearchParams();
-    params.append('client_id', this.clientId);
-    params.append('client_secret', this.clientSecret);
-    params.append('grant_type', S_CLIENT_CREDENTIALS);
+    params.append("client_id", this.clientId);
+    params.append("client_secret", this.clientSecret);
+    params.append("grant_type", S_CLIENT_CREDENTIALS);
     const response = await fetch(this.tokenUrl, {
-      method: 'POST',
+      method: "POST",
       body: params.toString(),
       headers: {
-        'Content-Type': S_CT_URL_FORM
+        "Content-Type": S_CT_URL_FORM
       }
     });
     if (response.status >= 400) {
@@ -153,7 +158,7 @@ class ClientCredentialsOAuthClient {
     const token = await this.getToken();
 
     if (token === undefined) {
-      throw new TypeError('un-expected token is undefined');
+      throw new TypeError("un-expected token is undefined");
     }
 
     const url = args[0];
