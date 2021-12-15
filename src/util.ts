@@ -1,16 +1,26 @@
 import { encode } from './base64';
 
 /**
- * ConvertDateFromODataTime
+ * ConvertDateFromODataTime (OData V2)
  *
  * @param dateString date string, format is /Date(1512691200000)/
  */
-export function ConvertDateFromODataTime(dateString = '0'): Date {
-  return new Date(parseInt(dateString.replace(/[^\d.]/g, ''), 10));
+export function ConvertDateFromODataTime(dateString: any): Date {
+  if (dateString instanceof Date) {
+    return dateString;
+  }
+  if (typeof dateString === 'string') {
+    // thanks https://github.com/Soontao/light-odata/pull/412#issuecomment-993708386
+    const r1 =  /\/Date\(([+|-]?\d+)\)\//g.exec(dateString);
+    if (r1 !== null && r1[1] !== undefined) {
+      return new Date(parseInt(r1[1]));
+    }
+  }
+  throw new Error('date/datetime format is not correct');
 }
 
 /**
- * FormatODataDateTimedate
+ * FormatODataDateTimedate (OData V2)
  *
  * format date to /Date(1512691200000)/ format
  */
@@ -19,7 +29,7 @@ export function FormatODataDateTimedate(date: Date = new Date()): string {
 }
 
 export function GetAuthorizationPair(user: string, password: string): { Authorization: string } {
-  return { Authorization: `Basic ${encode(`${user}:${password}`)}` };
+  return { Authorization: `Basic ${encode(`${user ?? ''}:${password ?? ''}`)}` };
 }
 
 

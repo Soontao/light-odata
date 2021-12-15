@@ -11,6 +11,15 @@ describe('Util Test', () => {
     expect(ConvertDateFromODataTime(dateString)).toEqual(date)
   })
 
+  it('should ConvertDateFromODataTime support negative value', () => {
+    expect(ConvertDateFromODataTime("/Date(-1512691200000)/")).toEqual(new Date(-1512691200000))
+  });
+
+  it('should ConvertDateFromODataTime throw error when format is not correct', () => {
+    expect(() => ConvertDateFromODataTime(new Date().toISOString())).toThrow()
+    expect(() => ConvertDateFromODataTime(new Date().toUTCString())).toThrow()
+  });
+
   test('FormatODataDateTimedate', () => {
     expect(FormatODataDateTimedate(date)).toEqual(dateString)
   })
