@@ -261,11 +261,14 @@ export class OData {
 
   /**
    * fetch CSRF Token
+   *
+   * @param withCache set to `false` if you want to force to retrieve the refresh csrf token
+   * @returns
    */
-  public async getCsrfToken() {
+  public async getCsrfToken(withCache = true) {
     return this.lock.use(async () => {
 
-      if (this.csrfToken !== undefined && this.csrfToken !== null && this.csrfToken?.length > 0) {
+      if (withCache && this.csrfToken !== undefined && this.csrfToken !== null && this.csrfToken?.length > 0) {
         return this.csrfToken;
       }
 
