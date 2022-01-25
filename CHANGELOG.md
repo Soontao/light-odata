@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.18.0-alpha.0](https://github.com/Soontao/light-odata/compare/v2.17.1...v2.18.0-alpha.0) (2022-01-25)
+
+
+### Features
+
+* change visibility for getCsrfToken ([de7c107](https://github.com/Soontao/light-odata/commit/de7c1076b5c3041c22b22ebb2786c8aadcf46f3d))
+* force retrieving csrf token ([9f8e101](https://github.com/Soontao/light-odata/commit/9f8e1018c91da2f480e6e67a2a434137a0178e94))
+
+
+### Bug Fixes
+
+* lint ([b5e1ad4](https://github.com/Soontao/light-odata/commit/b5e1ad43221c16791aefb2cf7fefef389925a8a5))
+
 ### [2.17.1](https://github.com/Soontao/light-odata/compare/v2.17.0...v2.17.1) (2021-12-15)
 
 
