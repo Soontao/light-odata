@@ -1,4 +1,5 @@
 import attempt from "@newdash/newdash/attempt";
+import { Mutex } from "@newdash/newdash/functional/Mutex";
 import join from "@newdash/newdash/join";
 import slice from "@newdash/newdash/slice";
 import startsWith from "@newdash/newdash/startsWith";
@@ -90,9 +91,13 @@ export class OData {
 
   private processCsrfToken = false;
 
+  private csrfTokenName: string = S_X_CSRF_TOKEN;
+
   private variant: ODataVariant = "default";
 
   private version: ODataVersion = "v2";
+
+  private lock: Mutex = new Mutex()
 
   /**
    * alternative constructor
@@ -117,6 +122,7 @@ export class OData {
       // use compatibility mode for c4c/byd
       rt.commonHeader["odata-v2-strict-json-format"] = "true";
     }
+    rt.csrfTokenName = options.csrfTokenName ?? S_X_CSRF_TOKEN
     return rt;
   }
 
@@ -211,7 +217,7 @@ export class OData {
 
     }
     if (this.processCsrfToken) {
-      rt[S_X_CSRF_TOKEN] = await this.getCsrfToken();
+      rt[this.csrfTokenName] = await this.getCsrfToken();
     }
     return rt;
   }
@@ -256,28 +262,30 @@ export class OData {
   /**
    * fetch CSRF Token
    */
-  private async getCsrfToken() {
-    if (this.csrfToken && this.csrfToken != null) { return this.csrfToken; }
+  public async getCsrfToken() {
+    return this.lock.use(async () => {
+      if (this.csrfToken !== undefined && this.csrfToken !== null && this.csrfToken?.length > 0) { return this.csrfToken; }
 
-    const config: RequestInit = {
-      method: "GET",
-      headers: { [S_X_CSRF_TOKEN]: "fetch" }
-    };
-
-    if (this.credential) {
-      config.headers = {
-        ...config.headers,
-        ...GetAuthorizationPair(this.credential.username, this.credential.password)
+      const config: RequestInit = {
+        method: "GET",
+        headers: { [this.csrfTokenName]: "fetch" }
       };
-    }
 
-    const { response: { headers } } = await this.fetchProxy(this.serviceRoot, config);
-    if (headers) {
-      this.csrfToken = headers.get(S_X_CSRF_TOKEN);
-    } else {
-      throw new FrameworkError("csrf token need the odata proxy give out headers!");
-    }
-    return this.csrfToken;
+      if (this.credential) {
+        config.headers = {
+          ...config.headers,
+          ...GetAuthorizationPair(this.credential.username, this.credential.password)
+        };
+      }
+
+      const { response: { headers } } = await this.fetchProxy(this.serviceRoot, config);
+      if (headers) {
+        this.csrfToken = headers.get(this.csrfTokenName);
+      } else {
+        throw new FrameworkError("csrf token need the odata proxy give out headers!");
+      }
+      return this.csrfToken;
+    })
   }
 
   public cleanCsrfToken(): void {
@@ -316,9 +324,9 @@ export class OData {
     // one time retry if csrf token time expired
     if (this.processCsrfToken) {
       if (res.response.headers) {
-        if (res.response.headers.get(S_X_CSRF_TOKEN) === "Required") {
+        if (res.response.headers.get(this.csrfTokenName)?.toUpperCase() === "Required".toUpperCase()) {
           this.cleanCsrfToken();
-          config.headers[S_X_CSRF_TOKEN] = await this.getCsrfToken();
+          config.headers[this.csrfTokenName] = await this.getCsrfToken();
           res = await this.fetchProxy(finalUri, config);
         }
       }

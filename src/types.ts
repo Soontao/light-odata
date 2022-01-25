@@ -38,6 +38,10 @@ export interface ODataNewOptions {
    */
   processCsrfToken?: boolean;
   /**
+   * the header key of csrf token, default value is 'x-csrf-token'
+   */
+  csrfTokenName?: string;
+  /**
    * for SAP OData
    * @deprecated
    */
