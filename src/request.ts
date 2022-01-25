@@ -97,7 +97,7 @@ export class OData {
 
   private version: ODataVersion = "v2";
 
-  private lock: Mutex = new Mutex()
+  private lock: Mutex = new Mutex();
 
   /**
    * alternative constructor
@@ -122,7 +122,7 @@ export class OData {
       // use compatibility mode for c4c/byd
       rt.commonHeader["odata-v2-strict-json-format"] = "true";
     }
-    rt.csrfTokenName = options.csrfTokenName ?? S_X_CSRF_TOKEN
+    rt.csrfTokenName = options.csrfTokenName ?? S_X_CSRF_TOKEN;
     return rt;
   }
 
@@ -264,7 +264,10 @@ export class OData {
    */
   public async getCsrfToken() {
     return this.lock.use(async () => {
-      if (this.csrfToken !== undefined && this.csrfToken !== null && this.csrfToken?.length > 0) { return this.csrfToken; }
+
+      if (this.csrfToken !== undefined && this.csrfToken !== null && this.csrfToken?.length > 0) {
+        return this.csrfToken;
+      }
 
       const config: RequestInit = {
         method: "GET",
@@ -285,7 +288,7 @@ export class OData {
         throw new FrameworkError("csrf token need the odata proxy give out headers!");
       }
       return this.csrfToken;
-    })
+    });
   }
 
   public cleanCsrfToken(): void {
