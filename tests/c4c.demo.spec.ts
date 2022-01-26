@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { env } from "process";
 import { v4 } from "uuid";
 import { OData, ODataDateTime } from "../src";
-import "../src/polyfill";
+import "../src/polyfill"; // must import polifill because csrf token request the cookie
 
 let d = describe
 
@@ -72,6 +73,29 @@ d('C4C/ByD OData (V2) Test Suite (basic)', () => {
       // @ts-ignore
       return await set.create({ NotExist: "v1" })
     }).rejects.toThrow()
+
+  });
+
+  it('should support get csrf token', async () => {
+
+    const client = getOData()
+    const spyFetchProxy = jest.spyOn(client, "fetchProxy")
+    const token = await client.getCsrfToken()
+
+    expect(token).not.toBeUndefined()
+    expect(token?.length).toBeGreaterThan(0)
+
+    expect(spyFetchProxy).toHaveBeenCalledTimes(1)
+
+    // test cache
+    const token2 = await client.getCsrfToken()
+    expect(token).toBe(token2)
+
+    expect(spyFetchProxy).toHaveBeenCalledTimes(1)
+
+
+    await client.getCsrfToken(false)
+    expect(spyFetchProxy).toHaveBeenCalledTimes(2)
 
   });
 
