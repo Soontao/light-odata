@@ -9,7 +9,7 @@ Content-Length: 322
 cache-control: no-cache, no-store
 dataserviceversion: 2.0
 
-{"d":{"results":[{"__metadata":{"uri":"https://my500248.c4c.saphybriscloud.cn/sap/c4c/odata/cust/v1/servicemobileapp/ServiceRequestCollection('00163E20C9511ED7B6C53C069E784637')","type":"cust.ServiceRequest","etag":"W/\"datetimeoffset'2018-01-16T03%3A02%3A26.5744460Z'\""},"ObjectID":"00163E20C9511ED7B6C53C069E784637"}]}}
+{"d":{"results":[{"__metadata":{"uri":"https://xxxxxx.odata.public.server.cn/sap/c4c/odata/cust/v1/servicemobileapp/ServiceRequestCollection('00163E20C9511ED7B6C53C069E784637')","type":"cust.ServiceRequest","etag":"W/\"datetimeoffset'2018-01-16T03%3A02%3A26.5744460Z'\""},"ObjectID":"00163E20C9511ED7B6C53C069E784637"}]}}
 --ejjeeffe0
 Content-Type: application/http
 Content-Length: 471
@@ -21,7 +21,7 @@ Content-Length: 339
 cache-control: no-cache, no-store
 dataserviceversion: 2.0
 
-{"d":{"__count":"1211","results":[{"__metadata":{"uri":"https://my500248.c4c.saphybriscloud.cn/sap/c4c/odata/cust/v1/servicemobileapp/ServiceRequestCollection('00163E20C9511ED7B993B663E65F9FA3')","type":"cust.ServiceRequest","etag":"W/\"datetimeoffset'2017-12-20T03%3A08%3A47.9989750Z'\""},"ObjectID":"00163E20C9511ED7B993B663E65F9FA3"}]}}
+{"d":{"__count":"1211","results":[{"__metadata":{"uri":"https://xxxxxx.odata.public.server.cn/sap/c4c/odata/cust/v1/servicemobileapp/ServiceRequestCollection('00163E20C9511ED7B993B663E65F9FA3')","type":"cust.ServiceRequest","etag":"W/\"datetimeoffset'2017-12-20T03%3A08%3A47.9989750Z'\""},"ObjectID":"00163E20C9511ED7B993B663E65F9FA3"}]}}
 --ejjeeffe0
 Content-Type: multipart/mixed; boundary=ejjeeffe1
 Content-Length:       796
@@ -34,11 +34,11 @@ Content-Transfer-Encoding: binary
 HTTP/1.1 201 Created
 Content-Type: application/json
 Content-Length: 393
-location: https://my500248.c4c.saphybriscloud.cn/sap/c4c/odata/cust/v1/servicemobileapp/BO_VOCRootCollection('00163E457AE21EE89F9B22B7AE488EE9')
+location: https://xxxxxx.odata.public.server.cn/sap/c4c/odata/cust/v1/servicemobileapp/BO_VOCRootCollection('00163E457AE21EE89F9B22B7AE488EE9')
 dataserviceversion: 2.0
 cache-control: no-cache, no-store
 
-{"d":{"results":{"__metadata":{"uri":"https://my500248.c4c.saphybriscloud.cn/sap/c4c/odata/cust/v1/servicemobileapp/BO_VOCRootCollection('00163E457AE21EE89F9B22B7AE488EE9')","type":"cust.BO_VOCRoot"},"Description":"VOC OData 测试","ObjectID":"00163E457AE21EE89F9B22B7AE488EE9","HasChild":false,"HasParent":false,"Id":"TEST0000F44SD","ParentId":"","toDeleteIndicator":false,"Verified":true}}}
+{"d":{"results":{"__metadata":{"uri":"https://xxxxxx.odata.public.server.cn/sap/c4c/odata/cust/v1/servicemobileapp/BO_VOCRootCollection('00163E457AE21EE89F9B22B7AE488EE9')","type":"cust.BO_VOCRoot"},"Description":"VOC OData 测试","ObjectID":"00163E457AE21EE89F9B22B7AE488EE9","HasChild":false,"HasParent":false,"Id":"TEST0000F44SD","ParentId":"","toDeleteIndicator":false,"Verified":true}}}
 --ejjeeffe1--
 
 --ejjeeffe0
@@ -53,11 +53,11 @@ Content-Transfer-Encoding: binary
 HTTP/1.1 201 Created
 Content-Type: application/json
 Content-Length: 392
-location: https://my500248.c4c.saphybriscloud.cn/sap/c4c/odata/cust/v1/servicemobileapp/BO_VOCRootCollection('00163E457AE21EE89F9B22B7AE4BAEE9')
+location: https://xxxxxx.odata.public.server.cn/sap/c4c/odata/cust/v1/servicemobileapp/BO_VOCRootCollection('00163E457AE21EE89F9B22B7AE4BAEE9')
 dataserviceversion: 2.0
 cache-control: no-cache, no-store
 
-{"d":{"results":{"__metadata":{"uri":"https://my500248.c4c.saphybriscloud.cn/sap/c4c/odata/cust/v1/servicemobileapp/BO_VOCRootCollection('00163E457AE21EE89F9B22B7AE4BAEE9')","type":"cust.BO_VOCRoot"},"Description":"VOC OData 测试","ObjectID":"00163E457AE21EE89F9B22B7AE4BAEE9","HasChild":false,"HasParent":false,"Id":"TEST0000F4SD","ParentId":"","toDeleteIndicator":false,"Verified":true}}}
+{"d":{"results":{"__metadata":{"uri":"https://xxxxxx.odata.public.server.cn/sap/c4c/odata/cust/v1/servicemobileapp/BO_VOCRootCollection('00163E457AE21EE89F9B22B7AE4BAEE9')","type":"cust.BO_VOCRoot"},"Description":"VOC OData 测试","ObjectID":"00163E457AE21EE89F9B22B7AE4BAEE9","HasChild":false,"HasParent":false,"Id":"TEST0000F4SD","ParentId":"","toDeleteIndicator":false,"Verified":true}}}
 --ejjeeffe1--
 
 --ejjeeffe0--

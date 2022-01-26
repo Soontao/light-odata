@@ -22,7 +22,7 @@ describe('test batch multipart parse & format', () => {
         "results": [
           {
             "__metadata": {
-              "uri": "https://my500248.c4c.saphybriscloud.cn/sap/c4c/odata/cust/v1/servicemobileapp/ServiceRequestCollection('00163E20C9511ED7B6C53C069E784637')",
+              "uri": "https://xxxxxx.odata.public.server.cn/sap/c4c/odata/cust/v1/servicemobileapp/ServiceRequestCollection('00163E20C9511ED7B6C53C069E784637')",
               "type": "cust.ServiceRequest",
               "etag": "W/\"datetimeoffset'2018-01-16T03%3A02%3A26.5744460Z'\""
             },
@@ -55,15 +55,15 @@ describe('test batch multipart parse & format', () => {
 
     const result = formatBatchRequest([
       {
-        url: "https://my500248.c4c.saphybriscloud.cn/sap/c4c/odata/cust/v1/servicemobileapp/ServiceRequestCollection/?$select=ObjectID&$top=1",
+        url: "https://xxxxxx.odata.public.server.cn/sap/c4c/odata/cust/v1/servicemobileapp/ServiceRequestCollection/?$select=ObjectID&$top=1",
         init: test
       },
       {
-        url: "https://my500248.c4c.saphybriscloud.cn/sap/c4c/odata/cust/v1/servicemobileapp/ServiceRequestCollection/?$skip=3&$inlinecount=allpages&$select=ObjectID&$top=1",
+        url: "https://xxxxxx.odata.public.server.cn/sap/c4c/odata/cust/v1/servicemobileapp/ServiceRequestCollection/?$skip=3&$inlinecount=allpages&$select=ObjectID&$top=1",
         init: test
       },
       {
-        url: "https://my500248.c4c.saphybriscloud.cn/sap/c4c/odata/cust/v1/servicemobileapp/BO_VOCRootCollection",
+        url: "https://xxxxxx.odata.public.server.cn/sap/c4c/odata/cust/v1/servicemobileapp/BO_VOCRootCollection",
         init: {
           method: "POST",
           headers: {
@@ -78,7 +78,7 @@ describe('test batch multipart parse & format', () => {
         }
       },
       {
-        url: "https://my500248.c4c.saphybriscloud.cn/sap/c4c/odata/cust/v1/servicemobileapp/BO_VOCRootCollection",
+        url: "https://xxxxxx.odata.public.server.cn/sap/c4c/odata/cust/v1/servicemobileapp/BO_VOCRootCollection",
         init: {
           method: "POST",
           headers: {
