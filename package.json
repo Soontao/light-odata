@@ -30,12 +30,12 @@
     "build:umd": "webpack",
     "prebuild": "rimraf lib",
     "build": "tsc && npm run build:umd",
-    "test": "jest",
+    "test": "jest --silent",
     "lint": "tsc --noEmit && eslint src/**/*.*",
     "test:watch": "npm test -- --watch",
     "coverage": "npm test -- --coverage --no-cache",
     "coverage:watch": "npm run coverage -- --watch",
-    "release": "npx standard-version --no-verify && git push --follow-tags origin main",
+    "release": "npx standard-version --no-verify",
     "prepublishOnly": "npm run build && npm test"
   },
   "dependencies": {

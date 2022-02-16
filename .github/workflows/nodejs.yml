@@ -48,6 +48,9 @@ jobs:
           C4C_ODATA: ${{ secrets.C4C_ODATA }}
           C4C_USER: ${{ secrets.C4C_USER }}
           C4C_PASS: ${{ secrets.C4C_PASS }}
+          TEST_OAUTH_TOKEN_URL: ${{ secrets.TEST_OAUTH_TOKEN_URL }}
+          TEST_OAUTH_CLIENT_ID: ${{ secrets.TEST_OAUTH_CLIENT_ID }}
+          TEST_OAUTH_CLIENT_SECRET: ${{ secrets.TEST_OAUTH_CLIENT_SECRET }}
 
       - name: Codecov
         uses: codecov/codecov-action@v1.0.7
