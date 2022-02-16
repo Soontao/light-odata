@@ -5,6 +5,7 @@
   "editor.formatOnSave": false,
   "cSpell.enabled": false,
   "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features",
     "editor.formatOnSave": false
   },
   "editor.codeActionsOnSave": {

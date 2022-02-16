@@ -36,11 +36,11 @@ class ClientCredentialsOAuthClient {
 
   private readonly clientSecret: string;
 
-  private readonly mut: Mutex;
+  private readonly mut = new Mutex();
 
   private token: string;
 
-  private jobId: any;
+  private expiresAt = 0;
 
 
   /**
@@ -53,10 +53,6 @@ class ClientCredentialsOAuthClient {
     this.tokenUrl = tokenUrl;
     this.clientId = clientId;
     this.clientSecret = clientSecret;
-    this.token = undefined;
-    this.jobId = undefined;
-
-    this.mut = new Mutex();
 
   }
 
@@ -102,49 +98,32 @@ class ClientCredentialsOAuthClient {
   public async getToken(): Promise<string> {
 
     // lock avoid multi fetch token requests in same time
-    return this.mut.use(async() => {
+    return this.mut.use(async () => {
 
-      if (this.token === undefined) {
+      try {
 
-        try {
+        const currentTime = new Date().getTime()
 
-          const { access_token: accessToken, expires_in: expiresIn } = await this.fetchOAuthResponse();
-
-          this.token = accessToken;
-
-          if (this.jobId === undefined) {
-
-            // set a half-expire-time refresh token job
-            this.jobId = setInterval(async() => {
-              // PLEASE catch error here
-              // because un-caught error in timer will make server down !
-              try {
-                // refresh token
-                const { access_token: newToken } = await this.fetchOAuthResponse();
-                if (newToken !== undefined) {
-                  this.token = newToken;
-                }
-              } catch (error) {
-                console.error(error);
-              }
-            }, (expiresIn * 0.5 * 1000)); // convert expire-in seconds to half milliseconds
-
-          }
-
-        } catch (error) {
-
-          console.error(`oauth client retrieve token failed: %s`, error);
-
-          // rethrow error
-          throw error;
-
+        // retrive new token
+        if (currentTime >= this.expiresAt) {
+          const { access_token: accessToken, expires_in: expiresIn } = await this.fetchOAuthResponse()
+          this.token = accessToken
+          // half expire
+          this.expiresAt = currentTime + ((expiresIn / 2) * 1000)
         }
+
+      } catch (error) {
+
+        console?.error?.(`oauth client retrieve token failed: ${error?.message ?? error}`,)
+
+        // rethrow error
+        throw error
 
       }
 
-      return this.token;
+      return this.token
 
-    });
+    })
 
 
   }
@@ -174,15 +153,6 @@ class ClientCredentialsOAuthClient {
     };
 
     return fetch(url, config);
-  }
-
-  /**
-   * destroy this client
-   */
-  public destroy() {
-    if (this.jobId) {
-      clearInterval(this.jobId);
-    }
   }
 
 }
