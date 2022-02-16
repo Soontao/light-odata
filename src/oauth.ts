@@ -102,28 +102,28 @@ class ClientCredentialsOAuthClient {
 
       try {
 
-        const currentTime = new Date().getTime()
+        const currentTime = new Date().getTime();
 
         // retrive new token
         if (currentTime >= this.expiresAt) {
-          const { access_token: accessToken, expires_in: expiresIn } = await this.fetchOAuthResponse()
-          this.token = accessToken
+          const { access_token: accessToken, expires_in: expiresIn } = await this.fetchOAuthResponse();
+          this.token = accessToken;
           // half expire
-          this.expiresAt = currentTime + ((expiresIn / 2) * 1000)
+          this.expiresAt = currentTime + ((expiresIn / 2) * 1000);
         }
 
       } catch (error) {
 
-        console?.error?.(`oauth client retrieve token failed: ${error?.message ?? error}`,)
+        console?.error?.(`oauth client retrieve token failed: ${error?.message ?? error}`,);
 
         // rethrow error
-        throw error
+        throw error;
 
       }
 
-      return this.token
+      return this.token;
 
-    })
+    });
 
 
   }
