@@ -9,7 +9,7 @@ export class ODataServerError extends Error {
 }
 
 
-export class AuthendicationError extends Error {
+export class AuthenticationError extends Error {
 
   constructor(msg: string) {
     super(msg);

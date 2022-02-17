@@ -1,10 +1,14 @@
 import { Mutex } from "@newdash/newdash/functional/Mutex";
+import { encode } from "./base64";
+import { AuthenticationError } from "./errors";
 import { SearchParams } from "./util";
 
 const S_AUTHORIZATION = "Authorization";
 const S_BEARER = "Bearer";
 const S_CLIENT_CREDENTIALS = "client_credentials";
 const S_CT_URL_FORM = "application/x-www-form-urlencoded";
+
+export type TokenRetrieveType = "header" | "form";
 
 /**
  * Client Credential OAuth Client
@@ -21,7 +25,7 @@ const S_CT_URL_FORM = "application/x-www-form-urlencoded";
  *  "client_id",
  *  "client_secret"
  * )
- * const response = await client.fetch("http://protected.by.jwt/resource", {
+ * const response = await client.fetch("http://protected.by.token/resource", {
  *  method: "GET",
  * })
  * ```
@@ -42,18 +46,28 @@ class ClientCredentialsOAuthClient {
 
   private expiresAt = 0;
 
+  private tokenRetrieveType: TokenRetrieveType = "header"
+
 
   /**
-   * @param {string} tokenUrl oauth token url
-   * @param {string} clientId oauth client id
-   * @param {string} clientSecret oauth client secret
+   * a very simple oauth client credential client
+   *
+   * @param tokenUrl oauth token url
+   * @param clientId oauth client id
+   * @param clientSecret oauth client secret
+   * @param retrieveType the clientId and clientSecret is put into header or form body
    */
-  constructor(tokenUrl: string, clientId: string, clientSecret: string) {
+  constructor(
+    tokenUrl: string,
+    clientId: string,
+    clientSecret: string,
+    retrieveType: TokenRetrieveType = "header"
+  ) {
 
     this.tokenUrl = tokenUrl;
     this.clientId = clientId;
     this.clientSecret = clientSecret;
-
+    this.tokenRetrieveType = retrieveType
   }
 
   /**
@@ -63,18 +77,49 @@ class ClientCredentialsOAuthClient {
    */
   private async fetchOAuthResponse(): Promise<any> {
     const params = new SearchParams();
-    params.append("client_id", this.clientId);
-    params.append("client_secret", this.clientSecret);
     params.append("grant_type", S_CLIENT_CREDENTIALS);
-    const response = await fetch(this.tokenUrl, {
-      method: "POST",
-      body: params.toString(),
-      headers: {
-        "Content-Type": S_CT_URL_FORM
-      }
-    });
+
+    let response = undefined
+
+    if (this.tokenRetrieveType === "form") {
+
+      params.append("client_id", this.clientId);
+      params.append("client_secret", this.clientSecret);
+      response = await fetch(this.tokenUrl, {
+        method: "POST",
+        body: params.toString(),
+        headers: {
+          "Content-Type": S_CT_URL_FORM
+        }
+      });
+
+    } else {
+
+      // standard way described in rfc6749
+      // https://datatracker.ietf.org/doc/html/rfc6749#section-4.4.2
+      response = await fetch(this.tokenUrl, {
+        method: "POST",
+        body: params.toString(),
+        headers: {
+          [S_AUTHORIZATION]: "Basic " + encode(`${this.clientId}:${this.clientSecret}`),
+          "Content-Type": S_CT_URL_FORM
+        }
+      });
+
+    }
+
+
     if (response.status >= 400) {
-      throw new Error(await response.text());
+      if (response.headers.get("Content-Type")?.includes("application/json")) {
+        const responseBody = await response.json()
+        if ('error' in responseBody) {
+          throw new AuthenticationError(responseBody.error)
+        } else {
+          throw new AuthenticationError(JSON.stringify(responseBody))
+        }
+      } else {
+        throw new Error(await response.text());
+      }
     }
     const body = await response.json();
     return body;
