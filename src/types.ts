@@ -1,5 +1,6 @@
 import { RequestInit, Response } from "node-fetch";
 import { BatchRequest, ParsedResponse } from "./batch";
+import { TokenRetrieveType } from "./oauth";
 import { ODataQueryParam } from "./params";
 import { ODataVersion } from "./types_v4";
 
@@ -175,7 +176,13 @@ export interface PlainODataMultiResponse<E = any> extends PlainODataResponse {
 }
 
 export interface Credential {
+  /**
+   * basic auth user name
+   */
   username?: string;
+  /**
+   * basic password
+   */
   password?: string;
   /**
    * oauth client id
@@ -189,6 +196,10 @@ export interface Credential {
    * oauth token url
    */
   tokenUrl?: string;
+  /**
+   * oauth token retrieve type
+   */
+  tokenRetrieveType?: TokenRetrieveType;
 }
 
 /**

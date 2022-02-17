@@ -187,7 +187,7 @@ export class OData {
           this.oauthClient = new ClientCredentialsOAuthClient(
             credential.tokenUrl,
             credential.clientId,
-            credential.clientSecret
+            credential.clientSecret,
           );
         }
       }
