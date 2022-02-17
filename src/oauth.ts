@@ -46,7 +46,7 @@ class ClientCredentialsOAuthClient {
 
   private expiresAt = 0;
 
-  private tokenRetrieveType: TokenRetrieveType = "header"
+  private tokenRetrieveType: TokenRetrieveType = "header";
 
 
   /**
@@ -67,7 +67,7 @@ class ClientCredentialsOAuthClient {
     this.tokenUrl = tokenUrl;
     this.clientId = clientId;
     this.clientSecret = clientSecret;
-    this.tokenRetrieveType = retrieveType
+    this.tokenRetrieveType = retrieveType;
   }
 
   /**
@@ -79,7 +79,7 @@ class ClientCredentialsOAuthClient {
     const params = new SearchParams();
     params.append("grant_type", S_CLIENT_CREDENTIALS);
 
-    let response = undefined
+    let response = undefined;
 
     if (this.tokenRetrieveType === "form") {
 
@@ -111,11 +111,11 @@ class ClientCredentialsOAuthClient {
 
     if (response.status >= 400) {
       if (response.headers.get("Content-Type")?.includes("application/json")) {
-        const responseBody = await response.json()
-        if ('error' in responseBody) {
-          throw new AuthenticationError(responseBody.error)
+        const responseBody = await response.json();
+        if ("error" in responseBody) {
+          throw new AuthenticationError(responseBody.error);
         } else {
-          throw new AuthenticationError(JSON.stringify(responseBody))
+          throw new AuthenticationError(JSON.stringify(responseBody));
         }
       } else {
         throw new Error(await response.text());
