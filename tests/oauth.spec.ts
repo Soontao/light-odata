@@ -1,7 +1,10 @@
 // @ts-nocheck
 import { ClientCredentialsOAuthClient } from "../src/oauth";
-import "../src/polyfill";
+import fetchCookie from "fetch-cookie";
+import * as nodeFetch from "node-fetch";
+import { encode } from "../src/base64";
 
+global.fetch = jest.fn(fetchCookie(nodeFetch))
 
 describe('OAuth2 Client Credential Test Suite', () => {
 
@@ -28,7 +31,12 @@ describe('OAuth2 Client Credential Test Suite', () => {
     expect(fetchFunctionSpy).toBeCalledTimes(1)
     expect(token2).toBe(token1)
 
+    fetch.mockImplementationOnce((url, init) => {
+      expect(init?.headers.Authorization).toBe(`Bearer ${token1}`)
+      return Promise.resolve({})
+    })
 
+    await client.fetch("http://whatevery.acc.com/resource")
   });
 
   it('should support retrieve token by form', async () => {

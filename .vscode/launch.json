@@ -9,6 +9,7 @@
       "args": [
         "--runInBand"
       ],
+      "sourceMaps": true,
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "windows": {
@@ -24,6 +25,7 @@
       "args": [
         "${relativeFile}"
       ],
+      "sourceMaps": true,
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "windows": {
