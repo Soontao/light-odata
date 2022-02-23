@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.19.0-beta.0](https://github.com/Soontao/light-odata/compare/v2.19.0-alpha.1...v2.19.0-beta.0) (2022-02-23)
+
+
+### Features
+
+* compund key with edm type ([6b1081c](https://github.com/Soontao/light-odata/commit/6b1081cc64279317e6108552ac75b4df81393c3b))
+* doc update ([abce809](https://github.com/Soontao/light-odata/commit/abce809b3827e075b099cf260b697d778664e848))
+* update ([eb758f8](https://github.com/Soontao/light-odata/commit/eb758f8e8abfe0715d4d45088d334584e538aed1))
+
 ## [2.19.0-alpha.1](https://github.com/Soontao/light-odata/compare/v2.19.0-alpha.0...v2.19.0-alpha.1) (2022-02-17)
 
 ## [2.19.0-alpha.0](https://github.com/Soontao/light-odata/compare/v2.18.0...v2.19.0-alpha.0) (2022-02-16)
