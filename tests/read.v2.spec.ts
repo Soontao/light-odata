@@ -1,4 +1,4 @@
-import { ODataFilter, ODataParam } from '../src';
+import { ODataDateTime, ODataFilter, ODataParam, ODataValueObject, RawString } from '../src';
 import "../src/polyfill";
 import { OData } from "../src/request";
 import { Alphabetical_list_of_product, Customer } from "./demo_service_types";
@@ -149,6 +149,24 @@ describe('Read Test (V2)', () => {
     expect(result3?.d?.results[0]['CompanyName'].substr(1)).toBe("lfreds Futterkiste")
 
 
+  });
+
+  it('should support format raw value', () => {
+    const client = OData.New({ metadataUri: TestServiceURL })
+    expect(
+      // @ts-ignore
+      client.formatIdString(RawString.from("(DateTime=datetime'1995-11-11T00:00:00.000Z')"))
+    ).toBe("(DateTime=datetime'1995-11-11T00:00:00.000Z')")
+  });
+
+  it('should support format compund id with datetime', () => {
+    const client = OData.New({ metadataUri: TestServiceURL })
+    expect(
+      // @ts-ignore
+      client.formatIdString({
+        DateTime: ODataDateTime.from(new Date("1995-11-11T00:00:00.000Z"))
+      })
+    ).toBe("(DateTime=datetime'1995-11-11T00:00:00.000Z')")
   });
 
 

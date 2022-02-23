@@ -232,3 +232,76 @@ export type UnwrapParsedResponse<T> = T extends ParsedResponse<infer U> ? U : T
 export type BatchRequests = Array<Promise<BatchRequest>>
 
 export type BatchResponses<T> = Promise<{ [K in keyof T]: ParsedResponse<UnwrapBatchRequest<UnwrapPromise<T[K]>>> }>
+
+/**
+ * Edm type value
+ */
+export abstract class ODataValueObject {
+  abstract toString(): string;
+}
+
+/**
+ * RawString
+ */
+export class RawString extends ODataValueObject {
+  private str: string;
+
+  private constructor(str: string) {
+    super();
+    this.str = str;
+  }
+
+  public static from(str: string) {
+    return new RawString(str);
+  }
+
+  toString(): string {
+    return this.str;
+  }
+}
+
+/**
+ * Edm.DateTime
+ */
+export class ODataDateTime extends ODataValueObject {
+
+  private constructor(date: Date) {
+    super();
+    this._date = date;
+  }
+
+  static from(date: Date): ODataDateTime {
+    const rt = new ODataDateTime(date);
+    return rt;
+  }
+
+  private _date: Date;
+
+  public toString(): string {
+    return `datetime'${this._date.toISOString()}'`;
+  }
+
+}
+
+/**
+ * Edm.DateTimeOffset
+ */
+export class ODataDateTimeOffset extends ODataValueObject {
+
+  private constructor(date: Date) {
+    super();
+    this._date = date;
+  }
+
+  static from(date: Date): ODataDateTimeOffset {
+    const rt = new ODataDateTimeOffset(date);
+    return rt;
+  }
+
+  private _date: Date;
+
+  public toString(): string {
+    return `datetimeoffset'${this._date.toISOString()}'`;
+  }
+
+}

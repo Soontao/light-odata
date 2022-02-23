@@ -1,52 +1,10 @@
 /* eslint-disable max-len */
 import join from "@newdash/newdash/join";
 import { FrameworkError, ValidationError } from "./errors";
+import { ODataValueObject } from "./types";
 
-export abstract class ODataValueObject {
-  abstract toString(): string;
-}
 
 export type FilterValue = number | string | ODataValueObject | null
-
-export class ODataDateTime extends ODataValueObject {
-
-  private constructor(date: Date) {
-    super();
-    this._date = date;
-  }
-
-  static from(date: Date): ODataDateTime {
-    const rt = new ODataDateTime(date);
-    return rt;
-  }
-
-  private _date: Date;
-
-  public toString(): string {
-    return `datetime'${this._date.toISOString()}'`;
-  }
-
-}
-
-export class ODataDateTimeOffset extends ODataValueObject {
-
-  private constructor(date: Date) {
-    super();
-    this._date = date;
-  }
-
-  static from(date: Date): ODataDateTimeOffset {
-    const rt = new ODataDateTimeOffset(date);
-    return rt;
-  }
-
-  private _date: Date;
-
-  public toString(): string {
-    return `datetimeoffset'${this._date.toISOString()}'`;
-  }
-
-}
 
 export enum ExprOperator {
   eq = "eq",

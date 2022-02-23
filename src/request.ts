@@ -6,6 +6,7 @@ import startsWith from "@newdash/newdash/startsWith";
 import { JsonBatchResponseBundle } from "@odata/parser/lib/builder/batch";
 import { RequestInit } from "node-fetch";
 import { v4 } from "uuid";
+import { ODataValueObject } from ".";
 import { BatchRequest, formatBatchRequest, formatBatchRequestForOData401, parseMultiPartContent } from "./batch";
 import { EntitySet } from "./entityset";
 import { FrameworkError, ODataServerError, ValidationError } from "./errors";
@@ -28,7 +29,7 @@ const S_X_CSRF_TOKEN = "x-csrf-token";
 const S_CONTENT_TYPE = "Content-Type";
 
 // @ts-ignore
-const defaultProxy: FetchProxy = async(url: string, init?: RequestInit) => {
+const defaultProxy: FetchProxy = async (url: string, init?: RequestInit) => {
   // @ts-ignore
   const res = await fetch(url, init);
 
@@ -408,6 +409,10 @@ export class OData {
       // for compound key like
       // Alphabetical_list_of_products(CategoryName='Beverages',Discontinued=false,ProductID=1,ProductName='Chai')
       case "object":
+        if (id instanceof ODataValueObject) {
+          return id.toString();
+        }
+        // for plain object
         const compoundId = Object.entries(id).map((kv) => {
           const k = kv[0];
           const v = kv[1];
@@ -421,6 +426,9 @@ export class OData {
             default:
               if (v === null) {
                 return `${k}=null`;
+              }
+              if (v instanceof ODataValueObject) {
+                return `${k}=${v.toString()}`;
               }
               // other type will be removed
               return "";
@@ -577,7 +585,7 @@ export class OData {
     };
 
     // format promised requests
-    const r = await Promise.all(requests.map(async(aBatchR) => await aBatchR));
+    const r = await Promise.all(requests.map(async (aBatchR) => await aBatchR));
     const requestBoundaryString = v4();
     req.headers["Content-Type"] = `multipart/mixed; boundary=${requestBoundaryString}`;
     req.body = formatBatchRequest(r, requestBoundaryString);
@@ -622,8 +630,8 @@ export class OData {
 
     responseBody.responses?.forEach((responseItem) => {
       rt.push({
-        json: async() => responseItem.body,
-        text: async() => JSON.stringify(responseItem.body),
+        json: async () => responseItem.body,
+        text: async () => JSON.stringify(responseItem.body),
         headers: responseItem.headers,
         status: responseItem.status,
         statusText: undefined,
