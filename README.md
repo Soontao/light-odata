@@ -64,7 +64,7 @@ const runner = async () => {
   const filter = client.newFilter().property("Phone").eqString("030-0074321");
 
   const result = await client.newRequest({ // ODataRequest object
-    collection: "Customers", // collection name
+    collection: "Customers", // entity set
     params: client.newParam().filter(filter) // odata param
   })
 
