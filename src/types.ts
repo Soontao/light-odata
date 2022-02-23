@@ -240,7 +240,7 @@ export type BatchRequests = Array<Promise<BatchRequest>>
 export type BatchResponses<T> = Promise<{ [K in keyof T]: ParsedResponse<UnwrapBatchRequest<UnwrapPromise<T[K]>>> }>
 
 /**
- * Edm type value
+ * Edm value
  */
 export abstract class ODataValueObject {
   abstract toString(): string;

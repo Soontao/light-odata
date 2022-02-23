@@ -330,13 +330,10 @@ export class OData {
     let res = await this.fetchProxy(finalUri, config);
 
     // one time retry if csrf token time expired
-    if (this.processCsrfToken) {
-      if (res.response.headers) {
-        if (res.response.headers.get(this.csrfTokenName)?.toUpperCase() === "Required".toUpperCase()) {
-          this.cleanCsrfToken();
-          config.headers[this.csrfTokenName] = await this.getCsrfToken();
-          res = await this.fetchProxy(finalUri, config);
-        }
+    if (this.processCsrfToken === true) {
+      if (res?.response?.headers?.get?.(this.csrfTokenName)?.toUpperCase() === "Required".toUpperCase()) {
+        config.headers[this.csrfTokenName] = await this.getCsrfToken(false); // force refresh
+        res = await this.fetchProxy(finalUri, config);
       }
     }
 
@@ -395,7 +392,7 @@ export class OData {
   /**
    * convert the odata key predicate object/value to string
    *
-   * @param id
+   * @param key
    *
    * @example
    *
@@ -404,17 +401,17 @@ export class OData {
    * this.formatIdString({UUID:'xxx'}) // => String('(UUID='xxx')')
    * ```
    */
-  private formatIdString(id: ODataKeyPredicate): string {
+  private formatIdString(key: ODataKeyPredicate): string {
     let rt = "";
-    switch (typeof id) {
+    switch (typeof key) {
       // for compound key like
       // Alphabetical_list_of_products(CategoryName='Beverages',Discontinued=false,ProductID=1,ProductName='Chai')
       case "object":
-        if (id instanceof ODataValueObject) {
-          return id.toString();
+        if (key instanceof ODataValueObject) {
+          return key.toString();
         }
         // for plain object
-        const compoundId = Object.entries(id).map((kv) => {
+        const compoundId = Object.entries(key).map((kv) => {
           const k = kv[0];
           const v = kv[1];
           switch (typeof v) {
@@ -438,19 +435,19 @@ export class OData {
         rt = `(${compoundId})`;
         break;
       case "number":
-        rt = `(${id})`;
+        rt = `(${key})`;
         break;
       case "string":
         if (this.variant === "cap") {
-          rt = `(${id})`; // for cap framework, id string should remove singlequote
+          rt = `(${key})`; // for cap framework, id string should remove singlequote
         } else {
-          rt = `('${id}')`;
+          rt = `('${key}')`;
         }
         break;
       case "undefined":
         break;
       default:
-        throw new FrameworkError(`Not supported ObjectID type ${typeof id} for request`);
+        throw new FrameworkError(`Not supported ObjectID type ${typeof key} for request`);
     }
     return rt;
   }
