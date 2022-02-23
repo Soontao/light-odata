@@ -6,7 +6,7 @@ import startsWith from "@newdash/newdash/startsWith";
 import { JsonBatchResponseBundle } from "@odata/parser/lib/builder/batch";
 import { RequestInit } from "node-fetch";
 import { v4 } from "uuid";
-import { ODataValueObject } from ".";
+import { ODataValueObject } from "./types";
 import { BatchRequest, formatBatchRequest, formatBatchRequestForOData401, parseMultiPartContent } from "./batch";
 import { EntitySet } from "./entityset";
 import { FrameworkError, ODataServerError, ValidationError } from "./errors";
