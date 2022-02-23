@@ -23,6 +23,7 @@ import {
 } from "./types";
 import { ODataV4, ODataVersion } from "./types_v4";
 import { GetAuthorizationPair } from "./util";
+import { ODataKeyPredicate } from "./types";
 
 const S_X_CSRF_TOKEN = "x-csrf-token";
 
@@ -392,18 +393,18 @@ export class OData {
   }
 
   /**
-   * format id part of url
+   * convert the odata key predicate object/value to string
    *
    * @param id
    *
    * @example
    *
    * ```ts
-   * this.formatIdString(1) // => '(1)'
-   * this.formatIdString({UUID:'xxx'}) // => '(UUID='xxx')'
+   * this.formatIdString(1) // => String('(1)')
+   * this.formatIdString({UUID:'xxx'}) // => String('(UUID='xxx')')
    * ```
    */
-  private formatIdString(id: any): string {
+  private formatIdString(id: ODataKeyPredicate): string {
     let rt = "";
     switch (typeof id) {
       // for compound key like

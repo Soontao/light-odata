@@ -84,6 +84,9 @@ export interface BatchRequestOptions<T> {
 }
 
 export interface ODataRequest {
+  /**
+   * the entity set name of data service
+   */
   collection?: string, /** collection name */
   /**
    * GET for QUERY/READ; for QUERY, you can use params to control response data
@@ -95,9 +98,12 @@ export interface ODataRequest {
   params?: ODataQueryParam,
 }
 
+export type ODataKeyPredicate = string | number | null | ODataValueObject | {
+  [propertyKey: string]: ODataKeyPredicate
+};
 
 export interface ODataReadIDRequest extends ODataRequest {
-  id: any, /** object key in READ/UPDATE/DELETE */
+  id: ODataKeyPredicate, /** object key in READ/UPDATE/DELETE */
   params?: ODataQueryParam,
 }
 
@@ -107,20 +113,20 @@ export interface ODataQueryRequest extends ODataRequest {
 
 export interface ODataWriteRequest<T> extends ODataRequest {
   entity?: Partial<T> /** data object in CREATE/UPDATE */
-  id?: any;
+  id?: ODataKeyPredicate;
   method: HTTPMethod
 }
 
 export interface ODataActionRequest extends ODataRequest {
   actionName: string;
   payload?: any;
-  id: any;
+  id: ODataKeyPredicate;
 }
 
 export interface ODataFunctionRequest extends ODataRequest {
   functionName: string;
   payload?: any;
-  id: any;
+  id: ODataKeyPredicate;
 }
 
 export interface ODataActionImportRequest extends ODataRequest {
