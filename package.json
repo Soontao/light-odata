@@ -1,6 +1,6 @@
 {
   "name": "@odata/client",
-  "version": "2.19.0-beta.0",
+  "version": "2.19.0-beta.1",
   "description": "OData(V2/V4) Client",
   "unpkg": "./lib/odata-client-umd.js",
   "engines": {
