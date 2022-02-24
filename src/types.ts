@@ -277,14 +277,16 @@ export class ODataDateTime extends ODataValueObject {
   }
 
   static from(date: Date): ODataDateTime {
-    const rt = new ODataDateTime(date);
-    return rt;
+    if(date instanceof Date) {
+      return new ODataDateTime(date);
+    }
+    return new ODataDateTime(new Date(date));
   }
 
   private _date: Date;
 
   public toString(): string {
-    return `datetime'${this._date.toISOString()}'`;
+    return `datetime'${this._date.toISOString().substring(0, 19)}'`;
   }
 
 }
@@ -300,8 +302,10 @@ export class ODataDateTimeOffset extends ODataValueObject {
   }
 
   static from(date: Date): ODataDateTimeOffset {
-    const rt = new ODataDateTimeOffset(date);
-    return rt;
+    if(date instanceof Date) {
+      return new ODataDateTimeOffset(date);
+    }
+    return new ODataDateTimeOffset(new Date(date));
   }
 
   private _date: Date;

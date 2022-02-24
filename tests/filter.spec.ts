@@ -31,7 +31,7 @@ describe("OData Filter Test", () => {
       ODataFilter.newFilter().field("A")
         .gt(ODataDateTime.from(new Date("2018-01-24T12:43:31.839Z")))
         .build()
-    ).toEqual("A gt datetime'2018-01-24T12:43:31.839Z'")
+    ).toEqual("A gt datetime'2018-01-24T12:43:31'")
 
     expect(
       ODataFilter.newFilter().field("A")

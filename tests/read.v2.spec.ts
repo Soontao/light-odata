@@ -1,4 +1,11 @@
-import { ODataDateTime, ODataFilter, ODataParam, ODataValueObject, RawString } from '../src';
+import {
+  ODataDateTime,
+  ODataDateTimeOffset,
+  ODataFilter,
+  ODataParam,
+  ODataValueObject,
+  RawString
+} from '../src';
 import "../src/polyfill";
 import { OData } from "../src/request";
 import { Alphabetical_list_of_product, Customer } from "./demo_service_types";
@@ -92,6 +99,22 @@ describe('Read Test (V2)', () => {
     expect(result?.d?.results).toHaveLength(0)
   })
 
+  it('should support read by filter datetime', async () => {
+    const odata = OData.New({ metadataUri: TestServiceURL })
+    const filter = OData
+      .newFilter()
+      .property("OrderDate")
+      .eq(ODataDateTime.from(new Date("1997-10-03T00:00:00.000Z")))
+      .property("ShipCity")
+      .eq("Berlin");
+
+    const result = await odata.newRequest({
+      collection: "Invoices",
+      params: OData.newParam().filter(filter)
+    })
+    expect(result?.d?.results).toHaveLength(1)
+  });
+
   test('Read By Group Filter with count', async () => {
     const odata = OData.New({ metadataUri: TestServiceURL })
     const filter = ODataFilter
@@ -164,9 +187,10 @@ describe('Read Test (V2)', () => {
     expect(
       // @ts-ignore
       client.formatIdString({
-        DateTime: ODataDateTime.from(new Date("1995-11-11T00:00:00.000Z"))
+        DateTime: ODataDateTime.from(new Date("1995-11-11T00:00:00.000Z")),
+        DateTimeOffset: ODataDateTimeOffset.from(new Date("1995-11-11T00:00:00.000Z"))
       })
-    ).toBe("(DateTime=datetime'1995-11-11T00:00:00.000Z')")
+    ).toBe("(DateTime=datetime'1995-11-11T00:00:00',DateTimeOffset=datetimeoffset'1995-11-11T00:00:00.000Z')")
   });
 
 
