@@ -61,7 +61,7 @@ const runner = async () => {
   // Query by filter
   //
   // GET /Customers?$format=json&$filter=Phone eq '030-0074321'
-  const filter = client.newFilter().property("Phone").eqString("030-0074321");
+  const filter = client.newFilter().property("Phone").eq("030-0074321");
 
   const result = await client.newRequest({ // ODataRequest object
     collection: "Customers", // entity set
@@ -145,7 +145,9 @@ filter data by fields value
 
 ```js
 // $format=json&$filter=A eq 'test'
-OData.newParam().filter(OData.newFilter().property("A").eqString("test"))
+OData.newParam().filter(OData.newFilter().property("A").eq("test"))
+// same
+OData.newParam().filter().property("A").eq("test")).filterEnd()
 ```
 
 ### inline count
@@ -240,7 +242,7 @@ just ref following examples
 
 ```js
 // Name eq 'test string'
-OData.newFilter().property("Name").eqString("test string")
+OData.newFilter().property("Name").eq("test string")
 
 // ID lt '1024'
 OData.newFilter().property("ID").lt("'1024'")
@@ -278,9 +280,9 @@ Please provide `Date` object in this api.
 OData
   .newFilter()
   .property("Name").eq("'test string1'")
-  .property("CreationDateTime").betweenDateTime(
-    new Date("2018-01-24T12:43:31.839Z"),
-    new Date("2018-05-24T12:43:31.839Z"),
+  .property("CreationDateTime").between(
+    ODataDateTime.from(new Date("2018-01-24T12:43:31.839Z")),
+    ODataDateTime.from(new Date("2018-05-24T12:43:31.839Z")),
     false
   )
   .build()
@@ -290,9 +292,9 @@ OData
 // (CreationDateTime ge datetime'2018-01-24T12:43:31.839Z' and CreationDateTime le datetime'2018-05-24T12:43:31.839Z')
 OData
   .newFilter()
-  .property("CreationDateTime").betweenDateTime(
-    new Date("2018-01-24T12:43:31.839Z"),
-    new Date("2018-05-24T12:43:31.839Z")
+  .property("CreationDateTime").between(
+    ODataDateTime.from(new Date("2018-01-24T12:43:31.839Z")),
+    ODataDateTime.from(new Date("2018-05-24T12:43:31.839Z")),
   )
   .build()
 ```
