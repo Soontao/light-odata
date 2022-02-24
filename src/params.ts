@@ -2,9 +2,9 @@ import concat from "@newdash/newdash/concat";
 import isArray from "@newdash/newdash/isArray";
 import join from "@newdash/newdash/join";
 import uniq from "@newdash/newdash/uniq";
-import { ODataVariant, ParamBoundedFilter } from ".";
+import { ODataVariant, } from "./types";
 import { ValidationError } from "./errors";
-import { ODataFilter } from "./filter";
+import { ODataFilter, ParamBoundedFilter } from "./filter";
 import { ODataVersion } from "./types_v4";
 import { SearchParams } from "./util";
 
