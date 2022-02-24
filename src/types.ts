@@ -293,7 +293,7 @@ export class ODataDateTime extends ODataDateBase {
   /**
    *
    * @param date date object
-   * @param uriEncoded encode date string with `encodeURIComponent`, use it if you requires
+   * @param uriEncoded encode date string with `encodeURIComponent`, default is `true`
    * @returns
    */
   public static from(date: Date, uriEncoded?: boolean): ODataDateTime {

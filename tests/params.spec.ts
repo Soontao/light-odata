@@ -109,12 +109,12 @@ describe('ODataParams Test', () => {
   });
 
 
-  it.skip('should support ODataValueObject.toString', () => {
-    expect(ODataDateTime.from(new Date("1995-11-11T00:00:00.000Z")).toString())
+  it('should support ODataValueObject.toString', () => {
+    expect(ODataDateTime.from(new Date("1995-11-11T00:00:00.000Z"), false).toString())
       .toBe("datetime'1995-11-11T00:00:00'")
     expect(ODataDateTime.from(new Date("1995-11-11T00:00:00.000Z"), true).toString())
       .toBe("datetime'1995-11-11T00%3A00%3A00'")
-    expect(ODataDateTimeOffset.from(new Date("1995-11-11T00:00:00.000Z")).toString())
+    expect(ODataDateTimeOffset.from(new Date("1995-11-11T00:00:00.000Z"), false).toString())
       .toBe("datetimeoffset'1995-11-11T00:00:00.000Z'")
     expect(ODataDateTimeOffset.from(new Date("1995-11-11T00:00:00.000Z"), true).toString())
       .toBe("datetimeoffset'1995-11-11T00%3A00%3A00.000Z'")

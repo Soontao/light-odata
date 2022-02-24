@@ -29,7 +29,7 @@ describe("OData Filter Test", () => {
   test('ODataFilter.gt', () => {
     expect(
       ODataFilter.newFilter().field("A")
-        .gt(ODataDateTime.from(new Date("2018-01-24T12:43:31.839Z")))
+        .gt(ODataDateTime.from(new Date("2018-01-24T12:43:31.839Z"), false))
         .build()
     ).toEqual("A gt datetime'2018-01-24T12:43:31'")
 
@@ -68,7 +68,7 @@ describe("OData Filter Test", () => {
   test('ODataFilter.le', () => {
     expect(
       ODataFilter.newFilter().field("A")
-        .le(ODataDateTimeOffset.from(new Date("2018-01-24T12:43:31.839Z")))
+        .le(ODataDateTimeOffset.from(new Date("2018-01-24T12:43:31.839Z"), false))
         .build()
     ).toEqual("A le datetimeoffset'2018-01-24T12:43:31.839Z'")
   })

@@ -252,8 +252,8 @@ describe('Read Test (V2)', () => {
     expect(
       // @ts-ignore
       client.formatIdString({
-        DateTime: ODataDateTime.from(new Date("1995-11-11T00:00:00.000Z")),
-        DateTimeOffset: ODataDateTimeOffset.from(new Date("1995-11-11T00:00:00.000Z"))
+        DateTime: ODataDateTime.from(new Date("1995-11-11T00:00:00.000Z"), false),
+        DateTimeOffset: ODataDateTimeOffset.from(new Date("1995-11-11T00:00:00.000Z"), false)
       })
     ).toBe("(DateTime=datetime'1995-11-11T00:00:00',DateTimeOffset=datetimeoffset'1995-11-11T00:00:00.000Z')")
   });
