@@ -213,9 +213,31 @@ describe('Read Test (V2)', () => {
               .property("EmployeeID")
               .le(3)
               .property("HireDate")
-              .eq(ODataDateTime
-                .from(new Date("1992-05-01T00:00:00Z"))
-              )
+              .eq(ODataDateTime.from(new Date("1992-05-01T00:00:00Z")))
+          )
+      }),
+    ])
+    expect(response).toHaveLength(1)
+    const body = await response[0].json()
+    expect(body.d.results[0].EmployeeID).toBe(1)
+    expect(body.d.results[0].LastName).toBe("Davolio")
+  });
+
+  it('should support execute batch request with complex query with uri encoded date', async () => {
+    const client = OData.New({ metadataUri: TestServiceURL })
+    const response = await client.execBatchRequests([
+      client.newBatchRequest({
+        collection: "Employees",
+        params: client
+          .newParam()
+          .select(["LastName", "Country", "EmployeeID"])
+          .filter(
+            client
+              .newFilter()
+              .property("EmployeeID")
+              .le(3)
+              .property("HireDate")
+              .eq(ODataDateTime.from(new Date("1992-05-01T00:00:00Z"), true))
           )
       }),
     ])
