@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.19.0-beta.2](https://github.com/Soontao/light-odata/compare/v2.19.0-beta.1...v2.19.0-beta.2) (2022-02-24)
+
+
+### Features
+
+* enhance params.filter ([80c8d90](https://github.com/Soontao/light-odata/commit/80c8d90bd82fca750bf362fcaaca5cf62b8192c7))
+* support uri encoded for datetime ([3b42137](https://github.com/Soontao/light-odata/commit/3b421378b7633c9ee7001f611cda36810fd6cce7))
+
+
+### Bug Fixes
+
+* ut ([9e7cf0e](https://github.com/Soontao/light-odata/commit/9e7cf0e06754d121327066c7a4c65d82b97a665a))
+
 ## [2.19.0-beta.1](https://github.com/Soontao/light-odata/compare/v2.19.0-beta.0...v2.19.0-beta.1) (2022-02-24)
 
 ## [2.19.0-beta.0](https://github.com/Soontao/light-odata/compare/v2.19.0-alpha.1...v2.19.0-beta.0) (2022-02-23)
