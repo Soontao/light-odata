@@ -321,7 +321,7 @@ OData
 
 ## EntitySet
 
-use `EntitySet` to `CRUD` entity
+use `EntitySet` to perform `CRUD` on entity
 
 <details><summary>How to use EntitySet</summary>
 

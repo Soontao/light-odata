@@ -272,7 +272,7 @@ export abstract class ODataDateBase extends ODataValueObject {
 
   protected _uriEncoded: boolean;
 
-  protected constructor(date: Date, uriEncoded = false) {
+  protected constructor(date: Date, uriEncoded = true) {
     super();
     if (date instanceof Date) {
       this._date = date;
