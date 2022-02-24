@@ -88,7 +88,7 @@ const client = OData.New4({
 ```ts
 interface ODataRequest<T> {
   collection: string, /** collection name */
-  id?: any, /** object key in READ/UPDATE/DELETE, user could set this field with number/string/object type */
+  id?: any, /** object key in READ/UPDATE/DELETE, user could set this property with number/string/object type */
   params?: ODataQueryParam, /** params in QUERY */
   /**
    * GET for QUERY/READ; for QUERY, you can use params to control response data
@@ -141,13 +141,15 @@ OData.newParam().skip(30).top(10)
 
 ### filter
 
-filter data by fields value
+filter data by properties value
 
 ```js
 // $format=json&$filter=A eq 'test'
 OData.newParam().filter(OData.newFilter().property("A").eq("test"))
 // same
 OData.newParam().filter().property("A").eq("test")).filterEnd()
+// freedom filter
+OData.newParam().filter("A eq 'test'")
 ```
 
 ### inline count
@@ -186,7 +188,7 @@ OData.newParam().expand(["Customers", "Employees"])
 
 ### properties select
 
-remove unused fields from response
+remove unused properties from response
 
 ```js
 // $format=json&$select=ObjectID,Name
@@ -195,7 +197,7 @@ OData.newParam().select("ObjectID").select("Name");
 
 ### full text search (basic query)
 
-search all **supported** fields with text
+search all **supported** properties with text
 
 **SAP systems feature**
 
@@ -213,7 +215,7 @@ OData.newParam().search("any word", false);
 
 ### custom properties
 
-> i know some odata system support custom field for key authentication or other usage
+> i know some odata system support custom query parameter for key authentication or other usage
 
 ```ts
 OData.newParam().custom("access_token", "token_value"); // => $format=json&access_token=token_value
@@ -230,15 +232,15 @@ use the `ODataFilter` to filter data
 <details><summary>How to use ODataFilter</summary>
 
 
-Most `SAP` systems only support `AND` operator between different fields, and `OR` operator in a same field. (it depends on SAP Netweaver implementation)
+Most `SAP` systems only support `AND` operator between different properties, and `OR` operator in a same field. (it depends on SAP Netweaver implementation)
 
-So you don't need to specify `AND/OR` operator between fields, `@odata/client` will auto process it.
+So you don't need to specify `AND/OR` operator between properties, `@odata/client` will auto process it.
 
-Though C4C only support AND operator in different fields, but for `gt/lt/ge/le`, you can use AND for filtering period data.
+Though C4C only support AND operator in different properties, but for `gt/lt/ge/le`, you can use AND for filtering period data.
 
 just ref following examples
 
-### filter by single field value
+### filter by single property value
 
 ```js
 // Name eq 'test string'
@@ -250,17 +252,17 @@ OData.newFilter().property("ID").lt("'1024'")
 // also support eq/ne/le/lt/gt/ge ...
 ```
 
-### filter by multi fields
+### filter by multi properties
 
 ```js
 // Name eq 'test string1' and Name2 eq 'test string2'
 OData
   .newFilter()
   .property("Name").eq("'test string1'")
-  .property("Name2").eqString("test string2")
+  .property("Name2").eq("test string2")
 ```
 
-### filter by one field but multi values
+### filter by one property but multi values (OR)
 
 ```js
 // Name eq 'test string1' and (Name2 eq 'test string1' or Name2 eq 'test string2')
@@ -271,7 +273,7 @@ OData.newFilter()
 
 ### filter by date
 
-Depends on field type, use `betweenDateTime` or `betweenDateTimeOffset` to filter date。
+Use `between` to filter date。
 
 Please provide `Date` object in this api.
 
@@ -305,17 +307,17 @@ OData
 // CompagnyName contains 'testName' case sensitive
 OData
   .newFilter()
-  .filter("indexof(CompanyName, 'testName')").gt(-1)
+  .property("indexof(CompanyName, 'testName')").gt(-1)
 
 // CompagnyName has legth 8
 OData
   .newFilter()
-  .filter("length(CompanyName)").eq(8)
+  .property("length(CompanyName)").eq(8)
 
 // CompagnyName has substring 'test'
 OData
   .newFilter()
-  .filter("substringof('test', CompanyName)").eq(true)
+  .property("substringof('test', CompanyName)").eq(true)
 ```
 > see more possiblility at [4.5. Filter System Query Option ($filter) function](https://www.odata.org/documentation/odata-version-2-0/uri-conventions/) odata v2 documentation
 
