@@ -174,14 +174,6 @@ describe('Read Test (V2)', () => {
 
   });
 
-  it('should support format raw value', () => {
-    const client = OData.New({ metadataUri: TestServiceURL })
-    expect(
-      // @ts-ignore
-      client.formatIdString(RawString.from("(DateTime=datetime'1995-11-11T00:00:00.000Z')"))
-    ).toBe("(DateTime=datetime'1995-11-11T00:00:00.000Z')")
-  });
-
   it('should support execute batch request', async () => {
     const client = OData.New({ metadataUri: TestServiceURL })
     const response = await client.execBatchRequests([
@@ -213,7 +205,7 @@ describe('Read Test (V2)', () => {
               .property("EmployeeID")
               .le(3)
               .property("HireDate")
-              .eq(ODataDateTime.from(new Date("1992-05-01T00:00:00Z")))
+              .eq(ODataDateTime.from(new Date("1992-05-01T00:00:00Z"), false))
           )
       }),
     ])
