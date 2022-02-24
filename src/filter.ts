@@ -101,11 +101,21 @@ class ODataPropertyExpr<T extends ODataFilter> {
     return this._filter;
   }
 
+  /**
+   * @deprecated use `filter.eq("value")` instead
+   * @param value
+   * @returns
+   */
   eqString(value: string): T {
     this._addExpr(ExprOperator.eq, `'${value}'`);
     return this._filter;
   }
 
+  /**
+   * @deprecated use `filter.ne("value")` instead
+   * @param value
+   * @returns
+   */
   neString(value: string): T {
     this._addExpr(ExprOperator.ne, `'${value}'`);
     return this._filter;
@@ -152,10 +162,10 @@ class ODataPropertyExpr<T extends ODataFilter> {
    *
    * @param values
    */
-  in(values: string[] = []): T {
+  in(values: FilterValue[] = []): T {
     if (values.length > 0) {
       values.forEach((value) => {
-        this.eqString(value);
+        this.eq(value);
       });
     }
     return this._filter;
@@ -168,7 +178,7 @@ class ODataPropertyExpr<T extends ODataFilter> {
    * @param max
    * @param includeBoundary
    */
-  between(low: any, max: any, includeBoundary = true): T {
+  between(low: FilterValue, max: FilterValue, includeBoundary = true): T {
     if (low == undefined || max == undefined) {
       throw new ValidationError("You must give out the start and end value");
     }
@@ -182,6 +192,14 @@ class ODataPropertyExpr<T extends ODataFilter> {
     return this._filter;
   }
 
+  /**
+   *
+   * @deprecated please use filter.between(ODataDateTime.from(date), ODataDateTime.from(date))
+   * @param start
+   * @param end
+   * @param includeBoundary
+   * @returns
+   */
   betweenDateTime(start?: Date, end?: Date, includeBoundary = true): T {
     if (start == undefined && end == undefined) {
       throw new ValidationError("You must give out the start or end date");
@@ -203,6 +221,13 @@ class ODataPropertyExpr<T extends ODataFilter> {
     return this._filter;
   }
 
+  /**
+   *  @deprecated please use filter.between(ODataDateTimeOffset.from(date), ODataDateTimeOffset.from(date))
+   * @param start
+   * @param end
+   * @param includeBoundary
+   * @returns
+   */
   betweenDateTimeOffset(start?: Date, end?: Date, includeBoundary = true): T {
     if (start == undefined && end == undefined) {
       throw new ValidationError("You must give out the start or end date");
