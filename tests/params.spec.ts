@@ -108,6 +108,17 @@ describe('ODataParams Test', () => {
     expect(OData.newParam().search("v1").toString("v2", "sap-gateway")).toBe("search=%v1%")
   });
 
+  it('should support param.filter chain', () => {
+    expect(
+      OData.newParam()
+        .filter()
+        .property("a").eq(1)
+        .property("value").eq(RawString.from('123'))
+        .filterEnd().toString()
+    ).toBe("$filter=a eq 1 and value eq 123")
+
+  });
+
 
   it('should support ODataValueObject.toString', () => {
     expect(ODataDateTime.from(new Date("1995-11-11T00:00:00.000Z"), false).toString())

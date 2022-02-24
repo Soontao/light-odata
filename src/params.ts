@@ -2,7 +2,7 @@ import concat from "@newdash/newdash/concat";
 import isArray from "@newdash/newdash/isArray";
 import join from "@newdash/newdash/join";
 import uniq from "@newdash/newdash/uniq";
-import { ODataVariant } from ".";
+import { ODataVariant, ParamBoundedFilter } from ".";
 import { ValidationError } from "./errors";
 import { ODataFilter } from "./filter";
 import { ODataVersion } from "./types_v4";
@@ -93,7 +93,15 @@ export class ODataQueryParam<T = any> {
    *
    * @param filter
    */
-  public filter(filter: string | ODataFilter) {
+
+  public filter(): ParamBoundedFilter;
+
+  public filter(filter: string | ODataFilter): this;
+
+  public filter(filter?: any): any {
+    if (filter === undefined) {
+      return new ParamBoundedFilter(this);
+    }
     if (filter instanceof ODataFilter) {
       this.$filter = filter.build();
       return this;
@@ -101,6 +109,7 @@ export class ODataQueryParam<T = any> {
       this.$filter = filter;
       return this;
     }
+
     throw new ValidationError("ODataQueryParam.filter only accept string or ODataFilter type parameter");
   }
 
