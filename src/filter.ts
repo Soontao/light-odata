@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 import join from "@newdash/newdash/join";
+import { ODataDateTime, ODataDateTimeOffset } from "./types";
 import { FrameworkError, ValidationError } from "./errors";
 import { ODataQueryParam } from "./params";
 import { ODataValueObject } from "./types";
@@ -187,16 +188,16 @@ class ODataPropertyExpr<T extends ODataFilter> {
     }
     if (start instanceof Date) {
       if (includeBoundary) {
-        this.ge(`datetime'${start.toISOString()}'`);
+        this.ge(ODataDateTime.from(start));
       } else {
-        this.gt(`datetime'${start.toISOString()}'`);
+        this.gt(ODataDateTime.from(start));
       }
     }
     if (end instanceof Date) {
       if (includeBoundary) {
-        this.le(`datetime'${end.toISOString()}'`);
+        this.le(ODataDateTime.from(end));
       } else {
-        this.lt(`datetime'${end.toISOString()}'`);
+        this.lt(ODataDateTime.from(end));
       }
     }
     return this._filter;
@@ -208,16 +209,16 @@ class ODataPropertyExpr<T extends ODataFilter> {
     }
     if (start instanceof Date) {
       if (includeBoundary) {
-        this.ge(`datetimeoffset'${start.toISOString()}'`);
+        this.ge(ODataDateTimeOffset.from(start));
       } else {
-        this.gt(`datetimeoffset'${start.toISOString()}'`);
+        this.gt(ODataDateTimeOffset.from(start));
       }
     }
     if (end instanceof Date) {
       if (includeBoundary) {
-        this.le(`datetimeoffset'${end.toISOString()}'`);
+        this.le(ODataDateTimeOffset.from(end));
       } else {
-        this.lt(`datetimeoffset'${end.toISOString()}'`);
+        this.lt(ODataDateTimeOffset.from(end));
       }
     }
     return this._filter;
@@ -348,7 +349,7 @@ export class ODataFilter<T = any> {
    * @param date
    */
   gtDateTime(name: keyof T, date: Date): this {
-    return this.field(name).gt(`datetime'${date.toISOString()}'`);
+    return this.field(name).gt(ODataDateTime.from(date));
   }
 
   /**
@@ -357,7 +358,7 @@ export class ODataFilter<T = any> {
    * @param date
    */
   gtDateTimeOffset(name: keyof T, date: Date): this {
-    return this.field(name).gt(`datetimeoffset'${date.toISOString()}'`);
+    return this.field(name).gt(ODataDateTimeOffset.from(date));
   }
 
   /**
@@ -366,7 +367,7 @@ export class ODataFilter<T = any> {
    * @param date
    */
   ltDateTime(name: keyof T, date: Date): this {
-    return this.field(name).lt(`datetime'${date.toISOString()}'`);
+    return this.field(name).lt(ODataDateTime.from(date));
   }
 
   /**
@@ -375,7 +376,7 @@ export class ODataFilter<T = any> {
    * @param date
    */
   ltDateTimeOffset(name: keyof T, date: Date): this {
-    return this.field(name).lt(`datetimeoffset'${date.toISOString()}'`);
+    return this.field(name).lt(ODataDateTimeOffset.from(date));
   }
 
   /**
