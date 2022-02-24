@@ -1,4 +1,4 @@
-import { OData, ODataParam, ODataQueryParam } from "../src";
+import { OData, ODataDateTime, ODataDateTimeOffset, ODataParam, ODataQueryParam, RawString } from "../src";
 
 describe('ODataParams Test', () => {
 
@@ -100,7 +100,7 @@ describe('ODataParams Test', () => {
   })
 
   it('should support toString by varient', () => {
-    expect(OData.newParam().custom("search","v1").toString()).toBe("search=v1")
+    expect(OData.newParam().custom("search", "v1").toString()).toBe("search=v1")
   });
 
   it('should support custom properties', () => {
@@ -108,5 +108,18 @@ describe('ODataParams Test', () => {
     expect(OData.newParam().search("v1").toString("v2", "sap-gateway")).toBe("search=%v1%")
   });
 
+
+  it('should support ODataValueObject.toString', () => {
+    expect(ODataDateTime.from(new Date("1995-11-11T00:00:00.000Z")).toString())
+      .toBe("datetime'1995-11-11T00:00:00'")
+    expect(ODataDateTime.from(new Date("1995-11-11T00:00:00.000Z"), true).toString())
+      .toBe("datetime'1995-11-11T00%3A00%3A00'")
+    expect(ODataDateTimeOffset.from(new Date("1995-11-11T00:00:00.000Z")).toString())
+      .toBe("datetimeoffset'1995-11-11T00:00:00.000Z'")
+    expect(ODataDateTimeOffset.from(new Date("1995-11-11T00:00:00.000Z"), true).toString())
+      .toBe("datetimeoffset'1995-11-11T00%3A00%3A00.000Z'")
+    expect(RawString.from("fdsajk@😋2141'fdsaf").toString())
+      .toBe("fdsajk@😋2141'fdsaf")
+  });
 
 })

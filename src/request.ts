@@ -595,7 +595,7 @@ export class OData {
    *
    * @param requests batch request
    */
-  public async execBatchRequests<T extends BatchRequests = any>(requests: T): BatchResponses<T> {
+  public async execBatchRequests(requests: BatchRequests): BatchResponses<BatchRequests> {
     const { url, req } = await this.formatBatchRequests(requests);
     const { content, response: { headers } } = await this.fetchProxy(url, req);
     const responseBoundaryString = headers.get("Content-Type").split("=").pop();

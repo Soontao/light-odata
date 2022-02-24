@@ -266,27 +266,46 @@ export class RawString extends ODataValueObject {
   }
 }
 
+export abstract class ODataDateBase extends ODataValueObject {
+
+  protected _date: Date;
+
+  protected _uriEncoded: boolean;
+
+  protected constructor(date: Date, uriEncoded = false) {
+    super();
+    if (date instanceof Date) {
+      this._date = date;
+    } else {
+      this._date = new Date(date);
+    }
+    this._uriEncoded = uriEncoded;
+  }
+
+
+}
+
 /**
  * Edm.DateTime
  */
-export class ODataDateTime extends ODataValueObject {
+export class ODataDateTime extends ODataDateBase {
 
-  private constructor(date: Date) {
-    super();
-    this._date = date;
+  /**
+   *
+   * @param date date object
+   * @param uriEncoded encode date string with `encodeURIComponent`, use it if you requires
+   * @returns
+   */
+  public static from(date: Date, uriEncoded?: boolean): ODataDateTime {
+    return new ODataDateTime(date, uriEncoded);
   }
-
-  static from(date: Date): ODataDateTime {
-    if(date instanceof Date) {
-      return new ODataDateTime(date);
-    }
-    return new ODataDateTime(new Date(date));
-  }
-
-  private _date: Date;
 
   public toString(): string {
-    return `datetime'${this._date.toISOString().substring(0, 19)}'`;
+    let inner: string = this._date.toISOString().substring(0, 19);
+    if (this._uriEncoded) {
+      inner = encodeURIComponent(inner);
+    }
+    return `datetime'${inner}'`;
   }
 
 }
@@ -294,24 +313,25 @@ export class ODataDateTime extends ODataValueObject {
 /**
  * Edm.DateTimeOffset
  */
-export class ODataDateTimeOffset extends ODataValueObject {
+export class ODataDateTimeOffset extends ODataDateBase {
 
-  private constructor(date: Date) {
-    super();
-    this._date = date;
+
+  /**
+   *
+   * @param date date object
+   * @param uriEncoded encode date string with `encodeURIComponent`, use it if you requires
+   * @returns
+   */
+  public static from(date: Date, uriEncoded?: boolean): ODataDateTimeOffset {
+    return new ODataDateTimeOffset(date, uriEncoded);
   }
-
-  static from(date: Date): ODataDateTimeOffset {
-    if(date instanceof Date) {
-      return new ODataDateTimeOffset(date);
-    }
-    return new ODataDateTimeOffset(new Date(date));
-  }
-
-  private _date: Date;
 
   public toString(): string {
-    return `datetimeoffset'${this._date.toISOString()}'`;
+    let inner: string = this._date.toISOString();
+    if (this._uriEncoded) {
+      inner = encodeURIComponent(inner);
+    }
+    return `datetimeoffset'${inner}'`;
   }
 
 }
