@@ -37,7 +37,7 @@ describe('ODataParams Test', () => {
     expect(decodeURIComponent(param2.toString())).toEqual("$filter=A eq 'test'")
     expect(() => {
       // @ts-ignore
-      OData.newParam().filter(undefined)
+      OData.newParam().filter(123)
     }).toThrow();
   })
 
