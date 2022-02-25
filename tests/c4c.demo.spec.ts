@@ -199,7 +199,10 @@ d('C4C/ByD OData (V2) Test Suite (basic)', () => {
     expect(created.UserID).toBe(uuid)
     expect(created.BirthDate).toBe(dateStr)
 
-    es.delete(created.ObjectID)
+    const result = await es.find({ UserID: uuid, BirthDate: date })
+    expect(result).toHaveLength(1)
+
+    await es.delete(created.ObjectID)
   });
 
   it('should support entityset batch operation (advanced)', async () => {
