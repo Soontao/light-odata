@@ -1,12 +1,11 @@
 /* eslint-disable max-len */
-import join from "@newdash/newdash/join";
-import { ODataDateTime, ODataDateTimeOffset } from "./types";
+import { join } from "@newdash/newdash/join";
+import { ODataDateTime, ODataDateTimeOffset, ODataValueObject } from "./types";
 import { FrameworkError, ValidationError } from "./errors";
 import { ODataQueryParam } from "./params";
-import { ODataValueObject } from "./types";
 
 
-export type FilterValue = number | string | ODataValueObject | null
+export type FilterValue = number | string | ODataValueObject | null | boolean | Symbol | object
 
 export enum ExprOperator {
   eq = "eq",
@@ -125,7 +124,7 @@ class ODataPropertyExpr<T extends ODataFilter> {
    * greater or equal
    * @param value
    */
-  ge(value: number | string | ODataValueObject): T {
+  ge(value: FilterValue): T {
     this._addExpr(ExprOperator.ge, value);
     return this._filter;
   }

@@ -8,7 +8,7 @@ import { parseResponse } from "http-string-parser";
 import { RequestInit } from "node-fetch";
 import { v4 } from "uuid";
 import { FrameworkError } from "./errors";
-import { BatchPlainODataResponse, BatchRequestOptions } from "./types";
+import { BatchPlainODataResponse, BatchRequestOptions, ODataValueJSONReplacer } from "./types";
 import { BatchPlainODataResponseV4, BatchRequestOptionsV4 } from "./types_v4";
 
 
@@ -77,7 +77,7 @@ export const formatHttpRequestString = (u: string, r: any): string => {
       break;
     case "object":
       parts.push(HTTP_EOL);
-      parts.push(JSON.stringify(r.body));
+      parts.push(JSON.stringify(r.body, ODataValueJSONReplacer));
       break;
     case "undefined":
       parts.push("");
@@ -95,6 +95,7 @@ export const formatHttpRequestString = (u: string, r: any): string => {
  *
  * ref: https://github.com/Soontao/light-odata/issues/29
  *
+ * @experimental
  * @param requests
  */
 export const formatBatchRequestForOData401 = (requests: BatchRequestV4[] = []) => {
@@ -111,6 +112,7 @@ export const formatBatchRequestForOData401 = (requests: BatchRequestV4[] = []) =
       // @ts-ignore
       tmpBatchRequestItem.headers = req.init?.headers;
     }
+    // TODO: convert payload with `ODataValueJSONReplacer`
     if (req.init?.body) {
       tmpBatchRequestItem.body = req.init.body;
     }
@@ -175,11 +177,11 @@ export const formatBatchRequest = (requests: BatchRequest[], boundary: string): 
 /**
  * parse stringify response in multipart
  */
-export const parseResponse2 = async(httpResponseString: string): Promise<ParsedResponse<any>> => {
+export const parseResponse2 = async (httpResponseString: string): Promise<ParsedResponse<any>> => {
   const response = parseResponse(httpResponseString);
   const rt: ParsedResponse<any> = {
-    json: async() => JSON.parse(response.body),
-    text: async() => response.body,
+    json: async () => JSON.parse(response.body),
+    text: async () => response.body,
     headers: response.headers,
     status: parseInt(response.statusCode, 10),
     statusText: response.statusMessage
@@ -187,7 +189,7 @@ export const parseResponse2 = async(httpResponseString: string): Promise<ParsedR
   return rt;
 };
 
-export const parseMultiPartContent = async(
+export const parseMultiPartContent = async (
   multipartBody: string,
   boundaryId: string
 ): Promise<ParsedResponse<any>[]> => {
@@ -196,7 +198,7 @@ export const parseMultiPartContent = async(
     const parts = multipartBody.split(`--${boundaryId}`);
     // remote head and tail parts
     const meaningfulParts = slice(parts, 1, parts.length - 1);
-    return flatten(await Promise.all(meaningfulParts.map(async(p) => {
+    return flatten(await Promise.all(meaningfulParts.map(async (p) => {
       const response = await parseResponse2(p);
       const contentType = response.headers["Content-Type"];
       // recursive parse changeset response

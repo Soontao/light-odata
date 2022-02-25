@@ -4,7 +4,7 @@ import { ODataServerError } from "./errors";
 import { ODataFilter } from "./filter";
 import { ODataQueryParam } from "./params";
 import { OData } from "./request";
-import { DeepPartial, PlainODataResponse } from "./types";
+import type { DeepPartial, PlainODataResponse } from "./types";
 
 export class EntitySet<T = any> {
 

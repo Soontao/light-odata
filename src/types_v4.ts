@@ -1,14 +1,18 @@
-import { BatchRequestV4, ParsedResponseV4 } from "./batch";
-import { EntitySet } from "./entityset";
-import { ODataFilter } from "./filter";
-import { ODataQueryParam } from "./params";
-import {
+import type { BatchRequestV4, ParsedResponseV4 } from "./batch";
+import type { EntitySet } from "./entityset";
+import type { ODataFilter } from "./filter";
+import type { ODataQueryParam } from "./params";
+import { ODataValueObject, RawString } from "./types";
+import type {
   BatchRequestOptions,
-  Credential, ODataActionImportRequest, ODataActionRequest, ODataFunctionImportRequest, ODataFunctionRequest,
-  ODataQueryRequest, ODataReadIDRequest, ODataWriteRequest, UnwrapBatchRequest, UnwrapPromise
+  Credential, ODataActionImportRequest,
+  ODataActionRequest, ODataFunctionImportRequest, ODataFunctionRequest,
+  ODataQueryRequest, ODataReadIDRequest,
+  ODataWriteRequest,
+  UnwrapBatchRequest, ODataVersion,
+  UnwrapPromise
 } from "./types";
 
-export type ODataVersion = "v2" | "v4";
 
 export interface PlainODataResponseV4 {
 
@@ -165,3 +169,63 @@ export interface BatchRequestOptionsV4<T> extends BatchRequestOptions<T> {
    */
   dependsOn?: Array<string>;
 }
+
+/**
+ * date object for odata v4
+ *
+ * @version 4.0
+ */
+export abstract class ODataDateBase extends ODataValueObject {
+
+  protected _date: Date;
+
+  protected constructor(date: Date) {
+    super();
+    if (date instanceof Date) {
+      this._date = date;
+    } else {
+      this._date = new Date(date);
+    }
+  }
+
+}
+
+/**
+ * Edm.DateTime
+ *
+ * @version 4.0
+ */
+export class ODataDateTimeOffset extends ODataDateBase {
+
+  public static from(date: Date): ODataDateTimeOffset {
+    return new ODataDateTimeOffset(date);
+  }
+
+  public toString(): string {
+    return this._date.toISOString();
+  }
+
+}
+
+/**
+ * @version 4.0
+ */
+export class ODataDate extends ODataDateBase {
+
+  public static from(date: Date): ODataDate {
+    return new ODataDate(date);
+  }
+
+  toString(): string {
+    return this._date.toISOString().split("T")[0];
+  }
+
+}
+
+
+
+export const EdmV4 = {
+  RawString,
+  DateTimeOffset: ODataDateTimeOffset,
+  Date: ODataDate,
+};

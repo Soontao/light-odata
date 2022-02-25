@@ -1,29 +1,29 @@
-import attempt from "@newdash/newdash/attempt";
+import { attempt } from "@newdash/newdash/attempt";
 import { Mutex } from "@newdash/newdash/functional/Mutex";
-import join from "@newdash/newdash/join";
-import slice from "@newdash/newdash/slice";
-import startsWith from "@newdash/newdash/startsWith";
+import { join } from "@newdash/newdash/join";
+import { slice } from "@newdash/newdash/slice";
+import { startsWith } from "@newdash/newdash/startsWith";
 import { JsonBatchResponseBundle } from "@odata/parser/lib/builder/batch";
-import { RequestInit } from "node-fetch";
+import type { RequestInit } from "node-fetch";
 import { v4 } from "uuid";
-import { ODataValueObject } from "./types";
+import { ODataValueJSONReplacer, ODataValueObject, SAPNetweaverOData } from "./types";
 import { BatchRequest, formatBatchRequest, formatBatchRequestForOData401, parseMultiPartContent } from "./batch";
 import { EntitySet } from "./entityset";
 import { FrameworkError, ODataServerError, ValidationError } from "./errors";
 import { ODataFilter } from "./filter";
 import { ClientCredentialsOAuthClient } from "./oauth";
 import { ODataParam, ODataQueryParam } from "./params";
-import {
+import type {
   BatchRequestOptions, BatchRequests,
   BatchResponses, Credential, FetchProxy, HTTPMethod,
   ODataActionImportRequest,
   ODataActionRequest, ODataFunctionImportRequest, ODataFunctionRequest, ODataNewOptions,
   ODataQueryRequest, ODataReadIDRequest, ODataVariant, ODataWriteRequest, PlainODataMultiResponse,
-  PlainODataResponse, PlainODataSingleResponse, SAPNetweaverOData
+  PlainODataResponse, PlainODataSingleResponse, ODataVersion,
+  ODataKeyPredicate
 } from "./types";
-import { ODataV4, ODataVersion } from "./types_v4";
+import type { ODataV4 } from "./types_v4";
 import { GetAuthorizationPair } from "./util";
-import { ODataKeyPredicate } from "./types";
 
 const S_X_CSRF_TOKEN = "x-csrf-token";
 
@@ -320,7 +320,7 @@ export class OData {
     // format body
     if (method !== "GET" && body) {
       if (typeof body !== "string") {
-        config.body = JSON.stringify(body);
+        config.body = JSON.stringify(body, ODataValueJSONReplacer);
       } else {
         config.body = body;
       }
@@ -607,13 +607,16 @@ export class OData {
   }
 
   /**
-   * execute batch requests in OData V4.01 Json format, and get response
+   * execute batch requests in OData `V4.01` Json format, and get response
    *
+   * this feature is experimental, use it on your own risk.
+   *
+   * @experimental
    * @param requests
    */
   public async execBatchRequestsJson<T extends BatchRequests = any>(requests: T): BatchResponses<T> {
 
-    // TO DO, verify odata version here
+    // TODO: verify odata version here
 
     const reqs = await Promise.all(requests);
     const body = formatBatchRequestForOData401(reqs);

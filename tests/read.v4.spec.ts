@@ -1,5 +1,5 @@
-import { v4 } from "uuid";
 import "../src/polyfill";
+import { v4 } from "uuid";
 import { OData } from "../src/request";
 import { People } from "./demo_service_types";
 import { ODATA_SAMPLE_SERVICE_HOST } from "./utils";

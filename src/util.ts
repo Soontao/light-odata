@@ -1,5 +1,6 @@
 import { encode } from "./base64";
 
+
 /**
  * ConvertDateFromODataTime (OData V2)
  *
@@ -11,7 +12,7 @@ export function ConvertDateFromODataTime(dateString: any): Date {
   }
   if (typeof dateString === "string") {
     // thanks https://github.com/Soontao/light-odata/pull/412#issuecomment-993708386
-    const r1 =  /\/Date\(([+|-]?\d+)\)\//g.exec(dateString);
+    const r1 = /\/Date\(([+|-]?\d+)\)\//g.exec(dateString);
     if (r1 !== null && r1[1] !== undefined) {
       return new Date(parseInt(r1[1]));
     }

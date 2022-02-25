@@ -1,8 +1,10 @@
 import { RequestInit, Response } from "node-fetch";
+import { FormatODataDateTimedate } from "./util";
 import { BatchRequest, ParsedResponse } from "./batch";
 import { TokenRetrieveType } from "./oauth";
 import { ODataQueryParam } from "./params";
-import { ODataVersion } from "./types_v4";
+
+export type ODataVersion = "v2" | "v4";
 
 export type HTTPMethod = "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "PATCH";
 
@@ -98,7 +100,7 @@ export interface ODataRequest {
   params?: ODataQueryParam,
 }
 
-export type ODataKeyPredicate = string | number | null | ODataValueObject | {
+export type ODataKeyPredicate = string | boolean | number | null | ODataValueObject | {
   [propertyKey: string]: ODataKeyPredicate
 };
 
@@ -243,13 +245,34 @@ export type BatchResponses<T> = Promise<{ [K in keyof T]: ParsedResponse<UnwrapB
  * Edm value
  */
 export abstract class ODataValueObject {
+  /**
+   * to OData Uri string
+   */
   abstract toString(): string;
+
+  /**
+   * to OData Json format value string
+   *
+   * @returns
+   */
+  public toJSONString(): string {
+    return this.toString();
+  }
+
 }
+
+export const ODataValueJSONReplacer = (key, value) => {
+  if (value instanceof ODataValueObject) {
+    return value.toJSONString();
+  }
+  return value;
+};
 
 /**
  * RawString
  */
 export class RawString extends ODataValueObject {
+
   private str: string;
 
   private constructor(str: string) {
@@ -264,6 +287,7 @@ export class RawString extends ODataValueObject {
   toString(): string {
     return this.str;
   }
+
 }
 
 export abstract class ODataDateBase extends ODataValueObject {
@@ -282,6 +306,9 @@ export abstract class ODataDateBase extends ODataValueObject {
     this._uriEncoded = uriEncoded;
   }
 
+  public toJSONString(): string {
+    return FormatODataDateTimedate(this._date);
+  }
 
 }
 
@@ -308,13 +335,13 @@ export class ODataDateTime extends ODataDateBase {
     return `datetime'${inner}'`;
   }
 
+
 }
 
 /**
  * Edm.DateTimeOffset
  */
 export class ODataDateTimeOffset extends ODataDateBase {
-
 
   /**
    *
@@ -335,3 +362,9 @@ export class ODataDateTimeOffset extends ODataDateBase {
   }
 
 }
+
+export const EdmV2 = {
+  DateTime: ODataDateTime,
+  DateTimeOffset: ODataDateTimeOffset,
+  RawString,
+};

@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { env } from "process";
 import { v4 } from "uuid";
-import { FormatODataDateTimedate, OData, ODataDateTime } from "../src";
+import { EdmV2, FormatODataDateTimedate, OData, ODataDateTime } from "../src";
 import "../src/polyfill"; // must import polifill because csrf token request the cookie
 import { randomDate } from "./utils";
 
@@ -201,6 +201,31 @@ d('C4C/ByD OData (V2) Test Suite (basic)', () => {
 
 
     const result = await es.find({ UserID: uuid, BirthDate: ODataDateTime.from(date) })
+    expect(result).toHaveLength(1)
+
+    await es.delete(created.ObjectID)
+  });
+
+  it('should support create property with date type wrapper', async () => {
+    const coll = "PeopleRootCollection"
+    const client = getOData()
+    const uuid = createUUID().toUpperCase()// generated test user uuids
+    const es = client.getEntitySet<People>(coll)
+
+    const date = randomDate()
+
+    const dateStr = FormatODataDateTimedate(date)
+
+    const created = await es.create({
+      UserID: uuid,
+      BirthDate: EdmV2.DateTime.from(date)
+    })
+
+    expect(created.UserID).toBe(uuid)
+    expect(created.BirthDate).toBe(dateStr)
+
+
+    const result = await es.find({ UserID: uuid, BirthDate: EdmV2.DateTime.from(date) })
     expect(result).toHaveLength(1)
 
     await es.delete(created.ObjectID)
