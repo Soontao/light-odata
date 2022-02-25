@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.19.0-beta.3](https://github.com/Soontao/light-odata/compare/v2.19.0-beta.2...v2.19.0-beta.3) (2022-02-25)
+
+
+### Features
+
+* support Edm type with payload ([3429d72](https://github.com/Soontao/light-odata/commit/3429d72b4924670841db54a8756e275502665aac))
+
+
+### Bug Fixes
+
+* ut ([1c3cb24](https://github.com/Soontao/light-odata/commit/1c3cb247807498f7c77de184f110c88cef64f44d))
+
 ## [2.19.0-beta.2](https://github.com/Soontao/light-odata/compare/v2.19.0-beta.1...v2.19.0-beta.2) (2022-02-24)
 
 
