@@ -199,7 +199,8 @@ d('C4C/ByD OData (V2) Test Suite (basic)', () => {
     expect(created.UserID).toBe(uuid)
     expect(created.BirthDate).toBe(dateStr)
 
-    const result = await es.find({ UserID: uuid, BirthDate: date })
+
+    const result = await es.find({ UserID: uuid, BirthDate: ODataDateTime.from(date) })
     expect(result).toHaveLength(1)
 
     await es.delete(created.ObjectID)
