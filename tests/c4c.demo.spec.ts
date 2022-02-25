@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { env } from "process";
 import { v4 } from "uuid";
-import { OData, ODataDateTime } from "../src";
+import { FormatODataDateTimedate, OData, ODataDateTime } from "../src";
 import "../src/polyfill"; // must import polifill because csrf token request the cookie
 
 let d = describe
@@ -179,6 +179,19 @@ d('C4C/ByD OData (V2) Test Suite (basic)', () => {
       }
     }))
   }
+
+  it('should support create property with date', async () => {
+    const coll = "PeopleRootCollection"
+    const client = getOData()
+    const uuid = createUUID().toUpperCase()// generated test user uuids
+    const es = client.getEntitySet<People>(coll)
+    const created = await es.create({
+      UserID: uuid,
+      BirthDate: FormatODataDateTimedate(new Date("2012-09-12T00:00:00Z"))
+    })
+
+    expect(created.UserID).toBe(uuid)
+  });
 
   it('should support entityset batch operation (advanced)', async () => {
 

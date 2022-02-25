@@ -22,7 +22,7 @@ export function ConvertDateFromODataTime(dateString: any): Date {
 /**
  * FormatODataDateTimedate (OData V2)
  *
- * format date to /Date(1512691200000)/ format
+ * format date to `/Date(1512691200000)/` format
  */
 export function FormatODataDateTimedate(date: Date = new Date()): string {
   return `/Date(${date.getTime()})/`;
