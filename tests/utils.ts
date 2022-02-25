@@ -26,3 +26,10 @@ export async function unwrapBatchResponse(responses: any): Promise<any[]> {
 export function createSampleV2RamdomSevice() {
   return `https://${ODATA_SAMPLE_SERVICE_HOST}/V2/(S(${v4()}))/OData/OData.svc/`
 }
+
+export const randomDate = () => {
+  const year = 10 + Math.floor(Math.random() * 30)
+  const day = 10 + Math.floor(Math.random() * 10)
+  const seconds = 10 + Math.floor(Math.random() * 30)
+  return new Date(`20${year}-09-${day}T00:00:${seconds}Z`)
+}
