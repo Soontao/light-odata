@@ -39,7 +39,7 @@
     "@newdash/newdash": "^5.21.1",
     "@odata/parser": "^0.2.10",
     "@types/node-fetch": "^2.6.1",
-    "fetch-cookie": "^1.0.1",
+    "fetch-cookie": "^2.0.1",
     "http-string-parser": "^0.0.6",
     "node-fetch": "^2.6.7",
     "uuid": "^8.3.2"
