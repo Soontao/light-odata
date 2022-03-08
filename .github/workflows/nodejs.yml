@@ -51,6 +51,7 @@ jobs:
           TEST_OAUTH_TOKEN_URL: ${{ secrets.TEST_OAUTH_TOKEN_URL }}
           TEST_OAUTH_CLIENT_ID: ${{ secrets.TEST_OAUTH_CLIENT_ID }}
           TEST_OAUTH_CLIENT_SECRET: ${{ secrets.TEST_OAUTH_CLIENT_SECRET }}
+          CAP_DEMO_HOST: ${{ secrets.CAP_DEMO_HOST }}
 
       - name: Codecov
         uses: codecov/codecov-action@v1.0.7

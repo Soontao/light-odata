@@ -3,9 +3,15 @@ import { OData } from "../src";
 import "../src/polyfill";
 import { CapDemoPeople } from "./demo_service_types";
 
-describe('CAP Framework OData (V4) Test Suite (basic)', () => {
+let d = describe
 
-  const Service = "https://odata-v4-demo-001.herokuapp.com/odata/$metadata"
+if (!process.env.CAP_DEMO_HOST) {
+  d = describe.skip
+}
+
+d('CAP Framework OData (V4) Test Suite (basic)', () => {
+
+  const Service = `https://${process.env.CAP_DEMO_HOST}/odata/$metadata`
 
   const createClient = () => OData.New4({
     metadataUri: Service,

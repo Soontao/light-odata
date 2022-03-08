@@ -21,6 +21,9 @@ jobs:
       - run: npm run lint
       - run: npm run build
       - run: npm run test
+        env:
+          CAP_DEMO_HOST: ${{ secrets.CAP_DEMO_HOST }}
+
       - run: npm shrinkwrap
 
       - name: npm auth & publish
