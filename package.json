@@ -12,10 +12,10 @@
     "@types/mockjs": "^1.0.6",
     "@types/node": "^16.11.26",
     "@types/uuid": "^8.3.4",
-    "@typescript-eslint/eslint-plugin": "^5.16.0",
-    "@typescript-eslint/parser": "^5.16.0",
-    "esbuild": "^0.14.27",
-    "eslint": "^8.11.0",
+    "@typescript-eslint/eslint-plugin": "^5.17.0",
+    "@typescript-eslint/parser": "^5.17.0",
+    "esbuild": "^0.14.28",
+    "eslint": "^8.12.0",
     "jest": "~27.4.7",
     "mockjs": "^1.1.0",
     "rimraf": "^3.0.2",
@@ -36,7 +36,7 @@
     "prepublishOnly": "npm run build && npm test"
   },
   "dependencies": {
-    "@newdash/newdash": "^5.21.1",
+    "@newdash/newdash": "^5.21.2",
     "@odata/parser": "^0.2.10",
     "@types/node-fetch": "^2.6.1",
     "fetch-cookie": "^2.0.3",
