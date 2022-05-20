@@ -1,4 +1,4 @@
-name: unittest
+name: lint
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
     branches:
       - "*"
   schedule:
-    - cron: "23 6 * * *"
+    - cron: "44 12 * * *"
 
 jobs:
   test:
@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [ 16.x, 18.x ]
+        node-version: [ 18.x ]
         os: [ubuntu-latest]
 
     steps:
@@ -40,14 +40,5 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
       - run: npm ci
-      - name: unit test
-        run: npm run test
-        env:
-          C4C_ODATA: ${{ secrets.C4C_ODATA }}
-          C4C_USER: ${{ secrets.C4C_USER }}
-          C4C_PASS: ${{ secrets.C4C_PASS }}
-          TEST_OAUTH_TOKEN_URL: ${{ secrets.TEST_OAUTH_TOKEN_URL }}
-          TEST_OAUTH_CLIENT_ID: ${{ secrets.TEST_OAUTH_CLIENT_ID }}
-          TEST_OAUTH_CLIENT_SECRET: ${{ secrets.TEST_OAUTH_CLIENT_SECRET }}
-          CAP_DEMO_HOST: ${{ secrets.CAP_DEMO_HOST }}
-
+      - run: npm run lint
+      - run: npm run build
