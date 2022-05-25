@@ -418,6 +418,32 @@ const runner = async () => {
 
 </details>
 
+## Advanced
+
+### Fetch Proxy
+
+> there is an option which named `fetchProxy`, developer could use ti customize all requests input and output 
+
+
+```ts
+const client = OData.New({
+  metadataUri: 'xxxxx',
+  // the default fetch proxy
+  fetchProxy: async (url, init) => {
+    const response = await fetch(url, init);
+    let content = await response.text();
+    if (response.headers.has(S_CONTENT_TYPE) && startsWith(response.headers.get(S_CONTENT_TYPE), "application/json")) {
+      const jsonResult = attempt(JSON.parse, content);
+      // supress error
+      if (!(jsonResult instanceof Error)) {
+        content = jsonResult;
+      }
+    }
+    return { content, response, };
+  }
+})
+```
+
 ## Server Side Polyfill
 
 Use polyfill for your server-side application.

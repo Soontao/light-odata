@@ -1,4 +1,4 @@
-import { RequestInit, Response } from "node-fetch";
+import { RequestInit } from "node-fetch";
 import { FormatODataDateTimedate } from "./util";
 import { BatchRequest, ParsedResponse } from "./batch";
 import { TokenRetrieveType } from "./oauth";
@@ -26,37 +26,47 @@ export type FetchProxy = (url: string, init: RequestInit) => Promise<{
 export interface ODataNewOptions {
   /**
    * metadata url
+   *
+   * @example `https://odata.org/V2/Northwind/Northwind.svc/$metadata`
    */
   metadataUri: string;
+
   /**
    * credential configuration, basic/oauth (client credentials)
    */
   credential?: Credential;
+
   /**
    * fetch proxy of all request
    */
   fetchProxy?: FetchProxy;
+
   /**
    * auto process csrf token of c4c
    */
   processCsrfToken?: boolean;
-  /**
-   * the header key of csrf token, default value is 'x-csrf-token'
-   */
-  csrfTokenName?: string;
-  /**
-   * for SAP OData
-   * @deprecated
-   */
-  forSAP?: boolean;
 
   /**
-   * service variant
+   * common headers will be sent for each requests
+   */
+  commonHeaders?: { [headerName: string]: string };
+
+  /**
+   * the header key of csrf token
+   *
+   * @default 'x-csrf-token'
+   */
+  csrfTokenName?: string;
+
+  /**
+   * service variant, some behavior will be changed by this option
    */
   variant?: ODataVariant;
 
   /**
-   * odata version, default v2
+   * odata version
+   *
+   * @default 'v2'
    */
   version?: ODataVersion;
 }

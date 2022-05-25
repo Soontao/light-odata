@@ -29,25 +29,26 @@ const S_X_CSRF_TOKEN = "x-csrf-token";
 
 const S_CONTENT_TYPE = "Content-Type";
 
-// @ts-ignore
 const defaultProxy: FetchProxy = async (url: string, init?: RequestInit) => {
-  // @ts-ignore
-  const res = await fetch(url, init);
+  const response = await fetch(url, init as any);
 
-  let content: any = await res.text();
+  let content: any = await response.text();
 
-  if (res.headers.has(S_CONTENT_TYPE) && startsWith(res.headers.get(S_CONTENT_TYPE), "application/json")) {
+  if (response.headers?.has(S_CONTENT_TYPE) && startsWith(response.headers?.get(S_CONTENT_TYPE), "application/json")) {
     const jsonResult = attempt(JSON.parse, content);
     // supress error
-    if (!(jsonResult instanceof Error)) {
-      content = jsonResult;
-    }
+    if (!(jsonResult instanceof Error)) { content = jsonResult; }
   }
 
   return {
     content,
-    response: res
+    response,
   };
+};
+
+const DEFULAT_HEADERS = {
+  "Accept": "application/json",
+  [S_CONTENT_TYPE]: "application/json"
 };
 
 
@@ -69,7 +70,7 @@ export class OData {
   private credential: Credential;
 
   /**
-   * oauth client
+   * oauth client for client credential flow
    */
   private oauthClient: ClientCredentialsOAuthClient;
 
@@ -84,10 +85,7 @@ export class OData {
    * use client.getHeaders()
    *
    */
-  private commonHeader: { [headerName: string]: string } = {
-    "Accept": "application/json",
-    [S_CONTENT_TYPE]: "application/json"
-  };
+  private commonHeader: { [headerName: string]: string } = DEFULAT_HEADERS;
 
   private fetchProxy = defaultProxy;
 
@@ -110,7 +108,7 @@ export class OData {
     const rt = new OData(
       options.metadataUri,
       options.credential,
-      undefined,
+      options.commonHeaders,
       undefined,
       options.fetchProxy,
       options.processCsrfToken
@@ -178,22 +176,28 @@ export class OData {
     }
     if (metadataUri === undefined) {
       throw new ValidationError("metadata url required !");
-    } else {
-      this.metadataUri = metadataUri;
-      // e.g https://c4c-system/sap/c4c/odata/v1/c4codata/
-      this.serviceRoot =
-        `${join(slice(this.metadataUri.split("/"), 0, -1), "/")}/`;
-      if (credential) {
-        this.credential = credential;
-        if (credential.tokenUrl && credential.clientId && credential.clientSecret) {
-          this.oauthClient = new ClientCredentialsOAuthClient(
-            credential.tokenUrl,
-            credential.clientId,
-            credential.clientSecret,
-          );
-        }
+    }
+
+    this.metadataUri = metadataUri;
+
+    // e.g https://c4c-system/sap/c4c/odata/v1/c4codata/
+    this.serviceRoot = `${join(slice(this.metadataUri.split("/"), 0, -1), "/")}/`;
+
+    if (credential !== undefined) {
+      this.credential = credential;
+      if (
+        credential.tokenUrl !== undefined &&
+        credential.clientId !== undefined &&
+        credential.clientSecret !== undefined
+      ) {
+        this.oauthClient = new ClientCredentialsOAuthClient(
+          credential.tokenUrl,
+          credential.clientId,
+          credential.clientSecret,
+        );
       }
     }
+
     this.commonHeader = { ...this.commonHeader, ...headers };
     this.processCsrfToken = processCsrfToken;
   }
@@ -680,7 +684,7 @@ export class OData {
 
     // READ OPERATION
     if (method === "GET" || method === "DELETE") {
-      delete headers["Content-Type"];
+      delete headers[S_CONTENT_TYPE];
       // other request don't need param
       if (params) {
         url = `${url}?${params.toString(this.version)}`;

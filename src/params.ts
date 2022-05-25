@@ -157,7 +157,7 @@ export class ODataQueryParam<T = any> {
     if (isArray(fieldOrOrders)) {
       return this.orderbyMulti(fieldOrOrders);
     }
-    this.$orderby = `${fieldOrOrders} ${order}`;
+    this.$orderby = `${String(fieldOrOrders)} ${order}`;
     return this;
 
   }
@@ -168,7 +168,7 @@ export class ODataQueryParam<T = any> {
    * @param fields
    */
   public orderbyMulti(fields: ODataParamOrderField<T>[] = []) {
-    this.$orderby = join(fields.map((f) => `${f.field} ${f.order || "desc"}`), ",");
+    this.$orderby = join(fields.map((f) => `${String(f.field)} ${f.order || "desc"}`), ",");
     return this;
   }
 
