@@ -430,6 +430,8 @@ const client = OData.New({
   metadataUri: 'xxxxx',
   // the default fetch proxy
   fetchProxy: async (url, init) => {
+    // just add some transform here 
+    // for example, add headers, change url, rate limit, retry ...
     const response = await fetch(url, init);
     let content = await response.text();
     if (response.headers.has(S_CONTENT_TYPE) && startsWith(response.headers.get(S_CONTENT_TYPE), "application/json")) {
@@ -439,7 +441,21 @@ const client = OData.New({
         content = jsonResult;
       }
     }
-    return { content, response, };
+    return { content, response }; // the content is an object
+  }
+})
+```
+
+### Common Headers
+
+> there is an option which named `commonHeaders` to add some headers to all requests (added after `@odata/client@5.19.4`)
+
+```ts
+const client = OData.New({
+  metadataUri: 'http://dummy.com/odata/srv/$metadata',
+  fetchProxy,
+  commonHeaders: {
+    'x-value-header': 'x header value'
   }
 })
 ```
