@@ -23,26 +23,10 @@ Alternative, in native browser environment, just add [unpkg](https://unpkg.com/@
 <script src="https://cdn.jsdelivr.net/npm/@odata/client/lib/odata-client-umd.js"></script>
 ```
 
-<!-- ToC start -->
-## Table of Contents
-
-   1. [Installation](#installation)
-   1. [Table of Contents](#table-of-contents)
-   1. [OData Client](#odataclient)
-   1. [OData Param](#odataparam)
-   1. [OData Filter](#odatafilter)
-   1. [Entity Set](#entityset)
-   1. [Batch Requests](#batch-requests)
-   1. [Server Side Polyfill](#server-side-polyfill)
-   1. [Others](#others)
-   1. [CHANGELOG](#changelog)
-   1. [LICENSE](#license)
-   1. [Thanks JetBrains](#thanks-jetbrains)
-<!-- ToC end -->
-
 ## ODataClient
 
-<details><summary>How to use @odata/client</summary>
+> How to use `@odata/client`
+
 
 Start with a simple query, following code start a `GET` http request, and asks the server to respond to all customers which phone number equals 030-0074321
 
@@ -121,8 +105,6 @@ interface PlainODataResponse {
   }
 }
 ```
-
-</details>
 
 ## ODataParam
 
@@ -448,12 +430,11 @@ const client = OData.New({
 
 ### Common Headers
 
-> there is an option which named `commonHeaders` to add some headers to all requests (added after `@odata/client@5.19.4`)
+> there is an option which named `commonHeaders` to add some headers to all requests (added after `@odata/client@5.19.3`)
 
 ```ts
 const client = OData.New({
   metadataUri: 'http://dummy.com/odata/srv/$metadata',
-  fetchProxy,
   commonHeaders: {
     'x-value-header': 'x header value'
   }
@@ -469,15 +450,6 @@ Use polyfill for your server-side application.
 require("@odata/client/lib/polyfill")
 
 // use OData
-```
-
-## Others
-
-Use the go tool '[markdown-toc](https://github.com/sebdah/markdown-toc)' to generate table of contents, with following commands: 
-
-
-```bash
-markdown-toc --replace --inline --depth 2 --header "## Table of Contents" --skip-headers=1  README.md
 ```
 
 ## [CHANGELOG](./CHANGELOG.md)
