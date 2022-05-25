@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.19.4](https://github.com/Soontao/light-odata/compare/v2.19.3...v2.19.4) (2022-05-25)
+
+
+### Features
+
+* commonHeaders Options ([34474c6](https://github.com/Soontao/light-odata/commit/34474c6db0cd6c3bc231298ed8b1b6a34b467142))
+* doc update ([2444aa8](https://github.com/Soontao/light-odata/commit/2444aa807f1bc0d18c529584e02df2b73407defc))
+* update doc ([2962a68](https://github.com/Soontao/light-odata/commit/2962a689fa0a333f962c9d57f156e650c3730957))
+
 ### [2.19.3](https://github.com/Soontao/light-odata/compare/v2.19.2...v2.19.3) (2022-05-20)
 
 ### [2.19.2](https://github.com/Soontao/light-odata/compare/v2.19.1...v2.19.2) (2022-04-11)
