@@ -8,7 +8,7 @@ describe('@odata/server Test Suite', () => {
   const metadata = 'https://odata-v4-server-demo.herokuapp.com/$metadata'
 
   it('should execute full CRUD operations', async () => {
-    const client = OData.New4({ metadataUri: metadata, variant: "@odata/server" })
+    const client = OData.New({ metadataUri: metadata, variant: "@odata/server", version: 'v4' })
     const testString = v4();
     const testNumber = Math.ceil(Math.random() * 1000);
     const teachers = client.getEntitySet('Teachers');

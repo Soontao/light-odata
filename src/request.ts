@@ -6,7 +6,7 @@ import { startsWith } from "@newdash/newdash/startsWith";
 import { JsonBatchResponseBundle } from "@odata/parser/lib/builder/batch";
 import type { RequestInit } from "node-fetch";
 import { v4 } from "uuid";
-import { ODataValueJSONReplacer, ODataValueObject, SAPNetweaverOData } from "./types";
+import { ODataV4NewOptions, ODataValueJSONReplacer, ODataValueObject, SAPNetweaverOData } from "./types";
 import { BatchRequest, formatBatchRequest, formatBatchRequestForOData401, parseMultiPartContent } from "./batch";
 import { EntitySet } from "./entityset";
 import { FrameworkError, ODataServerError, ValidationError } from "./errors";
@@ -100,11 +100,15 @@ export class OData {
   private lock: Mutex = new Mutex();
 
   /**
-   * alternative constructor
+   * OData client builder
    *
    * @param options config options
    */
-  public static New(options: ODataNewOptions): OData {
+  public static New(options: ODataV4NewOptions): ODataV4;
+
+  public static New(options: ODataNewOptions): OData;
+
+  public static New(options: any): any {
     const rt = new OData(
       options.metadataUri,
       options.credential,

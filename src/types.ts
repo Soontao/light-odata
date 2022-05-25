@@ -71,6 +71,10 @@ export interface ODataNewOptions {
   version?: ODataVersion;
 }
 
+export interface ODataV4NewOptions extends ODataNewOptions {
+  version: "v4"
+}
+
 export interface BatchRequestOptions<T> {
   /**
    * Collection Name

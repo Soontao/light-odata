@@ -37,7 +37,6 @@ import { OData } from "@odata/client"
 const TestServiceURL = "https://services.odata.org/V2/Northwind/Northwind.svc/$metadata"
 const client = OData.New({
   metadataUri: TestServiceURL,
-  // variant: "cap"
 })
 
 const runner = async () => {
@@ -47,6 +46,7 @@ const runner = async () => {
   // GET /Customers?$format=json&$filter=Phone eq '030-0074321'
   const filter = client.newFilter().property("Phone").eq("030-0074321");
 
+  // just an example, suggest to use the EntitySet API
   const result = await client.newRequest({ // ODataRequest object
     collection: "Customers", // entity set
     params: client.newParam().filter(filter) // odata param
@@ -55,60 +55,16 @@ const runner = async () => {
 }
 ```
 
-
 ```js
 // OData V4 client
 const Service = "https://odata-v4-demo-001.herokuapp.com/odata/$metadata"
-
-const client = OData.New4({
-  metadataUri: Service,
-  variant: "cap"
-})
-
+const client = OData.New4({ metadataUri: Service, variant: "cap" })
 ```
 
-### ODataRequest interface
-
-```ts
-interface ODataRequest<T> {
-  collection: string, /** collection name */
-  id?: any, /** object key in READ/UPDATE/DELETE, user could set this property with number/string/object type */
-  params?: ODataQueryParam, /** params in QUERY */
-  /**
-   * GET for QUERY/READ; for QUERY, you can use params to control response data
-   * PATCH for UPDATE (partial)
-   * PUT for UPDATE (overwrite)
-   * POST for CREATE
-   * DELETE for DELETE
-   */
-  method?: HTTPMethod,
-  entity?: T /** data object in CREATE/UPDATE */
-}
-```
-
-### ODataResponse interface
-
-
-```typescript
-interface PlainODataResponse {
-  d?: {
-    __count?: string; /** $inlinecount values */
-    results: any | Array<any>; /** result list/object */
-    [key: string]: any;
-  };
-  error?: { /** if error occurred, node error will have value */
-    code: string;
-    message: {
-      lang: string, 
-      value: string /** server error message */
-    }
-  }
-}
-```
 
 ## ODataParam
 
-use `ODataParam` to control data size, involved fields and order
+use `ODataParam` to control `response size`, `element projection` and `order`
 
 <details><summary>How to use ODataParam</summary>
 
@@ -307,7 +263,7 @@ OData
 
 ## EntitySet
 
-use `EntitySet` to perform `CRUD` on entity
+use `EntitySet` to perform `CRUD` on a specific entity
 
 <details><summary>How to use EntitySet</summary>
 
@@ -316,7 +272,7 @@ const runner = async () => {
 
   // odata client
   const client = createClient()
-  const es = client.getEntitySet<CapDemoPeople>("Peoples")
+  const es = client.getEntitySet<CapDemoPeople>("Peoples") // with typescript generic type
 
   // CREATE instnace
   const res0 = await es.create({

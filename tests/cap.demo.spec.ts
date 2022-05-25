@@ -1,6 +1,6 @@
+import "../src/polyfill";
 import { Random } from "mockjs";
 import { OData } from "../src";
-import "../src/polyfill";
 import { CapDemoPeople } from "./demo_service_types";
 
 let d = describe
@@ -24,7 +24,7 @@ d('CAP Framework OData (V4) Test Suite (basic)', () => {
     const client = createClient()
     const es = client.getEntitySet<CapDemoPeople>("Peoples")
 
-    const c0 = await es.count(es.newFilter().field("UserName").eqString(name))
+    const c0 = await es.count(es.newFilter().field("UserName").eq(name))
 
     if (c0 > 0) {
       name = name + Random.integer(100, 999)
