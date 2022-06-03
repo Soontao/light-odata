@@ -83,14 +83,13 @@ class ClientCredentialsOAuthClient {
   private async fetchOAuthResponse(): Promise<any> {
     const params = new SearchParams();
     params.append("grant_type", S_CLIENT_CREDENTIALS);
-    if (this.resource) {
-      params.append("resource", this.resource);
-    }
 
     let response = undefined;
 
     if (this.tokenRetrieveType === "form") {
-
+      if (this.resource) {
+        params.append("resource", this.resource);
+      }
       params.append("client_id", this.clientId);
       params.append("client_secret", this.clientSecret);
       response = await fetch(this.tokenUrl, {
