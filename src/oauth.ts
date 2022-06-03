@@ -40,6 +40,8 @@ class ClientCredentialsOAuthClient {
 
   private readonly clientSecret: string;
 
+  private readonly resource: string;
+
   private readonly mut = new Mutex();
 
   private token: string;
@@ -56,18 +58,21 @@ class ClientCredentialsOAuthClient {
    * @param clientId oauth client id
    * @param clientSecret oauth client secret
    * @param retrieveType the clientId and clientSecret is put into header or form body
+   * @param [resource] the resource to target
    */
   constructor(
     tokenUrl: string,
     clientId: string,
     clientSecret: string,
-    retrieveType: TokenRetrieveType = "header"
+    retrieveType: TokenRetrieveType = "header",
+    resource?: string,
   ) {
 
     this.tokenUrl = tokenUrl;
     this.clientId = clientId;
     this.clientSecret = clientSecret;
     this.tokenRetrieveType = retrieveType;
+    this.resource = resource;
   }
 
   /**
@@ -78,6 +83,9 @@ class ClientCredentialsOAuthClient {
   private async fetchOAuthResponse(): Promise<any> {
     const params = new SearchParams();
     params.append("grant_type", S_CLIENT_CREDENTIALS);
+    if (this.resource) {
+      params.append("resource", this.resource);
+    }
 
     let response = undefined;
 

@@ -222,6 +222,11 @@ export interface Credential {
    * oauth token retrieve type
    */
   tokenRetrieveType?: TokenRetrieveType;
+
+  /**
+   * traget resource 
+   */
+  resource?: string;
 }
 
 /**
