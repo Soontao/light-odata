@@ -198,8 +198,6 @@ export class OData {
           credential.tokenUrl,
           credential.clientId,
           credential.clientSecret,
-          credential.tokenRetrieveType,
-          credential.scope
         );
       }
     }
