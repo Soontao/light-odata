@@ -40,7 +40,7 @@ class ClientCredentialsOAuthClient {
 
   private readonly clientSecret: string;
 
-  private readonly resource: string;
+  private readonly scope: string;
 
   private readonly mut = new Mutex();
 
@@ -65,14 +65,14 @@ class ClientCredentialsOAuthClient {
     clientId: string,
     clientSecret: string,
     retrieveType: TokenRetrieveType = "header",
-    resource?: string,
+    scope?: string,
   ) {
 
     this.tokenUrl = tokenUrl;
     this.clientId = clientId;
     this.clientSecret = clientSecret;
     this.tokenRetrieveType = retrieveType;
-    this.resource = resource;
+    this.scope = scope;
   }
 
   /**
@@ -87,8 +87,8 @@ class ClientCredentialsOAuthClient {
     let response = undefined;
 
     if (this.tokenRetrieveType === "form") {
-      if (this.resource) {
-        params.append("resource", this.resource);
+      if (this.scope) {
+        params.append("resource", this.scope);
       }
       params.append("client_id", this.clientId);
       params.append("client_secret", this.clientSecret);

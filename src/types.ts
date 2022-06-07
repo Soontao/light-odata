@@ -224,9 +224,9 @@ export interface Credential {
   tokenRetrieveType?: TokenRetrieveType;
 
   /**
-   * traget resource 
+   * traget scope 
    */
-  resource?: string;
+  scope?: string;
 }
 
 /**

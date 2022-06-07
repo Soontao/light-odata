@@ -199,7 +199,7 @@ export class OData {
           credential.clientId,
           credential.clientSecret,
           credential.tokenRetrieveType,
-          credential.resource
+          credential.scope
         );
       }
     }
