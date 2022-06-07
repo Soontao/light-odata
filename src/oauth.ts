@@ -88,7 +88,7 @@ class ClientCredentialsOAuthClient {
 
     if (this.tokenRetrieveType === "form") {
       if (this.scope) {
-        params.append("resource", this.scope);
+        params.append("scope", this.scope);
       }
       params.append("client_id", this.clientId);
       params.append("client_secret", this.clientSecret);
