@@ -58,7 +58,7 @@ class ClientCredentialsOAuthClient {
    * @param clientId oauth client id
    * @param clientSecret oauth client secret
    * @param retrieveType the clientId and clientSecret is put into header or form body
-   * @param [resource] the resource to target
+   * @param scope oauth scope
    */
   constructor(
     tokenUrl: string,
@@ -82,25 +82,26 @@ class ClientCredentialsOAuthClient {
    */
   private async fetchOAuthResponse(): Promise<any> {
     const params = new SearchParams();
+
     params.append("grant_type", S_CLIENT_CREDENTIALS);
+
+    if (typeof this.scope === "string") { params.append("scope", this.scope); }
 
     let response = undefined;
 
     if (this.tokenRetrieveType === "form") {
-      if (this.scope) {
-        params.append("scope", this.scope);
-      }
+
       params.append("client_id", this.clientId);
       params.append("client_secret", this.clientSecret);
+
       response = await fetch(this.tokenUrl, {
         method: "POST",
         body: params.toString(),
-        headers: {
-          "Content-Type": S_CT_URL_FORM
-        }
+        headers: { "Content-Type": S_CT_URL_FORM }
       });
 
-    } else {
+    }
+    else {
 
       // standard way described in rfc6749
       // https://datatracker.ietf.org/doc/html/rfc6749#section-4.4.2
@@ -117,19 +118,22 @@ class ClientCredentialsOAuthClient {
 
 
     if (response.status >= 400) {
-      if (response.headers.get("Content-Type")?.includes("application/json")) {
+
+      if (response.headers.get("Content-Type")?.includes?.("application/json")) {
         const responseBody = await response.json();
         if ("error" in responseBody) {
           throw new AuthenticationError(responseBody.error);
-        } else {
+        }
+        else {
           throw new AuthenticationError(JSON.stringify(responseBody));
         }
-      } else {
+      }
+      else {
         throw new Error(await response.text());
       }
     }
-    const body = await response.json();
-    return body;
+
+    return response.json();
   }
 
   /**
