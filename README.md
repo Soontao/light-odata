@@ -3,7 +3,6 @@
 [![npm (scoped)](https://img.shields.io/npm/v/@odata/client)](https://www.npmjs.com/package/@odata/client)
 [![codecov](https://codecov.io/gh/Soontao/light-odata/branch/main/graph/badge.svg)](https://codecov.io/gh/Soontao/light-odata)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Soontao_c4codata&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=Soontao_c4codata)
-[![Netlify](https://img.shields.io/netlify/4bfc3789-7d70-4c68-a1af-af5ed895a8e2?label=doc)](https://helpful-licorice-837ce2.netlify.app/)
 
 ![npm bundle size (scoped)](https://img.shields.io/bundlephobia/min/@odata/client)
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=Soontao_c4codata&metric=sqale_index)](https://sonarcloud.io/dashboard?id=Soontao_c4codata)
