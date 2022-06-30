@@ -41,7 +41,7 @@
     "@types/node-fetch": "^2.6.2",
     "fetch-cookie": "^2.0.5",
     "http-string-parser": "^0.0.6",
-    "node-fetch": "^2.6.7",
+    "node-fetch": "^3.0.0",
     "uuid": "^8.3.2"
   },
   "homepage": "https://github.com/Soontao/light-odata",
