@@ -52,6 +52,6 @@ jobs:
           CAP_DEMO_HOST: ${{ secrets.CAP_DEMO_HOST }}
 
       - name: Codecov
-        uses: codecov/codecov-action@v1.5.2
+        uses: codecov/codecov-action@v3.1.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
