@@ -18,13 +18,11 @@
     "eslint": "8.18.0",
     "jest": "28.1.2",
     "mockjs": "1.1.0",
-    "rimraf": "3.0.2",
     "ts-jest": "28.0.5",
     "typescript": "4.7.4"
   },
   "typings": "lib/index.d.ts",
   "scripts": {
-    "prebuild": "rimraf lib",
     "build": "tsc && npm run build:umd",
     "build:umd": "esbuild src/index.ts --bundle --minify --target=es6 --format=iife --outfile=lib/odata-client-umd.js",
     "test": "jest --silent",
