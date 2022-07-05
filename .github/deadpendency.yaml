@@ -1,0 +1,4 @@
+ignore-failures:
+  javascript:
+    - http-string-parser
+    - mockjs
