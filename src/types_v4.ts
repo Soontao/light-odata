@@ -2,7 +2,7 @@ import type { BatchRequestV4, ParsedResponseV4 } from "./batch";
 import type { EntitySet } from "./entityset";
 import type { ODataFilter } from "./filter";
 import type { ODataQueryParam } from "./params";
-import { ODataValueObject, RawString } from "./types";
+import { EdmString, Guid, ODataValueObject, RawString } from "./types";
 import type {
   BatchRequestOptions,
   Credential, ODataActionImportRequest,
@@ -177,14 +177,12 @@ export interface BatchRequestOptionsV4<T> extends BatchRequestOptions<T> {
  */
 export abstract class ODataDateBase extends ODataValueObject {
 
-  protected _date: Date;
-
-  protected constructor(date: Date) {
-    super();
+  protected constructor(date: Date | string | number) {
     if (date instanceof Date) {
-      this._date = date;
-    } else {
-      this._date = new Date(date);
+      super(date);
+    }
+    else {
+      super(new Date(date));
     }
   }
 
@@ -202,7 +200,7 @@ export class ODataDateTimeOffset extends ODataDateBase {
   }
 
   public toString(): string {
-    return this._date.toISOString();
+    return this.rawValue.toISOString();
   }
 
 }
@@ -217,15 +215,16 @@ export class ODataDate extends ODataDateBase {
   }
 
   toString(): string {
-    return this._date.toISOString().split("T")[0];
+    return this.rawValue.toISOString().split("T")[0];
   }
 
 }
-
 
 
 export const EdmV4 = {
   RawString,
   DateTimeOffset: ODataDateTimeOffset,
   Date: ODataDate,
+  Guid,
+  String: EdmString,
 };

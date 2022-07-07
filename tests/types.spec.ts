@@ -1,3 +1,4 @@
+import { formatId } from "../src";
 import * as types from "../src/types";
 import * as typesV4 from "../src/types_v4";
 
@@ -14,16 +15,14 @@ describe('Types Test Suite', () => {
       c: null,
       d: { v: "value" }
     }, types.ODataValueJSONReplacer))
-      .toBe("{\"v\":1,\"c\":null,\"d\":{\"v\":\"value\"}}")
+      .toMatchSnapshot()
 
     expect(JSON.stringify({
       v: types.EdmV2.RawString.from('2'),
       c: types.EdmV2.DateTime.from(new Date("2022-02-25T00:00:00Z")),
       d: { v: "value" }
     }, types.ODataValueJSONReplacer))
-      .toBe("{\"v\":\"2\",\"c\":\"/Date(1645747200000)/\",\"d\":{\"v\":\"value\"}}")
-
-
+      .toMatchSnapshot()
   });
 
   it('should support deep transform', () => {
@@ -34,21 +33,26 @@ describe('Types Test Suite', () => {
         v: typesV4.EdmV4.Date.from(new Date("2022-02-25T00:00:00Z")),
       }
     }, types.ODataValueJSONReplacer))
-      .toBe("{\"v\":\"2\",\"c\":null,\"d\":{\"v\":\"2022-02-25\"}}")
+      .toMatchSnapshot()
   });
 
   it('should support EdmV2.DateTimeOffset', async () => {
     expect(JSON.stringify({
       v: types.EdmV2.DateTimeOffset.from(new Date("2022-02-25T00:00:00Z")),
     }, types.ODataValueJSONReplacer))
-      .toBe("{\"v\":\"/Date(1645747200000)/\"}")
+      .toMatchSnapshot()
   });
 
   it('should support EdmV4.DateTimeOffset', async () => {
     expect(JSON.stringify({
       v: typesV4.EdmV4.DateTimeOffset.from(new Date("2022-02-25T00:00:00Z")),
     }, types.ODataValueJSONReplacer))
-      .toBe("{\"v\":\"2022-02-25T00:00:00.000Z\"}")
+      .toMatchSnapshot()
+  });
+
+  it('should support format Edm.String', () => {
+    expect(JSON.stringify({ ID: types.EdmV2.String.from("v1") }, types.ODataValueJSONReplacer)).toMatchSnapshot()
+    expect(JSON.stringify({ ID: typesV4.EdmV4.String.from("v1") }, types.ODataValueJSONReplacer)).toMatchSnapshot()
   });
 
 });

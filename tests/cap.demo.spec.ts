@@ -1,6 +1,6 @@
 import "../src/polyfill";
 import { Random } from "mockjs";
-import { OData } from "../src";
+import { EdmV4, OData } from "../src";
 import { CapDemoPeople } from "./demo_service_types";
 
 let d = describe
@@ -47,23 +47,25 @@ d('CAP Framework OData (V4) Test Suite (basic)', () => {
     const id = res[0].ID
     expect(id).not.toBeUndefined()
 
+    const idObject = EdmV4.Guid.from(id);
+
     // RETRIEVE by id
-    const res2 = await es.retrieve(id)
+    const res2 = await es.retrieve(idObject)
     expect(res2.UserName).toEqual(name)
 
     // UPDATE
     const firstName = Random.name();
-    await es.update(id, { Name_FirstName: firstName })
+    await es.update(idObject, { Name_FirstName: firstName })
 
     // verify UPDATE
-    const res5 = await es.retrieve(id)
+    const res5 = await es.retrieve(idObject)
     expect(res5.Name_FirstName).toEqual(firstName)
 
     // DELETE
-    await es.delete(id)
+    await es.delete(idObject)
 
     // verify DELETE
-    await expect(() => es.retrieve(id)).rejects.toThrow()
+    await expect(() => es.retrieve(idObject)).rejects.toThrow()
 
   });
 

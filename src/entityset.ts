@@ -4,7 +4,7 @@ import { ODataServerError } from "./errors";
 import { ODataFilter } from "./filter";
 import { ODataQueryParam } from "./params";
 import { OData } from "./request";
-import type { DeepPartial, PlainODataResponse } from "./types";
+import type { DeepPartial, ODataKeyPredicate, PlainODataResponse } from "./types";
 
 export class EntitySet<T = any> {
 
@@ -67,7 +67,7 @@ export class EntitySet<T = any> {
     return this._client.newParam();
   }
 
-  async retrieve(id: any, params?: ODataQueryParam): Promise<T> {
+  async retrieve(id: ODataKeyPredicate, params?: ODataQueryParam): Promise<T> {
     const res = await this._client.newRequest<T>({
       collection: this._collection,
       method: "GET",

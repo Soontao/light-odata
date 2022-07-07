@@ -224,7 +224,7 @@ export interface Credential {
   tokenRetrieveType?: TokenRetrieveType;
 
   /**
-   * traget scope 
+   * traget scope
    */
   scope?: string;
 }
@@ -263,7 +263,14 @@ export type BatchResponses<T> = Promise<{ [K in keyof T]: ParsedResponse<UnwrapB
 /**
  * Edm value
  */
-export abstract class ODataValueObject {
+export abstract class ODataValueObject<T = any> {
+
+  protected rawValue: T;
+
+  protected constructor(rawValue: T) {
+    this.rawValue = rawValue;
+  }
+
   /**
    * to OData Uri string
    */
@@ -290,45 +297,37 @@ export const ODataValueJSONReplacer = (key, value) => {
 /**
  * RawString
  */
-export class RawString extends ODataValueObject {
-
-  private str: string;
-
-  private constructor(str: string) {
-    super();
-    this.str = str;
-  }
+export class RawString extends ODataValueObject<string> {
 
   public static from(str: string) {
     return new RawString(str);
   }
 
   toString(): string {
-    return this.str;
+    return this.rawValue;
   }
 
 }
 
-export abstract class ODataDateBase extends ODataValueObject {
+export const RawValue = RawString;
 
-  protected _date: Date;
+export abstract class ODataDateBase extends ODataValueObject {
 
   protected _uriEncoded: boolean;
 
   protected constructor(date: Date, uriEncoded = true) {
-    super();
     if (date instanceof Date) {
-      this._date = date;
+      super(date);
     } else {
-      this._date = new Date(date);
+      super(new Date(date));
     }
     this._uriEncoded = uriEncoded;
   }
 
   public toJSONString(): string {
-    return FormatODataDateTimedate(this._date);
-  }
+    return FormatODataDateTimedate(this.rawValue);
 
+  }
 }
 
 /**
@@ -347,7 +346,7 @@ export class ODataDateTime extends ODataDateBase {
   }
 
   public toString(): string {
-    let inner: string = this._date.toISOString().substring(0, 19);
+    let inner: string = this.rawValue.toISOString().substring(0, 19);
     if (this._uriEncoded) {
       inner = encodeURIComponent(inner);
     }
@@ -373,7 +372,7 @@ export class ODataDateTimeOffset extends ODataDateBase {
   }
 
   public toString(): string {
-    let inner: string = this._date.toISOString();
+    let inner: string = this.rawValue.toISOString();
     if (this._uriEncoded) {
       inner = encodeURIComponent(inner);
     }
@@ -382,8 +381,28 @@ export class ODataDateTimeOffset extends ODataDateBase {
 
 }
 
+export class Guid extends RawValue { }
+
+export class EdmString extends ODataValueObject<string> {
+
+  public static from(str: string): EdmString {
+    return new EdmString(str);
+  }
+
+  public toString(): string {
+    return `'${this.rawValue}'`;
+  }
+
+  public toJSONString(): string {
+    return this.rawValue;
+  }
+
+}
+
 export const EdmV2 = {
   DateTime: ODataDateTime,
   DateTimeOffset: ODataDateTimeOffset,
   RawString,
+  Guid,
+  String: EdmString,
 };

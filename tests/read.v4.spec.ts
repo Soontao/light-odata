@@ -3,6 +3,7 @@ import { v4 } from "uuid";
 import { OData } from "../src/request";
 import { People } from "./demo_service_types";
 import { ODATA_SAMPLE_SERVICE_HOST } from "./utils";
+import { EdmV4 } from "../src";
 
 describe('Read Test (V4)', () => {
 
@@ -86,5 +87,45 @@ describe('Read Test (V4)', () => {
 
   })
 
+  test("Read by GUID ID (raw string)", async () => {
+    const odata = OData.New({
+      metadataUri: "https://services.odata.org/v4/OData/OData.svc/$metadata",
+      version: "v4",
+    });
+    const result = await odata.newRequest<any>({
+      collection: "Advertisements",
+      id: EdmV4.RawString.from("f89dee73-af9f-4cd4-b330-db93c25ff3c7"),
+    });
+    expect(result.error).toBeUndefined();
+    expect(result.Name).toEqual("Old School Lemonade Store, Retro Style");
+  });
+
+  test("Read by GUID ID (Guid)", async () => {
+    const odata = OData.New({
+      metadataUri: "https://services.odata.org/v4/OData/OData.svc/$metadata",
+      version: "v4",
+    });
+    const result = await odata.newRequest<any>({
+      collection: "Advertisements",
+      id: EdmV4.Guid.from("f89dee73-af9f-4cd4-b330-db93c25ff3c7"),
+    });
+    expect(result.error).toBeUndefined();
+    expect(result.Name).toEqual("Old School Lemonade Store, Retro Style");
+  });
+
+  test("Read by GUID ID (compound raw string)", async () => {
+    const odata = OData.New({
+      metadataUri: "https://services.odata.org/v4/OData/OData.svc/$metadata",
+      version: "v4",
+    });
+    const result = await odata.newRequest<any>({
+      collection: "Advertisements",
+      id: {
+        ID: EdmV4.RawString.from("f89dee73-af9f-4cd4-b330-db93c25ff3c7")
+      },
+    });
+    expect(result.error).toBeUndefined();
+    expect(result.Name).toEqual("Old School Lemonade Store, Retro Style");
+  });
 
 });

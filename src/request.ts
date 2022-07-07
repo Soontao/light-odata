@@ -6,7 +6,6 @@ import { startsWith } from "@newdash/newdash/startsWith";
 import { JsonBatchResponseBundle } from "@odata/parser/lib/builder/batch";
 import type { RequestInit } from "node-fetch";
 import { v4 } from "uuid";
-import { ODataV4NewOptions, ODataValueJSONReplacer, ODataValueObject, SAPNetweaverOData } from "./types";
 import { BatchRequest, formatBatchRequest, formatBatchRequestForOData401, parseMultiPartContent } from "./batch";
 import { EntitySet } from "./entityset";
 import { FrameworkError, ODataServerError, ValidationError } from "./errors";
@@ -17,13 +16,13 @@ import type {
   BatchRequestOptions, BatchRequests,
   BatchResponses, Credential, FetchProxy, HTTPMethod,
   ODataActionImportRequest,
-  ODataActionRequest, ODataFunctionImportRequest, ODataFunctionRequest, ODataNewOptions,
-  ODataQueryRequest, ODataReadIDRequest, ODataVariant, ODataWriteRequest, PlainODataMultiResponse,
-  PlainODataResponse, PlainODataSingleResponse, ODataVersion,
-  ODataKeyPredicate
+  ODataActionRequest, ODataFunctionImportRequest, ODataFunctionRequest, ODataKeyPredicate, ODataNewOptions,
+  ODataQueryRequest, ODataReadIDRequest, ODataVariant, ODataVersion, ODataWriteRequest, PlainODataMultiResponse,
+  PlainODataResponse, PlainODataSingleResponse
 } from "./types";
+import { ODataV4NewOptions, ODataValueJSONReplacer, SAPNetweaverOData } from "./types";
 import type { ODataV4 } from "./types_v4";
-import { GetAuthorizationPair } from "./util";
+import { formatId, GetAuthorizationPair } from "./util";
 
 const S_X_CSRF_TOKEN = "x-csrf-token";
 
@@ -412,54 +411,7 @@ export class OData {
    * ```
    */
   private formatIdString(key: ODataKeyPredicate): string {
-    let rt = "";
-    switch (typeof key) {
-      // for compound key like
-      // Alphabetical_list_of_products(CategoryName='Beverages',Discontinued=false,ProductID=1,ProductName='Chai')
-      case "object":
-        if (key instanceof ODataValueObject) {
-          return key.toString();
-        }
-        // for plain object
-        const compoundId = Object.entries(key).map((kv) => {
-          const k = kv[0];
-          const v = kv[1];
-          switch (typeof v) {
-            case "string":
-              return `${k}='${v}'`;
-            case "number":
-              return `${k}=${v}`;
-            case "boolean":
-              return `${k}=${v}`;
-            default:
-              if (v === null) {
-                return `${k}=null`;
-              }
-              if (v instanceof ODataValueObject) {
-                return `${k}=${v.toString()}`;
-              }
-              // other type will be removed
-              return "";
-          }
-        }).filter((v) => v).join(",");
-        rt = `(${compoundId})`;
-        break;
-      case "number":
-        rt = `(${key})`;
-        break;
-      case "string":
-        if (this.variant === "cap") {
-          rt = `(${key})`; // for cap framework, id string should remove singlequote
-        } else {
-          rt = `('${key}')`;
-        }
-        break;
-      case "undefined":
-        break;
-      default:
-        throw new FrameworkError(`Not supported ObjectID type ${typeof key} for request`);
-    }
-    return rt;
+    return formatId(key);
   }
 
   /**
