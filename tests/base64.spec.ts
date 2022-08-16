@@ -5,7 +5,7 @@ describe('base64 Test Suite', () => {
 
   it('should be same', () => {
 
-    for (let idx = 0; idx < 10; idx++) {
+    for (let idx = 0; idx < 100; idx++) {
       // generate a random string
       const input = Math.random().toString(36);
       expect(encode(input)).toBe(encodeJs(input));

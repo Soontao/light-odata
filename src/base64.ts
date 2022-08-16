@@ -83,7 +83,7 @@ function base64EncArr(aBytes) {
 
 /* UTF-8 array to JS string and vice versa */
 
-function UTF8ArrToStr(aBytes) {
+function utf8ArrToStr(aBytes) {
   let sView = "";
   let nPart;
   const nLen = aBytes.length;
@@ -180,7 +180,7 @@ const encodeJs = (input: string) => {
 };
 
 const decodeJs = (input: string) => {
-  return UTF8ArrToStr(base64DecToArr(input));
+  return utf8ArrToStr(base64DecToArr(input));
 };
 
 /**
@@ -204,7 +204,7 @@ const decode = function (input: string): string {
   if (globalThis.Buffer !== undefined) {
     return globalThis.Buffer.from(input, "base64").toString("utf-8");
   }
-  return UTF8ArrToStr(base64DecToArr(input));
+  return utf8ArrToStr(base64DecToArr(input));
 };
 
 export { encode, decode, encodeJs, decodeJs };
