@@ -19,6 +19,12 @@ jobs:
         node-version: [ 16.x, 18.x ]
         os: [ubuntu-latest]
 
+    services:
+      odata-v4-cap-demo:
+        image: theosun/odata-v4-cap-demo:latest
+        ports:
+          - 50031:3000
+
     steps:
       - name: Set git to use LF to checkout
         run: |
@@ -49,5 +55,5 @@ jobs:
           TEST_OAUTH_TOKEN_URL: ${{ secrets.TEST_OAUTH_TOKEN_URL }}
           TEST_OAUTH_CLIENT_ID: ${{ secrets.TEST_OAUTH_CLIENT_ID }}
           TEST_OAUTH_CLIENT_SECRET: ${{ secrets.TEST_OAUTH_CLIENT_SECRET }}
-          CAP_DEMO_HOST: ${{ secrets.CAP_DEMO_HOST }}
+          CAP_DEMO_SERVICE: http://localhost:50031
 

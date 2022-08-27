@@ -59,7 +59,7 @@ export interface ODataNewOptions {
   csrfTokenName?: string;
 
   /**
-   * service variant, some behavior will be changed by this option
+   * service variant, some behaviors will be changed by this option
    */
   variant?: ODataVariant;
 

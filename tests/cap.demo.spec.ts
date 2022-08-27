@@ -5,13 +5,13 @@ import { CapDemoPeople } from "./demo_service_types";
 
 let d = describe
 
-if (!process.env.CAP_DEMO_HOST) {
+if (!process.env.CAP_DEMO_SERVICE) {
   d = describe.skip
 }
 
 d('CAP Framework OData (V4) Test Suite (basic)', () => {
 
-  const Service = `https://${process.env.CAP_DEMO_HOST}/odata/$metadata`
+  const Service = `${process.env.CAP_DEMO_SERVICE}/odata/$metadata`
 
   const createClient = () => OData.New4({
     metadataUri: Service,
