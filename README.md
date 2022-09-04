@@ -34,10 +34,8 @@ import { OData } from "@odata/client"
 // import "@odata/client/lib/polyfill" // server side polyfill
 
 // odata.org sample odata service
-const TestServiceURL = "https://services.odata.org/V2/Northwind/Northwind.svc/"
-const client = OData.New({
-  serviceEndpoint: TestServiceURL,
-})
+const serviceEndpoint = "https://services.odata.org/V2/Northwind/Northwind.svc/"
+const client = OData.New({ serviceEndpoint })
 
 const runner = async () => {
   
@@ -57,8 +55,7 @@ const runner = async () => {
 
 ```js
 // OData V4 client
-const Service = "https://odata-v4-demo-001.herokuapp.com/odata/"
-const client = OData.New4({ serviceEndpoint: Service, variant: "cap" })
+const client = OData.New4({ serviceEndpoint: "https://odata-v4-demo-001.herokuapp.com/odata/" })
 ```
 
 
