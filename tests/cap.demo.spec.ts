@@ -5,7 +5,7 @@ import { CapDemoPeople } from "./demo_service_types";
 
 let d = describe
 
-if (!process.env.CAP_DEMO_SERVICE) {
+if (process.env.CAP_DEMO_SERVICE === undefined) {
   d = describe.skip
 }
 
@@ -30,6 +30,8 @@ d('CAP Framework OData (V4) Test Suite (basic)', () => {
       name = name + Random.integer(100, 999)
     }
 
+    expect(await es.count({ UserName: name })).toBe(0)
+
     // CREATE instnace
     const res0 = await es.create({
       UserName: name
@@ -53,6 +55,14 @@ d('CAP Framework OData (V4) Test Suite (basic)', () => {
     const res2 = await es.retrieve(idObject)
     expect(res2.UserName).toEqual(name)
 
+    // Bounded Function
+    const fRes = await es.function("getName", idObject)
+    expect(fRes.value).toEqual(name)
+
+    // Bounded Action
+    const aRes = await es.action("updateName", idObject, { UserName: `${name} updated` })
+    expect(aRes).toBe("")
+
     // UPDATE
     const firstName = Random.name();
     await es.update(idObject, { Name_FirstName: firstName })
@@ -60,6 +70,7 @@ d('CAP Framework OData (V4) Test Suite (basic)', () => {
     // verify UPDATE
     const res5 = await es.retrieve(idObject)
     expect(res5.Name_FirstName).toEqual(firstName)
+    expect(res5.UserName).toEqual(`${name} updated`)
 
     // DELETE
     await es.delete(idObject)

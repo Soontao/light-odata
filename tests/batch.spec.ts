@@ -172,39 +172,5 @@ describe('test batch multipart parse & format', () => {
     )
   })
 
-  test('should request with batch entity set', async () => {
-    const base = `https://${ODATA_SAMPLE_SERVICE_HOST}/V2/(S(${v4()}))/OData/OData.svc/`
-    const client = OData.New({
-      metadataUri: `${base}/$metadata`,
-    })
-
-    const products = client.getEntitySet<Product>("Products")
-    const batchProducts = products.batch()
-
-    const requests = [
-      batchProducts.query(OData.newParam().skip(1).top(1)),
-      batchProducts.query(OData.newParam().skip(2).top(1)),
-      batchProducts.retrieve(0),
-      batchProducts.create({
-        ID: 100012,
-        Description: "Test Description",
-      }),
-
-    ]
-
-    const result = await client.execBatchRequests(requests)
-
-    await Promise.all(
-      map(result, async r => {
-        var json = await r?.json();
-        if (json) {
-          expect(json.d);
-          expect(json.error).toBeUndefined()
-        }
-        expect(r?.status == 200 || r?.status == 201).toEqual(true)
-      })
-    )
-  })
-
 })
 

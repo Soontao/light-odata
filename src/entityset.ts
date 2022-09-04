@@ -1,23 +1,22 @@
 // @ts-nocheck
-import { BatchRequest } from "./batch";
 import { ODataServerError } from "./errors";
 import { ODataFilter } from "./filter";
 import { ODataQueryParam } from "./params";
 import { OData } from "./request";
 import type { DeepPartial, ODataKeyPredicate, PlainODataResponse } from "./types";
 
+/**
+ * EntitySet
+ */
 export class EntitySet<T = any> {
 
-  private _collection: string;
+  private _entitySet: string;
 
   private _client: OData;
 
-  private _batchEntitySet: BatchEntitySet<T>;
-
   constructor(collection: string, client: OData) {
-    this._collection = collection;
+    this._entitySet = collection;
     this._client = client;
-    this._batchEntitySet = new BatchEntitySet(collection, client);
   }
 
   private _checkError(res: any): void {
@@ -69,7 +68,7 @@ export class EntitySet<T = any> {
 
   async retrieve(id: ODataKeyPredicate, params?: ODataQueryParam): Promise<T> {
     const res = await this._client.newRequest<T>({
-      collection: this._collection,
+      collection: this._entitySet,
       method: "GET",
       id,
       params
@@ -78,13 +77,6 @@ export class EntitySet<T = any> {
     return this._getResultSingle(res);
   }
 
-
-  /**
-   * batch wrapper for entity set
-   */
-  batch() {
-    return this._batchEntitySet;
-  }
 
   async find(base: DeepPartial<T>): Promise<T[]> {
     const filter = OData.newFilter();
@@ -114,7 +106,7 @@ export class EntitySet<T = any> {
       param = OData.newParam();
     }
     const res = await this._client.newRequest<T>({
-      collection: this._collection,
+      collection: this._entitySet,
       method: "GET",
       params: param
     });
@@ -138,30 +130,24 @@ export class EntitySet<T = any> {
       case "v2":
         params.inlinecount(true);
         break;
-      default:
-        break;
     }
 
-    if (filter) {
+    if (typeof filter === "object") {
 
       if (filter instanceof ODataFilter) {
         params.filter(filter);
       } else {
-        const tmpFilter = ODataFilter.newFilter();
-        Object.entries(filter).forEach(([key, value]) => {
-          if (typeof value == "string") {
-            tmpFilter.field(key).eqString(value);
-          } else {
-            tmpFilter.field(key).eq(value);
-          }
-        });
-        params.filter(tmpFilter);
+        const newFilter = this.newFilter();
+        for (const [key, value] of Object.entries(filter)) {
+          newFilter.field(key).eq(value);
+        }
+        params.filter(newFilter);
       }
 
     }
 
     const res = await this._client.newRequest<T>({
-      collection: this._collection,
+      collection: this._entitySet,
       method: "GET",
       params
     });
@@ -172,8 +158,6 @@ export class EntitySet<T = any> {
         return parseInt(res?.d?.__count);
       case "v4":
         return res["@odata.count"];
-      default:
-        break;
     }
   }
 
@@ -183,7 +167,7 @@ export class EntitySet<T = any> {
 
   async create(body: DeepPartial<T>): Promise<T> {
     const res = await this._client.newRequest<T>({
-      collection: this._collection,
+      collection: this._entitySet,
       method: "POST",
       entity: body
     });
@@ -192,9 +176,15 @@ export class EntitySet<T = any> {
 
   }
 
-  async update(id: any, body: DeepPartial<T>): Promise<void> {
+  /**
+   * update instance by `UPDATE` method
+   *
+   * @param id
+   * @param body
+   */
+  async update(id: ODataKeyPredicate, body: DeepPartial<T>): Promise<void> {
     const res = await this._client.newRequest<T>({
-      collection: this._collection,
+      collection: this._entitySet,
       method: "PATCH",
       id,
       entity: body
@@ -202,9 +192,14 @@ export class EntitySet<T = any> {
     this._checkError(res);
   }
 
-  async delete(id: any): Promise<void> {
+  /**
+   * delete instance by object keys
+   *
+   * @param id
+   */
+  async delete(id: ODataKeyPredicate): Promise<void> {
     const res = await this._client.newRequest<T>({
-      collection: this._collection,
+      collection: this._entitySet,
       method: "DELETE",
       id
     });
@@ -212,14 +207,14 @@ export class EntitySet<T = any> {
   }
 
   /**
-   * run bounded action
+   * perform bounded action
    *
    * @param actionName the action name, remember add namespace for it
    * @param parameters
    */
-  async action(actionName: string, id: any, parameters?: any): any {
+  async action(actionName: string, id: ODataKeyPredicate, parameters?: any): any {
     const responseBody = await this._client.newRequest({
-      collection: this._collection,
+      collection: this._entitySet,
       method: "POST",
       id,
       parameters,
@@ -230,25 +225,14 @@ export class EntitySet<T = any> {
   }
 
   /**
-   * execute action import
-   */
-  async actionImport(actionName: string, payload?: any, params?: ODataQueryParam): any {
-    const responseBody = await this._client.actionImport(actionName, payload, params);
-    this._checkError(responseBody);
-    return responseBody;
-  }
-
-
-  /**
-   * execute function
+   * perform bounded function
    *
    * @param functionName
    * @param id
-   * @param payload
    */
-  async function(functionName: string, id: any, parameters?: any, params?: ODataQueryParam): any {
+  async function(functionName: string, id: ODataKeyPredicate, parameters?: any, params?: ODataQueryParam): any {
     const responseBody = await this._client.newRequest({
-      collection: this._collection,
+      collection: this._entitySet,
       method: "GET",
       id,
       params,
@@ -259,152 +243,6 @@ export class EntitySet<T = any> {
     return responseBody;
   }
 
-  /**
-  * execute function import
-  *
-  * @param functionName
-  * @param id
-  * @param parameters
-  */
-  async functionImport(functionName: string, parameters?: any, params?: ODataQueryParam): any {
-    const responseBody = await this._client.functionImport(functionName, parameters, params);
-    this._checkError(responseBody);
-    return responseBody;
-  }
 
 
 }
-
-/**
- * Batch wrappper for entity set
- */
-export class BatchEntitySet<T = any> {
-
-  private _collection: string;
-
-  private _client: OData;
-
-  constructor(collection: string, client: OData) {
-    this._collection = collection;
-    this._client = client;
-  }
-
-  retrieve(id: any, params?: ODataQueryParam) {
-    return this._client.newBatchRequest<T>({
-      collection: this._collection,
-      method: "GET",
-      id,
-      params
-    });
-  }
-
-  find(base: DeepPartial<T>) {
-    const filter = OData.newFilter();
-
-    Object.entries(base).forEach(([key, value]) => {
-      if (typeof value == "string") {
-        filter.field(key).eqString(value);
-      } else {
-        filter.field(key).eq(value);
-      }
-    });
-
-    return this.query(OData.newParam().filter(filter));
-  }
-
-  query(param?: ODataFilter): Promise<BatchRequest<T>>;
-
-  query(param?: ODataQueryParam): Promise<BatchRequest<T>>;
-
-  query(param?: any): any {
-    if (param instanceof ODataFilter) {
-      param = ODataQueryParam.newParam().filter(param);
-    }
-    if (param == undefined) {
-      param = OData.newParam();
-    }
-    return this._client.newBatchRequest<T>({
-      collection: this._collection,
-      method: "GET",
-      params: param
-    });
-  }
-
-  count(filter?: ODataFilter);
-
-  count(filter?: Partial<T>);
-
-  count(filter?: any) {
-
-    const params = OData.newParam().top(1);
-
-    // set count flag
-    switch (this._client.getVersion()) {
-      case "v4":
-        params.count(true);
-        break;
-      case "v2":
-        params.inlinecount(true);
-        break;
-      default:
-        break;
-    }
-
-    if (filter) {
-
-      if (filter instanceof ODataFilter) {
-        params.filter(filter);
-      } else {
-        const tmpFilter = ODataFilter.newFilter();
-        Object.entries(filter).forEach(([key, value]) => {
-          if (typeof value == "string") {
-            tmpFilter.field(key).eqString(value);
-          } else {
-            tmpFilter.field(key).eq(value);
-          }
-        });
-        params.filter(tmpFilter);
-      }
-
-    }
-
-    return this._client.newBatchRequest<T>({
-      collection: this._collection,
-      method: "GET",
-      params
-    });
-
-  }
-
-  create(body: DeepPartial<T>): Promise<BatchRequest<T>>;
-
-  create(body: any): Promise<BatchRequest<T>>;
-
-  create(body: any): any {
-    return this._client.newBatchRequest<T>({
-      collection: this._collection,
-      method: "POST",
-      entity: body
-    });
-  }
-
-  update(id: any, body: DeepPartial<T>) {
-    return this._client.newBatchRequest<T>({
-      collection: this._collection,
-      method: "PATCH",
-      id,
-      entity: body
-    });
-  }
-
-  delete(id: any) {
-    return this._client.newBatchRequest<T>({
-      collection: this._collection,
-      method: "DELETE",
-      id
-    });
-  }
-
-}
-
-

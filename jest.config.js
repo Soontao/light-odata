@@ -1,5 +1,6 @@
+/** @type {import('jest').Config} */
 module.exports = {
-  "testTimeout": 300 * 1000,
+  "testTimeout": 60 * 1000,
   "transform": {
     ".(ts|tsx)": "ts-jest"
   },
