@@ -1,7 +1,5 @@
 import { attempt } from "@newdash/newdash/attempt";
 import { Mutex } from "@newdash/newdash/functional/Mutex";
-import { join } from "@newdash/newdash/join";
-import { slice } from "@newdash/newdash/slice";
 import { startsWith } from "@newdash/newdash/startsWith";
 import { JsonBatchResponseBundle } from "@odata/parser/lib/builder/batch";
 import type { RequestInit } from "node-fetch";
@@ -56,12 +54,10 @@ const DEFULAT_HEADERS = {
  */
 export class OData {
 
-  private metadataUri: string;
-
   /**
    * odata service path, like /sap/c4c/odata/v1/c4codata/
    */
-  private serviceRoot: string;
+  private serviceEndpoint: string;
 
   /**
    * http basic credential
@@ -109,10 +105,9 @@ export class OData {
 
   public static New(options: any): any {
     const rt = new OData(
-      options.metadataUri,
+      options.serviceEndpoint ?? options.metadataUri,
       options.credential,
       options.commonHeaders,
-      undefined,
       options.fetchProxy,
       options.processCsrfToken
     );
@@ -157,17 +152,13 @@ export class OData {
   /**
    * OData
    *
-   * @deprecated please use static method create instance
+   * @deprecated please use static method `OData.New` to create instance
    * @private
    */
   private constructor(
-    metadataUri: string,
+    serviceEndpoint: string,
     credential?: Credential,
     headers: any = {},
-    /**
-     * deprecated, DO NOT use it
-     */
-    urlRewrite?: (string) => string,
     fetchProxy?: FetchProxy,
     /**
      * auto fetch csrf token before broken operation
@@ -177,14 +168,16 @@ export class OData {
     if (fetchProxy) {
       this.fetchProxy = fetchProxy;
     }
-    if (metadataUri === undefined) {
+    if (serviceEndpoint === undefined) {
       throw new ValidationError("metadata url required !");
     }
 
-    this.metadataUri = metadataUri;
+    if (serviceEndpoint.endsWith("$metadata")) {
+      serviceEndpoint = serviceEndpoint.slice(0, serviceEndpoint.length - 9);
+    }
 
     // e.g https://c4c-system/sap/c4c/odata/v1/c4codata/
-    this.serviceRoot = `${join(slice(this.metadataUri.split("/"), 0, -1), "/")}/`;
+    this.serviceEndpoint = serviceEndpoint;
 
     if (credential !== undefined) {
       this.credential = credential;
@@ -259,9 +252,9 @@ export class OData {
    */
   public setODataEndPath(odataEnd: string): void {
     if (odataEnd !== undefined) {
-      this.serviceRoot = odataEnd;
-      if (!this.serviceRoot.endsWith("/")) {
-        this.serviceRoot += "/";
+      this.serviceEndpoint = odataEnd;
+      if (!this.serviceEndpoint.endsWith("/")) {
+        this.serviceEndpoint += "/";
       }
     }
   }
@@ -295,7 +288,7 @@ export class OData {
         };
       }
 
-      const { response: { headers } } = await this.fetchProxy(this.serviceRoot, config);
+      const { response: { headers } } = await this.fetchProxy(this.serviceEndpoint, config);
       if (headers) {
         this.csrfToken = headers.get(this.csrfTokenName);
       } else {
@@ -368,7 +361,7 @@ export class OData {
     method: HTTPMethod = "GET",
     entity?: any
   ) {
-    let url = `${this.serviceRoot}${collection}`;
+    let url = `${this.serviceEndpoint}${collection}`;
     if (id) {
       url += this.formatIdString(id);
     }
@@ -449,7 +442,7 @@ export class OData {
 
   private async _executeActionOrFunction(options: any) {
 
-    let url = `${this.serviceRoot}`; // create new string
+    let url = `${this.serviceEndpoint}`; // create new string
     let method: HTTPMethod = "GET";
 
     options.params = options.params ?? this.newParam();
@@ -537,7 +530,7 @@ export class OData {
    * format batch request parameter
    */
   private async formatBatchRequests(requests: Array<Promise<BatchRequest>>) {
-    const url = `${this.serviceRoot}$batch`;
+    const url = `${this.serviceEndpoint}$batch`;
 
     const req: RequestInit = {
       method: "POST",
@@ -582,7 +575,7 @@ export class OData {
 
     const reqs = await Promise.all(requests);
     const body = formatBatchRequestForOData401(reqs);
-    const url = `${this.serviceRoot}$batch`;
+    const url = `${this.serviceEndpoint}$batch`;
     const headers = await this.getHeaders();
     const response = await this.fetchProxy(url, { method: "POST", body: JSON.stringify(body), headers });
     const responseBody: JsonBatchResponseBundle = response.content;

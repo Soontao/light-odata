@@ -23,13 +23,27 @@ export type FetchProxy = (url: string, init: RequestInit) => Promise<{
   response: Response;
 }>;
 
-export interface ODataNewOptions {
+export interface ODataNewOptionsOld {
   /**
    * metadata url
    *
+   * @deprecated please try to use serviceEndpoint
    * @example `https://odata.org/V2/Northwind/Northwind.svc/$metadata`
    */
   metadataUri: string;
+}
+
+export interface ODataNewOptionsNew {
+  /**
+   *
+   * odata service endpoint
+   *
+   * @example `https://odata.org/V2/Northwind/Northwind.svc/`
+   */
+  serviceEndpoint: string;
+}
+
+export interface ODataNewOptionsCommon {
 
   /**
    * credential configuration, basic/oauth (client credentials)
@@ -71,7 +85,9 @@ export interface ODataNewOptions {
   version?: ODataVersion;
 }
 
-export interface ODataV4NewOptions extends ODataNewOptions {
+export type ODataNewOptions = (ODataNewOptionsNew | ODataNewOptionsOld) & ODataNewOptionsCommon
+
+export type ODataV4NewOptions = ODataNewOptions & {
   version: "v4"
 }
 

@@ -33,9 +33,9 @@ Start with a simple query, following code start a `GET` http request, and asks t
 import { OData } from "@odata/client"
 
 // odata.org sample odata service
-const TestServiceURL = "https://services.odata.org/V2/Northwind/Northwind.svc/$metadata"
+const TestServiceURL = "https://services.odata.org/V2/Northwind/Northwind.svc/"
 const client = OData.New({
-  metadataUri: TestServiceURL,
+  serviceEndpoint: TestServiceURL,
 })
 
 const runner = async () => {
@@ -56,8 +56,8 @@ const runner = async () => {
 
 ```js
 // OData V4 client
-const Service = "https://odata-v4-demo-001.herokuapp.com/odata/$metadata"
-const client = OData.New4({ metadataUri: Service, variant: "cap" })
+const Service = "https://odata-v4-demo-001.herokuapp.com/odata/"
+const client = OData.New4({ serviceEndpoint: Service, variant: "cap" })
 ```
 
 
@@ -317,7 +317,7 @@ use odata `$batch` api for operating multi entities in **single** HTTP request, 
 const runner = async () => {
 
   const odata = OData.New({
-    metadataUri: `https://services.odata.org/V2/(S(${v4()}))/OData/OData.svc/$metadata`,
+    serviceEndpoint: `https://services.odata.org/V2/(S(${v4()}))/OData/OData.svc/`,
   })
   const testDesc1 = v4(); // a generated uuid
   const testDesc2 = v4();
@@ -363,7 +363,7 @@ const runner = async () => {
 ```ts
 test("Read by GUID ID (Guid)", async () => {
   const odata = OData.New({
-    metadataUri: "https://services.odata.org/v4/OData/OData.svc/$metadata",
+    serviceEndpoint: "https://services.odata.org/v4/OData/OData.svc/",
     version: "v4",
   });
   const result = await odata.newRequest<any>({
@@ -382,7 +382,7 @@ test("Read by GUID ID (Guid)", async () => {
 
 ```ts
 const client = OData.New({
-  metadataUri: 'xxxxx',
+  serviceEndpoint: 'xxxxx',
   // the default fetch proxy
   fetchProxy: async (url, init) => {
     // just add some transform here 
@@ -407,7 +407,7 @@ const client = OData.New({
 
 ```ts
 const client = OData.New({
-  metadataUri: 'http://dummy.com/odata/srv/$metadata',
+  serviceEndpoint: 'http://dummy.com/odata/srv/',
   commonHeaders: {
     'x-value-header': 'x header value'
   }

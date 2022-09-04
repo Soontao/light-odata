@@ -11,10 +11,10 @@ if (process.env.CAP_DEMO_SERVICE === undefined) {
 
 d('CAP Framework OData (V4) Test Suite (basic)', () => {
 
-  const Service = `${process.env.CAP_DEMO_SERVICE}/odata/$metadata`
+  const Service = `${process.env.CAP_DEMO_SERVICE}/odata/`
 
   const createClient = () => OData.New4({
-    metadataUri: Service,
+    serviceEndpoint: Service,
     variant: "cap"
   })
 
