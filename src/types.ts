@@ -101,12 +101,13 @@ export interface BatchRequestOptions<T> {
 
 export interface ODataRequest {
   /**
-   * the entity set name of data service
+   * the `entity set` name of data service
    */
-  collection?: string, /** collection name */
+  collection?: string,
   /**
    * GET for QUERY/READ; for QUERY, you can use params to control response data
    * PATCH for UPDATE
+   * PUT for overrite
    * POST for CREATE
    * DELETE for delete
    */

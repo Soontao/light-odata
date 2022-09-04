@@ -90,14 +90,32 @@ export interface ODataV4 {
   getVersion(): ODataVersion;
 
   /**
-   * new odata http request
+   * create new odata http request
    */
   newRequest<T>(options: ODataQueryRequest): Promise<PlainODataMultiResponseV4<T>>;
+  /**
+   * create new odata http request
+   */
   newRequest<T>(options: ODataWriteRequest<T>): Promise<PlainODataSingleResponseV4<T>>;
+  /**
+   * create new odata http request
+   */
   newRequest<T>(options: ODataReadIDRequest): Promise<PlainODataSingleResponseV4<T>>;
+  /**
+   * create new odata http request
+   */
   newRequest(options: ODataFunctionRequest): Promise<PlainODataResponseV4>;
+  /**
+   * create new odata http request
+   */
   newRequest(options: ODataActionRequest): Promise<PlainODataResponseV4>;
+  /**
+   * create new odata http request
+   */
   newRequest(options: ODataFunctionImportRequest): Promise<PlainODataResponseV4>;
+  /**
+   * create new odata http request
+   */
   newRequest(options: ODataActionImportRequest): Promise<PlainODataResponseV4>;
 
   functionImport(functionName: string, parameters?: any, params?: ODataQueryParam): Promise<PlainODataResponseV4>;

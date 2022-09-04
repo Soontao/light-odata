@@ -80,5 +80,25 @@ d('CAP Framework OData (V4) Test Suite (basic)', () => {
 
   });
 
+  it('should support simple aggr', async () => {
+    const client = createClient()
+    const r = await client.newRequest({
+      collection: "Orders",
+      params: client.newParam().apply(`aggregate(Amount with average as avg)`)
+    })
+    expect(r).toMatchInlineSnapshot(`
+Object {
+  "@odata.context": "$metadata#Orders(avg)",
+  "value": Array [
+    Object {
+      "@odata.id": null,
+      "avg": 79489.8141,
+      "avg@odata.type": "#Decimal",
+    },
+  ],
+}
+`)
+  });
+
 
 });

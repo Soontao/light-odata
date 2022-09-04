@@ -2,9 +2,9 @@ import concat from "@newdash/newdash/concat";
 import isArray from "@newdash/newdash/isArray";
 import join from "@newdash/newdash/join";
 import uniq from "@newdash/newdash/uniq";
-import type { ODataVariant, ODataVersion } from "./types";
 import { ValidationError } from "./errors";
 import { ODataFilter, ParamBoundedFilter } from "./filter";
+import type { ODataVariant, ODataVersion } from "./types";
 import { SearchParams } from "./util";
 
 
@@ -57,6 +57,8 @@ export class ODataQueryParam<T = any> {
   private $expand: string[] = [];
 
   private $count = false;
+
+  private $apply: string;
 
   #customParams: SearchParams;
 
@@ -200,6 +202,19 @@ export class ODataQueryParam<T = any> {
   }
 
   /**
+   * apply data aggregation
+   *
+   * @experimental basic support, strong type later
+   * @see [OData Extension for Data Aggregation Version 4.0](http://docs.oasis-open.org/odata/odata-data-aggregation-ext/v4.0/cs01/odata-data-aggregation-ext-v4.0-cs01.html)
+   * @param expression
+   * @returns
+   */
+  public apply(expression: string): this {
+    this.$apply = expression;
+    return this;
+  }
+
+  /**
    * expand navigation props
    *
    * @param fields
@@ -247,24 +262,25 @@ export class ODataQueryParam<T = any> {
    */
   public toString(version: ODataVersion = "v2", variant: ODataVariant = "default"): string {
 
-    const rt = new SearchParams();
-    rt.putAll(this.#customParams);
+    const params = new SearchParams();
+    params.putAll(this.#customParams);
 
-    if (this.$format) { rt.append("$format", this.$format); }
-    if (this.$filter) { rt.append("$filter", this.$filter.toString()); }
-    if (this.$orderby) { rt.append("$orderby", this.$orderby); }
+    if (this.$format) { params.append("$format", this.$format); }
+    if (this.$filter) { params.append("$filter", this.$filter.toString()); }
+    if (this.$orderby) { params.append("$orderby", this.$orderby); }
 
-    if (this.$select && this.$select.length > 0) { rt.append("$select", join(uniq(this.$select), ",")); }
-    if (this.$skip) { rt.append("$skip", this.$skip.toString()); }
-    if (this.$top && this.$top > 0) { rt.append("$top", this.$top.toString()); }
-    if (this.$expand && this.$expand.length > 0) { rt.append("$expand", this.$expand.join(",")); }
+    if (this.$select && this.$select.length > 0) { params.append("$select", join(uniq(this.$select), ",")); }
+    if (this.$skip) { params.append("$skip", this.$skip.toString()); }
+    if (this.$top && this.$top > 0) { params.append("$top", this.$top.toString()); }
+    if (this.$expand && this.$expand.length > 0) { params.append("$expand", this.$expand.join(",")); }
 
     switch (version) {
       case "v2":
-        if (this.$inlinecount) { rt.append("$inlinecount", this.$inlinecount); }
+        if (this.$inlinecount) { params.append("$inlinecount", this.$inlinecount); }
         break;
       case "v4":
-        if (this.$count) { rt.append("$count", "true"); }
+        if (this.$count) { params.append("$count", "true"); }
+        if (this.$apply) { params.append("$apply", this.$apply); }
         break;
       default:
         break;
@@ -274,16 +290,16 @@ export class ODataQueryParam<T = any> {
 
       switch (variant) {
         case "sap-gateway":
-          rt.append("search", this.$search);
+          params.append("search", this.$search);
           break;
         default:
-          rt.append("$search", this.$search);
+          params.append("$search", this.$search);
           break;
       }
 
     }
 
-    return rt.toString();
+    return params.toString();
   }
 
 }
