@@ -2,9 +2,7 @@ import {
   ODataDateTime,
   ODataDateTimeOffset,
   ODataFilter,
-  ODataParam,
-  ODataValueObject,
-  RawString
+  ODataParam
 } from '../src';
 import "../src/polyfill";
 import { OData } from "../src/request";
@@ -36,6 +34,20 @@ describe('Read Test (V2)', () => {
     expect(result?.d?.__count).not.toBeUndefined()
 
   })
+
+  it('should support read all by entity set', async () => {
+    const odata = OData.New({ metadataUri: TestServiceURL })
+    const customerEntitySet = odata.getEntitySet<Customer>("Customers")
+    const results = await customerEntitySet.query(odata.newParam().inlinecount(true))
+    expect(results[0].CustomerID).toEqual("ALFKI")
+  });
+
+  it('should support count all', async () => {
+    const odata = OData.New({ metadataUri: TestServiceURL })
+    const customerEntitySet = odata.getEntitySet<Customer>("Customers")
+    const count = await customerEntitySet.count()
+    expect(count).toMatchInlineSnapshot(`91`)
+  });
 
   test('Read By ID', async () => {
     const odata = OData.New({ metadataUri: TestServiceURL })
