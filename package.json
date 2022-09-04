@@ -34,10 +34,10 @@
     "prepublishOnly": "npm run build && npm test"
   },
   "dependencies": {
-    "@newdash/newdash": "^5.21.2",
+    "@newdash/newdash": "^5.21.4",
     "@odata/parser": "^0.2.11",
     "@types/node-fetch": "^2.6.2",
-    "fetch-cookie": "^2.0.5",
+    "fetch-cookie": "^2.1.0",
     "http-string-parser": "^0.0.6",
     "node-fetch": "^2.6.7",
     "uuid": "^8.3.2"
