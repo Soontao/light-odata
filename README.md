@@ -1,10 +1,13 @@
 # OData Client
 
+[![unittest](https://github.com/Soontao/light-odata/actions/workflows/nodejs.yml/badge.svg)](https://github.com/Soontao/light-odata/actions/workflows/nodejs.yml)
 [![npm (scoped)](https://img.shields.io/npm/v/@odata/client)](https://www.npmjs.com/package/@odata/client)
 [![codecov](https://codecov.io/gh/Soontao/light-odata/branch/main/graph/badge.svg)](https://codecov.io/gh/Soontao/light-odata)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Soontao_c4codata&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=Soontao_c4codata)
+![NPM](https://img.shields.io/npm/l/@odata/client)
+![npm](https://img.shields.io/npm/dy/@odata/client)
 
 ![npm bundle size (scoped)](https://img.shields.io/bundlephobia/min/@odata/client)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Soontao_c4codata&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=Soontao_c4codata)
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=Soontao_c4codata&metric=sqale_index)](https://sonarcloud.io/dashboard?id=Soontao_c4codata)
 [![DeepScan grade](https://deepscan.io/api/teams/9408/projects/11929/branches/178297/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=9408&pid=11929&bid=178297)
 
