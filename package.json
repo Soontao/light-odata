@@ -4,7 +4,7 @@
   "description": "OData(V2/V4) Client",
   "unpkg": "./lib/odata-client-umd.js",
   "engines": {
-    "node": ">=10"
+    "node": ">=14"
   },
   "devDependencies": {
     "@types/http-string-parser": "0.0.30",
@@ -24,7 +24,7 @@
   "typings": "lib/index.d.ts",
   "scripts": {
     "build": "tsc && npm run build:umd",
-    "build:umd": "esbuild src/index.ts --bundle --minify --target=es6 --format=iife --outfile=lib/odata-client-umd.js",
+    "build:umd": "esbuild src/index.ts --bundle --minify --target=node14 --format=iife --outfile=lib/odata-client-umd.js",
     "test": "jest --silent",
     "lint": "tsc --noEmit && eslint src/**/*.*",
     "test:watch": "npm test -- --watch",
