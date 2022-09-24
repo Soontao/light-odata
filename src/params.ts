@@ -25,13 +25,18 @@ export interface ODataParamOrderField<T = any> {
 
 
 /**
- * OData Param Object
+ * OData System Query Options
  *
- * ref https://github.com/SAP/C4CODATAAPIDEVGUIDE
+ * like `$filter`, `$format`, `$top` ....
+ *
  */
 export class ODataQueryParam<T = any> {
 
   public static newParam(): ODataQueryParam {
+    return new ODataQueryParam();
+  }
+
+  public static newOptions() {
     return new ODataQueryParam();
   }
 
@@ -328,6 +333,8 @@ export class ODataQueryParam<T = any> {
 }
 
 export const ODataParam = ODataQueryParam;
+
+export const SystemQueryOptions = ODataQueryParam;
 
 export function param() {
   return ODataParam.newParam();

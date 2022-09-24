@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ODataParams Test should support $apply multi transformation with sequence 1`] = `"$apply=groupBy((Time),aggregate(Amount with sum as Total))/aggregate(Total with average as DailyAverage)"`;

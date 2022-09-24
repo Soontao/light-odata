@@ -193,8 +193,18 @@ export class Transformation {
       return `groupBy(${properties})`;
     }
 
+    if (this._identity === true) {
+      return "identity";
+    }
+
+    // TODO: other transformation
 
     return expressionText;
   }
 
+}
+
+
+export function transformation() {
+  return Transformation.newTransformation();
 }

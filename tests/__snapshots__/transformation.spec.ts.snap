@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Transofmration Test Suite should supoprt simply groupBy 1`] = `"groupBy((Customer/Country,Product/Name))"`;
+
+exports[`Transofmration Test Suite should supoprt simply groupBy 2`] = `"groupBy((Customer/Country,Product/Name),aggregate(Amount with sum as Total))"`;
+
+exports[`Transofmration Test Suite should support concat transformation 1`] = `""`;
+
+exports[`Transofmration Test Suite should support countSumPercents transformations 1`] = `"topsum(10,Amount)"`;
+
+exports[`Transofmration Test Suite should support countSumPercents transformations 2`] = `"topcount(15,Sales/Amount)"`;
+
+exports[`Transofmration Test Suite should support countSumPercents transformations 3`] = `"toppercent(3,Age)"`;
+
+exports[`Transofmration Test Suite should support countSumPercents transformations 4`] = `"bottomsum(10,Amount)"`;
+
+exports[`Transofmration Test Suite should support countSumPercents transformations 5`] = `"bottomcount(15,Sales/Amount)"`;
+
+exports[`Transofmration Test Suite should support countSumPercents transformations 6`] = `"bottompercent(3,Age)"`;
+
+exports[`Transofmration Test Suite should support identity tranformation 1`] = `"identity"`;
+
+exports[`Transofmration Test Suite should support use aggregate transformation 1`] = `"aggregate(Amount with sum as Total)"`;

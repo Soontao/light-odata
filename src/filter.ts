@@ -253,6 +253,7 @@ class ODataPropertyExpr<T extends ODataFilter> {
 
 /**
  * OData filter builder
+ *
  */
 export class ODataFilter<T = any> {
 

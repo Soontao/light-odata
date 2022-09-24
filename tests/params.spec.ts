@@ -1,4 +1,5 @@
-import { OData, ODataDateTime, ODataDateTimeOffset, ODataParam, ODataQueryParam, RawString } from "../src";
+import { OData, ODataDateTime, ODataDateTimeOffset, ODataParam, ODataQueryParam, RawString, SystemQueryOptions } from "../src";
+import { transformation, Transformation } from "../src/tranformation";
 
 describe('ODataParams Test', () => {
 
@@ -131,6 +132,19 @@ describe('ODataParams Test', () => {
       .toBe("datetimeoffset'1995-11-11T00%3A00%3A00.000Z'")
     expect(RawString.from("fdsajk@😋2141'fdsaf").toString())
       .toBe("fdsajk@😋2141'fdsaf")
+  });
+
+  it('should support $apply multi transformation with sequence', () => {
+    expect(SystemQueryOptions.newOptions().apply(
+      [
+        transformation().groupBy(
+          ['Time'],
+          transformation().aggregate('Amount with sum as Total')
+        ),
+        transformation().aggregate('Total with average as DailyAverage'),
+      ]
+    ).toString('v4')).toMatchSnapshot()
+
   });
 
 })
