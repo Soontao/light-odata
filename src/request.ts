@@ -150,7 +150,7 @@ export class OData {
     return ODataFilter.newFilter();
   }
 
-  public static newTransformation() {
+  static newTransformation() {
     return Transformation.newTransformation();
   }
 
@@ -621,6 +621,10 @@ export class OData {
    */
   public newParam() {
     return OData.newParam();
+  }
+
+  public newTransformation() {
+    return Transformation.newTransformation();
   }
 
   public async newBatchRequest<T>(options: BatchRequestOptions<T>) {
