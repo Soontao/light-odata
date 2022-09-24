@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CAP Framework OData (V4) Test Suite (basic) should support simple aggr 1`] = `
+{
+  "@odata.context": "$metadata#Orders(avg)",
+  "value": [
+    {
+      "@odata.id": null,
+      "avg": 79489.8141,
+      "avg@odata.type": "#Decimal",
+    },
+  ],
+}
+`;

@@ -85,21 +85,10 @@ d('CAP Framework OData (V4) Test Suite (basic)', () => {
     const r = await client.newRequest({
       collection: "Orders",
       params: client
-        .newParam()
+        .newOptions()
         .apply(client.newTransformation().aggregate('Amount with average as avg'))
     })
-    expect(r).toMatchInlineSnapshot(`
-Object {
-  "@odata.context": "$metadata#Orders(avg)",
-  "value": Array [
-    Object {
-      "@odata.id": null,
-      "avg": 79489.8141,
-      "avg@odata.type": "#Decimal",
-    },
-  ],
-}
-`)
+    expect(r).toMatchSnapshot()
   });
 
 
