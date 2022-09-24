@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.21.0-alpha.0](https://github.com/Soontao/light-odata/compare/v2.20.2...v2.21.0-alpha.0) (2022-09-24)
+
+
+### Features
+
+* $apply filter ([5fb969a](https://github.com/Soontao/light-odata/commit/5fb969a1f5f8b61720ff23efcdec22035f32e4ff))
+* transformation for $apply ([e0bce19](https://github.com/Soontao/light-odata/commit/e0bce1940ae90c48a50a6cfe85675d1de00ffef0))
+
+
+### Bug Fixes
+
+* **deps:** update dependency uuid to v9 ([d2d404d](https://github.com/Soontao/light-odata/commit/d2d404d27c151c73bf42af0441609cefaa178a49))
+* type ([9fc181a](https://github.com/Soontao/light-odata/commit/9fc181a6915ce0b3db084181c0d61417bd7efea0))
+* ut ([d683b2a](https://github.com/Soontao/light-odata/commit/d683b2a907c63c993a562138fa671d8365d43fdb))
+
 ### [2.20.2](https://github.com/Soontao/light-odata/compare/v2.20.1...v2.20.2) (2022-08-16)
 
 
