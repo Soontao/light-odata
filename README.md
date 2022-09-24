@@ -67,7 +67,7 @@ const client = OData.New4({ serviceEndpoint: "https://odata-v4-demo-001.herokuap
 
 use `SystemQueryOption` to control `response size`, `element projection` and `order`
 
-[go to the document](./docs/API.ODataParam.md)
+[go to the document](./docs/API.SystemQueryOptions.md)
 
 ## ODataFilter
 
