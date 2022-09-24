@@ -18,6 +18,8 @@ exports[`Transofmration Test Suite should support countSumPercents transformatio
 
 exports[`Transofmration Test Suite should support countSumPercents transformations 6`] = `"bottompercent(3,Age)"`;
 
+exports[`Transofmration Test Suite should support filter transformation 1`] = `"filter(Amount gt 3)"`;
+
 exports[`Transofmration Test Suite should support identity tranformation 1`] = `"identity"`;
 
 exports[`Transofmration Test Suite should support use aggregate transformation 1`] = `"aggregate(Amount with sum as Total)"`;

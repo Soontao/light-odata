@@ -1,3 +1,4 @@
+import { ODataFilter } from "./filter";
 
 
 /**
@@ -24,6 +25,8 @@ export class Transformation {
     properties: Array<string>;
     transformations: Transformation[];
   };
+
+  private _filter: ODataFilter<any>;
 
   public static newTransformation() {
     return new Transformation();
@@ -139,6 +142,16 @@ export class Transformation {
   }
 
   /**
+   * The filter transformation takes a Boolean expression that could also be passed as a `$filter` system query option to its input set and returns all instances for which this expression evaluates to true.
+   * @param filter
+   * @returns
+   */
+  public filter(filter: ODataFilter) {
+    this._filter = filter;
+    return this;
+  }
+
+  /**
    *
     The `groupby` transformation takes one or two parameters and
     1. Splits the initial set into subsets where all instances in a subset have the same values for the grouping properties specified in the first parameter,
@@ -195,6 +208,11 @@ export class Transformation {
 
     if (this._identity === true) {
       return "identity";
+    }
+
+    if (this._filter !== undefined) {
+      //  $apply is only avaible for odata v4,
+      return `filter(${this._filter.toString()})`;
     }
 
     // TODO: other transformation

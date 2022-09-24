@@ -1,4 +1,5 @@
-import { Transformation } from "../src/tranformation";
+import { ODataFilter } from "../src";
+import { transformation, Transformation } from "../src/tranformation";
 
 
 describe('Transofmration Test Suite', () => {
@@ -34,6 +35,12 @@ describe('Transofmration Test Suite', () => {
         )
         .toString()
     ).toMatchSnapshot()
+  });
+
+  it('should support filter transformation', () => {
+
+    expect(transformation().filter(ODataFilter.newFilter().field('Amount').gt(3)).toString()).toMatchSnapshot()
+
   });
 
   it('should supoprt simply groupBy', () => {
