@@ -2,6 +2,7 @@ import concat from "@newdash/newdash/concat";
 import isArray from "@newdash/newdash/isArray";
 import join from "@newdash/newdash/join";
 import uniq from "@newdash/newdash/uniq";
+import { Transformation } from "./tranformation";
 import { ValidationError } from "./errors";
 import { ODataFilter, ParamBoundedFilter } from "./filter";
 import type { ODataVariant, ODataVersion } from "./types";
@@ -204,13 +205,35 @@ export class ODataQueryParam<T = any> {
   /**
    * apply data aggregation
    *
-   * @experimental basic support, strong type later
+   * @experimental
+   *
    * @see [OData Extension for Data Aggregation Version 4.0](http://docs.oasis-open.org/odata/odata-data-aggregation-ext/v4.0/cs01/odata-data-aggregation-ext-v4.0-cs01.html)
    * @param expression
    * @returns
    */
-  public apply(expression: string): this {
-    this.$apply = expression;
+  public apply(expression: Array<Transformation>): this;
+
+  public apply(expression: Transformation): this;
+
+  public apply(expression: Array<string>): this;
+
+  public apply(expression: string): this;
+
+  public apply(expression: any): this {
+    if (isArray(expression)) {
+      this.$apply = expression
+        .map(exp => exp instanceof Transformation ? exp.toString() : String(exp))
+        .join("/"); // Transformation Sequences
+    }
+    else {
+      if (expression instanceof Transformation) {
+        this.$apply = expression.toString();
+      }
+      else {
+        // fallback, support complex customize scenario
+        this.$apply = expression;
+      }
+    }
     return this;
   }
 

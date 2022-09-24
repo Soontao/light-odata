@@ -84,7 +84,9 @@ d('CAP Framework OData (V4) Test Suite (basic)', () => {
     const client = createClient()
     const r = await client.newRequest({
       collection: "Orders",
-      params: client.newParam().apply(`aggregate(Amount with average as avg)`)
+      params: client
+        .newParam()
+        .apply(client.newTransformation().aggregate('Amount with average as avg'))
     })
     expect(r).toMatchInlineSnapshot(`
 Object {

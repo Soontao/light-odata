@@ -12,6 +12,7 @@ import type {
   UnwrapBatchRequest, ODataVersion,
   UnwrapPromise
 } from "./types";
+import { Transformation } from "./tranformation";
 
 
 export interface PlainODataResponseV4 {
@@ -135,6 +136,7 @@ export interface ODataV4 {
    */
   newParam(): ODataQueryParam
 
+  newTransformation(): Transformation;
 
   /**
    * create batch request (will not perform)

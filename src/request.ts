@@ -10,6 +10,7 @@ import { FrameworkError, ODataServerError, ValidationError } from "./errors";
 import { ODataFilter } from "./filter";
 import { ClientCredentialsOAuthClient } from "./oauth";
 import { ODataParam, ODataQueryParam } from "./params";
+import { Transformation } from "./tranformation";
 import type {
   BatchRequestOptions, BatchRequests,
   BatchResponses, Credential, FetchProxy, HTTPMethod,
@@ -147,6 +148,10 @@ export class OData {
    */
   static newFilter(): ODataFilter {
     return ODataFilter.newFilter();
+  }
+
+  public static newTransformation() {
+    return Transformation.newTransformation();
   }
 
   /**
