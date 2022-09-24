@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.21.0-beta.0](https://github.com/Soontao/light-odata/compare/v2.21.0-alpha.0...v2.21.0-beta.0) (2022-09-24)
+
+
+### Bug Fixes
+
+* ut ([d708ff0](https://github.com/Soontao/light-odata/commit/d708ff037bea220becd3325decf0cd818a9a4fa4))
+
 ## [2.21.0-alpha.0](https://github.com/Soontao/light-odata/compare/v2.20.2...v2.21.0-alpha.0) (2022-09-24)
 
 
