@@ -255,9 +255,9 @@ export class OData {
    *
    * e.g. https://tenant.c4c.saphybriscloud.cn/sap/c4c/odata/v1/c4codata/
    */
-  public setODataEndPath(odataEnd: string): void {
-    if (odataEnd !== undefined) {
-      this.serviceEndpoint = odataEnd;
+  public setODataEndPath(odataEndpoint: string): void {
+    if (odataEndpoint !== undefined) {
+      this.serviceEndpoint = odataEndpoint;
       if (!this.serviceEndpoint.endsWith("/")) {
         this.serviceEndpoint += "/";
       }

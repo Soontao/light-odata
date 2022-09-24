@@ -1,18 +1,14 @@
 import type { BatchRequestV4, ParsedResponseV4 } from "./batch";
-import type { EntitySet } from "./entityset";
-import type { ODataFilter } from "./filter";
 import type { ODataQueryParam } from "./params";
-import { EdmString, Guid, ODataValueObject, RawString } from "./types";
+import type { OData } from "./request";
 import type {
-  BatchRequestOptions,
-  Credential, ODataActionImportRequest,
+  BatchRequestOptions, ODataActionImportRequest,
   ODataActionRequest, ODataFunctionImportRequest, ODataFunctionRequest,
   ODataQueryRequest, ODataReadIDRequest,
   ODataWriteRequest,
-  UnwrapBatchRequest, ODataVersion,
-  UnwrapPromise
+  UnwrapBatchRequest, UnwrapPromise
 } from "./types";
-import { Transformation } from "./tranformation";
+import { EdmString, Guid, ODataValueObject, RawString } from "./types";
 
 
 export interface PlainODataResponseV4 {
@@ -61,34 +57,12 @@ export type PlainODataMultiResponseV4<E = any> = PlainODataResponseV4 & {
 
 }
 
-export interface ODataV4 {
-
-  /**
-   * get Entity Set by entityset name
-   *
-   * @param entitySetName the name of entity set, you can get it from metadata
-   *
-   */
-  getEntitySet<T = any>(entitySetName: string): EntitySet<T>;
-
-  /**
-   * Set OData Client Http Basic credential
-   *
-   * @param credential
-   */
-  setCredential(credential: Credential): void;
-
-  /**
-   * setODataEndPath
-   *
-   * e.g. https://tenant.c4c.saphybriscloud.cn/sap/c4c/odata/v1/c4codata/
-   */
-  setODataEndPath(odataEnd: string): void;
+export interface ODataV4 extends OData {
 
   /**
    * get odata version
    */
-  getVersion(): ODataVersion;
+  getVersion(): "v4";
 
   /**
    * create new odata http request
@@ -121,22 +95,6 @@ export interface ODataV4 {
 
   functionImport(functionName: string, parameters?: any, params?: ODataQueryParam): Promise<PlainODataResponseV4>;
   actionImport(actionName: string, parameters?: any, params?: ODataQueryParam): Promise<PlainODataResponseV4>;
-
-  /**
-   * create new filter
-   *
-   * @alias OData.newFilter
-   */
-  newFilter(): ODataFilter
-
-  /**
-   * create new param
-   *
-   * @alias OData.newParam
-   */
-  newParam(): ODataQueryParam
-
-  newTransformation(): Transformation;
 
   /**
    * create batch request (will not perform)
