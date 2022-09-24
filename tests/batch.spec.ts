@@ -6,31 +6,16 @@ import { v4 } from "uuid";
 import { formatBatchRequest, OData, parseMultiPartContent } from "../src";
 import "../src/polyfill";
 import { ODATA_SAMPLE_SERVICE_HOST } from "./utils";
+import * as uuid from "uuid";
 
-interface Product {
-  ID: number,
-  Description: string
-}
+jest.mock("uuid")
 
 describe('test batch multipart parse & format', () => {
 
   test('should parse multipart', async () => {
     const sample = readFileSync(join(__dirname, "./resources/batch/sample.response"), { encoding: "utf8" })
     const responses = await parseMultiPartContent(sample, "ejjeeffe0")
-    expect(await responses[0].json()).toEqual({
-      "d": {
-        "results": [
-          {
-            "__metadata": {
-              "uri": "https://xxxxxx.odata.public.server.cn/sap/c4c/odata/cust/v1/servicemobileapp/ServiceRequestCollection('00163E20C9511ED7B6C53C069E784637')",
-              "type": "cust.ServiceRequest",
-              "etag": "W/\"datetimeoffset'2018-01-16T03%3A02%3A26.5744460Z'\""
-            },
-            "ObjectID": "00163E20C9511ED7B6C53C069E784637"
-          }
-        ]
-      }
-    })
+    expect(await responses[0].json()).toMatchSnapshot()
   })
 
   test('should parse complex multipart', async () => {
@@ -51,7 +36,11 @@ describe('test batch multipart parse & format', () => {
       headers: {
         "Accept": "application/json"
       }
-    }
+    };
+
+    (uuid.v4 as any)
+      .mockReturnValueOnce('eac3918e-1d62-4bbe-a415-469f4f00facf')
+      .mockReturnValueOnce("4fb20670-40cb-44ee-b158-cbae40199c97")
 
     const result = formatBatchRequest([
       {
@@ -94,7 +83,7 @@ describe('test batch multipart parse & format', () => {
       }
     ], "test")
 
-    expect(result)
+    expect(result).toMatchSnapshot()
 
   })
 

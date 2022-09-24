@@ -1,8 +1,9 @@
+/* eslint-disable max-len */
 import { RequestInit } from "node-fetch";
-import { FormatODataDateTimedate } from "./util";
 import { BatchRequest, ParsedResponse } from "./batch";
 import { TokenRetrieveType } from "./oauth";
-import { ODataQueryParam } from "./params";
+import { SystemQueryOptions } from "./params";
+import { FormatODataDateTimedate } from "./util";
 
 export type ODataVersion = "v2" | "v4";
 
@@ -101,9 +102,9 @@ export interface BatchRequestOptions<T> {
    */
   id?: any;
   /**
-   * OData Param
+   * OData system query options
    */
-  params?: ODataQueryParam;
+  params?: SystemQueryOptions;
   method?: HTTPMethod;
   /**
    * OData Entity Object
@@ -128,7 +129,7 @@ export interface ODataRequest {
    * DELETE for delete
    */
   method?: HTTPMethod,
-  params?: ODataQueryParam,
+  params?: SystemQueryOptions,
 }
 
 export type ODataKeyPredicate = string | boolean | number | null | ODataValueObject | {
@@ -137,11 +138,11 @@ export type ODataKeyPredicate = string | boolean | number | null | ODataValueObj
 
 export interface ODataReadIDRequest extends ODataRequest {
   id: ODataKeyPredicate, /** object key in READ/UPDATE/DELETE */
-  params?: ODataQueryParam,
+  params?: SystemQueryOptions,
 }
 
 export interface ODataQueryRequest extends ODataRequest {
-  params?: ODataQueryParam, /** params in QUERY */
+  params?: SystemQueryOptions, /** params in QUERY */
 }
 
 export interface ODataWriteRequest<T> extends ODataRequest {
@@ -250,10 +251,7 @@ export interface Credential {
  * Same as Partial<T> but goes deeper and makes Partial<T> all its properties and sub-properties.
  */
 export type DeepPartial<T> = {
-  [P in keyof T]?:
-  T[P] extends Array<infer U> ?
-    Array<DeepPartial<U>> : T[P] extends ReadonlyArray<infer U> ?
-      ReadonlyArray<DeepPartial<U>> : DeepPartial<T[P]>;
+  [P in keyof T]?: T[P] extends Array<infer U> ? Array<DeepPartial<U>> : T[P] extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : DeepPartial<T[P]>;
 };
 
 /**

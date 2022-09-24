@@ -30,14 +30,18 @@ export interface ODataParamOrderField<T = any> {
  * like `$filter`, `$format`, `$top` ....
  *
  */
-export class ODataQueryParam<T = any> {
+export class SystemQueryOptions<T = any> {
 
-  public static newParam(): ODataQueryParam {
-    return new ODataQueryParam();
+  /**
+   * @deprecated
+   * @returns
+   */
+  public static newParam(): SystemQueryOptions {
+    return new SystemQueryOptions();
   }
 
-  public static newOptions() {
-    return new ODataQueryParam();
+  public static newOptions(): SystemQueryOptions {
+    return new SystemQueryOptions();
   }
 
   constructor() {
@@ -73,7 +77,7 @@ export class ODataQueryParam<T = any> {
    *
    * @version 2.0.0
    */
-  public inlinecount(inlinecount = false): ODataQueryParam {
+  public inlinecount(inlinecount = false) {
     if (inlinecount) {
       this.$inlinecount = "allpages";
     } else {
@@ -90,7 +94,7 @@ export class ODataQueryParam<T = any> {
    *
    * @version 4.0.0
    */
-  public count(count = true): ODataQueryParam {
+  public count(count = true) {
     this.$count = count;
     return this;
   }
@@ -332,10 +336,27 @@ export class ODataQueryParam<T = any> {
 
 }
 
-export const ODataParam = ODataQueryParam;
+export const ODataParam = SystemQueryOptions;
 
-export const SystemQueryOptions = ODataQueryParam;
+/**
+ * odata system query options
+ */
+export const ODataQueryParam = SystemQueryOptions;
 
+/**
+ *
+ * @deprecated
+ * @returns
+ */
 export function param() {
   return ODataParam.newParam();
+}
+
+/**
+ * create new system options
+ *
+ * @returns
+ */
+export function systemOptions() {
+  return SystemQueryOptions.newOptions();
 }

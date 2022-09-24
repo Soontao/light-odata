@@ -1,5 +1,5 @@
 import type { BatchRequestV4, ParsedResponseV4 } from "./batch";
-import type { ODataQueryParam } from "./params";
+import type { SystemQueryOptions } from "./params";
 import type { OData } from "./request";
 import type {
   BatchRequestOptions, ODataActionImportRequest,
@@ -93,8 +93,8 @@ export interface ODataV4 extends OData {
    */
   newRequest(options: ODataActionImportRequest): Promise<PlainODataResponseV4>;
 
-  functionImport(functionName: string, parameters?: any, params?: ODataQueryParam): Promise<PlainODataResponseV4>;
-  actionImport(actionName: string, parameters?: any, params?: ODataQueryParam): Promise<PlainODataResponseV4>;
+  functionImport(functionName: string, parameters?: any, params?: SystemQueryOptions): Promise<PlainODataResponseV4>;
+  actionImport(actionName: string, parameters?: any, params?: SystemQueryOptions): Promise<PlainODataResponseV4>;
 
   /**
    * create batch request (will not perform)

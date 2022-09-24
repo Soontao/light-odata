@@ -1,8 +1,8 @@
 /* eslint-disable max-len */
 import { join } from "@newdash/newdash/join";
-import { ODataDateTime, ODataDateTimeOffset, ODataValueObject } from "./types";
 import { FrameworkError, ValidationError } from "./errors";
-import { ODataQueryParam } from "./params";
+import { SystemQueryOptions } from "./params";
+import { ODataDateTime, ODataDateTimeOffset, ODataValueObject } from "./types";
 
 
 export type FilterValue = number | string | ODataValueObject | null | boolean | Symbol | object
@@ -470,9 +470,9 @@ export class ODataFilter<T = any> {
 
 export class ParamBoundedFilter<T = any> extends ODataFilter<T> {
 
-  #params: ODataQueryParam;
+  #params: SystemQueryOptions;
 
-  constructor(params: ODataQueryParam) {
+  constructor(params: SystemQueryOptions) {
     super();
     this.#params = params;
   }
@@ -482,7 +482,7 @@ export class ParamBoundedFilter<T = any> extends ODataFilter<T> {
    *
    * @returns the param
    */
-  public filterEnd(): ODataQueryParam {
+  public filterEnd(): SystemQueryOptions {
     return this.#params.filter(this);
   }
 

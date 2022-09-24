@@ -8,7 +8,8 @@ describe('ODataParams Test', () => {
   })
 
   test('OData param alternative constructor', () => {
-    expect(OData.newParam()).toBeInstanceOf(ODataParam)
+    expect(OData.newParam()).toBeInstanceOf(ODataQueryParam)
+    expect(OData.newOptions()).toBeInstanceOf(ODataQueryParam)
   })
 
   test('ODataParam skip and top', () => {

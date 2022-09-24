@@ -1,6 +1,6 @@
-## ODataParam
+## SystemQueryOptions
 
-use `ODataParam` to control `response size`, `element projection` and `order`
+use `SystemQueryOptions` to control `response size`, `element projection` and `order`
 
 ### pagination
 
@@ -8,7 +8,7 @@ use `ODataParam` to control `response size`, `element projection` and `order`
 
 ```js
 // equal to $format=json&$skip=30&$top=10
-OData.newParam().skip(30).top(10)
+OData.newOptions().skip(30).top(10)
 ```
 
 ### filter
@@ -17,11 +17,11 @@ filter data by properties value
 
 ```js
 // $format=json&$filter=A eq 'test'
-OData.newParam().filter(OData.newFilter().property("A").eq("test"))
+OData.newOptions().filter(OData.newFilter().property("A").eq("test"))
 // same
-OData.newParam().filter().property("A").eq("test")).filterEnd()
+OData.newOptions().filter().property("A").eq("test")).filterEnd()
 // freedom filter
-OData.newParam().filter("A eq 'test'")
+OData.newOptions().filter("A eq 'test'")
 ```
 
 ### inline count
@@ -32,7 +32,7 @@ also could set with `filter`, and response with filtered records count.
 
 ```js
 // equal to $format=json&$inlinecount=allpages
-OData.newParam().inlinecount(true).top(1).select("ObjectID")
+OData.newOptions().inlinecount(true).top(1).select("ObjectID")
 ```
 
 ### orderby
@@ -41,10 +41,10 @@ sort response data
 
 ```javascript
 // result is $format=json&$orderby=CreationDateTime desc
-OData.newParam().orderby("CreationDateTime")
+OData.newOptions().orderby("CreationDateTime")
 
 // result is $format=json&$orderby=A desc,B asc
-OData.newParam().orderby([{ field: "A" }, { field: "B", order: "asc" }])
+OData.newOptions().orderby([{ field: "A" }, { field: "B", order: "asc" }])
 ```
 
 ### navigation property
@@ -53,9 +53,9 @@ expand association data
 
 ```javascript
 // $expand=Customers
-OData.newParam().expand("Customers")
+OData.newOptions().expand("Customers")
 // $expand=Customers,Employees
-OData.newParam().expand(["Customers", "Employees"])
+OData.newOptions().expand(["Customers", "Employees"])
 ```
 
 ### properties select
@@ -64,7 +64,7 @@ remove unused properties from response
 
 ```js
 // $format=json&$select=ObjectID,Name
-OData.newParam().select("ObjectID").select("Name");
+OData.newOptions().select("ObjectID").select("Name");
 ```
 
 ### full text search (basic query)
@@ -78,10 +78,10 @@ search all **supported** properties with text
 ```js
 // fuzzy
 // $format=json&$search=%any word%
-OData.newParam().search("any word");
+OData.newOptions().search("any word");
 // not fuzzy
 // $format=json&$search=any word
-OData.newParam().search("any word", false);
+OData.newOptions().search("any word", false);
 ```
 
 
@@ -90,7 +90,7 @@ OData.newParam().search("any word", false);
 > i know some odata system support custom query parameter for key authentication or other usage
 
 ```ts
-OData.newParam().custom("access_token", "token_value"); // => $format=json&access_token=token_value
-OData.newParam().custom("search", "v1"); // => $format=json&search=v1
+OData.newOptions().custom("access_token", "token_value"); // => $format=json&access_token=token_value
+OData.newOptions().custom("search", "v1"); // => $format=json&search=v1
 
 ```

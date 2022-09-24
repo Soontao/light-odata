@@ -1,15 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Types Test Suite should support EdmV2.DateTimeOffset 1`] = `"{\\"v\\":\\"/Date(1645747200000)/\\"}"`;
+exports[`Types Test Suite should support EdmV2.DateTimeOffset 1`] = `"{"v":"/Date(1645747200000)/"}"`;
 
-exports[`Types Test Suite should support EdmV4.DateTimeOffset 1`] = `"{\\"v\\":\\"2022-02-25T00:00:00.000Z\\"}"`;
+exports[`Types Test Suite should support EdmV4.DateTimeOffset 1`] = `"{"v":"2022-02-25T00:00:00.000Z"}"`;
 
-exports[`Types Test Suite should support convert paylaod object with value 1`] = `"{\\"v\\":1,\\"c\\":null,\\"d\\":{\\"v\\":\\"value\\"}}"`;
+exports[`Types Test Suite should support convert paylaod object with value 1`] = `"{"v":1,"c":null,"d":{"v":"value"}}"`;
 
-exports[`Types Test Suite should support convert paylaod object with value 2`] = `"{\\"v\\":\\"2\\",\\"c\\":\\"/Date(1645747200000)/\\",\\"d\\":{\\"v\\":\\"value\\"}}"`;
+exports[`Types Test Suite should support convert paylaod object with value 2`] = `"{"v":"2","c":"/Date(1645747200000)/","d":{"v":"value"}}"`;
 
-exports[`Types Test Suite should support deep transform 1`] = `"{\\"v\\":\\"2\\",\\"c\\":null,\\"d\\":{\\"v\\":\\"2022-02-25\\"}}"`;
+exports[`Types Test Suite should support deep transform 1`] = `"{"v":"2","c":null,"d":{"v":"2022-02-25"}}"`;
 
-exports[`Types Test Suite should support format Edm.String 1`] = `"{\\"ID\\":\\"v1\\"}"`;
+exports[`Types Test Suite should support format Edm.String 1`] = `"{"ID":"v1"}"`;
 
-exports[`Types Test Suite should support format Edm.String 2`] = `"{\\"ID\\":\\"v1\\"}"`;
+exports[`Types Test Suite should support format Edm.String 2`] = `"{"ID":"v1"}"`;

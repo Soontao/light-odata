@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { ODataServerError } from "./errors";
 import { ODataFilter } from "./filter";
-import { ODataQueryParam } from "./params";
+import { systemOptions, SystemQueryOptions } from "./params";
 import { OData } from "./request";
 import type { DeepPartial, ODataKeyPredicate, PlainODataResponse } from "./types";
 
@@ -62,16 +62,24 @@ export class EntitySet<T = any> {
     return this._client.newFilter();
   }
 
-  public newParam(): ODataQueryParam<T> {
+  /**
+   * @deprecated
+   * @returns
+   */
+  public newParam(): SystemQueryOptions<T> {
     return this._client.newParam();
   }
 
-  async retrieve(id: ODataKeyPredicate, params?: ODataQueryParam): Promise<T> {
+  public newOptions() {
+    return this._client.newOptions();
+  }
+
+  async retrieve(id: ODataKeyPredicate, systemOptions?: SystemQueryOptions): Promise<T> {
     const res = await this._client.newRequest<T>({
       collection: this._entitySet,
       method: "GET",
       id,
-      params
+      params: systemOptions
     });
     this._checkError(res);
     return this._getResultSingle(res);
@@ -92,15 +100,15 @@ export class EntitySet<T = any> {
     return this.query(OData.newParam().filter(filter));
   }
 
-  async query(param: ODataFilter): Promise<T[]>;
+  async query(filter: ODataFilter): Promise<T[]>;
 
-  async query(param: ODataQueryParam): Promise<T[]>;
+  async query(systemOptions: SystemQueryOptions): Promise<T[]>;
 
   async query(): Promise<T[]>;
 
   async query(param: any): Promise<any> {
     if (param instanceof ODataFilter) {
-      param = ODataQueryParam.newParam().filter(param);
+      param = systemOptions().filter(param);
     }
     if (param == undefined) {
       param = OData.newParam();
@@ -230,12 +238,17 @@ export class EntitySet<T = any> {
    * @param functionName
    * @param id
    */
-  async function(functionName: string, id: ODataKeyPredicate, parameters?: any, params?: ODataQueryParam): any {
+  async function(
+    functionName: string,
+    id: ODataKeyPredicate,
+    parameters?: any,
+    systemOptions?: SystemQueryOptions
+  ): any {
     const responseBody = await this._client.newRequest({
       collection: this._entitySet,
       method: "GET",
       id,
-      params,
+      params: systemOptions,
       parameters,
       functionName
     });

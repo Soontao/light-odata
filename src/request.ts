@@ -9,7 +9,7 @@ import { EntitySet } from "./entityset";
 import { FrameworkError, ODataServerError, ValidationError } from "./errors";
 import { ODataFilter } from "./filter";
 import { ClientCredentialsOAuthClient } from "./oauth";
-import { ODataParam, ODataQueryParam } from "./params";
+import { ODataParam, SystemQueryOptions } from "./params";
 import { Transformation } from "./tranformation";
 import type {
   BatchRequestOptions, BatchRequests,
@@ -137,10 +137,19 @@ export class OData {
   }
 
   /**
-   * new odata query param
+   * new odata query options
+   *
+   * @deprecated
    */
-  static newParam(): ODataQueryParam {
+  static newParam(): SystemQueryOptions {
     return ODataParam.newParam();
+  }
+
+  /**
+   * new odata query options
+   */
+  static newOptions() {
+    return ODataParam.newOptions();
   }
 
   /**
@@ -150,6 +159,11 @@ export class OData {
     return ODataFilter.newFilter();
   }
 
+  /**
+   * new transformation
+   *
+   * @returns
+   */
   static newTransformation() {
     return Transformation.newTransformation();
   }
@@ -311,13 +325,13 @@ export class OData {
    * odata request uri
    *
    * @param uri HTTP URI
-   * @param queryParams odata query params
+   * @param systemOptions odata query params
    * @param method HTTP method
    * @param body request content
    */
   private async requestUri<T = any>(
     uri: string,
-    queryParams?: ODataQueryParam,
+    systemOptions?: SystemQueryOptions,
     method: HTTPMethod = "GET",
     body?: any
   ): Promise<PlainODataMultiResponse<T>> {
@@ -355,14 +369,14 @@ export class OData {
    *
    * @param collection CollectionName
    * @param id entity uuid or compound key
-   * @param queryParams query param, not work for single entity uri
+   * @param systemOptions query param, not work for single entity uri
    * @param method request method
    * @param entity odata Entity instance
    */
   private async _executeDataOperation<T = any>(
     collection: string,
     id?: any,
-    queryParams?: ODataQueryParam,
+    systemOptions?: SystemQueryOptions,
     method: HTTPMethod = "GET",
     entity?: any
   ) {
@@ -370,14 +384,14 @@ export class OData {
     if (id) {
       url += this.formatIdString(id);
     }
-    const query = queryParams?.toString?.(this.version);
+    const query = systemOptions?.toString?.(this.version);
     if (query !== undefined && query.length > 0) {
       url = `${url}?${query}`;
     }
-    return this.requestUri<T>(url, queryParams, method, entity);
+    return this.requestUri<T>(url, systemOptions, method, entity);
   }
 
-  async actionImport(actionName: string, parameters?: any, params: ODataQueryParam = this.newParam()) {
+  async actionImport(actionName: string, parameters?: any, params: SystemQueryOptions = this.newParam()) {
     return this.newRequest({
       method: "POST",
       params,
@@ -386,7 +400,7 @@ export class OData {
     });
   }
 
-  async functionImport(functionName: string, parameters?: any, params: ODataQueryParam = this.newParam()) {
+  async functionImport(functionName: string, parameters?: any, params: SystemQueryOptions = this.newParam()) {
 
     return await this.newRequest({
       parameters,
@@ -615,12 +629,22 @@ export class OData {
   }
 
   /**
-   * create new param
+   * create new system query options
    *
+   * @deprecated
    * @alias OData.newParam
    */
   public newParam() {
     return OData.newParam();
+  }
+
+  /**
+   * create new system query options
+   *
+   * @returns
+   */
+  public newOptions() {
+    return OData.newOptions();
   }
 
   public newTransformation() {
