@@ -67,6 +67,24 @@ remove unused properties from response
 OData.newOptions().select("ObjectID").select("Name");
 ```
 
+
+### transformations
+
+> support aggregations by `$apply`, only applicable for OData v4
+
+```js
+// $apply=groupBy((Time),aggregate(Amount with sum as Total))/aggregate(Total with average as DailyAverage)
+OData.newOptions().apply(
+  [
+    transformation().groupBy(
+      ['Time'],
+      transformation().aggregate('Amount with sum as Total')
+    ),
+    transformation().aggregate('Total with average as DailyAverage'),
+  ]
+)
+```
+
 ### full text search (basic query)
 
 search all **supported** properties with text
