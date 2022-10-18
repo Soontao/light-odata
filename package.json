@@ -10,7 +10,7 @@
     "@types/http-string-parser": "0.0.30",
     "@types/jest": "29.2.0",
     "@types/mockjs": "1.0.7",
-    "@types/node": "16.11.66",
+    "@types/node": "16.11.68",
     "@types/uuid": "8.3.4",
     "@typescript-eslint/eslint-plugin": "5.40.1",
     "@typescript-eslint/parser": "5.40.1",
