@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { v4 } from "uuid";
+import * as uuid from "uuid";
 import { BatchPlainODataResponse, BatchResponses, BatchResponsesV4, ParsedResponse, ParsedResponseV4 } from "../src";
 import { BatchPlainODataResponseV4 } from "../src/types_v4";
 
@@ -24,7 +24,7 @@ export async function unwrapBatchResponse(responses: any): Promise<any[]> {
 }
 
 export function createSampleV2RamdomSevice() {
-  return `https://${ODATA_SAMPLE_SERVICE_HOST}/V2/(S(${v4()}))/OData/OData.svc/`
+  return `https://${ODATA_SAMPLE_SERVICE_HOST}/V2/(S(${uuid.v4()}))/OData/OData.svc/`
 }
 
 export const randomDate = () => {

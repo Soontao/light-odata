@@ -1,14 +1,10 @@
 import map from "@newdash/newdash/map";
 import { readFileSync } from "fs";
-import { RequestInit } from "node-fetch";
 import { join } from "path";
 import { v4 } from "uuid";
-import { formatBatchRequest, OData, parseMultiPartContent } from "../src";
+import { OData, parseMultiPartContent } from "../src";
 import "../src/polyfill";
-import { ODATA_SAMPLE_SERVICE_HOST } from "./utils";
-import * as uuid from "uuid";
-
-jest.mock("uuid")
+import { createSampleV2RamdomSevice, ODATA_SAMPLE_SERVICE_HOST } from "./utils";
 
 describe('test batch multipart parse & format', () => {
 
@@ -31,61 +27,6 @@ describe('test batch multipart parse & format', () => {
   })
 
 
-  test('should format multipart', () => {
-    const test: RequestInit = {
-      headers: {
-        "Accept": "application/json"
-      }
-    };
-
-    (uuid.v4 as any)
-      .mockReturnValueOnce('eac3918e-1d62-4bbe-a415-469f4f00facf')
-      .mockReturnValueOnce("4fb20670-40cb-44ee-b158-cbae40199c97")
-
-    const result = formatBatchRequest([
-      {
-        url: "https://xxxxxx.odata.public.server.cn/sap/c4c/odata/cust/v1/servicemobileapp/ServiceRequestCollection/?$select=ObjectID&$top=1",
-        init: test
-      },
-      {
-        url: "https://xxxxxx.odata.public.server.cn/sap/c4c/odata/cust/v1/servicemobileapp/ServiceRequestCollection/?$skip=3&$inlinecount=allpages&$select=ObjectID&$top=1",
-        init: test
-      },
-      {
-        url: "https://xxxxxx.odata.public.server.cn/sap/c4c/odata/cust/v1/servicemobileapp/BO_VOCRootCollection",
-        init: {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            "Content-Length": "100000"
-          },
-          body: JSON.stringify({
-            "Description": "VOC OData 测试",
-            "Id": "TEST0000f44"
-          })
-        }
-      },
-      {
-        url: "https://xxxxxx.odata.public.server.cn/sap/c4c/odata/cust/v1/servicemobileapp/BO_VOCRootCollection",
-        init: {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            "Content-Length": "100000"
-          },
-          body: JSON.stringify({
-            "Description": "VOC OData 测试",
-            "Id": "TEST0000f4s"
-          })
-        }
-      }
-    ], "test")
-
-    expect(result).toMatchSnapshot()
-
-  })
 
   test('should request batch format', async () => {
     const base = `https://${ODATA_SAMPLE_SERVICE_HOST}/V2/(S(${v4()}))/OData/OData.svc/`
@@ -122,7 +63,7 @@ describe('test batch multipart parse & format', () => {
   })
 
   test('should request with batch', async () => {
-    const base = `https://${ODATA_SAMPLE_SERVICE_HOST}/V2/(S(${v4()}))/OData/OData.svc/`
+    const base = createSampleV2RamdomSevice()
     const odata = OData.New({
       metadataUri: `${base}/$metadata`,
     })

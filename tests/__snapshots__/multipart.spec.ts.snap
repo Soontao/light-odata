@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Batch MultiPart Test Suite should format multipart 1`] = `
+"--test
+Content-Type: application/http
+Content-Transfer-Encoding: binary
+
+GET https://xxxxxx.odata.public.server.cn/sap/c4c/odata/cust/v1/servicemobileapp/ServiceRequestCollection/?$select=ObjectID&$top=1 HTTP/1.1
+Accept: application/json
+
+
+--test
+Content-Type: application/http
+Content-Transfer-Encoding: binary
+
+GET https://xxxxxx.odata.public.server.cn/sap/c4c/odata/cust/v1/servicemobileapp/ServiceRequestCollection/?$skip=3&$inlinecount=allpages&$select=ObjectID&$top=1 HTTP/1.1
+Accept: application/json
+
+
+--test
+Content-Type: multipart/mixed; boundary=eac3918e-1d62-4bbe-a415-469f4f00facf
+
+--eac3918e-1d62-4bbe-a415-469f4f00facf
+Content-Type: application/http
+Content-Transfer-Encoding: binary
+
+POST https://xxxxxx.odata.public.server.cn/sap/c4c/odata/cust/v1/servicemobileapp/BO_VOCRootCollection HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+Content-Length: 100000
+
+
+{"Description":"VOC OData 测试","Id":"TEST0000f44"}
+
+--eac3918e-1d62-4bbe-a415-469f4f00facf--
+--test
+Content-Type: multipart/mixed; boundary=4fb20670-40cb-44ee-b158-cbae40199c97
+
+--4fb20670-40cb-44ee-b158-cbae40199c97
+Content-Type: application/http
+Content-Transfer-Encoding: binary
+
+POST https://xxxxxx.odata.public.server.cn/sap/c4c/odata/cust/v1/servicemobileapp/BO_VOCRootCollection HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+Content-Length: 100000
+
+
+{"Description":"VOC OData 测试","Id":"TEST0000f4s"}
+
+--4fb20670-40cb-44ee-b158-cbae40199c97--
+--test--"
+`;
