@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.21.0](https://github.com/Soontao/light-odata/compare/v2.21.0-beta.0...v2.21.0) (2022-11-03)
+
+
+### Features
+
+* native fetch support for polyfill [#546](https://github.com/Soontao/light-odata/issues/546) ([92cc942](https://github.com/Soontao/light-odata/commit/92cc94249db024cf3cff19156af0b079a62ed54f))
+
 ## [2.21.0-beta.0](https://github.com/Soontao/light-odata/compare/v2.21.0-alpha.0...v2.21.0-beta.0) (2022-09-24)
 
 
