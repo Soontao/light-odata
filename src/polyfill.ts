@@ -1,5 +1,4 @@
-// @ts-nocheck
-/* eslint-disable @typescript-eslint/no-var-requires */
-import fetchCookie from "fetch-cookie";
-import * as nodeFetch from "node-fetch";
-global.fetch = fetchCookie(nodeFetch);
+if (globalThis.fetch === undefined) {
+  global.fetch = require("fetch-cookie")(require("node-fetch"));
+}
+
