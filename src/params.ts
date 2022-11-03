@@ -36,12 +36,12 @@ export class SystemQueryOptions<T = any> {
    * @deprecated
    * @returns
    */
-  public static newParam(): SystemQueryOptions {
-    return new SystemQueryOptions();
+  public static newParam<T = any>() {
+    return new SystemQueryOptions<T>();
   }
 
-  public static newOptions(): SystemQueryOptions {
-    return new SystemQueryOptions();
+  public static newOptions<T = any>() {
+    return new SystemQueryOptions<T>();
   }
 
   constructor() {

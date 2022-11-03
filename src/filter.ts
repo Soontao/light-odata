@@ -257,15 +257,15 @@ class ODataPropertyExpr<T extends ODataFilter> {
  */
 export class ODataFilter<T = any> {
 
-  static newBuilder(): ODataFilter {
-    return new ODataFilter();
+  static newBuilder<T = any>() {
+    return new ODataFilter<T>();
   }
 
   /**
    * construct a new filter
    */
-  static newFilter(): ODataFilter {
-    return new ODataFilter();
+  static newFilter<T = any>() {
+    return new ODataFilter<T>();
   }
 
   private _fieldExprMappings: FieldExprMappings = {};
