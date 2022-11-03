@@ -39,7 +39,7 @@
     "@types/node-fetch": "^2.6.2",
     "fetch-cookie": "^2.1.0",
     "http-string-parser": "^0.0.6",
-    "node-fetch": "^2.6.7",
+    "node-fetch": "^3.0.0",
     "uuid": "^9.0.0"
   },
   "overrides": {
