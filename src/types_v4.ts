@@ -1,6 +1,6 @@
 import type { BatchRequestV4, ParsedResponseV4 } from "./batch";
 import type { SystemQueryOptions } from "./params";
-import type { OData } from "./request";
+import { OData } from "./odata";
 import type {
   BatchRequestOptions, ODataActionImportRequest,
   ODataActionRequest, ODataFunctionImportRequest, ODataFunctionRequest,

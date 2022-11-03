@@ -2,7 +2,7 @@
 import { ODataServerError } from "./errors";
 import { ODataFilter } from "./filter";
 import { systemOptions, SystemQueryOptions } from "./params";
-import { OData } from "./request";
+import { OData } from "./odata";
 import type { DeepPartial, ODataKeyPredicate, PlainODataResponse } from "./types";
 
 /**
