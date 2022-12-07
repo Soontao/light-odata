@@ -4,7 +4,8 @@
   "description": "OData(V2/V4) Client",
   "unpkg": "./lib/odata-client-umd.js",
   "engines": {
-    "node": ">=14"
+    "node": ">=14",
+    "npm": "8"
   },
   "devDependencies": {
     "@types/http-string-parser": "0.0.30",
@@ -35,7 +36,7 @@
   },
   "dependencies": {
     "@newdash/newdash": "^5.21.4",
-    "@odata/parser": "^0.2.11",
+    "@odata/parser": "^0.2.12",
     "@types/node-fetch": "^2.6.2",
     "fetch-cookie": "^2.1.0",
     "http-string-parser": "^0.0.6",
