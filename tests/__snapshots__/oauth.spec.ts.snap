@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OAuth2 Client Credential Test Suite should reject error when authenticated failed 1`] = `
+[
+  "https://a.b.c.d/oauth2/token",
+  {
+    "body": "grant_type=client_credentials",
+    "headers": {
+      "Authorization": "Basic Y2xpZW50X2lkOndyb25n",
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    "method": "POST",
+  },
+]
+`;
+
+exports[`OAuth2 Client Credential Test Suite should support retrieve token 1`] = `
+[
+  "https://a.b.c.d/oauth2/token",
+  {
+    "body": "grant_type=client_credentials",
+    "headers": {
+      "Authorization": "Basic Y2xpZW50X2lkOmNsaWVudF9zZWNyZXQ=",
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    "method": "POST",
+  },
+]
+`;
+
+exports[`OAuth2 Client Credential Test Suite should support retrieve token by form 1`] = `
+[
+  "https://a.b.c.d/oauth2/token",
+  {
+    "body": "grant_type=client_credentials&client_id=client_id&client_secret=client_secret",
+    "headers": {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    "method": "POST",
+  },
+]
+`;
