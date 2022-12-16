@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.21.2](https://github.com/Soontao/light-odata/compare/v2.21.1...v2.21.2) (2022-12-16)
+
+
+### Bug Fixes
+
+* dep ([112945d](https://github.com/Soontao/light-odata/commit/112945d3a100ba115aa4641270ae53e52793cfe5))
+* dep update ([af3a1c6](https://github.com/Soontao/light-odata/commit/af3a1c6d2213ced7ad77b1a6a2bf2a776026c376))
+* oauth ut ([4162250](https://github.com/Soontao/light-odata/commit/41622509eca140afa4c978acc944ca14b2270d1f))
+
 ### [2.21.1](https://github.com/Soontao/light-odata/compare/v2.21.0...v2.21.1) (2022-11-03)
 
 ## [2.21.0](https://github.com/Soontao/light-odata/compare/v2.21.0-beta.0...v2.21.0) (2022-11-03)
