@@ -5,7 +5,7 @@
   "unpkg": "./lib/odata-client-umd.js",
   "engines": {
     "node": ">=14",
-    "npm": "8"
+    "npm": "9"
   },
   "devDependencies": {
     "@types/http-string-parser": "0.0.30",
