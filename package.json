@@ -5,7 +5,7 @@
   "unpkg": "./lib/odata-client-umd.js",
   "engines": {
     "node": ">=14",
-    "npm": "9"
+    "npm": ">=8"
   },
   "devDependencies": {
     "@types/http-string-parser": "0.0.30",
@@ -50,6 +50,9 @@
     "name": "Theo Sun",
     "email": "theo.sun@outlook.com",
     "url": "https://github.com/Soontao"
+  },
+  "optionalDependencies": {
+    "fsevents": "*"
   },
   "main": "lib/index.js",
   "keywords": [
