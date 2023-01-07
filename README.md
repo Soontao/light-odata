@@ -1,10 +1,10 @@
 # OData Client
 
-[![unittest](https://github.com/Soontao/light-odata/actions/workflows/nodejs.yml/badge.svg)](https://github.com/Soontao/light-odata/actions/workflows/nodejs.yml)
 [![npm (scoped)](https://img.shields.io/npm/v/@odata/client)](https://www.npmjs.com/package/@odata/client)
-[![codecov](https://codecov.io/gh/Soontao/light-odata/branch/main/graph/badge.svg)](https://codecov.io/gh/Soontao/light-odata)
 ![NPM](https://img.shields.io/npm/l/@odata/client)
 ![npm](https://img.shields.io/npm/dy/@odata/client)
+[![unittest](https://github.com/Soontao/light-odata/actions/workflows/nodejs.yml/badge.svg)](https://github.com/Soontao/light-odata/actions/workflows/nodejs.yml)
+[![codecov](https://codecov.io/gh/Soontao/light-odata/branch/main/graph/badge.svg)](https://codecov.io/gh/Soontao/light-odata)
 
 ![npm bundle size (scoped)](https://img.shields.io/bundlephobia/min/@odata/client)
 ![node-lts (scoped with tag)](https://img.shields.io/node/v-lts/@odata/client/latest)
