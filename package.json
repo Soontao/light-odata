@@ -43,7 +43,8 @@
     "uuid": "^9.0.0"
   },
   "overrides": {
-    "glob-parent": "6.0.2"
+    "glob-parent": ">=6.0.2",
+    "json5": ">=2.2.3"
   },
   "homepage": "https://github.com/Soontao/light-odata",
   "author": {
