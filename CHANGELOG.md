@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.21.3](https://github.com/Soontao/light-odata/compare/v2.21.2...v2.21.3) (2023-01-07)
+
+
+### Bug Fixes
+
+* fsevents issue ([7be808b](https://github.com/Soontao/light-odata/commit/7be808b3414bb4734d0d7543e70fd880a55aa853))
+
 ### [2.21.2](https://github.com/Soontao/light-odata/compare/v2.21.1...v2.21.2) (2022-12-16)
 
 
