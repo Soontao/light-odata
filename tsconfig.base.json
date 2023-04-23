@@ -5,9 +5,7 @@
     "noUnusedParameters": false,
     "experimentalDecorators": true,
     "lib": [
-      "ES2015",
-      "ES2016",
-      "ES2017",
+      "ES2020",
       "DOM"
     ],
     "module": "commonjs",
