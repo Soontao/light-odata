@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.21.6](https://github.com/Soontao/light-odata/compare/v2.21.5...v2.21.6) (2023-05-22)
+
+
+### Bug Fixes
+
+* dep ([0f0a78d](https://github.com/Soontao/light-odata/commit/0f0a78decba7e950a3c7d1fb0de1d138bb3d6cf6))
+* **deps:** update dependency @types/node-fetch to v2.6.4 ([58e30c3](https://github.com/Soontao/light-odata/commit/58e30c3a937ace87dafc3a86bdf70e8d05883348))
+* **deps:** update dependency node-fetch to v2.6.10 ([0c039a0](https://github.com/Soontao/light-odata/commit/0c039a0b1d26820403e624dd6ffe8af9b4fb1360))
+* **deps:** update dependency node-fetch to v2.6.11 ([013ae21](https://github.com/Soontao/light-odata/commit/013ae214e61b5a8e20ce5484780a3b811034bb60))
+
 ### [2.21.5](https://github.com/Soontao/light-odata/compare/v2.21.4...v2.21.5) (2023-04-23)
 
 
