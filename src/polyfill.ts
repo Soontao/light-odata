@@ -1,2 +1,1 @@
-globalThis.fetch = require("fetch-cookie")(require("node-fetch"));
-
+global.fetch = require("fetch-cookie")(require("node-fetch"));

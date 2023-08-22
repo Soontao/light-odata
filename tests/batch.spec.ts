@@ -3,7 +3,6 @@ import { readFileSync } from "fs";
 import { join } from "path";
 import { v4 } from "uuid";
 import { OData, parseMultiPartContent } from "../src";
-import "../src/polyfill";
 import { createSampleV2RamdomSevice, ODATA_SAMPLE_SERVICE_HOST } from "./utils";
 
 describe('test batch multipart parse & format', () => {

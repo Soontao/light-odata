@@ -61,7 +61,7 @@ const client = OData.New({
 
 ## Server Side Polyfill
 
-Use polyfill for your server-side application.
+Use polyfill for your server-side application. you DO NOT need this polyfill after nodejs v18
 
 ```js
 // import "@odata/client/lib/polyfill"

@@ -4,7 +4,6 @@ import {
   ODataFilter,
   ODataParam
 } from '../src';
-import "../src/polyfill";
 import { OData } from "../src/request";
 import { Alphabetical_list_of_product, Customer } from "./demo_service_types";
 import { ODATA_SAMPLE_SERVICE_HOST } from './utils';

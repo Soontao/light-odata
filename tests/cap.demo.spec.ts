@@ -1,4 +1,3 @@
-import "../src/polyfill";
 import { Random } from "mockjs";
 import { EdmV4, OData } from "../src";
 import { CapDemoPeople } from "./demo_service_types";

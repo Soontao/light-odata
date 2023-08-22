@@ -2,7 +2,6 @@
 import { env } from "process";
 import { v4 } from "uuid";
 import { EdmV2, FormatODataDateTimedate, OData, ODataDateTime } from "../src";
-import "../src/polyfill"; // must import polifill because csrf token request the cookie
 import { randomDate } from "./utils";
 
 let d = describe

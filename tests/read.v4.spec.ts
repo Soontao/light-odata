@@ -1,4 +1,3 @@
-import "../src/polyfill";
 import { v4 } from "uuid";
 import { OData } from "../src/request";
 import { People } from "./demo_service_types";

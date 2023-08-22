@@ -1,5 +1,4 @@
 import { OData } from "../src";
-import "../src/polyfill";
 import { createSampleV2RamdomSevice } from "./utils";
 
 describe('Function/Action Test Suite', () => {
