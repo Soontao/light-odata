@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.21.8](https://github.com/Soontao/light-odata/compare/v2.21.7...v2.21.8) (2023-08-22)
+
+
+### Bug Fixes
+
+* **deps:** update dependency node-fetch to v2.6.13 ([9ceb6ab](https://github.com/Soontao/light-odata/commit/9ceb6ab788ca26fb43f03080ec9658d790962ce5))
+
 ### [2.21.7](https://github.com/Soontao/light-odata/compare/v2.21.6...v2.21.7) (2023-07-21)
 
 
