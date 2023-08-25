@@ -11,7 +11,7 @@
     "@types/http-string-parser": "0.0.30",
     "@types/jest": "29.5.4",
     "@types/mockjs": "1.0.7",
-    "@types/node": "18.17.10",
+    "@types/node": "18.17.11",
     "@types/uuid": "9.0.2",
     "@typescript-eslint/eslint-plugin": "6.4.1",
     "@typescript-eslint/parser": "6.4.1",
