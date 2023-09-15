@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "@types/http-string-parser": "0.0.30",
-    "@types/jest": "29.5.4",
+    "@types/jest": "29.5.5",
     "@types/mockjs": "1.0.7",
     "@types/node": "18.17.16",
     "@types/uuid": "9.0.4",
