@@ -1,5 +1,5 @@
 import map from "@newdash/newdash/map";
-import { readFileSync } from "fs";
+import { readFile } from "fs/promises"
 import { join } from "path";
 import { v4 } from "uuid";
 import { OData, parseMultiPartContent } from "../src";
@@ -8,19 +8,19 @@ import { createSampleV2RamdomSevice, ODATA_SAMPLE_SERVICE_HOST } from "./utils";
 describe('test batch multipart parse & format', () => {
 
   test('should parse multipart', async () => {
-    const sample = readFileSync(join(__dirname, "./resources/batch/sample.response"), { encoding: "utf8" })
+    const sample = await readFile(join(__dirname, "./resources/batch/sample.response"), { encoding: "utf8" })
     const responses = await parseMultiPartContent(sample, "ejjeeffe0")
     expect(await responses[0].json()).toMatchSnapshot()
   })
 
   test('should parse complex multipart', async () => {
-    const sample = readFileSync(join(__dirname, "./resources/batch/complex-multipart.response"), { encoding: "utf8" })
+    const sample = await readFile(join(__dirname, "./resources/batch/complex-multipart.response"), { encoding: "utf8" })
     const responses = await parseMultiPartContent(sample, "ejjeeffe0")
     expect(await responses[3].text())
   })
 
   test('should parse standard odata multipart', async () => {
-    const sample = readFileSync(join(__dirname, "./resources/batch/sample.standard.response"), { encoding: "utf8" })
+    const sample = await readFile(join(__dirname, "./resources/batch/sample.standard.response"), { encoding: "utf8" })
     const responses = await parseMultiPartContent(sample, "batchresponse_939aeb3e-6c08-4051-a65c-638da9146941")
     expect((await responses[0].json())["d"].length).toEqual(1)
   })
