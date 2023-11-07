@@ -10,7 +10,7 @@
   "devDependencies": {
     "@types/http-string-parser": "0.0.33",
     "@types/jest": "29.5.7",
-    "@types/mockjs": "1.0.9",
+    "@types/mockjs": "1.0.10",
     "@types/node": "20.8.10",
     "@types/uuid": "9.0.6",
     "@typescript-eslint/eslint-plugin": "6.10.0",
