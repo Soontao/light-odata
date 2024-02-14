@@ -1,7 +1,10 @@
+import {
+  validate as uuidValidate,
+  version as uuidVersion,
+} from "uuid";
 import { encode } from "./base64";
 import { FrameworkError } from "./errors";
 import { ODataKeyPredicate, ODataValueObject } from "./types";
-
 
 /**
  * ConvertDateFromODataTime (OData V2)
@@ -33,6 +36,21 @@ export function FormatODataDateTimedate(date: Date = new Date()): string {
 
 export function GetAuthorizationPair(user: string, password: string): { Authorization: string } {
   return { Authorization: `Basic ${encode(`${user ?? ""}:${password ?? ""}`)}` };
+}
+
+export function StringIsUuid(param: string): boolean {
+  try {
+    uuidVersion(param);
+  } catch (e) {
+    if (e instanceof TypeError && e.message === "Invalid UUID") {
+      console?.warn(`"${param}" is not valid UUID string`);
+      return false;
+    }
+
+    return false;
+  }
+
+  return uuidValidate(param);
 }
 
 
@@ -85,6 +103,10 @@ export function formatId(key: ODataKeyPredicate): string {
         const v = kv[1];
         switch (typeof v) {
           case "string":
+            if (StringIsUuid(v)) {
+              return `${k}=${v}`;
+            }
+
             return `${k}='${v}'`;
           case "number":
             return `${k}=${v}`;
@@ -107,6 +129,12 @@ export function formatId(key: ODataKeyPredicate): string {
       rt = `(${key})`;
       break;
     case "string":
+      if (StringIsUuid(key)) {
+        rt = `(${key})`;
+
+        break;
+      }
+
       rt = `('${key}')`;
       break;
     case "undefined":

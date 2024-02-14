@@ -12,11 +12,20 @@ describe("OData Filter Test", () => {
       .toEqual("Name eq 'test string'")
     expect(ODataFilter.newFilter().field("Name").neString("test string").build())
       .toEqual("Name ne 'test string'")
+    expect(ODataFilter.newFilter().field("Id").neString("5bfd6500-4bc5-4938-b8c3-37fe97851cec").build())
+      .toEqual("Id ne '5bfd6500-4bc5-4938-b8c3-37fe97851cec'")
   })
 
   it('should support filter.eq(null)', () => {
     expect(OData.newFilter().field("Name").eq(null).build()).toEqual("Name eq null")
     expect(OData.newFilter().property("Name").eq(null).build()).toEqual("Name eq null")
+  });
+
+  it('should support GUID as string', () => {
+    expect(OData.newFilter().field("Id").eq("5bfd6500-4bc5-4938-b8c3-37fe97851cec").build())
+      .toEqual("Id eq 5bfd6500-4bc5-4938-b8c3-37fe97851cec")
+    expect(OData.newFilter().property("Id").eq("5bfd6500-4bc5-4938-b8c3-37fe97851cec").build())
+      .toEqual("Id eq 5bfd6500-4bc5-4938-b8c3-37fe97851cec")
   });
 
   test("ODataFilter.group", () => {
@@ -78,7 +87,8 @@ describe("OData Filter Test", () => {
       .newFilter()
       .field("Name").eq("'test string1'")
       .field("Name2").eqString("test string2")
-    expect(filter.build()).toEqual("Name eq 'test string1' and Name2 eq 'test string2'")
+      .field("Id").eq("5bfd6500-4bc5-4938-b8c3-37fe97851cec")
+    expect(filter.build()).toEqual("Name eq 'test string1' and Name2 eq 'test string2' and Id eq 5bfd6500-4bc5-4938-b8c3-37fe97851cec")
   })
 
   test('ODataFilter.and(complex)', () => {
@@ -86,31 +96,36 @@ describe("OData Filter Test", () => {
       .newFilter()
       .field("Name2").eq("'test string1'")
       .fieldIn("Name", ["test string1", "test string2"])
+      .fieldIn("Id", ["5bfd6500-4bc5-4938-b8c3-37fe97851cec"])
     expect(filter.build())
-      .toEqual("Name2 eq 'test string1' and (Name eq 'test string1' or Name eq 'test string2')")
+      .toEqual("Name2 eq 'test string1' and (Name eq 'test string1' or Name eq 'test string2') and Id eq '5bfd6500-4bc5-4938-b8c3-37fe97851cec'")
   })
 
   test('ODataFilter.or(complex)', () => {
-    const expected = "Name eq 'test string1' and (Name2 eq 'test string3' or Name2 eq 'test string2')"
     const filter = ODataFilter
       .newFilter()
       .property("Name").eq("'test string1'")
       .fieldIn("Name2", ["test string3", "test string2"])
+      .fieldIn("Id", ["5bfd6500-4bc5-4938-b8c3-37fe97851cec"])
 
 
-    expect(filter.build()).toEqual(expected)
+    expect(filter.build()).toEqual("Name eq 'test string1' and (Name2 eq 'test string3' or Name2 eq 'test string2') and Id eq '5bfd6500-4bc5-4938-b8c3-37fe97851cec'")
+
+    const expected = "Name eq 'test string1' and (Name2 eq 'test string3' or Name2 eq 'test string2') and Id eq 5bfd6500-4bc5-4938-b8c3-37fe97851cec"
 
     expect(
       OData.newFilter()
         .property("Name").eq("'test string1'")
-        .property("Name2").in(["test string3", "test string2"])
+        .property("Name2").in(["'test string3'", "'test string2'"])
+        .property("Id").in(["5bfd6500-4bc5-4938-b8c3-37fe97851cec"])
         .build()
     ).toEqual(expected)
 
     expect(
       OData.newFilter()
-        .property("Name").eq('test string1')
+        .property("Name").eq("test string1")
         .property("Name2").in(["test string3", "test string2"])
+        .property("Id").in(["5bfd6500-4bc5-4938-b8c3-37fe97851cec"])
         .build()
     ).toEqual(expected)
 

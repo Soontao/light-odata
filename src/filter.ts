@@ -3,6 +3,7 @@ import { join } from "@newdash/newdash/join";
 import { FrameworkError, ValidationError } from "./errors";
 import { SystemQueryOptions } from "./params";
 import { ODataDateTime, ODataDateTimeOffset, ODataValueObject } from "./types";
+import { StringIsUuid } from "./util";
 
 
 export type FilterValue = number | string | ODataValueObject | null | boolean | Symbol | object
@@ -59,7 +60,11 @@ class ODataPropertyExpr<T extends ODataFilter> {
         this._getFieldExprs().push({ op, value: `${value}` });
         break;
       case "string":
-        if (value.startsWith("'") || value.startsWith("datetime")) {
+        if (
+          value.startsWith("'")
+          || value.startsWith("datetime")
+          || StringIsUuid(value)
+        ) {
           this._getFieldExprs().push({ op, value });
         } else {
           this._getFieldExprs().push({ op, value: `'${value}'` });

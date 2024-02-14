@@ -1,4 +1,4 @@
-import { ConvertDateFromODataTime, FormatODataDateTimedate, GetAuthorizationPair } from "../src";
+import { ConvertDateFromODataTime, FormatODataDateTimedate, GetAuthorizationPair, StringIsUuid } from "../src";
 import { decode, encode } from "../src/base64";
 
 const datetimeStamp = 1527166822530
@@ -40,6 +40,23 @@ describe('Util Test', () => {
     cases.forEach(({ plain, encoded }) => {
       expect(encode(plain)).toEqual(encoded)
       expect(decode(encoded)).toEqual(plain)
+    })
+
+  })
+
+  test('StringIsUuid', () => {
+
+    const cases = [
+      { uuid: "1d0ebb7c-1d22-4d44-9125-cfe35d67c2bc", result: true },
+      { uuid: "0a039649-f400-3cd4-4059-b1573caa6395", result: false },
+      { uuid: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa", result: false },
+      { uuid: "11111111-1111-1111-1111-111111111111", result: false },
+      { uuid: "        -    -    -    -            ", result: false },
+      { uuid: "string",                               result: false },
+    ]
+
+    cases.forEach(({ uuid, result }) => {
+      expect(StringIsUuid(uuid)).toEqual(result)
     })
 
   })

@@ -60,8 +60,12 @@ describe('Types Test Suite', () => {
       toMatchInlineSnapshot(`"(1)"`)
     expect(formatId({ ID: 1 })).
       toMatchInlineSnapshot(`"(ID=1)"`)
+    expect(formatId('1')).
+      toMatchInlineSnapshot(`"('1')"`)
+    expect(formatId({ ID: '1' })).
+      toMatchInlineSnapshot(`"(ID='1')"`)
     expect(formatId({ ID: 'f0b3e560-b0c9-47ba-b90b-7913181e131f' })).
-      toMatchInlineSnapshot(`"(ID='f0b3e560-b0c9-47ba-b90b-7913181e131f')"`)
+      toMatchInlineSnapshot(`"(ID=f0b3e560-b0c9-47ba-b90b-7913181e131f)"`)
     expect(formatId({ ID: types.Guid.from('f0b3e560-b0c9-47ba-b90b-7913181e131f') })).
       toMatchInlineSnapshot(`"(ID=f0b3e560-b0c9-47ba-b90b-7913181e131f)"`)
   });
