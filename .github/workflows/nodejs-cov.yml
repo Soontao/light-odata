@@ -58,6 +58,6 @@ jobs:
           CAP_DEMO_SERVICE: http://localhost:50031
 
       - name: Codecov
-        uses: codecov/codecov-action@v4.1.0
+        uses: codecov/codecov-action@v4.1.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
