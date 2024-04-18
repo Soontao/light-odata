@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.21.9](https://github.com/Soontao/light-odata/compare/v2.21.8...v2.21.9) (2024-04-18)
+
+
+### Bug Fixes
+
+* dep ([3f63c67](https://github.com/Soontao/light-odata/commit/3f63c67a152440095827510e633f970104ace110))
+* **deps:** update dependency @types/node-fetch to v2.6.10 ([6ab222a](https://github.com/Soontao/light-odata/commit/6ab222a4baf567bb3a135900ab49e6cc018c6c71))
+* **deps:** update dependency @types/node-fetch to v2.6.11 ([c59b29f](https://github.com/Soontao/light-odata/commit/c59b29f88d3113536e313a8439220e3d6e93ce99))
+* **deps:** update dependency @types/node-fetch to v2.6.5 ([c0c3ce2](https://github.com/Soontao/light-odata/commit/c0c3ce2bd2b74aec9d8d16e4f705ab0852c0ab7e))
+* **deps:** update dependency @types/node-fetch to v2.6.6 ([db1a3ca](https://github.com/Soontao/light-odata/commit/db1a3ca3d0f6d9f708998002e379f066c3bde5ca))
+* **deps:** update dependency @types/node-fetch to v2.6.7 ([4166a26](https://github.com/Soontao/light-odata/commit/4166a26403fdff729a1d8d76260f24bcd780721c))
+* **deps:** update dependency @types/node-fetch to v2.6.8 ([1c5b677](https://github.com/Soontao/light-odata/commit/1c5b6779aac3733ee04fcae106f31f442715da79))
+* **deps:** update dependency @types/node-fetch to v2.6.9 ([baf7949](https://github.com/Soontao/light-odata/commit/baf7949fcb64c15ccef5a8d1fe4e6c21853fde43))
+* **deps:** update dependency fetch-cookie to v2.2.0 ([c0d4d74](https://github.com/Soontao/light-odata/commit/c0d4d7429755e83c28e93cf515739b778af22722))
+* **deps:** update dependency fetch-cookie to v3 ([bd595ed](https://github.com/Soontao/light-odata/commit/bd595ed3886b3f8cf891ce7ccfe4d6b5cd57d30b))
+* **deps:** update dependency fetch-cookie to v3.0.1 ([8ee27df](https://github.com/Soontao/light-odata/commit/8ee27dfc16a8bc9983138762ea29a690e9684191))
+* **deps:** update dependency node-fetch to v2.7.0 ([360421b](https://github.com/Soontao/light-odata/commit/360421b60e0f120f327b412da64690ebe6df81cf))
+* **deps:** update dependency uuid to v9.0.1 ([cf5eb80](https://github.com/Soontao/light-odata/commit/cf5eb801b2bea85aa75421562e5ad49f85a69271))
+
 ### [2.21.8](https://github.com/Soontao/light-odata/compare/v2.21.7...v2.21.8) (2023-08-22)
 
 
