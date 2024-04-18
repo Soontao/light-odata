@@ -9,7 +9,7 @@
       "DOM"
     ],
     "module": "commonjs",
-    "target": "ES2019",
+    "target": "ES2022",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
