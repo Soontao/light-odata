@@ -1,4 +1,4 @@
-import { Random } from "mockjs";
+import uuid from "uuid";
 import { EdmV4, OData } from "../src";
 import { CapDemoPeople } from "./demo_service_types";
 
@@ -6,6 +6,11 @@ let d = describe
 
 if (process.env.CAP_DEMO_SERVICE === undefined) {
   d = describe.skip
+}
+
+const Random = {
+  name: () => uuid.v4(),
+  integer: (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min
 }
 
 d('CAP Framework OData (V4) Test Suite (basic)', () => {
