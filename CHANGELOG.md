@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.21.10](https://github.com/Soontao/light-odata/compare/v2.21.9...v2.21.10) (2024-05-09)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @newdash/newdash to v5.22.1 ([5419402](https://github.com/Soontao/light-odata/commit/5419402615c1e0abb0a361d773721e57c5d5ed36))
+
 ### [2.21.9](https://github.com/Soontao/light-odata/compare/v2.21.8...v2.21.9) (2024-04-18)
 
 
