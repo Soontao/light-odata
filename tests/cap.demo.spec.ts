@@ -1,4 +1,4 @@
-import uuid from "uuid";
+import * as uuid from "uuid";
 import { EdmV4, OData } from "../src";
 import { CapDemoPeople } from "./demo_service_types";
 
