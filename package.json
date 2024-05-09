@@ -10,7 +10,7 @@
   "typings": "lib/index.d.ts",
   "scripts": {
     "build": "tsc && npm run build:umd",
-    "build:umd": "npx esbuild@latest src/index.ts --bundle --minify --target=node14 --format=iife --outfile=lib/odata-client-umd.js",
+    "build:umd": "npx esbuild@latest src/index.ts --bundle --minify --target=node18 --format=iife --outfile=lib/odata-client-umd.js --global-name=OData",
     "test": "jest --silent",
     "lint": "tsc --noEmit && eslint src/**/*.*",
     "test:watch": "npm test -- --watch",
@@ -20,7 +20,7 @@
     "prepublishOnly": "npm run build && npm test"
   },
   "dependencies": {
-    "@newdash/newdash": "^5.22.0",
+    "@newdash/newdash": "^5.22.1",
     "@odata/parser": "^0.2.14",
     "@types/node-fetch": "^2.6.11",
     "fetch-cookie": "^3.0.1",
