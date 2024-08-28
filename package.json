@@ -20,7 +20,7 @@
     "prepublishOnly": "npm run build && npm test"
   },
   "dependencies": {
-    "@newdash/newdash": "^5.22.1",
+    "@newdash/newdash": "^5.23.1",
     "@odata/parser": "^0.2.14",
     "@types/node-fetch": "^2.6.11",
     "fetch-cookie": "^3.0.1",
