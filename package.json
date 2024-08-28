@@ -26,14 +26,14 @@
     "fetch-cookie": "^3.0.1",
     "http-string-parser": "^0.0.6",
     "node-fetch": "^2.7.0",
-    "uuid": "^9.0.1"
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@types/http-string-parser": "0.0.33",
     "@types/jest": "29.5.12",
     "@types/mockjs": "1.0.10",
     "@types/node": "20.12.11",
-    "@types/uuid": "9.0.8",
+    "@types/uuid": "10.0.0",
     "@typescript-eslint/eslint-plugin": "7.8.0",
     "@typescript-eslint/parser": "7.8.0",
     "eslint": "8.57.0",
